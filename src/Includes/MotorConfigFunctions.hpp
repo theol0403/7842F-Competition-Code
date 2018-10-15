@@ -1,13 +1,13 @@
 #include "main.h"
 
-extern Motor m_RightBase2;
-extern Motor m_RightBase;
-extern Motor m_Intake;
-extern Motor m_Flywheel;
-extern Motor m_Arm;
-extern Motor m_LeftBase;
-extern Motor m_LeftBase2;
-extern Motor m_Indexer;
+extern pros::Motor m_RightBase2;
+extern pros::Motor m_RightBase;
+extern pros::Motor m_Intake;
+extern pros::Motor m_Flywheel;
+extern pros::Motor m_Arm;
+extern pros::Motor m_LeftBase;
+extern pros::Motor m_LeftBase2;
+extern pros::Motor m_Indexer;
 
 
 

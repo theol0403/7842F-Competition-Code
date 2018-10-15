@@ -4,17 +4,17 @@
 
 
 
-Controller j_Main(E_CONTROLLER_MASTER);
+pros::Controller j_Main(E_CONTROLLER_MASTER);
 
 
-Motor m_RightBase2(2, true);
-Motor m_RightBase(3, true);
-Motor m_Intake(4, true);
-Motor m_Flywheel(5);
-Motor m_Arm(6);
-Motor m_LeftBase(7);
-Motor m_LeftBase2(8);
-Motor m_Indexer(9, true);
+pros::Motor m_RightBase2(2, true);
+pros::Motor m_RightBase(3, true);
+pros::Motor m_Intake(4, true);
+pros::Motor m_Flywheel(5);
+pros::Motor m_Arm(6);
+pros::Motor m_LeftBase(7);
+pros::Motor m_LeftBase2(8);
+pros::Motor m_Indexer(9, true);
 
 
 
