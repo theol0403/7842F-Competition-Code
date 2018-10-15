@@ -15,12 +15,12 @@ extern pros::Motor m_Indexer;
 
 
 
-void setFlywheelPower(int flywheelSpeed);
+void setFlywheelPower(int);
 
-void setIntakePower(int intakeSpeed);
+void setIntakePower(int);
 
-void setIndexerPower(int indexerSpeed);
+void setIndexerPower(int);
 
-void setBasePower(int leftSpeed, int rightSpeed);
+void setBasePower(int, int);
 
-void setArmPower(int armSpeed);
+void setArmPower(int);
