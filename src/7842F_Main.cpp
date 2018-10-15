@@ -98,7 +98,7 @@ void competition_initialize() {}
 void opcontrol()
 {
 
-		delay(20000);
+		pros::delay(20000);
 
 }
 

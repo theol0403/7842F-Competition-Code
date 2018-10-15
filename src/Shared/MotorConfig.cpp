@@ -1,10 +1,10 @@
 #include "main.h"
+#include "MotorConfig.hpp"
 
 
 
 
-
-pros::Controller j_Main(E_CONTROLLER_MASTER);
+pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
 
 
 pros::Motor m_RightBase2(2, true);

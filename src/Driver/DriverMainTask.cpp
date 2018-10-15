@@ -1,4 +1,5 @@
 // #include "main.h"
+// #include "MotorConfig.hpp"
 //
 // int joystickCh4;
 // int joystickCh2;
@@ -20,7 +21,7 @@
 // 		// Base Control --------------------------------------------------------------------------------
 //
 //
-// 			joystickCh4 = vexRT[Ch4];
+// 			joystickCh4 = j_Main.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 // 			joystickCh2 = vexRT[Ch2];
 //
 //
