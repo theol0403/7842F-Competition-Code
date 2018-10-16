@@ -95,8 +95,13 @@ void competition_initialize() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+#include "DriverMainTasks.hpp"
+
 void opcontrol()
 {
+	//pros::Task DriverMainTask_t(DriverMainTask, "DriverTask");
+	pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
 
 		pros::delay(20000);
 
