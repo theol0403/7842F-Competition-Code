@@ -5,22 +5,12 @@ extern pros::Controller j_Main;
 
 extern pros::Motor m_RightBase2;
 extern pros::Motor m_RightBase;
-extern pros::Motor m_Intake;
-extern pros::Motor m_Flywheel;
-extern pros::Motor m_Arm;
-extern pros::Motor m_LeftBase;
 extern pros::Motor m_LeftBase2;
-extern pros::Motor m_Indexer;
+
+extern pros::Motor m_hBase;
 
 
-
-
-void setFlywheelPower(int);
-
-void setIntakePower(int);
-
-void setIndexerPower(int);
 
 void setBasePower(int, int);
 
-void setArmPower(int);
+void setHPower(int);

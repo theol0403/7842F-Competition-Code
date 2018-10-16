@@ -2,8 +2,8 @@
 #include "MotorConfig.hpp"
 #include "DriverMainTasks.hpp"
 
-int joystickCh4;
-int joystickCh2;
+int joystickLeftX;
+int joystickRightY;
 
 const int BASE_THRESHOLD = 15;
 
@@ -18,14 +18,17 @@ void DriverMainTask(void*)
 		// Base Control --------------------------------------------------------------------------------
 
 
-			joystickCh4 = j_Main.get_analog(ANALOG_LEFT_X);
-			joystickCh2 = j_Main.get_analog(ANALOG_RIGHT_Y);
+			joystickLeftX = j_Main.get_analog(ANALOG_LEFT_X);
+			joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
+			joystickRightX = j_Main.get_analog(ANALOG_RIGHT_X);
 
-			joystickCh4 = abs(joystickCh4) > BASE_THRESHOLD ? joystickCh4 : 0;
-			joystickCh2 = abs(joystickCh2) > BASE_THRESHOLD ? joystickCh2 : 0;
+			joystickLeftX = abs(joystickLeftX) > BASE_THRESHOLD ? joystickLeftX : 0;
+			joystickRightY = abs(joystickRightY) > BASE_THRESHOLD ? joystickRightY : 0;
+			joystickRightX = abs(joystickRightX) > BASE_THRESHOLD ? joystickRightX : 0;
 
 
-			setBasePower(joystickCh2 + joystickCh4, joystickCh2 - joystickCh4);
+			setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
+			setHPower(joystickRightX);
 		// Base Control --------------------------------------------------------------------------------
 
 
