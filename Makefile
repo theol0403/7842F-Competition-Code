@@ -12,11 +12,11 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
-7842F_INCDIR=$(ROOT)/Include_7842F
+7842F_INCDIR=$(ROOT)/src/Include
 
 WARNFLAGS+=
 EXTRA_CFLAGS=
-EXTRA_CXXFLAGS=
+EXTRA_CXXFLAGS= -I$(7842F_INCDIR)
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
@@ -30,7 +30,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/opcontrol $(SRCDIR)/initialize $
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files
 # that are in the the include directory get exported
-TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp $(7842F_INCDIR)/**/*.hpp
+TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp
 
 .DEFAULT_GOAL=quick
 
