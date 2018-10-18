@@ -121,6 +121,71 @@ public:
 
 
 
+    // Filters object proportions
+    int filterObjectProp(float propThreshold = 0.2)
+    {
+      int discardCounter = 0;
+
+      int sizeWidth;
+      int sizeHeight;
+      int objectSize;
+      int sizeLow;
+      int sizeHigh;
+
+
+      // loop through objects, look for size, and fill into new array
+      for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+      {
+
+        objectSize = m_flagObjects[objectNum].objSize;
+        sizeLow = objectSize - (objectSize * propThreshold);
+        sizeHigh = objectSize + (objectSize * propThreshold);
+
+        sizeWidth = m_flagObjects[objectNum].objWidth;
+        sizeHeight = m_flagObjects[objectNum].objHeight;
+
+
+        if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
+        {
+          m_flagObjects[objectNum].discardObject = true;
+          discardCounter++;
+        }
+        else
+        {
+        }
+
+        }
+
+        return discardCounter;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
