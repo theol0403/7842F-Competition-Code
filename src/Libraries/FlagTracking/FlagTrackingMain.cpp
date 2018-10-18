@@ -10,7 +10,7 @@
 
 class visionTracking
 {
-  
+
 private:
   pros::Vision m_thisVision;
 
@@ -36,7 +36,7 @@ private:
   }
 
 
-}
+};
 
 
 
