@@ -18,21 +18,21 @@ private:
   {
     int Blue;
     int Red;
-  } m_flagSig;
+} const m_flagSig;
 
-  int m_numObjects;
-  int m_refreshRate;
+  const int m_numObjects;
+  const int m_refreshRate;
 
 
 
 
   visionTracking(int portNum, int blueSig, int redSig, int numObjects = 30, int refreshRate = 30)
-  : m_thisVision(portNum)
+  :
+  m_thisVision(portNum),
+  m_flagSig{blueSig, redSig},
+  m_numObjects{numObjects},
+  m_refreshRate{refreshRate}
   {
-    m_flagSig.Blue = blueSig;
-    m_flagSig.Red = redSig;
-    m_numObjects = numObjects;
-    m_refreshRate = refreshRate;
   }
 
 
