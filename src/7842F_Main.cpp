@@ -24,20 +24,6 @@ void initialize()
 }
 
 
-/***
- *    ______ _           _     _          _
- *    |  _  (_)         | |   | |        | |
- *    | | | |_ ___  __ _| |__ | | ___  __| |
- *    | | | | / __|/ _` | '_ \| |/ _ \/ _` |
- *    | |/ /| \__ \ (_| | |_) | |  __/ (_| |
- *    |___/ |_|___/\__,_|_.__/|_|\___|\__,_|
- * Runs while the robot is in the disabled state of Field Management System or
- * the VEX Competition Switch, following either autonomous or opcontrol. When
- * the robot is enabled, this task will exit.
- */
-void disabled() {}
-
-
 
 
 
@@ -60,6 +46,21 @@ void disabled() {}
 void competition_initialize() {}
 
 
+
+
+
+/***
+ *    ______ _           _     _          _
+ *    |  _  (_)         | |   | |        | |
+ *    | | | |_ ___  __ _| |__ | | ___  __| |
+ *    | | | | / __|/ _` | '_ \| |/ _ \/ _` |
+ *    | |/ /| \__ \ (_| | |_) | |  __/ (_| |
+ *    |___/ |_|___/\__,_|_.__/|_|\___|\__,_|
+ * Runs while the robot is in the disabled state of Field Management System or
+ * the VEX Competition Switch, following either autonomous or opcontrol. When
+ * the robot is enabled, this task will exit.
+ */
+void disabled() {}
 
 
 
