@@ -15,7 +15,7 @@ pros::Motor m_LeftBase2(5);
 
 pros::Motor m_hBase(6);
 
-
+pros::Vision v_mainVision(10);
 
 
 

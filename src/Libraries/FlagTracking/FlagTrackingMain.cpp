@@ -1,9 +1,49 @@
-// #include "main.h"
-// #include "FlagTrackingData.hpp"
-// #include "FlagTrackingFunctions.hpp"
+#include "main.h"
+//#include "FlagTrackingData.hpp"
+//#include "FlagTrackingFunctions.hpp"
+
+
+//pros::Vision mainVision(VISION_PORT);
+
+
+
+
+class visionTracking
+{
+  
+private:
+  pros::Vision m_thisVision;
+
+  struct flagSig_t
+  {
+    int Blue;
+    int Red;
+  } m_flagSig;
+
+  int m_numObjects;
+  int m_refreshRate;
+
+
+
+
+  visionTracking(int portNum, int blueSig, int redSig, int numObjects = 30, int refreshRate = 30)
+  : m_thisVision(portNum)
+  {
+    m_flagSig.Blue = blueSig;
+    m_flagSig.Red = redSig;
+    m_numObjects = numObjects;
+    m_refreshRate = refreshRate;
+  }
+
+
+}
+
+
+
+
+
 //
 //
-// pros::Vision mainVision(VISION_PORT);
 //
 //
 // //Creates struct array for storing object data

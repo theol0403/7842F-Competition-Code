@@ -9,6 +9,8 @@ extern pros::Motor m_LeftBase2;
 
 extern pros::Motor m_hBase;
 
+extern pros::Vision v_mainVision;
+
 
 
 void setBasePower(int, int);
