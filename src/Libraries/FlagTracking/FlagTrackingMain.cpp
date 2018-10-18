@@ -12,28 +12,75 @@ class visionTracking
 {
 
 private:
-  pros::Vision m_thisVision;
+
 
   struct flagSig_t
   {
     int Blue;
     int Red;
-} const m_flagSig;
+  };
 
-  const int m_numObjects;
-  const int m_refreshRate;
+  struct colorObjects
+  {
+    int objSig;
+    int objX;
+    int objY;
+    int objWidth;
+    int objHeight;
+    int objAvgDim; // Avg of width and height
+  };
+
+
+  pros::Vision m_thisVision;
+  const struct flagSig_t m_flagSig;
+
+  const int m_objectNum{30};
+  colorObjects m_flagObjects[30] = {};
 
 
 
 
-  visionTracking(int portNum, int blueSig, int redSig, int numObjects = 30, int refreshRate = 30)
+  visionTracking(int portNum, int blueSig, int redSig)
   :
   m_thisVision(portNum),
-  m_flagSig{blueSig, redSig},
-  m_numObjects{numObjects},
-  m_refreshRate{refreshRate}
+  m_flagSig{blueSig, redSig}
   {
   }
+
+
+int m_objectCount{0};
+
+
+
+public:
+
+  // Looks at vision for color, counts objects, and fills them in
+  int getObjects()
+  {
+    pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
+    m_objectCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
+
+
+    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+      {
+        m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
+        m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
+        m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
+        m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
+        m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
+        m_flagObjects[objectNum].objAvgDim = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
+      }
+
+      return m_objectCount;
+
+  }
+
+
+
+
+
+
+
 
 
 };
