@@ -27,8 +27,11 @@ private:
     int objY;
     int objWidth;
     int objHeight;
-    int objAvgDim; // Avg of width and height
+    int objSize; // Avg of width and height
+    bool discardObject;
   };
+
+
 
 
   pros::Vision m_thisVision;
@@ -68,7 +71,8 @@ public:
         m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
         m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
         m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
-        m_flagObjects[objectNum].objAvgDim = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
+        m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
+        m_flagObjects[objectNum].discardObject = false;
       }
 
       return m_objectCount;
@@ -78,12 +82,13 @@ public:
 
   int filterObjectSize(float sizeThreshold = 0.5)
     {
+      int discardCounter = 0;
       int avgSize = 0;
 
       //Total object sizes
       for(int objectNum = 0; objectNum < m_objectCount; objectNum++)
       {
-        avgSize += m_flagObjects[objectNum].objAvgDim;
+        avgSize += m_flagObjects[objectNum].objSize;
       }
       avgSize /= m_objectCount;
 
@@ -91,19 +96,30 @@ public:
       int sizeLow = avgSize - (avgSize * sizeThreshold);
       int sizeHigh = avgSize + (avgSize * sizeThreshold);
 
-      int destObjNum = 0; //New index counter for object dest
 
-      // loop through objects, look for size, and fill into new array
-      for (int objectNum = 0; objectNum < objectCount; objectNum++)
+      // loop through objects, look for size, and mark to discard
+      for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
       {
-        if(rangeFinder(filterArray[filterNum][objectNum].objAvgDim, sizeLow, sizeHigh))
+        int objSize = m_flagObjects[objectNum].objSize;
+        if(objSize > sizeHigh || objSize < sizeLow)
         {
-          passFilterObject( filterNum, filterNum + 1, objectNum, destObjNum);
-          destObjNum++;
+          m_flagObjects[objectNum].discardObject = true;
+          discardCounter++;
         }
+        else
+        {
+        }
+
       }
-      objectCount = destObjNum;
+
+      return discardCounter;
     }
+
+
+
+
+
+
 
 
 
@@ -148,7 +164,7 @@ public:
 //     flagObjects[objectNum].objX = visionObjectArray[objectNum].left_coord;
 //     flagObjects[objectNum].objWidth = visionObjectArray[objectNum].width;
 //     flagObjects[objectNum].objHeight = visionObjectArray[objectNum].height;
-//     flagObjects[objectNum].objAvgDim = (visionObjectArray[objectNum].height + visionObjectArray[objectNum].width) / 2;
+//     flagObjects[objectNum].objSize = (visionObjectArray[objectNum].height + visionObjectArray[objectNum].width) / 2;
 //     flagObjects[objectNum].objColor = objColor;
 //   }
 // }
