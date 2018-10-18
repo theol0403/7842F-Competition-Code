@@ -54,7 +54,7 @@ int m_objectCount{0};
 
 public:
 
-  // Looks at vision for color, counts objects, and fills them in
+  // Looks at vision for color, counts objects, and fills them in to master array
   int getObjects()
   {
     pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
@@ -72,12 +72,38 @@ public:
       }
 
       return m_objectCount;
-
   }
 
 
 
+  int filterObjectSize(float sizeThreshold = 0.5)
+    {
+      int avgSize = 0;
 
+      //Total object sizes
+      for(int objectNum = 0; objectNum < m_objectCount; objectNum++)
+      {
+        avgSize += m_flagObjects[objectNum].objAvgDim;
+      }
+      avgSize /= m_objectCount;
+
+      // upper and lower ranges for size threshold
+      int sizeLow = avgSize - (avgSize * sizeThreshold);
+      int sizeHigh = avgSize + (avgSize * sizeThreshold);
+
+      int destObjNum = 0; //New index counter for object dest
+
+      // loop through objects, look for size, and fill into new array
+      for (int objectNum = 0; objectNum < objectCount; objectNum++)
+      {
+        if(rangeFinder(filterArray[filterNum][objectNum].objAvgDim, sizeLow, sizeHigh))
+        {
+          passFilterObject( filterNum, filterNum + 1, objectNum, destObjNum);
+          destObjNum++;
+        }
+      }
+      objectCount = destObjNum;
+    }
 
 
 
