@@ -1,9 +1,28 @@
 #include "main.h"
+
+#include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
 //#include "FlagTrackingData.hpp"
 //#include "FlagTrackingFunctions.hpp"
 
 
-//pros::Vision mainVision(VISION_PORT);
+
+
+struct flagSig_t
+{
+  int Blue;
+  int Red;
+};
+
+struct colorObjects
+{
+  int objSig;
+  int objX;
+  int objY;
+  int objWidth;
+  int objHeight;
+  int objSize; // Avg of width and height
+  bool discardObject;
+};
 
 
 
@@ -14,34 +33,11 @@ class visionTracking
 private:
 
 
-  struct flagSig_t
-  {
-    int Blue;
-    int Red;
-  };
-
-  struct colorObjects
-  {
-    int objSig;
-    int objX;
-    int objY;
-    int objWidth;
-    int objHeight;
-    int objSize; // Avg of width and height
-    bool discardObject;
-  };
-
-
-
-
   pros::Vision m_thisVision;
   const struct flagSig_t m_flagSig;
 
-  const int m_objectNum{30};
-  colorObjects m_flagObjects[30] = {};
 
-
-
+public:
 
   visionTracking(int portNum, int blueSig, int redSig)
   :
@@ -50,12 +46,12 @@ private:
   {
   }
 
+  int m_objectCount{0};
 
-int m_objectCount{0};
+  const int m_objectNum{30};
+  colorObjects m_flagObjects[30] = {};
 
 
-
-public:
 
   // Looks at vision for color, counts objects, and fills them in to master array
   int getObjects()
@@ -165,7 +161,27 @@ public:
 
 
 
+    // main task
+    void mainFlagTrackingTask(void*ignore)
+    {
+      visionTracking mainVisionTracking(9, 0, 1);
 
+      while(true)
+      {
+        mainVisionTracking.getObjects(); //Calculates Objects
+
+        mainVisionTracking.filterObjectSize();
+        mainVisionTracking.filterObjectProp();
+
+//mainVisionTracking.colorObjects fill[30];
+        //mainVisionTracking.exportArray(fill);
+
+
+
+
+        pros::delay(100);
+      }
+    }
 
 
 
