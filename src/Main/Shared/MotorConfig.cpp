@@ -1,5 +1,5 @@
 #include "main.h"
-#include "MotorConfig.hpp"
+#include "Include/Shared/MotorConfig.hpp"
 
 
 

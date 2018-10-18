@@ -1,6 +1,6 @@
 #include "main.h"
-#include "MotorConfig.hpp"
-#include "DriverMainTasks.hpp"
+#include "Include/Shared/MotorConfig.hpp"
+#include "Include/Driver/DriverMainTasks.hpp"
 
 int joystickLeftX;
 int joystickRightY;

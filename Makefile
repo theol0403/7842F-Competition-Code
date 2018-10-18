@@ -12,11 +12,10 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
-7842F_INCDIR=$(ROOT)/src/Include
 
 WARNFLAGS+=
 EXTRA_CFLAGS=
-EXTRA_CXXFLAGS=-I$(7842F_INCDIR)
+EXTRA_CXXFLAGS=
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
