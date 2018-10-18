@@ -16,7 +16,7 @@ INCDIR=$(ROOT)/include
 
 WARNFLAGS+=
 EXTRA_CFLAGS=
-EXTRA_CXXFLAGS=
+EXTRA_CXXFLAGS=-I$(7842F_INCDIR)
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
@@ -39,7 +39,7 @@ TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-INCLUDE=-iquote$(INCDIR) -iquote$(7842F_INCDIR)
+INCLUDE=-iquote$(INCDIR)
 
 ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
