@@ -6,12 +6,12 @@
 
 
 visionTracking::visionTracking(int portNum, int objectNum)
-  :
-  m_thisVision(portNum),
-  m_objectNum(objectNum)
-  {
-    m_flagObjects = new colorObjects[objectNum];
-  }
+:
+m_thisVision(portNum),
+m_objectNum(objectNum)
+{
+  m_flagObjects = new colorObjects[objectNum];
+}
 
 
 visionTracking::~visionTracking()
@@ -20,184 +20,159 @@ visionTracking::~visionTracking()
 }
 
 
-  // Looks at vision for color, counts objects, and fills them in to master array
-  int visionTracking::getObjects()
+// Looks at vision for color, counts objects, and fills them in to master array
+int visionTracking::getObjects()
+{
+  pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
+  m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
+
+
+  for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
   {
-    pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
-    m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
-
-
-    for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
-    {
-      m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
-      m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
-      m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
-      m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
-      m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
-      m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
-      m_flagObjects[objectNum].discardObject = false;
-    }
-
-    return m_currentCount;
+    m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
+    m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
+    m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
+    m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
+    m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
+    m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
+    m_flagObjects[objectNum].discardObject = false;
   }
 
+  return m_currentCount;
+}
 
 
-  int visionTracking::filterObjectSize(float sizeThreshold)
+
+int visionTracking::filterObjectSize(float sizeThreshold)
+{
+  int discardCounter = 0;
+  int avgSize = 0;
+
+  //Total object sizes
+  for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
-    int discardCounter = 0;
-    int avgSize = 0;
+    avgSize += m_flagObjects[objectNum].objSize;
+  }
+  avgSize /= m_objectNum;
 
-    //Total object sizes
-    for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
+  // upper and lower ranges for size threshold
+  int sizeLow = avgSize - (avgSize * sizeThreshold);
+  int sizeHigh = avgSize + (avgSize * sizeThreshold);
+
+
+  // loop through objects, look for size, and mark to discard
+  for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
+  {
+    int objSize = m_flagObjects[objectNum].objSize;
+    if(objSize > sizeHigh || objSize < sizeLow)
     {
-      avgSize += m_flagObjects[objectNum].objSize;
+      m_flagObjects[objectNum].discardObject = true;
+      discardCounter++;
     }
-    avgSize /= m_objectNum;
-
-    // upper and lower ranges for size threshold
-    int sizeLow = avgSize - (avgSize * sizeThreshold);
-    int sizeHigh = avgSize + (avgSize * sizeThreshold);
-
-
-    // loop through objects, look for size, and mark to discard
-    for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
+    else
     {
-      int objSize = m_flagObjects[objectNum].objSize;
-      if(objSize > sizeHigh || objSize < sizeLow)
-      {
-        m_flagObjects[objectNum].discardObject = true;
-        discardCounter++;
-      }
-      else
-      {
-      }
-
     }
 
-    return discardCounter;
   }
 
+  return discardCounter;
+}
 
 
 
 
 
 
-  // Filters object proportions
-  int visionTracking::filterObjectProp(float propThreshold)
+
+// Filters object proportions
+int visionTracking::filterObjectProp(float propThreshold)
+{
+  int discardCounter = 0;
+
+  int sizeWidth;
+  int sizeHeight;
+  int objectSize;
+  int sizeLow;
+  int sizeHigh;
+
+
+  // loop through objects, look for size, and fill into new array
+  for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
-    int discardCounter = 0;
 
-    int sizeWidth;
-    int sizeHeight;
-    int objectSize;
-    int sizeLow;
-    int sizeHigh;
+    objectSize = m_flagObjects[objectNum].objSize;
+    sizeLow = objectSize - (objectSize * propThreshold);
+    sizeHigh = objectSize + (objectSize * propThreshold);
+
+    sizeWidth = m_flagObjects[objectNum].objWidth;
+    sizeHeight = m_flagObjects[objectNum].objHeight;
 
 
-    // loop through objects, look for size, and fill into new array
-    for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
+    if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
     {
-
-      objectSize = m_flagObjects[objectNum].objSize;
-      sizeLow = objectSize - (objectSize * propThreshold);
-      sizeHigh = objectSize + (objectSize * propThreshold);
-
-      sizeWidth = m_flagObjects[objectNum].objWidth;
-      sizeHeight = m_flagObjects[objectNum].objHeight;
-
-
-      if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
-      {
-        m_flagObjects[objectNum].discardObject = true;
-        discardCounter++;
-      }
-      else
-      {
-      }
-
+      m_flagObjects[objectNum].discardObject = true;
+      discardCounter++;
+    }
+    else
+    {
     }
 
-    return discardCounter;
   }
 
+  return discardCounter;
+}
 
 
 
 
 
 
-    int visionTracking::discardObjects()
+
+int visionTracking::discardObjects()
+{
+  int exportNum = 0;
+
+  for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
+  {
+    if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[exportNum].discardObject)
     {
-      int exportNum = 0;
-
-      for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
-      {
-        if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[exportNum].discardObject)
-        {
-          m_flagObjects[exportNum].objSig = m_flagObjects[objectNum].objSig;
-          m_flagObjects[exportNum].objY = m_flagObjects[objectNum].objY;
-          m_flagObjects[exportNum].objX = m_flagObjects[objectNum].objX;
-          m_flagObjects[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
-          m_flagObjects[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
-          m_flagObjects[exportNum].objSize = m_flagObjects[objectNum].objSize;
-          m_flagObjects[exportNum].discardObject = false;
-          exportNum++;
-        }
-        else
-        {
-          m_flagObjects[exportNum].objSig = VISION_OBJECT_ERR_SIG;
-          m_flagObjects[exportNum].objY = 0;
-          m_flagObjects[exportNum].objX = 0;
-          m_flagObjects[exportNum].objWidth = 0;
-          m_flagObjects[exportNum].objHeight = 0;
-          m_flagObjects[exportNum].objSize = 0;
-          m_flagObjects[exportNum].discardObject = false;
-        }
-
-      }
-
-      m_currentCount = exportNum + 1;
-      return exportNum + 1;
+      m_flagObjects[exportNum].objSig = m_flagObjects[objectNum].objSig;
+      m_flagObjects[exportNum].objY = m_flagObjects[objectNum].objY;
+      m_flagObjects[exportNum].objX = m_flagObjects[objectNum].objX;
+      m_flagObjects[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
+      m_flagObjects[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
+      m_flagObjects[exportNum].objSize = m_flagObjects[objectNum].objSize;
+      m_flagObjects[exportNum].discardObject = false;
+      exportNum++;
+    }
+    else
+    {
+      m_flagObjects[exportNum].objSig = VISION_OBJECT_ERR_SIG;
+      m_flagObjects[exportNum].objY = 0;
+      m_flagObjects[exportNum].objX = 0;
+      m_flagObjects[exportNum].objWidth = 0;
+      m_flagObjects[exportNum].objHeight = 0;
+      m_flagObjects[exportNum].objSize = 0;
+      m_flagObjects[exportNum].discardObject = false;
     }
 
-
-
-
-
-  colorObjects* visionTracking::exportArray()
-  {
-    return m_flagObjects;
   }
 
+  m_currentCount = exportNum + 1;
+  return exportNum + 1;
+}
 
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
+
+colorObjects* visionTracking::exportArray()
+{
+  return m_flagObjects;
+}
+
+
+
 //
 //
 //
