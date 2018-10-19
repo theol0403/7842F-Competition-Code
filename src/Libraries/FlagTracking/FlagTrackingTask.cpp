@@ -3,7 +3,6 @@
 #include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
 
 
-int OBJECT_NUM = 30;
 
 
 // main task
@@ -12,7 +11,7 @@ void mainFlagTrackingTask(void*ignore)
   colorObjects flagExport[OBJECT_NUM];
 
   visionTracking mainVisionTracking(9);
-  screenDrawing mainScreenDrawing(OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT, OBJECT_SCALE_WIDTH, OBJECT_SCALE_HEIGHT);
+  //screenDrawing mainScreenDrawing(OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT, OBJECT_SCALE_WIDTH, OBJECT_SCALE_HEIGHT);
 
   while(true)
   {
@@ -22,7 +21,7 @@ void mainFlagTrackingTask(void*ignore)
     mainVisionTracking.filterObjectProp();
 
     mainVisionTracking.exportArray(flagExport);
-    mainScreenDrawing.drawFlagObjects(flagExport);
+    //mainScreenDrawing.drawFlagObjects(flagExport);
 
 
 

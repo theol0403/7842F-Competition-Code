@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-extern int OBJECT_NUM;
+const int OBJECT_NUM = 30;
 
 
 struct flagSig_t
@@ -49,6 +49,6 @@ public:
   int filterObjectSize(float sizeThreshold = 0.5);
   int filterObjectProp(float propThreshold = 0.2);
   int discardObjects();
-  void exportArray(colorObjects flagExport[OBJECT_NUM])
+  void exportArray(colorObjects flagExport[OBJECT_NUM]);
 
 };
