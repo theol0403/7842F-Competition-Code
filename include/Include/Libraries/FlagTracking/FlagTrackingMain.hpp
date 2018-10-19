@@ -1,7 +1,6 @@
 #include "main.h"
 
 
-const int OBJECT_NUM = 30;
 
 
 struct flagSig_t
@@ -35,20 +34,23 @@ private:
 
   pros::Vision m_thisVision;
 
-  int m_objectCount{0};
+  const int m_objectNum;
 
-  colorObjects m_flagObjects[OBJECT_NUM] = {};
+  int m_currentCount{0};
+
+  colorObjects *m_flagObjects;
 
 
 public:
 
 
-  visionTracking(int);
+  visionTracking(int, int);
+  ~visionTracking();
 
   int getObjects();
   int filterObjectSize(float sizeThreshold = 0.5);
   int filterObjectProp(float propThreshold = 0.2);
   int discardObjects();
-  void exportArray(colorObjects flagExport[OBJECT_NUM]);
+  colorObjects* exportArray();
 
 };

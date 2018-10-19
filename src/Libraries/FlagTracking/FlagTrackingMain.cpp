@@ -5,35 +5,29 @@
 
 
 
-
-
-//
-
-//
-//
-//
-//
-//
-// colorObjects finalObjects[OBJECT_NUM];
-//
-//
-
-visionTracking::visionTracking(int portNum)
-  : m_thisVision(portNum)
+visionTracking::visionTracking(int portNum, int objectNum)
+  :
+  m_thisVision(portNum),
+  m_objectNum(objectNum)
   {
-
+    m_flagObjects = new colorObjects[objectNum];
   }
 
+
+visionTracking::~visionTracking()
+{
+  delete[] m_flagObjects;
+}
 
 
   // Looks at vision for color, counts objects, and fills them in to master array
   int visionTracking::getObjects()
   {
-    pros::vision_object visionTempArray[OBJECT_NUM]; //Creates temp array for vision objects
-    m_objectCount = m_thisVision.read_by_size(0, OBJECT_NUM, visionTempArray);
+    pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
+    m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
 
 
-    for (int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
+    for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
     {
       m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
       m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
@@ -44,7 +38,7 @@ visionTracking::visionTracking(int portNum)
       m_flagObjects[objectNum].discardObject = false;
     }
 
-    return m_objectCount;
+    return m_currentCount;
   }
 
 
@@ -55,11 +49,11 @@ visionTracking::visionTracking(int portNum)
     int avgSize = 0;
 
     //Total object sizes
-    for(int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
     {
       avgSize += m_flagObjects[objectNum].objSize;
     }
-    avgSize /= OBJECT_NUM;
+    avgSize /= m_objectNum;
 
     // upper and lower ranges for size threshold
     int sizeLow = avgSize - (avgSize * sizeThreshold);
@@ -67,7 +61,7 @@ visionTracking::visionTracking(int portNum)
 
 
     // loop through objects, look for size, and mark to discard
-    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
     {
       int objSize = m_flagObjects[objectNum].objSize;
       if(objSize > sizeHigh || objSize < sizeLow)
@@ -103,7 +97,7 @@ visionTracking::visionTracking(int portNum)
 
 
     // loop through objects, look for size, and fill into new array
-    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
     {
 
       objectSize = m_flagObjects[objectNum].objSize;
@@ -138,7 +132,7 @@ visionTracking::visionTracking(int portNum)
     {
       int exportNum = 0;
 
-      for (int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
+      for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
       {
         if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[exportNum].discardObject)
         {
@@ -164,7 +158,7 @@ visionTracking::visionTracking(int portNum)
 
       }
 
-      m_objectCount = exportNum + 1;
+      m_currentCount = exportNum + 1;
       return exportNum + 1;
     }
 
@@ -172,37 +166,9 @@ visionTracking::visionTracking(int portNum)
 
 
 
-  void visionTracking::exportArray(colorObjects flagExport[OBJECT_NUM])
+  colorObjects* visionTracking::exportArray()
   {
-
-    int exportNum = 0;
-
-    for (int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
-    {
-      if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
-      {
-        flagExport[exportNum].objSig = m_flagObjects[objectNum].objSig;
-        flagExport[exportNum].objY = m_flagObjects[objectNum].objY;
-        flagExport[exportNum].objX = m_flagObjects[objectNum].objX;
-        flagExport[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
-        flagExport[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
-        flagExport[exportNum].objSize = m_flagObjects[objectNum].objSize;
-        flagExport[exportNum].discardObject = m_flagObjects[objectNum].discardObject;
-        exportNum++;
-      }
-      else
-      {
-        flagExport[exportNum].objSig = VISION_OBJECT_ERR_SIG;
-        flagExport[exportNum].objY = 0;
-        flagExport[exportNum].objX = 0;
-        flagExport[exportNum].objWidth = 0;
-        flagExport[exportNum].objHeight = 0;
-        flagExport[exportNum].objSize = 0;
-        flagExport[exportNum].discardObject = 0;
-      }
-
-    }
-
+    return m_flagObjects;
   }
 
 
@@ -251,7 +217,7 @@ visionTracking::visionTracking(int portNum)
 //   lv_style_t objectStyle;
 //
 //
-//   lv_obj_t * flagObjects[OBJECT_NUM];
+//   lv_obj_t * flagObjects[m_objectNum];
 //
 // public:
 //
@@ -307,7 +273,7 @@ visionTracking::visionTracking(int portNum)
 //
 //
 //
-//     for(int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
+//     for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
 //     {
 //       flagObjects[objectNum] = lv_obj_create(objectContainer, NULL); //Make the screen its parent
 //     }
@@ -324,7 +290,7 @@ visionTracking::visionTracking(int portNum)
 //   void drawFlagObjects()
 //   {
 //
-//     for(int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
+//     for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
 //     {
 //       if(flagExport[objectNum].objSig != VISION_OBJECT_ERR_SIG)
 //       {
@@ -444,7 +410,7 @@ visionTracking::visionTracking(int portNum)
 //
 //
 // //Creates struct array for storing object data
-// colorObjects flagObjects[OBJECT_NUM];
+// colorObjects flagObjects[m_objectNum];
 //
 //
 // // main task
@@ -484,16 +450,16 @@ visionTracking::visionTracking(int portNum)
 // // Looks at vision for color, counts objects, and fills them in
 // int getObjects()
 // {
-//   vision_object visionObjectArray[OBJECT_NUM]; //Creates container array for vision objects
+//   vision_object visionObjectArray[m_objectNum]; //Creates container array for vision objects
 //
 //     int objCount;
 //     int startPos = 0;
 //
-//     objCount = mainVision.read_by_sig(0, FLAG_BLUE_SIG, OBJECT_NUM/2, visionObjectArray);
+//     objCount = mainVision.read_by_sig(0, FLAG_BLUE_SIG, m_objectNum/2, visionObjectArray);
 //     fillObjData(visionObjectArray, startPos, objCount, OBJ_BLUE_COLOR);
 //     startPos = objCount;
 //
-//     objCount = mainVision.read_by_sig(0, FLAG_RED_SIG, OBJECT_NUM/2, visionObjectArray);
+//     objCount = mainVision.read_by_sig(0, FLAG_RED_SIG, m_objectNum/2, visionObjectArray);
 //     fillObjData(visionObjectArray, startPos, objCount, OBJ_RED_COLOR);
 //
 //     return startPos + objCount;
