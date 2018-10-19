@@ -144,7 +144,7 @@ public:
 
     for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
     {
-      if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[objectNum].discardObject)
+      if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
       {
         flagExport[exportNum].objSig = m_flagObjects[objectNum].objSig;
         flagExport[exportNum].objY = m_flagObjects[objectNum].objY;
@@ -152,7 +152,7 @@ public:
         flagExport[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
         flagExport[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
         flagExport[exportNum].objSize = m_flagObjects[objectNum].objSize;
-        flagExport[exportNum].discardObject = false;
+        flagExport[exportNum].discardObject = m_flagObjects[objectNum].discardObject;
         exportNum++;
       }
       else
@@ -163,7 +163,7 @@ public:
         flagExport[exportNum].objWidth = 0;
         flagExport[exportNum].objHeight = 0;
         flagExport[exportNum].objSize = 0;
-        flagExport[exportNum].discardObject = false;
+        flagExport[exportNum].discardObject = 0;
       }
 
     }
@@ -181,13 +181,18 @@ public:
 
 
 
+  const int OBJECT_CONTAINER_WIDTH(316); // 480
+  const int OBJECT_CONTAINER_HEIGHT(212); // 240
 
+  const int OBJECT_SCALE_WIDTH(OBJECT_CONTAINER_WIDTH / VISION_FOV_WIDTH);
+  const int OBJECT_SCALE_HEIGHT(OBJECT_CONTAINER_HEIGHT / VISION_FOV_HEIGHT);
 
 
 // main task
 void mainFlagTrackingTask(void*ignore)
 {
   visionTracking mainVisionTracking(9);
+  screenDrawing mainScreenDrawing(OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT, OBJECT_SCALE_WIDTH, OBJECT_SCALE_HEIGHT);
 
   while(true)
   {

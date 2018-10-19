@@ -4,27 +4,12 @@
 
 
 
-class screenDrawing
+screenDrawing::screenDrawing(int containerWidth, int containerHeight, int objectWidthScale, int objectHeightScale)
+:
+m_objectWidthScale(objectWidthScale),
+m_objectHeightScale(objectHeightScale)
 {
 
-private:
-
-
-
-lv_obj_t * objectContainer;
-lv_style_t blueObjectStyle;
-lv_style_t redObjectStyle;
-lv_style_t objectStyle;
-
-
-lv_obj_t * flagObjects[OBJECT_NUM];
-
-
-public:
-
-
-screenDrawing(int containerWidth, int containerHeight)
-{
 // Background ----------------------------------------------------------------------
 objectContainer = lv_obj_create(lv_scr_act(), NULL);
 lv_obj_set_size(objectContainer, containerWidth, containerHeight);
@@ -81,50 +66,48 @@ redObjectStyle.body.border.color = LV_COLOR_BLACK;
 
 
 
-
-
-
-
-  void drawFlagObjects(colorObjects drawFlags[OBJECT_NUM])
+  void screenDrawing::drawFlagObjects(colorObjects * drawFlags)
   {
 
     for(int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
     {
-
+      if(drawFlags[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+      {
 
       // make visible
       lv_obj_set_hidden(flagObjects[objectNum], false);
 
       //Set posisitons and size
-      lv_obj_set_x(flagObjects[objectNum], drawFlags.objX[objectNum] * 1);
-      lv_obj_set_y(flagObjects[objectNum], drawFlags.objY[objectNum] * display_C::OBJECT_SCALE_HEIGHT);
+      lv_obj_set_x(flagObjects[objectNum], drawFlags[objectNum].objX * m_objectWidthScale);
+      lv_obj_set_y(flagObjects[objectNum], drawFlags[objectNum].objY * m_objectHeightScale);
 
-      lv_obj_set_width(flagObjects[objectNum], drawFlags.objWidth[objectNum] * display_C::OBJECT_SCALE_WIDTH);
-      lv_obj_set_height(flagObjects[objectNum], drawFlags.objHeight[objectNum] * display_C::OBJECT_SCALE_HEIGHT);
+      lv_obj_set_width(flagObjects[objectNum], drawFlags[objectNum].objWidth * m_objectWidthScale);
+      lv_obj_set_height(flagObjects[objectNum], drawFlags[objectNum].objHeight * m_objectHeightScale);
 
-      if(drawFlags[objectNum].objSig != VISION_OBJECT_ERR_SIG)
-      {
-        if(colorNum == OBJ_BLUE_COLOR)
+
+        if(drawFlags[objectNum].discardObject)
         {
-          lv_obj_set_style(flagObjects[colorNum][objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
+          lv_obj_set_style(flagObjects[objectNum], &objectStyle);
         }
-        else if(colorNum == OBJ_RED_COLOR)
+        else if(drawFlags[objectNum].objSig == blueSig)
         {
-          lv_obj_set_style(flagObjects[colorNum][objectNum], &redObjectStyle); //Give it the style for a blue flagObject
+          lv_obj_set_style(flagObjects[objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
         }
-        else if(colorNum == OBJ_GREEN_COLOR)
+        else if(drawFlags[objectNum].objSig == redSig)
         {
-          lv_obj_set_style(flagObjects[colorNum][objectNum], &objectStyle); //Give it the style for a blue flagObject
+          lv_obj_set_style(flagObjects[objectNum], &redObjectStyle); //Give it the style for a blue flagObject
         }
 
 
       }
       else
       {
-        lv_obj_set_hidden(flagObjects[objectColor][objectNum], true);
+        lv_obj_set_hidden(flagObjects[objectNum], true);
       }
     }
+
   }
+
 
 
 
