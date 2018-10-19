@@ -1,28 +1,7 @@
 #include "main.h"
 
 #include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
-//#include "FlagTrackingData.hpp"
-//#include "FlagTrackingFunctions.hpp"
 
-
-
-
-struct flagSig_t
-{
-  int Blue;
-  int Red;
-};
-
-struct colorObjects
-{
-  int objSig;
-  int objX;
-  int objY;
-  int objWidth;
-  int objHeight;
-  int objSize; // Avg of width and height
-  bool discardObject;
-};
 
 
 
@@ -34,22 +13,20 @@ private:
 
 
   pros::Vision m_thisVision;
-  const struct flagSig_t m_flagSig;
 
 
 public:
 
-  visionTracking(int portNum, int blueSig, int redSig)
+  visionTracking(int portNum)
   :
-  m_thisVision(portNum),
-  m_flagSig{blueSig, redSig}
+  m_thisVision(portNum)
   {
   }
 
   int m_objectCount{0};
 
-  const int m_objectNum{30};
-  colorObjects m_flagObjects[30] = {};
+  const int m_objectNum{OBJECT_NUM};
+  colorObjects m_flagObjects[OBJECT_NUM] = {};
 
 
 
@@ -61,145 +38,137 @@ public:
 
 
     for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
-      {
-        m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
-        m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
-        m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
-        m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
-        m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
-        m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
-        m_flagObjects[objectNum].discardObject = false;
-      }
+    {
+      m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
+      m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
+      m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
+      m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
+      m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
+      m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
+      m_flagObjects[objectNum].discardObject = false;
+    }
 
-      return m_objectCount;
+    return m_objectCount;
   }
 
 
 
   int filterObjectSize(float sizeThreshold = 0.5)
+  {
+    int discardCounter = 0;
+    int avgSize = 0;
+
+    //Total object sizes
+    for(int objectNum = 0; objectNum < m_objectCount; objectNum++)
     {
-      int discardCounter = 0;
-      int avgSize = 0;
+      avgSize += m_flagObjects[objectNum].objSize;
+    }
+    avgSize /= m_objectCount;
 
-      //Total object sizes
-      for(int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    // upper and lower ranges for size threshold
+    int sizeLow = avgSize - (avgSize * sizeThreshold);
+    int sizeHigh = avgSize + (avgSize * sizeThreshold);
+
+
+    // loop through objects, look for size, and mark to discard
+    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    {
+      int objSize = m_flagObjects[objectNum].objSize;
+      if(objSize > sizeHigh || objSize < sizeLow)
       {
-        avgSize += m_flagObjects[objectNum].objSize;
+        m_flagObjects[objectNum].discardObject = true;
+        discardCounter++;
       }
-      avgSize /= m_objectCount;
-
-      // upper and lower ranges for size threshold
-      int sizeLow = avgSize - (avgSize * sizeThreshold);
-      int sizeHigh = avgSize + (avgSize * sizeThreshold);
-
-
-      // loop through objects, look for size, and mark to discard
-      for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+      else
       {
-        int objSize = m_flagObjects[objectNum].objSize;
-        if(objSize > sizeHigh || objSize < sizeLow)
-        {
-          m_flagObjects[objectNum].discardObject = true;
-          discardCounter++;
-        }
-        else
-        {
-        }
-
       }
 
-      return discardCounter;
     }
 
+    return discardCounter;
+  }
 
 
 
 
 
 
-    // Filters object proportions
-    int filterObjectProp(float propThreshold = 0.2)
+
+  // Filters object proportions
+  int filterObjectProp(float propThreshold = 0.2)
+  {
+    int discardCounter = 0;
+
+    int sizeWidth;
+    int sizeHeight;
+    int objectSize;
+    int sizeLow;
+    int sizeHigh;
+
+
+    // loop through objects, look for size, and fill into new array
+    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
     {
-      int discardCounter = 0;
 
-      int sizeWidth;
-      int sizeHeight;
-      int objectSize;
-      int sizeLow;
-      int sizeHigh;
+      objectSize = m_flagObjects[objectNum].objSize;
+      sizeLow = objectSize - (objectSize * propThreshold);
+      sizeHigh = objectSize + (objectSize * propThreshold);
+
+      sizeWidth = m_flagObjects[objectNum].objWidth;
+      sizeHeight = m_flagObjects[objectNum].objHeight;
 
 
-      // loop through objects, look for size, and fill into new array
-      for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+      if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
       {
-
-        objectSize = m_flagObjects[objectNum].objSize;
-        sizeLow = objectSize - (objectSize * propThreshold);
-        sizeHigh = objectSize + (objectSize * propThreshold);
-
-        sizeWidth = m_flagObjects[objectNum].objWidth;
-        sizeHeight = m_flagObjects[objectNum].objHeight;
-
-
-        if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
-        {
-          m_flagObjects[objectNum].discardObject = true;
-          discardCounter++;
-        }
-        else
-        {
-        }
-
-        }
-
-        return discardCounter;
-    }
-
-
-
-
-
-
-
-    // main task
-    void mainFlagTrackingTask(void*ignore)
-    {
-      visionTracking mainVisionTracking(9, 0, 1);
-
-      while(true)
-      {
-        mainVisionTracking.getObjects(); //Calculates Objects
-
-        mainVisionTracking.filterObjectSize();
-        mainVisionTracking.filterObjectProp();
-
-//mainVisionTracking.colorObjects fill[30];
-        //mainVisionTracking.exportArray(fill);
-
-
-
-
-        pros::delay(100);
+        m_flagObjects[objectNum].discardObject = true;
+        discardCounter++;
       }
+      else
+      {
+      }
+
     }
 
+    return discardCounter;
+  }
 
 
 
 
 
+  colorObjects * exportArray()
+  {
+    static colorObjects flagExport[OBJECT_NUM];
 
+    int exportNum = 0;
 
+    for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
+    {
+      if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[objectNum].discardObject)
+      {
+        flagExport[exportNum].objSig = m_flagObjects[objectNum].objSig;
+        flagExport[exportNum].objY = m_flagObjects[objectNum].objY;
+        flagExport[exportNum].objX = m_flagObjects[objectNum].objX;
+        flagExport[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
+        flagExport[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
+        flagExport[exportNum].objSize = m_flagObjects[objectNum].objSize;
+        flagExport[exportNum].discardObject = false;
+        exportNum++;
+      }
+      else
+      {
+        flagExport[exportNum].objSig = VISION_OBJECT_ERR_SIG;
+        flagExport[exportNum].objY = 0;
+        flagExport[exportNum].objX = 0;
+        flagExport[exportNum].objWidth = 0;
+        flagExport[exportNum].objHeight = 0;
+        flagExport[exportNum].objSize = 0;
+        flagExport[exportNum].discardObject = false;
+      }
 
-
-
-
-
-
-
-
-
-
+    }
+    return flagExport;
+  }
 
 
 
@@ -212,12 +181,54 @@ public:
 
 
 
+
+
+
+// main task
+void mainFlagTrackingTask(void*ignore)
+{
+  visionTracking mainVisionTracking(9);
+
+  while(true)
+  {
+    mainVisionTracking.getObjects(); //Calculates Objects
+
+    mainVisionTracking.filterObjectSize();
+    mainVisionTracking.filterObjectProp();
+
+    mainScreenDrawing.drawFlagObjects(mainVisionTracking.exportArray());
+
+
+
+
+    pros::delay(100);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
 //
 //
 //
 // //Creates struct array for storing object data
-// colorObjects flagObjects[NUM_VISION_OBJECTS];
+// colorObjects flagObjects[OBJECT_NUM];
 //
 //
 // // main task
@@ -257,16 +268,16 @@ public:
 // // Looks at vision for color, counts objects, and fills them in
 // int getObjects()
 // {
-//   vision_object visionObjectArray[NUM_VISION_OBJECTS]; //Creates container array for vision objects
+//   vision_object visionObjectArray[OBJECT_NUM]; //Creates container array for vision objects
 //
 //     int objCount;
 //     int startPos = 0;
 //
-//     objCount = mainVision.read_by_sig(0, FLAG_BLUE_SIG, NUM_VISION_OBJECTS/2, visionObjectArray);
+//     objCount = mainVision.read_by_sig(0, FLAG_BLUE_SIG, OBJECT_NUM/2, visionObjectArray);
 //     fillObjData(visionObjectArray, startPos, objCount, OBJ_BLUE_COLOR);
 //     startPos = objCount;
 //
-//     objCount = mainVision.read_by_sig(0, FLAG_RED_SIG, NUM_VISION_OBJECTS/2, visionObjectArray);
+//     objCount = mainVision.read_by_sig(0, FLAG_RED_SIG, OBJECT_NUM/2, visionObjectArray);
 //     fillObjData(visionObjectArray, startPos, objCount, OBJ_RED_COLOR);
 //
 //     return startPos + objCount;

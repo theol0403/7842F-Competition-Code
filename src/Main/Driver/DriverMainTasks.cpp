@@ -6,7 +6,7 @@ int joystickLeftX;
 int joystickRightY;
 int joystickRightX;
 
-const int BASE_THRESHOLD = 15;
+const int BASE_THRESHOLD = 0;
 
 
 
