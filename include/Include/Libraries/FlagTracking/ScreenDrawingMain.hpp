@@ -26,8 +26,8 @@ private:
 public:
 
   screenDrawing(int, int, int);
-  initVisionObjects(int);
+  void initVisionObjects(int);
 
 
 
-}
+};
