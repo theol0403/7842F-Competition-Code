@@ -12,71 +12,74 @@
 
 
 
-  screenDrawing::screenDrawing(int containerWidth, int containerHeight, int visionObjectNum)
+  screenDrawing::screenDrawing(int containerWidth, int containerHeight, int objectCount)
   :
-  m_containerWidth(containerWidth),
-  m_containerHeight(containerHeight),
   m_widthScale(containerWidth/VISION_FOV_WIDTH),
   m_heightScale(containerHeight/VISION_FOV_HEIGHT)
   {
-    initVisionObjects(visionObjectNum);
+    initContainer(containerWidth, containerHeight);
+    initVisionObjects(objectCount);
   }
 
 
 
+void screenDrawing::initContainer(int containerWidth, int containerHeight)
+{
+  m_objectContainer = lv_obj_create(lv_scr_act(), NULL);
+  lv_obj_set_size(m_objectContainer, containerWidth, containerHeight);
+  lv_obj_align(m_objectContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+
+  // Style for background of screen
+  static lv_style_t backgroundStyle; //Static so the style will stay alive
+  lv_style_copy(&backgroundStyle, &lv_style_plain_color);
+  backgroundStyle.body.main_color = LV_COLOR_GRAY;
+  lv_obj_set_style(m_objectContainer, &backgroundStyle);
+}
 
 
-void screenDrawing::initVisionObjects(int visionObjectNum)
+
+
+void screenDrawing::initVisionObjects(int objectCount)
 {
 
-  m_visionObjects = new lv_obj_t[visionObjectNum];
-  printf("h %p", &m_visionObjects[2]);
-  //
-  // // Background ----------------------------------------------------------------------
-  // objectContainer = lv_obj_create(lv_scr_act(), NULL);
-  // lv_obj_set_size(objectContainer, containerWidth, containerHeight);
-  // lv_obj_align(objectContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-  // //lv_obj_set_pos(objectContainer, 0, 0);
-  //
-  // // Style for background of screen
-  // static lv_style_t backgroundStyle;
-  // lv_style_copy(&backgroundStyle, &lv_style_plain_color);
-  // backgroundStyle.body.main_color = LV_COLOR_GRAY;
-  // lv_obj_set_style(objectContainer, &backgroundStyle);
-  // // Background ----------------------------------------------------------------------
-  //
-  //
-  // // Object Sytles ----------------------------------------------------------------------
-  // //Flag Object Style
-  // lv_style_copy(&objectStyle, &lv_style_pretty_color);
-  // objectStyle.body.main_color = LV_COLOR_GREEN;
-  // objectStyle.body.grad_color = LV_COLOR_GREEN;
-  // objectStyle.body.radius = 8;
-  // objectStyle.body.border.color = LV_COLOR_GREEN;
-  // objectStyle.body.border.width = 3;
-  // objectStyle.body.border.opa = LV_OPA_100;
-  //
-  // //Blue object style
-  // lv_style_copy(&blueObjectStyle, &objectStyle);
-  // blueObjectStyle.body.main_color = LV_COLOR_BLUE;
-  // blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
-  // blueObjectStyle.body.border.color = LV_COLOR_BLACK;
-  //
-  // //Red object style
-  // lv_style_copy(&redObjectStyle, &objectStyle);
-  // redObjectStyle.body.main_color = LV_COLOR_RED;
-  // redObjectStyle.body.grad_color = LV_COLOR_RED;
-  // redObjectStyle.body.border.color = LV_COLOR_BLACK;
-  // // Object Sytles ----------------------------------------------------------------------
-  //
-  //
-  //
-  //
-  //
-  // for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
-  // {
-  //   flagObjects[objectNum] = lv_obj_create(objectContainer, NULL); //Make the screen its parent
-  // }
+  *m_visionObjects = new lv_obj_t[objectCount];
+
+
+  //Generic Object Style
+  lv_style_copy(&m_objectStyle, &lv_style_pretty_color);
+  m_objectStyle.body.main_color = LV_COLOR_GRAY;
+  m_objectStyle.body.grad_color = LV_COLOR_GRAY;
+  m_objectStyle.body.radius = 5;
+  m_objectStyle.body.border.color = LV_COLOR_BLACK;
+  m_objectStyle.body.border.width = 3;
+  m_objectStyle.body.border.opa = LV_OPA_100;
+
+  //Blue object style
+  lv_style_copy(&m_blueObjectStyle, &m_objectStyle);
+  m_blueObjectStyle.body.main_color = LV_COLOR_BLUE;
+  m_blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
+  m_blueObjectStyle.body.border.color = LV_COLOR_YELLOW;
+
+  //Red object style
+  lv_style_copy(&m_redObjectStyle, &m_objectStyle);
+  m_redObjectStyle.body.main_color = LV_COLOR_RED;
+  m_redObjectStyle.body.grad_color = LV_COLOR_RED;
+  m_redObjectStyle.body.border.color = LV_COLOR_YELLOW;
+
+  //Discard object style
+  lv_style_copy(&m_discardObjectStyle, &m_objectStyle);
+  m_redObjectStyle.body.main_color = LV_COLOR_OLIVE;
+  m_redObjectStyle.body.grad_color = LV_COLOR_OLIVE;
+  m_redObjectStyle.body.border.color = LV_COLOR_YELLOW;
+
+
+
+
+
+  for(int objectNum = 0; objectNum < objectCount; objectNum++)
+  {
+    m_visionObjects[objectNum] = lv_obj_create(m_objectContainer, NULL); //Make the screen its parent
+  }
 }
 
 
@@ -104,15 +107,15 @@ void screenDrawing::initVisionObjects(int visionObjectNum)
 //
 //         if(flagExport[objectNum].discardObject)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &objectStyle);
+//           lv_obj_set_style(flagObjects[objectNum], &m_objectStyle);
 //         }
 //         else if(flagExport[objectNum].objSig == blueSig)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
+//           lv_obj_set_style(flagObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
 //         }
 //         else if(flagExport[objectNum].objSig == redSig)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &redObjectStyle); //Give it the style for a blue flagObject
+//           lv_obj_set_style(flagObjects[objectNum], &m_redObjectStyle); //Give it the style for a blue flagObject
 //         }
 //
 //
@@ -216,25 +219,25 @@ void screenDrawing::initVisionObjects(int visionObjectNum)
 //
 // // Object Sytles ----------------------------------------------------------------------
 // //Flag Object Style
-// lv_style_copy(&objectStyle, &lv_style_pretty_color);
-// objectStyle.body.main_color = LV_COLOR_GREEN;
-// objectStyle.body.grad_color = LV_COLOR_GREEN;
-// objectStyle.body.radius = 8;
-// objectStyle.body.border.color = LV_COLOR_GREEN;
-// objectStyle.body.border.width = 3;
-// objectStyle.body.border.opa = LV_OPA_100;
+// lv_style_copy(&m_objectStyle, &lv_style_pretty_color);
+// m_objectStyle.body.main_color = LV_COLOR_GREEN;
+// m_objectStyle.body.grad_color = LV_COLOR_GREEN;
+// m_objectStyle.body.radius = 8;
+// m_objectStyle.body.border.color = LV_COLOR_GREEN;
+// m_objectStyle.body.border.width = 3;
+// m_objectStyle.body.border.opa = LV_OPA_100;
 //
 // //Blue object style
-// lv_style_copy(&blueObjectStyle, &objectStyle);
-// blueObjectStyle.body.main_color = LV_COLOR_BLUE;
-// blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
-// blueObjectStyle.body.border.color = LV_COLOR_BLACK;
+// lv_style_copy(&m_blueObjectStyle, &m_objectStyle);
+// m_blueObjectStyle.body.main_color = LV_COLOR_BLUE;
+// m_blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
+// m_blueObjectStyle.body.border.color = LV_COLOR_BLACK;
 //
 // //Red object style
-// lv_style_copy(&redObjectStyle, &objectStyle);
-// redObjectStyle.body.main_color = LV_COLOR_RED;
-// redObjectStyle.body.grad_color = LV_COLOR_RED;
-// redObjectStyle.body.border.color = LV_COLOR_BLACK;
+// lv_style_copy(&m_redObjectStyle, &m_objectStyle);
+// m_redObjectStyle.body.main_color = LV_COLOR_RED;
+// m_redObjectStyle.body.grad_color = LV_COLOR_RED;
+// m_redObjectStyle.body.border.color = LV_COLOR_BLACK;
 // // Object Sytles ----------------------------------------------------------------------
 //
 //
@@ -277,15 +280,15 @@ void screenDrawing::initVisionObjects(int visionObjectNum)
 //
 //         if(flagExport[objectNum].discardObject)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &objectStyle);
+//           lv_obj_set_style(flagObjects[objectNum], &m_objectStyle);
 //         }
 //         else if(flagExport[objectNum].objSig == blueSig)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
+//           lv_obj_set_style(flagObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
 //         }
 //         else if(flagExport[objectNum].objSig == redSig)
 //         {
-//           lv_obj_set_style(flagObjects[objectNum], &redObjectStyle); //Give it the style for a blue flagObject
+//           lv_obj_set_style(flagObjects[objectNum], &m_redObjectStyle); //Give it the style for a blue flagObject
 //         }
 //
 //
@@ -347,11 +350,11 @@ void screenDrawing::initVisionObjects(int visionObjectNum)
 //       flagObjects[colorNum][objectNum] = lv_obj_create(objectContainer, NULL); //Make the screen its parent
 //       if(colorNum == OBJ_BLUE_COLOR)
 //       {
-//         lv_obj_set_style(flagObjects[colorNum][objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
+//         lv_obj_set_style(flagObjects[colorNum][objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
 //       }
 //       else if(colorNum == OBJ_RED_COLOR)
 //       {
-//         lv_obj_set_style(flagObjects[colorNum][objectNum], &redObjectStyle); //Give it the style for a blue flagObject
+//         lv_obj_set_style(flagObjects[colorNum][objectNum], &m_redObjectStyle); //Give it the style for a blue flagObject
 //       }
 //
 //     }
