@@ -10,7 +10,7 @@ visionTracking::visionTracking(int portNum, int objectNum)
 m_thisVision(portNum),
 m_objectNum(objectNum)
 {
-  m_flagObjects = new colorObjects[objectNum];
+  m_flagObjects = new visionObjects[objectNum];
 }
 
 
@@ -166,7 +166,7 @@ int visionTracking::discardObjects()
 
 
 
-colorObjects* visionTracking::exportArray()
+visionObjects* visionTracking::exportArray()
 {
   return m_flagObjects;
 }
@@ -385,7 +385,7 @@ colorObjects* visionTracking::exportArray()
 //
 //
 // //Creates struct array for storing object data
-// colorObjects flagObjects[m_objectNum];
+// visionObjects flagObjects[m_objectNum];
 //
 //
 // // main task

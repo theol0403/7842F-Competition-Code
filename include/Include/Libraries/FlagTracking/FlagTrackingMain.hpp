@@ -12,7 +12,7 @@ struct flagSig_t
 
 
 
-struct colorObjects
+struct visionObjects
 {
   int objSig;
   int objX;
@@ -38,7 +38,7 @@ private:
 
   int m_currentCount{0};
 
-  colorObjects *m_flagObjects;
+  visionObjects *m_flagObjects;
 
 
 public:
@@ -51,6 +51,6 @@ public:
   int filterObjectSize(float sizeThreshold = 0.5);
   int filterObjectProp(float propThreshold = 0.2);
   int discardObjects();
-  colorObjects* exportArray();
+  visionObjects* exportArray();
 
 };

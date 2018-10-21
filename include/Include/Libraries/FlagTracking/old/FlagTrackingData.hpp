@@ -41,7 +41,7 @@
 //
 //
 //
-// struct colorObjects
+// struct visionObjects
 // {
 //    int objColor;
 //   int objX;
@@ -51,7 +51,7 @@
 //   int objAvgDim; // Avg of width and height
 // };
 //
-// extern colorObjects flagObjects[NUM_VISION_OBJECTS];
+// extern visionObjects flagObjects[NUM_VISION_OBJECTS];
 //
 //
 //

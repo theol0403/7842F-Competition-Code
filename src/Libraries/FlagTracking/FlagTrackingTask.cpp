@@ -7,10 +7,10 @@
 // main task
 void mainFlagTrackingTask(void*ignore)
 {
-  colorObjects *flagExport;
+  visionObjects *flagExport;
 
   visionTracking mainVisionTracking(9, 30);
-  //screenDrawing mainScreenDrawing(OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT, OBJECT_SCALE_WIDTH, OBJECT_SCALE_HEIGHT);
+  //screenDrawing mainScreenDrawing(flagExport, OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT);
 
   while(true)
   {
@@ -20,8 +20,8 @@ void mainFlagTrackingTask(void*ignore)
     mainVisionTracking.filterObjectProp();
 
     flagExport = mainVisionTracking.exportArray();
-    flagExport[1].objSig = 2;
-    //mainScreenDrawing.drawFlagObjects(flagExport);
+
+    mainScreenDrawing.drawFlagObjects();
 
 
 

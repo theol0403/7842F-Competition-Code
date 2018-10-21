@@ -26,7 +26,7 @@
 // class filterFunctions
 // {
 //   public:
-//   colorObjects filterArray[NUM_VISION_FILTERS][NUM_VISION_OBJECTS];
+//   visionObjects filterArray[NUM_VISION_FILTERS][NUM_VISION_OBJECTS];
 //   int objectCount;
 //
 //
@@ -178,7 +178,7 @@
 //
 //
 // /*
-// colorObjects rollingAvgObjects[OBJ_NUM_COLORS][NUM_VISION_OBJECTS];
+// visionObjects rollingAvgObjects[OBJ_NUM_COLORS][NUM_VISION_OBJECTS];
 //
 // // Averages objects through time
 // void filterObjectRollingAvg( int flagColor, int filterNum)
