@@ -1,6 +1,196 @@
 #include "main.h"
 
-//#include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
+#include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
+#include "Include/Libraries/FlagTracking/ScreenDrawingMain.hpp"
+
+
+
+
+
+
+
+
+
+
+  screenDrawing::screenDrawing(int containerWidth, int containerHeight, int visionObjectNum)
+  :
+  m_containerWidth(containerWidth),
+  m_containerHeight(containerHeight),
+  m_widthScale(containerWidth/VISION_FOV_WIDTH),
+  m_heightScale(containerHeight/VISION_FOV_HEIGHT)
+  {
+    initVisionObjects(visionObjectNum);
+  }
+
+
+
+
+
+void screenDrawing::initVisionObjects(int visionObjectNum)
+{
+
+  m_visionObjects = new lv_obj_t[visionObjectNum];
+  printf("h %p", &m_visionObjects[2]);
+  //
+  // // Background ----------------------------------------------------------------------
+  // objectContainer = lv_obj_create(lv_scr_act(), NULL);
+  // lv_obj_set_size(objectContainer, containerWidth, containerHeight);
+  // lv_obj_align(objectContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  // //lv_obj_set_pos(objectContainer, 0, 0);
+  //
+  // // Style for background of screen
+  // static lv_style_t backgroundStyle;
+  // lv_style_copy(&backgroundStyle, &lv_style_plain_color);
+  // backgroundStyle.body.main_color = LV_COLOR_GRAY;
+  // lv_obj_set_style(objectContainer, &backgroundStyle);
+  // // Background ----------------------------------------------------------------------
+  //
+  //
+  // // Object Sytles ----------------------------------------------------------------------
+  // //Flag Object Style
+  // lv_style_copy(&objectStyle, &lv_style_pretty_color);
+  // objectStyle.body.main_color = LV_COLOR_GREEN;
+  // objectStyle.body.grad_color = LV_COLOR_GREEN;
+  // objectStyle.body.radius = 8;
+  // objectStyle.body.border.color = LV_COLOR_GREEN;
+  // objectStyle.body.border.width = 3;
+  // objectStyle.body.border.opa = LV_OPA_100;
+  //
+  // //Blue object style
+  // lv_style_copy(&blueObjectStyle, &objectStyle);
+  // blueObjectStyle.body.main_color = LV_COLOR_BLUE;
+  // blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
+  // blueObjectStyle.body.border.color = LV_COLOR_BLACK;
+  //
+  // //Red object style
+  // lv_style_copy(&redObjectStyle, &objectStyle);
+  // redObjectStyle.body.main_color = LV_COLOR_RED;
+  // redObjectStyle.body.grad_color = LV_COLOR_RED;
+  // redObjectStyle.body.border.color = LV_COLOR_BLACK;
+  // // Object Sytles ----------------------------------------------------------------------
+  //
+  //
+  //
+  //
+  //
+  // for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
+  // {
+  //   flagObjects[objectNum] = lv_obj_create(objectContainer, NULL); //Make the screen its parent
+  // }
+}
+
+
+
+
+//
+//   void drawVisionObjects()
+//   {
+//
+//     for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
+//     {
+//       if(flagExport[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+//       {
+//
+//         // make visible
+//         lv_obj_set_hidden(flagObjects[objectNum], false);
+//
+//         //Set posisitons and size
+//         lv_obj_set_x(flagObjects[objectNum], flagExport[objectNum].objX * m_objectWidthScale);
+//         lv_obj_set_y(flagObjects[objectNum], flagExport[objectNum].objY * m_objectHeightScale);
+//
+//         lv_obj_set_width(flagObjects[objectNum], flagExport[objectNum].objWidth * m_objectWidthScale);
+//         lv_obj_set_height(flagObjects[objectNum], flagExport[objectNum].objHeight * m_objectHeightScale);
+//
+//
+//         if(flagExport[objectNum].discardObject)
+//         {
+//           lv_obj_set_style(flagObjects[objectNum], &objectStyle);
+//         }
+//         else if(flagExport[objectNum].objSig == blueSig)
+//         {
+//           lv_obj_set_style(flagObjects[objectNum], &blueObjectStyle); //Give it the style for a blue flagObject
+//         }
+//         else if(flagExport[objectNum].objSig == redSig)
+//         {
+//           lv_obj_set_style(flagObjects[objectNum], &redObjectStyle); //Give it the style for a blue flagObject
+//         }
+//
+//
+//       }
+//       else
+//       {
+//         lv_obj_set_hidden(flagObjects[objectNum], true);
+//       }
+//     }
+//
+//   }
+//
+//
+//
+//
+//
+// };
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //

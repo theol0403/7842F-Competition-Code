@@ -1,4 +1,5 @@
 #include "main.h"
+#pragma once
 
 
 
@@ -51,6 +52,6 @@ public:
   int filterObjectSize(float sizeThreshold = 0.5);
   int filterObjectProp(float propThreshold = 0.2);
   int discardObjects();
-  visionObjects* exportArray();
+  visionObjects* exportObjects();
 
 };

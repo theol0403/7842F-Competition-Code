@@ -1,16 +1,16 @@
 #include "main.h"
 
 #include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
+#include "Include/Libraries/FlagTracking/ScreenDrawingMain.hpp"
 
 
 
 // main task
 void mainFlagTrackingTask(void*ignore)
 {
-  visionObjects *flagExport;
 
   visionTracking mainVisionTracking(9, 30);
-  //screenDrawing mainScreenDrawing(flagExport, OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT);
+  screenDrawing mainScreenDrawing(316, 212, 30);
 
   while(true)
   {
@@ -19,9 +19,8 @@ void mainFlagTrackingTask(void*ignore)
     mainVisionTracking.filterObjectSize();
     mainVisionTracking.filterObjectProp();
 
-    flagExport = mainVisionTracking.exportArray();
 
-    mainScreenDrawing.drawFlagObjects();
+  //  mainScreenDrawing.drawFlagObjects(mainVisionTracking.exportObjects(););
 
 
 
