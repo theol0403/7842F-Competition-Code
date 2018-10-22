@@ -12,14 +12,15 @@
 
 
 
-  screenDrawing::screenDrawing(int containerWidth, int containerHeight, int objectCount)
-  :
-  m_widthScale(containerWidth/VISION_FOV_WIDTH),
-  m_heightScale(containerHeight/VISION_FOV_HEIGHT)
-  {
-    initContainer(containerWidth, containerHeight);
-    initVisionObjects(objectCount);
-  }
+screenDrawing::screenDrawing(flagSig_t flagSig, int containerWidth, int containerHeight, int objectCount)
+:
+m_flagSig{flagSig},
+m_widthScale{containerWidth/VISION_FOV_WIDTH},
+m_heightScale{containerHeight/VISION_FOV_HEIGHT}
+{
+  initContainer(containerWidth, containerHeight);
+  initVisionObjects(objectCount);
+}
 
 
 
@@ -42,7 +43,7 @@ void screenDrawing::initContainer(int containerWidth, int containerHeight)
 void screenDrawing::initVisionObjects(int objectCount)
 {
 
-  *m_visionObjects = new lv_obj_t[objectCount];
+  *m_screenObjects = new lv_obj_t[objectCount];
 
 
   //Generic Object Style
@@ -74,72 +75,57 @@ void screenDrawing::initVisionObjects(int objectCount)
 
 
 
-
-
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
-    m_visionObjects[objectNum] = lv_obj_create(m_objectContainer, NULL); //Make the screen its parent
+    m_screenObjects[objectNum] = lv_obj_create(m_objectContainer, NULL);
   }
 }
 
 
 
 
-//
-//   void drawVisionObjects()
-//   {
-//
-//     for(int objectNum = 0; objectNum < m_objectNum; objectNum++)
-//     {
-//       if(flagExport[objectNum].objSig != VISION_OBJECT_ERR_SIG)
-//       {
-//
-//         // make visible
-//         lv_obj_set_hidden(flagObjects[objectNum], false);
-//
-//         //Set posisitons and size
-//         lv_obj_set_x(flagObjects[objectNum], flagExport[objectNum].objX * m_objectWidthScale);
-//         lv_obj_set_y(flagObjects[objectNum], flagExport[objectNum].objY * m_objectHeightScale);
-//
-//         lv_obj_set_width(flagObjects[objectNum], flagExport[objectNum].objWidth * m_objectWidthScale);
-//         lv_obj_set_height(flagObjects[objectNum], flagExport[objectNum].objHeight * m_objectHeightScale);
-//
-//
-//         if(flagExport[objectNum].discardObject)
-//         {
-//           lv_obj_set_style(flagObjects[objectNum], &m_objectStyle);
-//         }
-//         else if(flagExport[objectNum].objSig == blueSig)
-//         {
-//           lv_obj_set_style(flagObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
-//         }
-//         else if(flagExport[objectNum].objSig == redSig)
-//         {
-//           lv_obj_set_style(flagObjects[objectNum], &m_redObjectStyle); //Give it the style for a blue flagObject
-//         }
-//
-//
-//       }
-//       else
-//       {
-//         lv_obj_set_hidden(flagObjects[objectNum], true);
-//       }
-//     }
-//
-//   }
-//
-//
-//
-//
-//
-// };
-//
-//
-//
-//
-//
+
+void screenDrawing::drawVisionObjects(visionObjects* flagObjects, int objectCount)
+{
+
+  for(int objectNum = 0; objectNum < objectCount; objectNum++)
+  {
+    if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+    {
+
+      // make visible
+      lv_obj_set_hidden(m_screenObjects[objectNum], false);
+
+      //Set posisitons and size
+      lv_obj_set_x(m_screenObjects[objectNum], flagObjects[objectNum].objX * m_widthScale);
+      lv_obj_set_y(m_screenObjects[objectNum], flagObjects[objectNum].objY * m_heightScale);
+
+      lv_obj_set_width(m_screenObjects[objectNum], flagObjects[objectNum].objWidth * m_widthScale);
+      lv_obj_set_height(m_screenObjects[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
 
 
+      if(flagObjects[objectNum].discardObject)
+      {
+        lv_obj_set_style(m_screenObjects[objectNum], &m_discardObjectStyle);
+      }
+      else if(flagObjects[objectNum].objSig == m_flagSig.blueSig)
+      {
+        lv_obj_set_style(m_screenObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
+      }
+      else if(flagObjects[objectNum].objSig == m_flagSig.redSig)
+      {
+        lv_obj_set_style(m_screenObjects[objectNum], &m_redObjectStyle); //Give it the style for a red flagObject
+      }
+
+
+    }
+    else
+    {
+      lv_obj_set_hidden(m_screenObjects[objectNum], true);
+    }
+  }
+
+}
 
 
 
@@ -264,29 +250,29 @@ void screenDrawing::initVisionObjects(int objectCount)
 //
 //     for(int objectNum = 0; objectNum < OBJECT_NUM; objectNum++)
 //     {
-//       if(flagExport[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+//       if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
 //       {
 //
 //       // make visible
 //       lv_obj_set_hidden(flagObjects[objectNum], false);
 //
 //       //Set posisitons and size
-//       lv_obj_set_x(flagObjects[objectNum], flagExport[objectNum].objX * m_objectWidthScale);
-//       lv_obj_set_y(flagObjects[objectNum], flagExport[objectNum].objY * m_objectHeightScale);
+//       lv_obj_set_x(flagObjects[objectNum], flagObjects[objectNum].objX * m_objectWidthScale);
+//       lv_obj_set_y(flagObjects[objectNum], flagObjects[objectNum].objY * m_objectHeightScale);
 //
-//       lv_obj_set_width(flagObjects[objectNum], flagExport[objectNum].objWidth * m_objectWidthScale);
-//       lv_obj_set_height(flagObjects[objectNum], flagExport[objectNum].objHeight * m_objectHeightScale);
+//       lv_obj_set_width(flagObjects[objectNum], flagObjects[objectNum].objWidth * m_objectWidthScale);
+//       lv_obj_set_height(flagObjects[objectNum], flagObjects[objectNum].objHeight * m_objectHeightScale);
 //
 //
-//         if(flagExport[objectNum].discardObject)
+//         if(flagObjects[objectNum].discardObject)
 //         {
 //           lv_obj_set_style(flagObjects[objectNum], &m_objectStyle);
 //         }
-//         else if(flagExport[objectNum].objSig == blueSig)
+//         else if(flagObjects[objectNum].objSig == blueSig)
 //         {
 //           lv_obj_set_style(flagObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
 //         }
-//         else if(flagExport[objectNum].objSig == redSig)
+//         else if(flagObjects[objectNum].objSig == redSig)
 //         {
 //           lv_obj_set_style(flagObjects[objectNum], &m_redObjectStyle); //Give it the style for a blue flagObject
 //         }

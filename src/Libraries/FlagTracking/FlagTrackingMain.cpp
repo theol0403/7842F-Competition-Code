@@ -8,7 +8,7 @@
 visionTracking::visionTracking(int portNum, int objectNum)
 :
 m_thisVision(portNum),
-m_objectNum(objectNum)
+m_objectNum{objectNum}
 {
   m_flagObjects = new visionObjects[objectNum];
 }
