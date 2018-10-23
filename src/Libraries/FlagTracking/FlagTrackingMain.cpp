@@ -5,13 +5,13 @@
 
 
 
-VisionReading::VisionReading(int portNum, int objectNum)
+VisionReading::VisionReading(int portNum, int objectCount)
 :
 m_thisVision(portNum),
-m_objectNum{objectNum}
+m_objectCount{objectCount}
 {
-  m_visionArray = new pros::vision_object[objectNum];
-  m_flagObjects = new simpleObjects[objectNum];
+  m_visionArray = new pros::vision_object[objectCount];
+  m_flagObjects = new simpleObjects[objectCount];
 }
 
 VisionReading::~VisionReading()
@@ -38,7 +38,7 @@ void VisionReading::resetObject(int objectNum)
 // Looks at vision for color, counts objects, and fills them in to master array
 int VisionReading::getObjects()
 {
-  for(int objectNum = 0; objectNum < m_objectNum; objectNum++) //Resets vision array
+  for(int objectNum = 0; objectNum < m_objectCount; objectNum++) //Resets vision array
   {
     m_visionArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
     m_visionArray[objectNum].top_coord = 0;
@@ -49,10 +49,10 @@ int VisionReading::getObjects()
     m_visionArray[objectNum].y_middle_coord = 0;
   }
 
-  m_currentCount = m_thisVision.read_by_size(0, m_objectNum, m_visionArray);
-  if(m_currentCount > m_objectNum) m_currentCount = 0;
+  m_currentCount = m_thisVision.read_by_size(0, m_objectCount, m_visionArray);
+  if(m_currentCount > m_objectCount) m_currentCount = 0;
 
-  for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
+  for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
   {
     if(m_visionArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
     {
@@ -169,7 +169,7 @@ int VisionReading::discardObjects()
 {
   int destNum = 0;
 
-  for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
+  for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
   {
     if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[destNum].discardObject)
     {
@@ -190,7 +190,7 @@ int VisionReading::discardObjects()
     }
   }
 
-  for(int objectNum = destNum; objectNum < m_objectNum; objectNum++)
+  for(int objectNum = destNum; objectNum < m_objectCount; objectNum++)
   {
     resetObject(objectNum);
   }
@@ -211,6 +211,8 @@ simpleObjects* VisionReading::exportObjects()
 
 void VisionReading::debugObjects(int objectCount)
 {
+  if(objectCount > m_objectCount) objectCount = m_objectCount; //Bounds Checking
+
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
     std::cout << "Object " << objectNum << " | ";
@@ -218,6 +220,7 @@ void VisionReading::debugObjects(int objectCount)
     std::cout << "Height: " << m_flagObjects[objectNum].objHeight << " | ";
     std::cout << "X: " << m_flagObjects[objectNum].objX << " | ";
     std::cout << "Y: " << m_flagObjects[objectNum].objY << " | ";
+    std::cout << "Size: " << m_flagObjects[objectNum].objSize << " | ";
     std::cout << "CenterX: " << m_flagObjects[objectNum].objCenterX << " | ";
     std::cout << "CenterY: " << m_flagObjects[objectNum].objCenterY << " | ";
     std::cout << "Sig: " << m_flagObjects[objectNum].objSig << " | ";
@@ -225,6 +228,7 @@ void VisionReading::debugObjects(int objectCount)
     std::cout << "\n";
   }
 
+  std::cout << "ObjectCount " << m_objectCount << " | ";
   std::cout << "CurrentCount " << m_currentCount << " | ";
   std::cout << "\n";
 

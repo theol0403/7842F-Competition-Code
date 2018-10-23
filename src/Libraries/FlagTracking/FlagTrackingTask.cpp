@@ -21,15 +21,17 @@ void mainFlagTrackingTask(void*ignore)
   {
 
     mainVisionReading.getObjects(); //Calculates Objects
-
     mainVisionReading.debugErrorSig();
 
     mainVisionReading.filterNoise();
     mainVisionReading.debugErrorSig();
+
     mainVisionReading.filterSize();
     mainVisionReading.debugErrorSig();
+
     mainVisionReading.filterProp();
     mainVisionReading.debugErrorSig();
+    
     mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);

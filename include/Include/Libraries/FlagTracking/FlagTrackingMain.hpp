@@ -8,8 +8,6 @@ void mainFlagTrackingTask(void*);
 
 
 
-
-
 struct flagSig_t
 {
   int blueSig;
@@ -35,7 +33,6 @@ struct simpleObjects
 
 
 
-
 class VisionReading
 {
 
@@ -43,8 +40,7 @@ private:
 
   pros::Vision m_thisVision;
 
-  const int m_objectNum;
-
+  const int m_objectCount;
   int m_currentCount = 0;
 
   pros::vision_object* m_visionArray = nullptr; //Temp array for vision objects
