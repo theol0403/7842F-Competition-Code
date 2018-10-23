@@ -22,9 +22,14 @@ void mainFlagTrackingTask(void*ignore)
 
     mainVisionReading.getObjects(); //Calculates Objects
 
+    mainVisionReading.debugErrorSig();
+
     mainVisionReading.filterNoise();
+    mainVisionReading.debugErrorSig();
     mainVisionReading.filterObjectSize();
+    mainVisionReading.debugErrorSig();
     mainVisionReading.filterObjectProp();
+    mainVisionReading.debugErrorSig();
     mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);

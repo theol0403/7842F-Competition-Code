@@ -60,11 +60,11 @@ public:
 
   int filterNoise(float minSize = 25);
   int filterObjectSize(float sizeThreshold = 0.5);
-  int filterObjectProp(float propThreshold = 0.3);
+  int filterObjectProp(float propThreshold = 0.3, float wantedProp = 1.3); //Width:Height
   int discardObjects();
 
   simpleObjects* exportObjects();
   void debugObjects(int);
-  void debugErrorSig(int);
+  void debugErrorSig();
 
 };

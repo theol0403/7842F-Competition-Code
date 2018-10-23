@@ -81,12 +81,9 @@ int VisionReading::filterNoise(float minSize)
 
 int VisionReading::filterObjectSize(float sizeThreshold)
 {
-  int discardCounter = 0;
-  int avgSize = 0;
 
   int avgCount = 0;
-
-  //Total object sizes
+  int avgSize = 0;
   for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
     if(!m_flagObjects[objectNum].discardObject)
@@ -102,13 +99,8 @@ int VisionReading::filterObjectSize(float sizeThreshold)
   int sizeLow = avgSize - (avgSize * sizeThreshold);
   int sizeHigh = avgSize + (avgSize * sizeThreshold);
 
-  std::cout << "ObjectCount: " << m_currentCount << "|  ";
-  std::cout << "AverageSize: " << avgSize << "|  ";
-  std::cout << "sizeLow: " << sizeLow << "|  ";
-  std::cout << "sizeHigh: " << sizeHigh << "|  ";
-  std::cout << "\n";
 
-
+  int discardCounter = 0;
   // loop through objects, look for size, and mark to discard
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
@@ -134,18 +126,20 @@ int VisionReading::filterObjectSize(float sizeThreshold)
 
 
 // Filters object proportions
-int VisionReading::filterObjectProp(float propThreshold)
+int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
 {
-  int discardCounter = 0;
 
+
+  int objectSize;
   int sizeWidth;
   int sizeHeight;
-  int objectSize;
+
   int sizeLow;
   int sizeHigh;
 
 
   // loop through objects, look for size, and fill into new array
+  int discardCounter = 0;
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
 
@@ -242,9 +236,22 @@ void VisionReading::debugObjects(int objectCount)
   }
 
   std::cout << "CurrentCount " << m_currentCount << " | ";
+  std::cout << "\n";
 
 }
 
+
+void VisionReading::debugErrorSig()
+{
+  for(int objectNum = 0, objectNum < m_currentCount, objectNum++)
+  {
+    if(m_flagObjects[objectNum].objSig == VISION_OBJECT_ERR_SIG)
+    {
+      std::cout << "ERROR: ERR_SIG IN OBJECT " << objectNum << "\n";
+      pros::delay(1000);
+    }
+  }
+}
 
 
 
