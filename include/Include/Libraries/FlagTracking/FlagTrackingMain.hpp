@@ -19,7 +19,7 @@ struct flagSig_t
 
 
 
-struct visionObjects
+struct simpleObjects
 {
   int objSig;
   int objX;
@@ -27,6 +27,8 @@ struct visionObjects
   int objWidth;
   int objHeight;
   int objSize; // Avg of width and height
+  int objCenterX;
+  int objCenterY;
   bool discardObject;
 };
 
@@ -34,7 +36,7 @@ struct visionObjects
 
 
 
-class visionTracking
+class VisionReading
 {
 
 private:
@@ -43,21 +45,26 @@ private:
 
   const int m_objectNum;
 
-  int m_currentCount{0};
+  int m_currentCount = 0;
 
-  visionObjects * m_flagObjects = nullptr;
+  simpleObjects * m_flagObjects = nullptr;
 
 
 public:
 
 
-  visionTracking(int, int);
-  ~visionTracking();
+  VisionReading(int, int);
+  ~VisionReading();
 
   int getObjects();
-  int filterObjectSize(float sizeThreshold = 0.5, float minSize = 25);
+
+  int filterNoise(float minSize = 25);
+  int filterObjectSize(float sizeThreshold = 0.5);
   int filterObjectProp(float propThreshold = 0.3);
   int discardObjects();
-  visionObjects* exportObjects();
+
+  simpleObjects* exportObjects();
+  void debugObjects(int);
+  void debugErrorSig(int);
 
 };

@@ -7,29 +7,32 @@ class screenDrawing
 {
 private:
 
-  const int m_widthScale;
-  const int m_heightScale;
-
-  lv_obj_t * m_objectContainer = nullptr;
-
-
   const flagSig_t m_flagSig;
 
-  lv_obj_t ** m_screenObjects = nullptr;
-  lv_style_t m_objectStyle;
-  lv_style_t m_blueObjectStyle;
-  lv_style_t m_redObjectStyle;
-  lv_style_t m_discardObjectStyle;
+  const int m_widthScale;
+  const int m_heightScale;
+  lv_obj_t* m_objectContainer = nullptr;
+
+
+  //Simple Objects
+  int m_simpleObjectCount = 0;
+
+  lv_obj_t** m_simpleObjects = nullptr;
+  lv_style_t m_simpleObjectStyle;
+  lv_style_t m_blueSimpleObjectStyle;
+  lv_style_t m_redSimpleObjectStyle;
+  lv_style_t m_discardSimpleObjectStyle;
 
 
 
 
 public:
 
-  screenDrawing(flagSig_t, int, int, int);
+  screenDrawing(flagSig_t, int, int);
   void initContainer(int, int);
-  void initVisionObjects(int);
-  void drawVisionObjects(visionObjects*, int);
+
+  void initSimpleObjects(int);
+  void drawSimpleObjects(simpleObjects*);
 
 
 
