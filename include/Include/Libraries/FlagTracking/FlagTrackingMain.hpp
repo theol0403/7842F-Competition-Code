@@ -3,6 +3,12 @@
 
 
 
+void mainFlagTrackingTask(void*);
+
+
+
+
+
 
 struct flagSig_t
 {

@@ -101,15 +101,17 @@ void disabled() {}
 
 #include "Include/Driver/DriverMainTasks.hpp"
 
+#include "Include\Libraries\FlagTracking\FlagTrackingMain.hpp"
+
 void opcontrol()
 {
-	//pros::Task DriverMainTask_t(DriverMainTask, "DriverTask");
 	pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
+	pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 
 
 
-		pros::delay(20000);
+		pros::delay(2000000);
 
 }
 
