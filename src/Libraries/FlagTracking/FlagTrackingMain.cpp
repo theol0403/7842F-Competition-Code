@@ -73,7 +73,6 @@ int VisionReading::filterNoise(float minSize)
       discardCounter++;
     }
   }
-
   return discardCounter;
 }
 
@@ -81,7 +80,6 @@ int VisionReading::filterNoise(float minSize)
 
 int VisionReading::filterObjectSize(float sizeThreshold)
 {
-
   int avgCount = 0;
   int avgSize = 0;
   for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
@@ -94,28 +92,21 @@ int VisionReading::filterObjectSize(float sizeThreshold)
   }
   avgSize /= avgCount;
 
-
   // upper and lower ranges for size threshold
-  int sizeLow = avgSize - (avgSize * sizeThreshold);
-  int sizeHigh = avgSize + (avgSize * sizeThreshold);
-
+  int heightLow = avgSize - (avgSize * sizeThreshold);
+  int heightHigh = avgSize + (avgSize * sizeThreshold);
 
   int discardCounter = 0;
   // loop through objects, look for size, and mark to discard
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
     int objSize = m_flagObjects[objectNum].objSize;
-    if(objSize > sizeHigh || objSize < sizeLow)
+    if(objSize > heightHigh || objSize < heightLow)
     {
       m_flagObjects[objectNum].discardObject = true;
       discardCounter++;
     }
-    else
-    {
-    }
-
   }
-
   return discardCounter;
 }
 
@@ -130,12 +121,11 @@ int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
 {
 
 
-  int objectSize;
-  int sizeWidth;
-  int sizeHeight;
+  int objectWidth;
+  int objectHeight;
 
-  int sizeLow;
-  int sizeHigh;
+  int heightLow;
+  int heightHigh;
 
 
   // loop through objects, look for size, and fill into new array
@@ -143,21 +133,16 @@ int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
 
-    objectSize = m_flagObjects[objectNum].objSize;
-    sizeLow = objectSize - (objectSize * propThreshold);
-    sizeHigh = objectSize + (objectSize * propThreshold);
+    objectWidth = m_flagObjects[objectNum].objWidth;
+    heightLow = (objectWidth/wantedProp) - (objectWidth * propThreshold);
+    heightHigh = (objectWidth/wantedProp) + (objectWidth * propThreshold);
 
-    sizeWidth = m_flagObjects[objectNum].objWidth;
-    sizeHeight = m_flagObjects[objectNum].objHeight;
+    objectHeight = m_flagObjects[objectNum].objHeight;
 
-
-    if (sizeWidth < sizeLow || sizeWidth > sizeHigh || sizeHeight < sizeLow || sizeWidth > sizeHigh)
+    if(objectHeight < heightLow || objectWidth > heightHigh)
     {
       m_flagObjects[objectNum].discardObject = true;
       discardCounter++;
-    }
-    else
-    {
     }
 
   }
