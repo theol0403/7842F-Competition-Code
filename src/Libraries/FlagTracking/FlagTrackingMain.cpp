@@ -62,21 +62,34 @@ int visionTracking::getObjects()
 
 
 
-int visionTracking::filterObjectSize(float sizeThreshold)
+int visionTracking::filterObjectSize(float sizeThreshold, float minSize)
 {
   int discardCounter = 0;
   int avgSize = 0;
 
+  int avgCount = 0;
+
   //Total object sizes
   for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
-    avgSize += m_flagObjects[objectNum].objSize;
+    if(m_flagObjects[objectNum].objSize > minSize)
+      {
+        avgCount++;
+        avgSize += m_flagObjects[objectNum].objSize;
+      }
   }
-  avgSize /= m_objectNum;
+  avgSize /= avgCount;
+
 
   // upper and lower ranges for size threshold
   int sizeLow = avgSize - (avgSize * sizeThreshold);
   int sizeHigh = avgSize + (avgSize * sizeThreshold);
+
+  std::cout << "ObjectCount: " << m_currentCount << "|  ";
+  std::cout << "AverageSize: " << avgSize << "|  ";
+  std::cout << "sizeLow: " << sizeLow << "|  ";
+  std::cout << "sizeHigh: " << sizeHigh << "|  ";
+  std::cout << "\n";
 
 
   // loop through objects, look for size, and mark to discard

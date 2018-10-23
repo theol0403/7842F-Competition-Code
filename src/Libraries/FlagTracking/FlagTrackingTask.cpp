@@ -22,20 +22,20 @@ void mainFlagTrackingTask(void*ignore)
 
     mainVisionTracking.getObjects(); //Calculates Objects
 
-    //mainVisionTracking.filterObjectSize();
+    mainVisionTracking.filterObjectSize();
     //mainVisionTracking.filterObjectProp();
-    mainVisionTracking.discardObjects();
+    //mainVisionTracking.discardObjects();
 
     objectExport = mainVisionTracking.exportObjects();
 
-    // std::cout << "Object 0 | ";
-    // std::cout << "Width: " << objectExport[0].objWidth << " | ";
-    // std::cout << "Height: " << objectExport[0].objHeight << " | ";
-    // std::cout << "X: " << objectExport[0].objX << " | ";
-    // std::cout << "Y: " << objectExport[0].objY << " | ";
-    // std::cout << "Sig: " << objectExport[0].objSig << " | ";
-    // std::cout << "Discard: " << objectExport[0].discardObject << " | ";
-    // std::cout << "\n";
+    std::cout << "Object 0 | ";
+    std::cout << "Width: " << objectExport[0].objWidth << " | ";
+    std::cout << "Height: " << objectExport[0].objHeight << " | ";
+    std::cout << "X: " << objectExport[0].objX << " | ";
+    std::cout << "Y: " << objectExport[0].objY << " | ";
+    std::cout << "Sig: " << objectExport[0].objSig << " | ";
+    std::cout << "Discard: " << objectExport[0].discardObject << " | ";
+    std::cout << "\n";
     //
     // std::cout << "Object 1 | ";
     // std::cout << "Width: " << objectExport[1].objWidth << " | ";
