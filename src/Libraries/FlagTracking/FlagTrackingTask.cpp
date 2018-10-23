@@ -26,9 +26,9 @@ void mainFlagTrackingTask(void*ignore)
 
     mainVisionReading.filterNoise();
     mainVisionReading.debugErrorSig();
-    mainVisionReading.filterObjectSize();
+    mainVisionReading.filterSize();
     mainVisionReading.debugErrorSig();
-    mainVisionReading.filterObjectProp();
+    mainVisionReading.filterProp();
     mainVisionReading.debugErrorSig();
     mainVisionReading.discardObjects();
 

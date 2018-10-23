@@ -47,7 +47,8 @@ private:
 
   int m_currentCount = 0;
 
-  simpleObjects * m_flagObjects = nullptr;
+  pros::vision_object* m_visionArray = nullptr; //Temp array for vision objects
+  simpleObjects* m_flagObjects = nullptr;
 
 
 public:
@@ -61,8 +62,8 @@ public:
   int getObjects();
 
   int filterNoise(float minSize = 25);
-  int filterObjectSize(float sizeThreshold = 0.5);
-  int filterObjectProp(float propThreshold = 0.3, float wantedProp = 1.3); //Width:Height
+  int filterSize(float sizeThreshold = 0.5);
+  int filterProp(float propThreshold = 0.3, float wantedProp = 0.8); //Width:Height = 1:x
   int discardObjects();
 
   simpleObjects* exportObjects();

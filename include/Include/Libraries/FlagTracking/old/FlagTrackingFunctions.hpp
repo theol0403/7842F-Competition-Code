@@ -17,6 +17,6 @@
 // //FlagTrackingFilters
 // bool rangeFinder(int, int, int);
 // void filterObjects();
-// void filterObjectProp( int, int);
-// void filterObjectSize( int, int);
+// void filterProp( int, int);
+// void filterSize( int, int);
 // void filterObjectRollingAvg( int, int);

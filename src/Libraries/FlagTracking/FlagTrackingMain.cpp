@@ -10,6 +10,7 @@ VisionReading::VisionReading(int portNum, int objectNum)
 m_thisVision(portNum),
 m_objectNum{objectNum}
 {
+  m_visionArray = new pros::vision_object[objectNum];
   m_flagObjects = new simpleObjects[objectNum];
 }
 
@@ -37,38 +38,36 @@ void VisionReading::resetObject(int objectNum)
 // Looks at vision for color, counts objects, and fills them in to master array
 int VisionReading::getObjects()
 {
-  pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
-  for(int objectNum = 0; objectNum < m_objectNum; objectNum++) //Resets array
+  for(int objectNum = 0; objectNum < m_objectNum; objectNum++) //Resets vision array
   {
-    visionTempArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
-    visionTempArray[objectNum].top_coord = 0;
-    visionTempArray[objectNum].left_coord = 0;
-    visionTempArray[objectNum].width = 0;
-    visionTempArray[objectNum].height = 0;
-    visionTempArray[objectNum].x_middle_coord = 0;
-    visionTempArray[objectNum].y_middle_coord = 0;
+    m_visionArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
+    m_visionArray[objectNum].top_coord = 0;
+    m_visionArray[objectNum].left_coord = 0;
+    m_visionArray[objectNum].width = 0;
+    m_visionArray[objectNum].height = 0;
+    m_visionArray[objectNum].x_middle_coord = 0;
+    m_visionArray[objectNum].y_middle_coord = 0;
   }
 
-  m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
-
+  m_currentCount = m_thisVision.read_by_size(0, m_objectNum, m_visionArray);
   if(m_currentCount > m_objectNum) m_currentCount = 0;
 
   for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
   {
-    if(visionTempArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
+    if(m_visionArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
     {
       resetObject(objectNum);
     }
     else
     {
-      m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
-      m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
-      m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
-      m_flagObjects[objectNum].objWidth = visionTempArray[objectNum].width;
-      m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
-      m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
-      m_flagObjects[objectNum].objCenterX = visionTempArray[objectNum].x_middle_coord;
-      m_flagObjects[objectNum].objCenterY = visionTempArray[objectNum].y_middle_coord;
+      m_flagObjects[objectNum].objSig = m_visionArray[objectNum].signature;
+      m_flagObjects[objectNum].objY = m_visionArray[objectNum].top_coord;
+      m_flagObjects[objectNum].objX = m_visionArray[objectNum].left_coord;
+      m_flagObjects[objectNum].objWidth = m_visionArray[objectNum].width;
+      m_flagObjects[objectNum].objHeight = m_visionArray[objectNum].height;
+      m_flagObjects[objectNum].objSize = (m_visionArray[objectNum].height + m_visionArray[objectNum].width) / 2;
+      m_flagObjects[objectNum].objCenterX = m_visionArray[objectNum].x_middle_coord;
+      m_flagObjects[objectNum].objCenterY = m_visionArray[objectNum].y_middle_coord;
       m_flagObjects[objectNum].discardObject = false;
     }
   }
@@ -94,7 +93,7 @@ int VisionReading::filterNoise(float minSize)
 
 
 
-int VisionReading::filterObjectSize(float sizeThreshold)
+int VisionReading::filterSize(float sizeThreshold)
 {
   int avgCount = 0;
   int avgSize = 0;
@@ -133,7 +132,7 @@ int VisionReading::filterObjectSize(float sizeThreshold)
 
 
 // Filters object proportions
-int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
+int VisionReading::filterProp(float propThreshold, float wantedProp)
 {
   int objectWidth;
   int objectHeight;
@@ -146,8 +145,8 @@ int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
     objectWidth = m_flagObjects[objectNum].objWidth;
-    heightLow = (objectWidth/wantedProp) - (objectWidth * propThreshold);
-    heightHigh = (objectWidth/wantedProp) + (objectWidth * propThreshold);
+    heightLow = (objectWidth * wantedProp) - (objectWidth * propThreshold);
+    heightHigh = (objectWidth * wantedProp) + (objectWidth * propThreshold);
 
     objectHeight = m_flagObjects[objectNum].objHeight;
 
@@ -191,8 +190,13 @@ int VisionReading::discardObjects()
     }
   }
 
-  m_currentCount = exportNum + 1;
-  return exportNum + 1;
+  for(int objectNum = exportNum; objectNum < m_objectNum; objectNum++)
+  {
+    resetObject(objectNum);
+  }
+
+  m_currentCount = exportNum;
+  return exportNum;
 }
 
 
@@ -269,8 +273,8 @@ void VisionReading::debugErrorSig()
 //   {
 //     mainVisionReading.getObjects(); //Calculates Objects
 //
-//     mainVisionReading.filterObjectSize();
-//     mainVisionReading.filterObjectProp();
+//     mainVisionReading.filterSize();
+//     mainVisionReading.filterProp();
 //
 //     mainVisionReading.exportObjects();
 //     mainScreenDrawing.drawFlagObjects();

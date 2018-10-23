@@ -39,11 +39,11 @@
 //       switch (filterLists[filterNum])
 //       {
 //         case FILTER_SIZE:
-//         filterObjectSize(filterNum);
+//         filterSize(filterNum);
 //         break;
 //
 //         case FILTER_PROP:
-//         filterObjectProp(filterNum);
+//         filterProp(filterNum);
 //         break;
 //
 //         case FILTER_ROLL:
@@ -89,7 +89,7 @@
 //
 //
 //   //Filters avg object sizes
-//   void filterObjectSize(int filterNum)
+//   void filterSize(int filterNum)
 //   {
 //     int avgSize = 0;
 //
@@ -134,7 +134,7 @@
 //
 // /*
 // //Filters object proportions
-// void filterObjectProp( int flagColor, int filterNum)
+// void filterProp( int flagColor, int filterNum)
 // {
 //
 //   int sizeWidth;
