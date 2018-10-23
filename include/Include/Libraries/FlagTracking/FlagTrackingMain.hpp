@@ -55,8 +55,8 @@ public:
   ~visionTracking();
 
   int getObjects();
-  int filterObjectSize(float sizeThreshold = 1, float minSize = 6);
-  int filterObjectProp(float propThreshold = 0.4);
+  int filterObjectSize(float sizeThreshold = 0.5, float minSize = 25);
+  int filterObjectProp(float propThreshold = 0.3);
   int discardObjects();
   visionObjects* exportObjects();
 

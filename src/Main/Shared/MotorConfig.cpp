@@ -15,6 +15,8 @@ pros::Motor m_LeftBase2(5);
 
 pros::Motor m_hBase(6);
 
+pros::Motor m_flywheel(1, true);
+
 
 
 
@@ -29,4 +31,14 @@ void setBasePower(int leftSpeed, int rightSpeed)
 void setHPower(int hSpeed)
 {
 	m_hBase.move(hSpeed);
+}
+
+void setFlywheelVelocity(int flywheelVel)
+{
+	m_flywheel.move_velocity(flywheelVel);
+}
+
+void setFlywheelPower(int flywheelSpeed)
+{
+	m_flywheel.move(flywheelSpeed);
 }

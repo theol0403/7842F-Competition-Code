@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include "Include/Shared/MotorConfig.hpp"
+
 
 
 
@@ -109,9 +111,9 @@ void opcontrol()
 	pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 
+setFlywheelVelocity(150);
 
-
-		pros::delay(2000000);
+		//pros::delay(2000000);
 
 }
 

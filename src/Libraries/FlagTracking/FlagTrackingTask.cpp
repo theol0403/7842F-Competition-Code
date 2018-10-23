@@ -23,8 +23,9 @@ void mainFlagTrackingTask(void*ignore)
     mainVisionTracking.getObjects(); //Calculates Objects
 
     mainVisionTracking.filterObjectSize();
-    //mainVisionTracking.filterObjectProp();
-    //mainVisionTracking.discardObjects();
+    mainVisionTracking.filterObjectProp();
+    mainVisionTracking.discardObjects();
+
 
     objectExport = mainVisionTracking.exportObjects();
 

@@ -77,6 +77,10 @@ int visionTracking::filterObjectSize(float sizeThreshold, float minSize)
         avgCount++;
         avgSize += m_flagObjects[objectNum].objSize;
       }
+      else
+      {
+
+      }
   }
   avgSize /= avgCount;
 
