@@ -31,14 +31,13 @@ void mainFlagTrackingTask(void*ignore)
 
     mainVisionReading.filterProp();
     mainVisionReading.debugErrorSig();
-    
+
     mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);
 
+
     objectExport = mainVisionReading.exportObjects();
-
-
     mainScreenDrawing.drawSimpleObjects(objectExport);
 
 

@@ -29,6 +29,8 @@ private:
 public:
 
   screenDrawing(flagSig_t, int, int);
+  ~screenDrawing();
+
   void initContainer(int, int);
 
   void initSimpleObjects(int);
