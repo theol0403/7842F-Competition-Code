@@ -31,6 +31,7 @@ void screenDrawing::initContainer(int containerWidth, int containerHeight)
   static lv_style_t backgroundStyle; //Static so the style will stay alive
   lv_style_copy(&backgroundStyle, &lv_style_plain_color);
   backgroundStyle.body.main_color = LV_COLOR_GRAY;
+  backgroundStyle.body.grad_color = LV_COLOR_GRAY;
   lv_obj_set_style(m_objectContainer, &backgroundStyle);
 }
 
@@ -66,15 +67,17 @@ void screenDrawing::initVisionObjects(int objectCount)
 
   //Discard object style
   lv_style_copy(&m_discardObjectStyle, &m_objectStyle);
-  m_redObjectStyle.body.main_color = LV_COLOR_OLIVE;
-  m_redObjectStyle.body.grad_color = LV_COLOR_OLIVE;
-  m_redObjectStyle.body.border.color = LV_COLOR_YELLOW;
+  m_discardObjectStyle.body.main_color = LV_COLOR_OLIVE;
+  m_discardObjectStyle.body.grad_color = LV_COLOR_OLIVE;
+  m_discardObjectStyle.body.border.color = LV_COLOR_YELLOW;
 
 
 
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
     m_screenObjects[objectNum] = lv_obj_create(m_objectContainer, NULL);
+    lv_obj_set_style(m_screenObjects[objectNum], &m_objectStyle);
+    lv_obj_set_hidden(m_screenObjects[objectNum], true);
   }
 }
 
@@ -101,6 +104,7 @@ void screenDrawing::drawVisionObjects(visionObjects* flagObjects, int objectCoun
       lv_obj_set_height(m_screenObjects[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
 
 
+
       if(flagObjects[objectNum].discardObject)
       {
         lv_obj_set_style(m_screenObjects[objectNum], &m_discardObjectStyle);
@@ -112,6 +116,10 @@ void screenDrawing::drawVisionObjects(visionObjects* flagObjects, int objectCoun
       else if(flagObjects[objectNum].objSig == m_flagSig.redSig)
       {
         lv_obj_set_style(m_screenObjects[objectNum], &m_redObjectStyle); //Give it the style for a red flagObject
+      }
+      else
+      {
+
       }
 
 

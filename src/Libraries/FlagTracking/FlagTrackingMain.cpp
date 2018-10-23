@@ -26,9 +26,22 @@ int visionTracking::getObjects()
   pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
   m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
 
+  if(m_currentCount > m_objectNum) m_currentCount = 0;
 
   for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
   {
+    if(visionTempArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
+    {
+      m_flagObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
+      m_flagObjects[objectNum].objY = 0;
+      m_flagObjects[objectNum].objX = 0;
+      m_flagObjects[objectNum].objWidth = 0;
+      m_flagObjects[objectNum].objHeight = 0;
+      m_flagObjects[objectNum].objSize = 0;
+      m_flagObjects[objectNum].discardObject = false;
+    }
+    else
+    {
     m_flagObjects[objectNum].objSig = visionTempArray[objectNum].signature;
     m_flagObjects[objectNum].objY = visionTempArray[objectNum].top_coord;
     m_flagObjects[objectNum].objX = visionTempArray[objectNum].left_coord;
@@ -36,7 +49,13 @@ int visionTracking::getObjects()
     m_flagObjects[objectNum].objHeight = visionTempArray[objectNum].height;
     m_flagObjects[objectNum].objSize = (visionTempArray[objectNum].height + visionTempArray[objectNum].width) / 2;
     m_flagObjects[objectNum].discardObject = false;
+    }
   }
+
+
+
+
+
 
   return m_currentCount;
 }

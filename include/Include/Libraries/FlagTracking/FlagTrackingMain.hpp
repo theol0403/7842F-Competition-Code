@@ -45,7 +45,7 @@ private:
 
   int m_currentCount{0};
 
-  visionObjects *m_flagObjects;
+  visionObjects * m_flagObjects = nullptr;
 
 
 public:
