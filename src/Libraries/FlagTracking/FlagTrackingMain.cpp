@@ -140,7 +140,7 @@ int VisionReading::filterProp(float propThreshold, float wantedProp)
   int heightLow;
   int heightHigh;
 
-  // loop through objects, look for size, and fill into new array
+  // loop through objects, look for proportion, and fill into new array
   int discardCounter = 0;
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
@@ -167,36 +167,36 @@ int VisionReading::filterProp(float propThreshold, float wantedProp)
 
 int VisionReading::discardObjects()
 {
-  int exportNum = 0;
+  int destNum = 0;
 
   for (int objectNum = 0; objectNum < m_objectNum; objectNum++)
   {
-    if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[exportNum].discardObject)
+    if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[destNum].discardObject)
     {
-      m_flagObjects[exportNum].objSig = m_flagObjects[objectNum].objSig;
-      m_flagObjects[exportNum].objY = m_flagObjects[objectNum].objY;
-      m_flagObjects[exportNum].objX = m_flagObjects[objectNum].objX;
-      m_flagObjects[exportNum].objWidth = m_flagObjects[objectNum].objWidth;
-      m_flagObjects[exportNum].objHeight = m_flagObjects[objectNum].objHeight;
-      m_flagObjects[exportNum].objSize = m_flagObjects[objectNum].objSize;
-      m_flagObjects[exportNum].objCenterX = m_flagObjects[objectNum].objCenterX;
-      m_flagObjects[exportNum].objCenterY = m_flagObjects[objectNum].objCenterY;
-      m_flagObjects[exportNum].discardObject = false;
-      exportNum++;
+      m_flagObjects[destNum].objSig = m_flagObjects[objectNum].objSig;
+      m_flagObjects[destNum].objY = m_flagObjects[objectNum].objY;
+      m_flagObjects[destNum].objX = m_flagObjects[objectNum].objX;
+      m_flagObjects[destNum].objWidth = m_flagObjects[objectNum].objWidth;
+      m_flagObjects[destNum].objHeight = m_flagObjects[objectNum].objHeight;
+      m_flagObjects[destNum].objSize = m_flagObjects[objectNum].objSize;
+      m_flagObjects[destNum].objCenterX = m_flagObjects[objectNum].objCenterX;
+      m_flagObjects[destNum].objCenterY = m_flagObjects[objectNum].objCenterY;
+      m_flagObjects[destNum].discardObject = false;
+      destNum++;
     }
     else
     {
-      resetObject(exportNum);
+      resetObject(destNum);
     }
   }
 
-  for(int objectNum = exportNum; objectNum < m_objectNum; objectNum++)
+  for(int objectNum = destNum; objectNum < m_objectNum; objectNum++)
   {
     resetObject(objectNum);
   }
 
-  m_currentCount = exportNum;
-  return exportNum;
+  m_currentCount = destNum;
+  return destNum;
 }
 
 
@@ -242,125 +242,3 @@ void VisionReading::debugErrorSig()
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//
-// // main task
-// void mainFlagTrackingTask(void*ignore)
-// {
-//   VisionReading mainVisionReading(9);
-//   screenDrawing mainScreenDrawing(OBJECT_CONTAINER_WIDTH, OBJECT_CONTAINER_HEIGHT, OBJECT_SCALE_WIDTH, OBJECT_SCALE_HEIGHT);
-//
-//   while(true)
-//   {
-//     mainVisionReading.getObjects(); //Calculates Objects
-//
-//     mainVisionReading.filterSize();
-//     mainVisionReading.filterProp();
-//
-//     mainVisionReading.exportObjects();
-//     mainScreenDrawing.drawFlagObjects();
-//
-//
-//
-//
-//     pros::delay(100);
-//   }
-// }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-//
-//
-//
-//
-// //Creates struct array for storing object data
-// simpleObjects flagObjects[m_objectNum];
-//
-//
-// // main task
-// void flagCalculateTask(void*)
-// {
-//   while (true)
-//   {
-//     filterObjectArrays.objectcount = getObjects(); //Calculates Objects
-//
-//     filterObjects();
-//
-//     delay(VISION_REFRESH);
-//   }
-// }
-//
-//
-//
-//
-//
-// void fillObjData(vision_object* visionObjectArray, int startPos, int objCount, int objColor)
-// {
-//   for (int objectNum = startPos; objectNum < objCount; objectNum++)
-//   {
-//     flagObjects[objectNum].objY = visionObjectArray[objectNum].top_coord;
-//     flagObjects[objectNum].objX = visionObjectArray[objectNum].left_coord;
-//     flagObjects[objectNum].objWidth = visionObjectArray[objectNum].width;
-//     flagObjects[objectNum].objHeight = visionObjectArray[objectNum].height;
-//     flagObjects[objectNum].objSize = (visionObjectArray[objectNum].height + visionObjectArray[objectNum].width) / 2;
-//     flagObjects[objectNum].objColor = objColor;
-//   }
-// }
-//
-//
-//
-//
-//
-// // Looks at vision for color, counts objects, and fills them in
-// int getObjects()
-// {
-//   vision_object visionObjectArray[m_objectNum]; //Creates container array for vision objects
-//
-//     int objCount;
-//     int startPos = 0;
-//
-//     objCount = mainVision.read_by_sig(0, FLAG_BLUE_SIG, m_objectNum/2, visionObjectArray);
-//     fillObjData(visionObjectArray, startPos, objCount, OBJ_BLUE_COLOR);
-//     startPos = objCount;
-//
-//     objCount = mainVision.read_by_sig(0, FLAG_RED_SIG, m_objectNum/2, visionObjectArray);
-//     fillObjData(visionObjectArray, startPos, objCount, OBJ_RED_COLOR);
-//
-//     return startPos + objCount;
-//
-// }
