@@ -19,12 +19,36 @@ VisionReading::~VisionReading()
 }
 
 
+void VisionReading::resetObject(int objectNum)
+{
+  m_flagObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
+  m_flagObjects[objectNum].objY = 0;
+  m_flagObjects[objectNum].objX = 0;
+  m_flagObjects[objectNum].objWidth = 0;
+  m_flagObjects[objectNum].objHeight = 0;
+  m_flagObjects[objectNum].objSize = 0;
+  m_flagObjects[objectNum].objCenterX = 0;
+  m_flagObjects[objectNum].objCenterY = 0;
+  m_flagObjects[objectNum].discardObject = false;
+}
+
 
 
 // Looks at vision for color, counts objects, and fills them in to master array
 int VisionReading::getObjects()
 {
-  pros::vision_object visionTempArray[m_objectNum] = {0}; //Creates temp array for vision objects
+  pros::vision_object visionTempArray[m_objectNum]; //Creates temp array for vision objects
+  for(int objectNum = 0; objectNum < m_objectNum; objectNum++) //Resets array
+  {
+    visionTempArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
+    visionTempArray[objectNum].top_coord = 0;
+    visionTempArray[objectNum].left_coord = 0;
+    visionTempArray[objectNum].width = 0;
+    visionTempArray[objectNum].height = 0;
+    visionTempArray[objectNum].x_middle_coord = 0;
+    visionTempArray[objectNum].y_middle_coord = 0;
+  }
+
   m_currentCount = m_thisVision.read_by_size(0, m_objectNum, visionTempArray);
 
   if(m_currentCount > m_objectNum) m_currentCount = 0;
@@ -33,15 +57,7 @@ int VisionReading::getObjects()
   {
     if(visionTempArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
     {
-      m_flagObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
-      m_flagObjects[objectNum].objY = 0;
-      m_flagObjects[objectNum].objX = 0;
-      m_flagObjects[objectNum].objWidth = 0;
-      m_flagObjects[objectNum].objHeight = 0;
-      m_flagObjects[objectNum].objSize = 0;
-      m_flagObjects[objectNum].objCenterX = 0;
-      m_flagObjects[objectNum].objCenterY = 0;
-      m_flagObjects[objectNum].discardObject = false;
+      resetObject(objectNum);
     }
     else
     {
@@ -171,21 +187,14 @@ int VisionReading::discardObjects()
     }
     else
     {
-      m_flagObjects[exportNum].objSig = VISION_OBJECT_ERR_SIG;
-      m_flagObjects[exportNum].objY = 0;
-      m_flagObjects[exportNum].objX = 0;
-      m_flagObjects[exportNum].objWidth = 0;
-      m_flagObjects[exportNum].objHeight = 0;
-      m_flagObjects[exportNum].objSize = 0;
-      m_flagObjects[exportNum].objCenterX = 0;
-      m_flagObjects[exportNum].objCenterY = 0;
-      m_flagObjects[exportNum].discardObject = false;
+      resetObject(exportNum);
     }
   }
 
   m_currentCount = exportNum + 1;
   return exportNum + 1;
 }
+
 
 
 

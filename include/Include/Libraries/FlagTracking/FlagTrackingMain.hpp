@@ -56,6 +56,8 @@ public:
   VisionReading(int, int);
   ~VisionReading();
 
+  void resetObject(int);
+
   int getObjects();
 
   int filterNoise(float minSize = 25);

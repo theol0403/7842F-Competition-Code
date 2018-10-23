@@ -83,7 +83,6 @@ void screenDrawing::initSimpleObjects(int simpleObjectCount)
 
 
 
-
 void screenDrawing::drawSimpleObjects(simpleObjects* flagObjects)
 {
 
