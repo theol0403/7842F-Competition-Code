@@ -2,7 +2,7 @@
 
 
 
-
+extern pros::Controller j_Main;
 
 
 void setBasePower(int, int);

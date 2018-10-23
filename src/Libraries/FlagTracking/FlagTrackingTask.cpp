@@ -37,7 +37,7 @@ void mainFlagTrackingTask(void*ignore)
     objectExport = mainVisionReading.exportObjects();
 
 
-    mainScreenDrawing.drawSimpleObjects(objectExport, 20);
+    mainScreenDrawing.drawSimpleObjects(objectExport);
 
 
 

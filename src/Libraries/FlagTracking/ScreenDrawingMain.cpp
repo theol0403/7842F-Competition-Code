@@ -72,7 +72,7 @@ void screenDrawing::initSimpleObjects(int simpleObjectCount)
 
 
 
-  for(int objectNum = 0; objectNum < objectCount; objectNum++)
+  for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
   {
     m_simpleObjects[objectNum] = lv_obj_create(m_objectContainer, NULL);
     lv_obj_set_style(m_simpleObjects[objectNum], &m_simpleObjectStyle);

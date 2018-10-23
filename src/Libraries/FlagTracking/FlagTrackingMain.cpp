@@ -119,20 +119,16 @@ int VisionReading::filterObjectSize(float sizeThreshold)
 // Filters object proportions
 int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
 {
-
-
   int objectWidth;
   int objectHeight;
 
   int heightLow;
   int heightHigh;
 
-
   // loop through objects, look for size, and fill into new array
   int discardCounter = 0;
   for (int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
-
     objectWidth = m_flagObjects[objectNum].objWidth;
     heightLow = (objectWidth/wantedProp) - (objectWidth * propThreshold);
     heightHigh = (objectWidth/wantedProp) + (objectWidth * propThreshold);
@@ -144,9 +140,7 @@ int VisionReading::filterObjectProp(float propThreshold, float wantedProp)
       m_flagObjects[objectNum].discardObject = true;
       discardCounter++;
     }
-
   }
-
   return discardCounter;
 }
 
@@ -187,13 +181,11 @@ int VisionReading::discardObjects()
       m_flagObjects[exportNum].objCenterY = 0;
       m_flagObjects[exportNum].discardObject = false;
     }
-
   }
 
   m_currentCount = exportNum + 1;
   return exportNum + 1;
 }
-
 
 
 
@@ -206,7 +198,7 @@ simpleObjects* VisionReading::exportObjects()
 
 void VisionReading::debugObjects(int objectCount)
 {
-  for(int objectNum = 0, objectNum < objectCount, objectNum++)
+  for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
     std::cout << "Object " << objectNum << " | ";
     std::cout << "Width: " << m_flagObjects[objectNum].objWidth << " | ";
@@ -228,7 +220,7 @@ void VisionReading::debugObjects(int objectCount)
 
 void VisionReading::debugErrorSig()
 {
-  for(int objectNum = 0, objectNum < m_currentCount, objectNum++)
+  for(int objectNum = 0; objectNum < m_currentCount; objectNum++)
   {
     if(m_flagObjects[objectNum].objSig == VISION_OBJECT_ERR_SIG)
     {
