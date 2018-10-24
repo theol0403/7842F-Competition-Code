@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "Include/Libraries/FlagTracking/FlagTrackingMain.hpp"
+#include "Include/Libraries/FlagTracking/VisionReadingMain.hpp"
 #include "Include/Libraries/FlagTracking/ScreenDrawingMain.hpp"
 
 
