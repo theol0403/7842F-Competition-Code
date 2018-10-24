@@ -7,9 +7,7 @@
 
 
 VisionReading::VisionReading(int portNum, int objectCount)
-:
-m_thisVision(portNum),
-m_objectCount{objectCount}
+: m_thisVision(portNum), m_objectCount{objectCount}
 {
   m_visionArray = new pros::vision_object[objectCount];
   m_flagObjects = new simpleObjects_t[objectCount];
@@ -206,6 +204,12 @@ int VisionReading::discardObjects()
 simpleObjects_t* VisionReading::exportObjects()
 {
   return m_flagObjects;
+}
+
+
+int VisionReading::exportCurrentCount()
+{
+  return m_currentCount;
 }
 
 

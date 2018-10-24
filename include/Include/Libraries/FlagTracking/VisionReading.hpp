@@ -32,6 +32,7 @@ public:
   int discardObjects();
 
   simpleObjects_t* exportObjects();
+  int exportCurrentCount();
   void debugObjects(int);
   void debugErrorSig();
 

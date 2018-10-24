@@ -17,6 +17,7 @@ void mainFlagTrackingTask(void*)
   mainScreenDrawing.initSimpleObjects(30);
 
   simpleObjects_t* objectExport;
+  int objectCount;
 
   while(true)
   {
@@ -27,10 +28,10 @@ void mainFlagTrackingTask(void*)
     mainVisionReading.filterNoise();
     mainVisionReading.debugErrorSig();
 
-    mainVisionReading.filterSize();
+    mainVisionReading.filterProp();
     mainVisionReading.debugErrorSig();
 
-    mainVisionReading.filterProp();
+    mainVisionReading.filterSize();
     mainVisionReading.debugErrorSig();
 
     mainVisionReading.discardObjects();
@@ -40,6 +41,9 @@ void mainFlagTrackingTask(void*)
 
     objectExport = mainVisionReading.exportObjects();
     mainScreenDrawing.drawSimpleObjects(objectExport);
+
+
+    objectCount = mainVisionReading.exportCurrentCount();
 
 
 
