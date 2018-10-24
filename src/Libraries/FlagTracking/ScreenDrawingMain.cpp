@@ -6,10 +6,7 @@
 
 
 
-
-
-
-screenDrawing::screenDrawing(flagSig_t flagSig, int containerWidth, int containerHeight)
+ScreenDrawing::ScreenDrawing(flagSig_t flagSig, int containerWidth, int containerHeight)
 :
 m_flagSig(flagSig),
 m_widthScale{containerWidth/VISION_FOV_WIDTH},
@@ -18,7 +15,8 @@ m_heightScale{containerHeight/VISION_FOV_HEIGHT}
   initContainer(containerWidth, containerHeight);
 }
 
-screenDrawing::~screenDrawing()
+
+ScreenDrawing::~ScreenDrawing()
 {
   delete[] m_simpleObjects;
   m_simpleObjects = nullptr;
@@ -26,7 +24,7 @@ screenDrawing::~screenDrawing()
 
 
 
-void screenDrawing::initContainer(int containerWidth, int containerHeight)
+void ScreenDrawing::initContainer(int containerWidth, int containerHeight)
 {
   m_objectContainer = lv_obj_create(lv_scr_act(), NULL);
   lv_obj_set_size(m_objectContainer, containerWidth, containerHeight);
@@ -43,11 +41,10 @@ void screenDrawing::initContainer(int containerWidth, int containerHeight)
 
 
 
-void screenDrawing::initSimpleObjects(int simpleObjectCount)
+void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
 {
   m_simpleObjectCount = simpleObjectCount;
   m_simpleObjects = new lv_obj_t*[simpleObjectCount];
-
 
   //Generic Object Style
   lv_style_copy(&m_simpleObjectStyle, &lv_style_pretty_color);
@@ -76,8 +73,6 @@ void screenDrawing::initSimpleObjects(int simpleObjectCount)
   m_discardSimpleObjectStyle.body.grad_color = LV_COLOR_OLIVE;
   m_discardSimpleObjectStyle.body.border.color = LV_COLOR_YELLOW;
 
-
-
   for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
   {
     m_simpleObjects[objectNum] = lv_obj_create(m_objectContainer, NULL);
@@ -89,16 +84,14 @@ void screenDrawing::initSimpleObjects(int simpleObjectCount)
 
 
 
-void screenDrawing::drawSimpleObjects(simpleObjects* flagObjects)
+void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects)
 {
 
   for(int objectNum = 0; objectNum < m_simpleObjectCount; objectNum++)
   {
     if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
-
-      // make visible
-      lv_obj_set_hidden(m_simpleObjects[objectNum], false);
+      lv_obj_set_hidden(m_simpleObjects[objectNum], false); // make visible
 
       //Set posisitons and size
       lv_obj_set_x(m_simpleObjects[objectNum], flagObjects[objectNum].objX * m_widthScale);
@@ -106,8 +99,6 @@ void screenDrawing::drawSimpleObjects(simpleObjects* flagObjects)
 
       lv_obj_set_width(m_simpleObjects[objectNum], flagObjects[objectNum].objWidth * m_widthScale);
       lv_obj_set_height(m_simpleObjects[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
-
-
 
       if(flagObjects[objectNum].discardObject)
       {
@@ -125,8 +116,6 @@ void screenDrawing::drawSimpleObjects(simpleObjects* flagObjects)
       {
 
       }
-
-
     }
     else
     {

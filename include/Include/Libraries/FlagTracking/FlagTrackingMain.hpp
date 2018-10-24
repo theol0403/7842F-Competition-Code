@@ -17,7 +17,7 @@ struct flagSig_t
 
 
 
-struct simpleObjects
+struct simpleObjects_t
 {
   int objSig;
   int objX;
@@ -44,7 +44,7 @@ private:
   int m_currentCount = 0;
 
   pros::vision_object* m_visionArray = nullptr; //Temp array for vision objects
-  simpleObjects* m_flagObjects = nullptr;
+  simpleObjects_t* m_flagObjects = nullptr;
 
 
 public:
@@ -62,7 +62,7 @@ public:
   int filterProp(float propThreshold = 0.3, float wantedProp = 0.8); //Width:Height = 1:x
   int discardObjects();
 
-  simpleObjects* exportObjects();
+  simpleObjects_t* exportObjects();
   void debugObjects(int);
   void debugErrorSig();
 

@@ -12,10 +12,10 @@ void mainFlagTrackingTask(void*ignore)
 
   VisionReading mainVisionReading(1, 30);
 
-  screenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
+  ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
   mainScreenDrawing.initSimpleObjects(30);
 
-  simpleObjects* objectExport;
+  simpleObjects_t* objectExport;
 
   while(true)
   {

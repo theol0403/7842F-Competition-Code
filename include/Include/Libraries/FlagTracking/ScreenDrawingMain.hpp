@@ -3,7 +3,7 @@
 
 
 
-class screenDrawing
+class ScreenDrawing
 {
 private:
 
@@ -28,13 +28,13 @@ private:
 
 public:
 
-  screenDrawing(flagSig_t, int, int);
-  ~screenDrawing();
+  ScreenDrawing(flagSig_t, int, int);
+  ~ScreenDrawing();
 
   void initContainer(int, int);
 
   void initSimpleObjects(int);
-  void drawSimpleObjects(simpleObjects*);
+  void drawSimpleObjects(simpleObjects_t*);
 
 
 
