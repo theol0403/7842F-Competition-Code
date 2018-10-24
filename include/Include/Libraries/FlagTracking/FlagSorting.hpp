@@ -26,13 +26,15 @@ class FlagSorting
 private:
 
 
-const int m_sourceCount;
-
 const int m_masterCount;
-const int m_decayTime;
-
+const int m_maxLife;
 
 sortedObjects_t* m_masterObjects = nullptr;
+
+
+const int m_sourceCount; //Amount of source objects to read to
+
+int m_currentSourceCount; //Current amount of source objects. Not to exceed sourceCount
 
 
 public:
@@ -40,6 +42,9 @@ public:
 
   FlagSorting(int, int);
   ~FlagSorting();
+
+
+  void importSource(simpleObjects_t*, int);
 
   void sortMaster();
 

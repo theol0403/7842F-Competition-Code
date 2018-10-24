@@ -2,7 +2,9 @@
 
 #include "Include/Libraries/FlagTracking/FlagTracking.hpp"
 #include "Include/Libraries/FlagTracking/VisionReading.hpp"
+#include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 #include "Include/Libraries/FlagTracking/ScreenDrawing.hpp"
+
 
 
 
@@ -15,6 +17,8 @@ void mainFlagTrackingTask(void*)
 
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
   mainScreenDrawing.initSimpleObjects(30);
+
+  FlagSorting mainFlagSorting(20, 6);
 
   simpleObjects_t* objectExport;
   int objectCount;

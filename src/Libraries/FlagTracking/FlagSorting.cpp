@@ -4,10 +4,10 @@
 #include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 
 
-FlagSorting::FlagSorting(int sourceCount, int decayTime)
-: m_sourceCount{sourceCount}, m_decayTime{decayTime}, m_masterCount{sourceCount * decayTime}
+FlagSorting::FlagSorting(int sourceCount, int maxLife)
+: m_sourceCount{sourceCount}, m_maxLife{maxLife}, m_masterCount{sourceCount * maxLife}
 {
-  m_masterObjects = new sortedObjects_t[sourceCount * decayTime];
+  m_masterObjects = new sortedObjects_t[m_masterCount];
 }
 
 FlagSorting::~FlagSorting()
@@ -17,9 +17,16 @@ FlagSorting::~FlagSorting()
 
 
 
+//Imports the source array and sorts it by Y into sourceArray
+void FlagSorting::importSource(simpleObjects_t* flagObjects, int currentSourceCount)
+{
+  //Amount of objects to read. Not to exceed sourceCount
+  m_currentSourceCount = currentSourceCount > m_sourceCount ? m_sourceCount : currentSourceCount;
+
+  
 
 
-void importSource(int sourceCount); //Imports the source array and sorts it by Y
+}
 
 
 void allignObjects()
