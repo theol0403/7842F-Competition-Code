@@ -7,7 +7,7 @@
 
 
 // main task
-void mainFlagTrackingTask(void*ignore)
+void mainFlagTrackingTask(void*)
 {
   flagSig_t mainFlagSig {1, 2};
 
