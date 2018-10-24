@@ -16,7 +16,10 @@ m_objectCount{objectCount}
 
 VisionReading::~VisionReading()
 {
+  delete[] m_visionArray;
+  m_visionArray = nullptr;
   delete[] m_flagObjects;
+  m_flagObjects = nullptr;
 }
 
 
@@ -50,7 +53,7 @@ int VisionReading::getObjects()
   }
 
   m_currentCount = m_thisVision.read_by_size(0, m_objectCount, m_visionArray);
-  if(m_currentCount > m_objectCount) m_currentCount = 0;
+  if(m_currentCount > m_objectCount) m_currentCount = 0; //If there are no objects pros returns a huge number
 
   for (int objectNum = 0; objectNum < m_objectCount; objectNum++)
   {
@@ -150,7 +153,7 @@ int VisionReading::filterProp(float propThreshold, float wantedProp)
 
     objectHeight = m_flagObjects[objectNum].objHeight;
 
-    if(objectHeight < heightLow || objectWidth > heightHigh)
+    if(objectHeight < heightLow || objectHeight > heightHigh)
     {
       m_flagObjects[objectNum].discardObject = true;
       discardCounter++;
@@ -184,13 +187,9 @@ int VisionReading::discardObjects()
       m_flagObjects[destNum].discardObject = false;
       destNum++;
     }
-    else
-    {
-      resetObject(destNum);
-    }
   }
 
-  for(int objectNum = destNum; objectNum < m_objectCount; objectNum++)
+  for(int objectNum = destNum; objectNum < m_objectCount; objectNum++) //Cleans the rest of the objects
   {
     resetObject(objectNum);
   }
@@ -231,7 +230,6 @@ void VisionReading::debugObjects(int objectCount)
   std::cout << "ObjectCount " << m_objectCount << " | ";
   std::cout << "CurrentCount " << m_currentCount << " | ";
   std::cout << "\n";
-
 }
 
 

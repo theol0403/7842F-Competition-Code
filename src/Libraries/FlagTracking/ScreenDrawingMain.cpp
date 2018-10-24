@@ -18,10 +18,10 @@ m_heightScale{containerHeight/VISION_FOV_HEIGHT}
   initContainer(containerWidth, containerHeight);
 }
 
-//TODO DESTRUCTORS FOR NEW
 screenDrawing::~screenDrawing()
 {
-
+  delete[] m_simpleObjects;
+  m_simpleObjects = nullptr;
 }
 
 
