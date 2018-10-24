@@ -25,8 +25,8 @@ VisionReading::~VisionReading()
 void VisionReading::resetObject(int objectNum)
 {
   m_flagObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
-  m_flagObjects[objectNum].objY = 0;
   m_flagObjects[objectNum].objX = 0;
+  m_flagObjects[objectNum].objY = 0;
   m_flagObjects[objectNum].objWidth = 0;
   m_flagObjects[objectNum].objHeight = 0;
   m_flagObjects[objectNum].objSize = 0;
@@ -43,8 +43,8 @@ int VisionReading::getObjects()
   for(int objectNum = 0; objectNum < m_objectCount; objectNum++) //Resets vision array
   {
     m_visionArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
-    m_visionArray[objectNum].top_coord = 0;
     m_visionArray[objectNum].left_coord = 0;
+    m_visionArray[objectNum].top_coord = 0;
     m_visionArray[objectNum].width = 0;
     m_visionArray[objectNum].height = 0;
     m_visionArray[objectNum].x_middle_coord = 0;
@@ -63,8 +63,8 @@ int VisionReading::getObjects()
     else
     {
       m_flagObjects[objectNum].objSig = m_visionArray[objectNum].signature;
-      m_flagObjects[objectNum].objY = m_visionArray[objectNum].top_coord;
       m_flagObjects[objectNum].objX = m_visionArray[objectNum].left_coord;
+      m_flagObjects[objectNum].objY = m_visionArray[objectNum].top_coord;
       m_flagObjects[objectNum].objWidth = m_visionArray[objectNum].width;
       m_flagObjects[objectNum].objHeight = m_visionArray[objectNum].height;
       m_flagObjects[objectNum].objSize = (m_visionArray[objectNum].height + m_visionArray[objectNum].width) / 2;
@@ -176,8 +176,8 @@ int VisionReading::discardObjects()
     if(m_flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG && !m_flagObjects[destNum].discardObject)
     {
       m_flagObjects[destNum].objSig = m_flagObjects[objectNum].objSig;
-      m_flagObjects[destNum].objY = m_flagObjects[objectNum].objY;
       m_flagObjects[destNum].objX = m_flagObjects[objectNum].objX;
+      m_flagObjects[destNum].objY = m_flagObjects[objectNum].objY;
       m_flagObjects[destNum].objWidth = m_flagObjects[objectNum].objWidth;
       m_flagObjects[destNum].objHeight = m_flagObjects[objectNum].objHeight;
       m_flagObjects[destNum].objSize = m_flagObjects[objectNum].objSize;
