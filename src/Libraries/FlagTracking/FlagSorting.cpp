@@ -4,20 +4,40 @@
 #include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 
 
-FlagSorting::FlagSorting(int sourceCount, int maxLife)
-: m_sourceCount{sourceCount}, m_maxLife{maxLife}, m_masterCount{sourceCount * maxLife}
+FlagSorting::FlagSorting(int objectCount, int maxLife)
+:
+m_sourceCount{objectCount},
+m_masterCount{objectCount * maxLife},
+m_maxLife{maxLife}
 {
-  m_sourceObjects = new sortedObjects_t[sourceCount];
+  m_sourceObjects = new sortedObjects_t[objectCount];
+  m_tempObjects = new sortedObjects_t[m_masterCount];
   m_masterObjects = new sortedObjects_t[m_masterCount];
 }
 
 FlagSorting::~FlagSorting()
 {
   delete[] m_sourceObjects;
+  delete[] m_tempObjects;
   delete[] m_masterObjects;
 }
 
 
+void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int endObject)
+{
+  for (int objectNum = startObject; objectNum < endObject; objectNum++)
+  {
+    clearArray[objectNum].objSig = VISION_OBJECT_ERR_SIG;
+    clearArray[objectNum].objY = 0;
+    clearArray[objectNum].objX = 0;
+    clearArray[objectNum].objWidth = 0;
+    clearArray[objectNum].objHeight = 0;
+    clearArray[objectNum].objCenterX = 0;
+    clearArray[objectNum].objCenterY = 0;
+    clearArray[objectNum].lifeCounter = 0;
+    clearArray[objectNum].matchFound = 0;
+  }
+}
 
 
 void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int secondObject)
@@ -85,9 +105,10 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 {
   //Amount of objects to read. Not to exceed sourceCount
   m_currentSourceCount = currentSourceCount > m_sourceCount ? m_sourceCount : currentSourceCount;
-  
 
-  for (int objectNum = 0; objectNum < currentSourceCount; objectNum++) //Copies source into m_source array
+
+  //Copies source into m_source array
+  for (int objectNum = 0; objectNum < currentSourceCount; objectNum++)
   {
     if(importObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
@@ -108,7 +129,8 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
   }
 
 
-  for (int objectNum = currentSourceCount; objectNum < m_sourceCount; objectNum++) //cleans the rest
+  //Resets the remaining slots in the m_sourceObjects
+  for (int objectNum = currentSourceCount; objectNum < m_sourceCount; objectNum++)
   {
     m_sourceObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
     m_sourceObjects[objectNum].objY = 0;
@@ -121,7 +143,8 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].matchFound = 0;
   }
 
-  sortArrayY(m_sourceObjects, currentSourceCount);
+
+  sortArrayY(m_sourceObjects, currentSourceCount); //Sorts m_sourceObjects by Y
 
 }
 
@@ -130,9 +153,12 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 
 
-void allignObjects()
+void FlagSorting::allignTempObjects()
 {
   //clear temp array
+  clearArray(m_tempObjects, 0, m_masterCount);
+
+
   //allign sorted source array into temp array symetrical to master, left to right
   //any non-found objects to into arrays past masterCount
 }
