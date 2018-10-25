@@ -43,6 +43,8 @@ public:
   FlagSorting(int, int);
   ~FlagSorting();
 
+  void swapObjects(sortedObjects_t*, int, int);
+
   void importSource(simpleObjects_t*, int);
 
   void sortMaster();

@@ -20,25 +20,61 @@ FlagSorting::~FlagSorting()
 
 
 
+void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int secondObject)
+{
+  sortedObjects_t tempObject;
+
+  tempObject.objSig = swapArray[firstObject].objSig;
+  tempObject.objX = swapArray[firstObject].objX;
+  tempObject.objY = swapArray[firstObject].objY;
+  tempObject.objWidth = swapArray[firstObject].objWidth;
+  tempObject.objHeight = swapArray[firstObject].objHeight;
+  tempObject.objCenterX = swapArray[firstObject].objCenterX;
+  tempObject.objCenterY = swapArray[firstObject].objCenterY;
+  tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
+  tempObject.matchFound = swapArray[firstObject].matchFound;
+
+  swapArray[firstObject].objSig = swapArray[secondObject].objSig;
+  swapArray[firstObject].objX = swapArray[secondObject].objX;
+  swapArray[firstObject].objY = swapArray[secondObject].objY;
+  swapArray[firstObject].objWidth = swapArray[secondObject].objWidth;
+  swapArray[firstObject].objHeight = swapArray[secondObject].objHeight;
+  swapArray[firstObject].objCenterX = swapArray[secondObject].objCenterX;
+  swapArray[firstObject].objCenterY = swapArray[secondObject].objCenterY;
+  swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
+  swapArray[firstObject].matchFound = swapArray[secondObject].matchFound;
+
+  swapArray[secondObject].objSig = tempObject.objSig;
+  swapArray[secondObject].objX = tempObject.objX;
+  swapArray[secondObject].objY = tempObject.objY;
+  swapArray[secondObject].objWidth = tempObject.objWidth;
+  swapArray[secondObject].objHeight = tempObject.objHeight;
+  swapArray[secondObject].objCenterX = tempObject.objCenterX;
+  swapArray[secondObject].objCenterY = tempObject.objCenterY;
+  swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
+  swapArray[secondObject].matchFound = tempObject.matchFound;
+}
+
+
 
 //Imports the source array and sorts it by Y into sourceArray
-void FlagSorting::importSource(simpleObjects_t* sourceObjects, int currentSourceCount)
+void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSourceCount)
 {
   //Amount of objects to read. Not to exceed sourceCount
   m_currentSourceCount = currentSourceCount > m_sourceCount ? m_sourceCount : currentSourceCount;
 
 
-  for (int objectNum = 0; objectNum < currentSourceCount; objectNum++) //Copies source
+  for (int objectNum = 0; objectNum < currentSourceCount; objectNum++) //Copies source into m_source array
   {
-    if(sourceObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+    if(importObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
-      m_sourceObjects[objectNum].objSig = sourceObjects[objectNum].objSig;
-      m_sourceObjects[objectNum].objX = sourceObjects[objectNum].objX;
-      m_sourceObjects[objectNum].objY = sourceObjects[objectNum].objY;
-      m_sourceObjects[objectNum].objWidth = sourceObjects[objectNum].objWidth;
-      m_sourceObjects[objectNum].objHeight = sourceObjects[objectNum].objHeight;
-      m_sourceObjects[objectNum].objCenterX = sourceObjects[objectNum].objCenterX;
-      m_sourceObjects[objectNum].objCenterY = sourceObjects[objectNum].objCenterY;
+      m_sourceObjects[objectNum].objSig = importObjects[objectNum].objSig;
+      m_sourceObjects[objectNum].objX = importObjects[objectNum].objX;
+      m_sourceObjects[objectNum].objY = importObjects[objectNum].objY;
+      m_sourceObjects[objectNum].objWidth = importObjects[objectNum].objWidth;
+      m_sourceObjects[objectNum].objHeight = importObjects[objectNum].objHeight;
+      m_sourceObjects[objectNum].objCenterX = importObjects[objectNum].objCenterX;
+      m_sourceObjects[objectNum].objCenterY = importObjects[objectNum].objCenterY;
       m_sourceObjects[objectNum].lifeCounter = 0;
       m_sourceObjects[objectNum].matchFound = 0;
     }
@@ -63,12 +99,30 @@ void FlagSorting::importSource(simpleObjects_t* sourceObjects, int currentSource
   }
 
 
+	// Step through each element of the array
+	// (except the last one, which will already be sorted by the time we get there)
+	for (int startIndex = 0; startIndex < currentSourceCount - 1; ++startIndex)
+	{
+		int largestIndex = startIndex;
+    bool swapNeeded = false;
 
-  //now sort m_sourceObjects
+		// Then look for a smaller element in the rest of the array
+		for (int currentIndex = startIndex + 1; currentIndex < currentSourceCount; ++currentIndex)
+		{
+			if (m_sourceObjects[currentIndex].objY > m_sourceObjects[largestIndex].objY)
+      {
+        largestIndex = currentIndex;
+        swapNeeded = true;
+      }
+		}
 
+if(swapNeeded) swapObjects(m_sourceObjects, startIndex, largestIndex);
+
+	}
 
 
 }
+
 
 
 void allignObjects()
