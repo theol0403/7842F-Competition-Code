@@ -58,7 +58,7 @@ public:
   void importSource(simpleObjects_t*, int);
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
-  void allignTempObjects();
+  void createAllignList();
 
   void sortMaster();
 

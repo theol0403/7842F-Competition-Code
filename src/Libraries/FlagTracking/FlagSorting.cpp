@@ -153,7 +153,7 @@ return true;
 
 
 
-void FlagSorting::allignTempObjects()
+void FlagSorting::createAllignList()
 {
   //clear temp array
   for(int indexNum = 0; indexNum < m_masterLength; indexNum++)
