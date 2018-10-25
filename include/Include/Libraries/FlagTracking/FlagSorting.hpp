@@ -13,8 +13,8 @@ struct sortedObjects_t
   int objCenterX;
   int objCenterY;
 
-  int lifeCounter;
   bool matchFound;
+  int lifeCounter;
 };
 
 
@@ -59,6 +59,8 @@ public:
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
   void createAllignList();
+
+  void mergeMaster(int);
 
   void sortMaster();
 

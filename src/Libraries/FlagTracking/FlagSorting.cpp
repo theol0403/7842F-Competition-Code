@@ -34,8 +34,8 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int e
     clearArray[objectNum].objHeight = 0;
     clearArray[objectNum].objCenterX = 0;
     clearArray[objectNum].objCenterY = 0;
-    clearArray[objectNum].lifeCounter = 0;
     clearArray[objectNum].matchFound = 0;
+    clearArray[objectNum].lifeCounter = 0;
   }
 }
 
@@ -51,8 +51,8 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   tempObject.objHeight = swapArray[firstObject].objHeight;
   tempObject.objCenterX = swapArray[firstObject].objCenterX;
   tempObject.objCenterY = swapArray[firstObject].objCenterY;
-  tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
   tempObject.matchFound = swapArray[firstObject].matchFound;
+  tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
 
   swapArray[firstObject].objSig = swapArray[secondObject].objSig;
   swapArray[firstObject].objX = swapArray[secondObject].objX;
@@ -61,8 +61,8 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[firstObject].objHeight = swapArray[secondObject].objHeight;
   swapArray[firstObject].objCenterX = swapArray[secondObject].objCenterX;
   swapArray[firstObject].objCenterY = swapArray[secondObject].objCenterY;
-  swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
   swapArray[firstObject].matchFound = swapArray[secondObject].matchFound;
+  swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
 
   swapArray[secondObject].objSig = tempObject.objSig;
   swapArray[secondObject].objX = tempObject.objX;
@@ -71,8 +71,8 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[secondObject].objHeight = tempObject.objHeight;
   swapArray[secondObject].objCenterX = tempObject.objCenterX;
   swapArray[secondObject].objCenterY = tempObject.objCenterY;
-  swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
   swapArray[secondObject].matchFound = tempObject.matchFound;
+  swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
 }
 
 
@@ -116,8 +116,8 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
       m_sourceObjects[objectNum].objHeight = importObjects[objectNum].objHeight;
       m_sourceObjects[objectNum].objCenterX = importObjects[objectNum].objCenterX;
       m_sourceObjects[objectNum].objCenterY = importObjects[objectNum].objCenterY;
-      m_sourceObjects[objectNum].lifeCounter = 0;
       m_sourceObjects[objectNum].matchFound = 0;
+      m_sourceObjects[objectNum].lifeCounter = 0;
     }
     else
     {
@@ -134,8 +134,8 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].objHeight = 0;
     m_sourceObjects[objectNum].objCenterX = 0;
     m_sourceObjects[objectNum].objCenterY = 0;
-    m_sourceObjects[objectNum].lifeCounter = 0;
     m_sourceObjects[objectNum].matchFound = 0;
+    m_sourceObjects[objectNum].lifeCounter = 0;
   }
   sortArrayY(m_sourceObjects, m_sourceCount); //Sorts m_sourceObjects by Y
 }
@@ -200,7 +200,29 @@ m_tempCount = m_masterCount; //size of temp is size of master
   //any non-found objects to into arrays past masterCount
 }
 
-void mergeObjects(); //merges arrays using EMA //updates the life of the master elements
+//merges arrays using EMA //updates the life of the master elements
+void FlagSorting::mergeMaster(int emaAlpha)
+{
+for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
+{
+  if(m_tempAllignIndex[masterNum] != -1)
+  {
+    //merge
+  }
+  else
+  {
+    //life
+  }
+}
+
+
+
+
+filter.output = filter.alpha * readIn + (1.0 - filter.alpha) * filter.output_old;
+}
+
+
+
 
 
 void FlagSorting::sortMaster()
