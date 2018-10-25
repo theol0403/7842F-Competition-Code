@@ -56,13 +56,36 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
 }
 
 
+void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int arrayLength)
+{
+  // Loop through each object looking to swap the largest object to the right
+  // except the last one, which will already be sorted by the time we get there
+  for (int startIndex = 0; startIndex < arrayLength - 1; startIndex++)
+  {
+    int largestIndex = startIndex; //Assume current posision to swap
+    bool swapNeeded = false;
+
+    // Loop between current and end looking for larger object
+    for (int currentIndex = startIndex + 1; currentIndex < arrayLength; currentIndex++)
+    {
+      if (sortArray[currentIndex].objY > sortArray[largestIndex].objY)
+      {
+        largestIndex = currentIndex;
+        swapNeeded = true;
+      }
+    }
+    if(swapNeeded) swapObjects(sortArray, startIndex, largestIndex);
+  }
+}
+
+
 
 //Imports the source array and sorts it by Y into sourceArray
 void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSourceCount)
 {
   //Amount of objects to read. Not to exceed sourceCount
   m_currentSourceCount = currentSourceCount > m_sourceCount ? m_sourceCount : currentSourceCount;
-
+  
 
   for (int objectNum = 0; objectNum < currentSourceCount; objectNum++) //Copies source into m_source array
   {
@@ -98,30 +121,12 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].matchFound = 0;
   }
 
-
-	// Step through each element of the array
-	// (except the last one, which will already be sorted by the time we get there)
-	for (int startIndex = 0; startIndex < currentSourceCount - 1; ++startIndex)
-	{
-		int largestIndex = startIndex;
-    bool swapNeeded = false;
-
-		// Then look for a smaller element in the rest of the array
-		for (int currentIndex = startIndex + 1; currentIndex < currentSourceCount; ++currentIndex)
-		{
-			if (m_sourceObjects[currentIndex].objY > m_sourceObjects[largestIndex].objY)
-      {
-        largestIndex = currentIndex;
-        swapNeeded = true;
-      }
-		}
-
-if(swapNeeded) swapObjects(m_sourceObjects, startIndex, largestIndex);
-
-	}
-
+  sortArrayY(m_sourceObjects, currentSourceCount);
 
 }
+
+
+
 
 
 

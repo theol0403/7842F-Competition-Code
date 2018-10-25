@@ -47,7 +47,7 @@ void mainFlagTrackingTask(void*)
     mainScreenDrawing.drawSimpleObjects(objectExport);
 
 
-    objectCount = mainVisionReading.exportCurrentCount();
+    mainFlagSorting.importSource(objectExport, mainVisionReading.exportCurrentCount());
 
 
 

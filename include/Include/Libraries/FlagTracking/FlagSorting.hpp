@@ -44,6 +44,7 @@ public:
   ~FlagSorting();
 
   void swapObjects(sortedObjects_t*, int, int);
+  void sortArrayY(sortedObjects_t*, int);
 
   void importSource(simpleObjects_t*, int);
 
