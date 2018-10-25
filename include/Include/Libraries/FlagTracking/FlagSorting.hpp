@@ -25,19 +25,19 @@ class FlagSorting
 
 private:
 
-const int m_sourceCount; //Max amount of source objects to read
-sortedObjects_t* m_sourceObjects = nullptr; //Source object container
-int m_currentSourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
+  const int m_sourceLength; //Max amount of source objects to read
+  sortedObjects_t* m_sourceObjects = nullptr; //Source object container
+  int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
 
 
-const int m_masterCount; //Size of master array
-const int m_maxLife; //Maximum life of objects (decay)
+  const int m_masterLength; //Size of master array
+  const int m_maxLife; //Maximum life of objects (decay)
 
-int m_currentTempCount = 0;
-sortedObjects_t* m_tempObjects = nullptr; //Temp array to allign objects into master
+  int m_tempCount = 0;
+  int* m_tempAllignIndex = nullptr; //Temp array to allign objects into master
 
-int m_currentMasterCount = 0; //Amount of objects currently in master array, sorted left
-sortedObjects_t* m_masterObjects = nullptr; //Master array
+  int m_masterCount = 0; //Amount of objects currently in master array, sorted left
+  sortedObjects_t* m_masterObjects = nullptr; //Master array
 
 
 
@@ -57,7 +57,7 @@ public:
 
   void importSource(simpleObjects_t*, int);
 
-bool compareObjects(sortedObjects_t, sortedObjects_t);
+  bool compareObjects(sortedObjects_t&, sortedObjects_t&);
   void allignTempObjects();
 
   void sortMaster();
