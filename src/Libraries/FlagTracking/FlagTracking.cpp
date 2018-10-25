@@ -48,6 +48,7 @@ void mainFlagTrackingTask(void*)
 
 
     mainFlagSorting.importSource(objectExport, mainVisionReading.exportCurrentCount());
+    mainFlagSorting.allignTempObjects();
 
 
 

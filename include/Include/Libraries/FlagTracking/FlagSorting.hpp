@@ -33,6 +33,7 @@ int m_currentSourceCount = 0; //Current amount of source objects. Not to exceed 
 const int m_masterCount; //Size of master array
 const int m_maxLife; //Maximum life of objects (decay)
 
+int m_currentTempCount = 0;
 sortedObjects_t* m_tempObjects = nullptr; //Temp array to allign objects into master
 
 int m_currentMasterCount = 0; //Amount of objects currently in master array, sorted left
@@ -56,7 +57,7 @@ public:
 
   void importSource(simpleObjects_t*, int);
 
-
+bool compareObjects(sortedObjects_t, sortedObjects_t);
   void allignTempObjects();
 
   void sortMaster();

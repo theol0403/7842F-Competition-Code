@@ -108,7 +108,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 
   //Copies source into m_source array
-  for (int objectNum = 0; objectNum < currentSourceCount; objectNum++)
+  for (int objectNum = 0; objectNum < m_currentSourceCount; objectNum++)
   {
     if(importObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
@@ -130,7 +130,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 
   //Resets the remaining slots in the m_sourceObjects
-  for (int objectNum = currentSourceCount; objectNum < m_sourceCount; objectNum++)
+  for (int objectNum = m_currentSourceCount; objectNum < m_sourceCount; objectNum++)
   {
     m_sourceObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
     m_sourceObjects[objectNum].objY = 0;
@@ -144,12 +144,21 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
   }
 
 
-  sortArrayY(m_sourceObjects, currentSourceCount); //Sorts m_sourceObjects by Y
+  sortArrayY(m_sourceObjects, m_currentSourceCount); //Sorts m_sourceObjects by Y
 
 }
 
 
 
+bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
+{
+
+}
+
+void FlagSorting::copyObject(sortedObjects_t &sourceObject, sortedObjects_t &tempObject)
+{
+
+}
 
 
 
@@ -157,6 +166,40 @@ void FlagSorting::allignTempObjects()
 {
   //clear temp array
   clearArray(m_tempObjects, 0, m_masterCount);
+
+  //take object 0
+  //Search masterArray for same X, than Y, then life
+  //fill temp array with same index as master
+  //mark master as a match found
+  //if no match put it in m_currentMasterCount + 1 and increment it
+  //repeate for next object
+
+m_currentTempCount = m_currentMasterCount;
+
+//for every source object
+  for(int sourceObjectNum = 0; sourceObjectNum < m_currentSourceCount; sourceObjectNum++)
+  {
+    bool sourceMatchFound = false;
+    //loop through all current master objects
+    for(int masterObjectNum = 0; masterObjectNum < m_currentMasterCount && !sourceMatchFound; masterObjectNum++)
+    {
+      if(!m_masterObjects[masterObjectNum].matchFound)
+      {
+        if(compareObjects(m_sourceObjects[sourceObjectNum], m_masterObjects[masterObjectNum]))
+        {
+          copyObject(m_sourceObjects[sourceObjectNum], m_tempObjects[masterObjectNum]);
+          m_masterObjects[masterObjectNum].matchFound = true;
+          sourceMatchFound = true;
+        }
+      }
+    }
+    if(!sourceMatchFound) //If no match was found
+    {
+      copyObject(m_sourceObjects[sourceObjectNum], m_tempObjects[m_currentTempCount]);
+      m_currentTempCount++;
+    }
+
+  }
 
 
   //allign sorted source array into temp array symetrical to master, left to right
