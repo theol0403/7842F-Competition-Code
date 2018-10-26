@@ -1,7 +1,9 @@
 #include "main.h"
 
 #include "Include/Libraries/FlagTracking/FlagTracking.hpp"
+#include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 #include "Include/Libraries/FlagTracking/ScreenDrawing.hpp"
+
 
 
 
@@ -105,6 +107,49 @@ void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects)
         lv_obj_set_style(m_simpleObjects[objectNum], &m_discardSimpleObjectStyle);
       }
       else if(flagObjects[objectNum].objSig == m_flagSig.blueSig)
+      {
+        lv_obj_set_style(m_simpleObjects[objectNum], &m_blueSimpleObjectStyle); //Give it the style for a blue flagObject
+      }
+      else if(flagObjects[objectNum].objSig == m_flagSig.redSig)
+      {
+        lv_obj_set_style(m_simpleObjects[objectNum], &m_redSimpleObjectStyle); //Give it the style for a red flagObject
+      }
+      else
+      {
+
+      }
+    }
+    else
+    {
+      lv_obj_set_hidden(m_simpleObjects[objectNum], true);
+    }
+  }
+
+}
+
+
+
+
+
+
+
+void ScreenDrawing::drawSortedObjects(sortedObjects_t* flagObjects)
+{
+
+  for(int objectNum = 0; objectNum < m_simpleObjectCount; objectNum++)
+  {
+    if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
+    {
+      lv_obj_set_hidden(m_simpleObjects[objectNum], false); // make visible
+
+      //Set posisitons and size
+      lv_obj_set_x(m_simpleObjects[objectNum], flagObjects[objectNum].objX * m_widthScale);
+      lv_obj_set_y(m_simpleObjects[objectNum], flagObjects[objectNum].objY * m_heightScale);
+
+      lv_obj_set_width(m_simpleObjects[objectNum], flagObjects[objectNum].objWidth * m_widthScale);
+      lv_obj_set_height(m_simpleObjects[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
+
+      if(flagObjects[objectNum].objSig == m_flagSig.blueSig)
       {
         lv_obj_set_style(m_simpleObjects[objectNum], &m_blueSimpleObjectStyle); //Give it the style for a blue flagObject
       }

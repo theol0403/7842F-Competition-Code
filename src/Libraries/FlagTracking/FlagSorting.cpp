@@ -154,8 +154,14 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
 {
   //compare sig, then Y, then X, then size
+  bool cascadingTrue = true;
+  cascadingTrue = cascadingTrue && sourceObject.objSig == masterObject.objSig;
+  cascadingTrue = cascadingTrue && sourceObject.objCenterY > masterObject.objCenterY - 10 && sourceObject.objCenterY < masterObject.objCenterY + 10;
+  cascadingTrue = cascadingTrue && sourceObject.objCenterX > masterObject.objCenterX - 10 && sourceObject.objCenterX < masterObject.objCenterX + 10;
+  //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
+  //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
-  return true;
+  return cascadingTrue;
 }
 
 
@@ -314,4 +320,9 @@ void FlagSorting::sortMaster()
 
   //Sorts master array by Y, and danging sorted by life than y at the end of the array
   //updates masterCount
+}
+
+sortedObjects_t* FlagSorting::exportObjects()
+{
+  return m_masterObjects;
 }

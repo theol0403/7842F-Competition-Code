@@ -23,6 +23,8 @@ void mainFlagTrackingTask(void*)
   simpleObjects_t* objectExport;
   int objectCount;
 
+  sortedObjects_t* exportObjects;
+
   while(true)
   {
 
@@ -44,11 +46,16 @@ void mainFlagTrackingTask(void*)
 
 
     objectExport = mainVisionReading.exportObjects();
-    mainScreenDrawing.drawSimpleObjects(objectExport);
+    //mainScreenDrawing.drawSimpleObjects(objectExport);
 
 
     mainFlagSorting.importSource(objectExport, mainVisionReading.exportCurrentCount());
     mainFlagSorting.createAllignList();
+    mainFlagSorting.mergeMaster();
+    mainFlagSorting.sortMaster();
+
+    exportObjects = mainFlagSorting.exportObjects();
+    mainScreenDrawing.drawSortedObjects(exportObjects);
 
 
 

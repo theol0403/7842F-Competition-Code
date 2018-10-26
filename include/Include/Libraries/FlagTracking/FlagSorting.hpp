@@ -65,8 +65,10 @@ public:
   int emaCalculate(int, int);
   void mergeMaster();
 
-  int sortArrayLife(sortedObjects_t*, int, int, int)
+  int sortArrayLife(sortedObjects_t*, int, int, int);
   void sortMaster();
+
+  sortedObjects_t* exportObjects();
 
 
 
