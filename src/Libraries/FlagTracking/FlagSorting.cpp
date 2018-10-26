@@ -37,6 +37,7 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int e
     clearArray[objectNum].objCenterY = 0;
     clearArray[objectNum].matchFound = false;
     clearArray[objectNum].lifeCounter = 0;
+    clearArray[objectNum].visibility = false;
   }
 }
 
@@ -54,6 +55,7 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   tempObject.objCenterY = swapArray[firstObject].objCenterY;
   tempObject.matchFound = swapArray[firstObject].matchFound;
   tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
+  tempObject.visibility = swapArray[firstObject].visibility;
 
   swapArray[firstObject].objSig = swapArray[secondObject].objSig;
   swapArray[firstObject].objX = swapArray[secondObject].objX;
@@ -64,6 +66,7 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[firstObject].objCenterY = swapArray[secondObject].objCenterY;
   swapArray[firstObject].matchFound = swapArray[secondObject].matchFound;
   swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
+  swapArray[firstObject].visibility = swapArray[secondObject].visibility;
 
   swapArray[secondObject].objSig = tempObject.objSig;
   swapArray[secondObject].objX = tempObject.objX;
@@ -74,19 +77,20 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[secondObject].objCenterY = tempObject.objCenterY;
   swapArray[secondObject].matchFound = tempObject.matchFound;
   swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
+  swapArray[secondObject].visibility = tempObject.visibility;
 }
 
 
-void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int arrayLength)
+void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int startIndex, int lastIndex)
 {
   // Loop through each object looking to swap the largest object to the right
   // except the last one, which will already be sorted by the time we get there
-  for (int startIndex = 0; startIndex < arrayLength - 1; startIndex++)
+  for (int startIndex = startIndex; startIndex < lastIndex - 1; startIndex++)
   {
     int largestIndex = startIndex; //Assume current posision to swap
     bool swapNeeded = false;
     // Loop between current and end looking for larger object
-    for (int currentIndex = startIndex + 1; currentIndex < arrayLength; currentIndex++)
+    for (int currentIndex = startIndex + 1; currentIndex < lastIndex; currentIndex++)
     {
       if (sortArray[currentIndex].objY > sortArray[largestIndex].objY)
       {
@@ -119,6 +123,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
       m_sourceObjects[objectNum].objCenterY = importObjects[objectNum].objCenterY;
       m_sourceObjects[objectNum].matchFound = false;
       m_sourceObjects[objectNum].lifeCounter = 0;
+      m_sourceObjects[objectNum].visibility = false;
     }
     else
     {
@@ -137,8 +142,9 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].objCenterY = 0;
     m_sourceObjects[objectNum].matchFound = false;
     m_sourceObjects[objectNum].lifeCounter = 0;
+    m_sourceObjects[objectNum].visibility = false;
   }
-  sortArrayY(m_sourceObjects, m_sourceCount); //Sorts m_sourceObjects by Y
+  sortArrayY(m_sourceObjects, 0, m_sourceCount); //Sorts m_sourceObjects by Y
 }
 
 
@@ -225,10 +231,12 @@ void FlagSorting::mergeMaster()
       m_masterObjects[masterNum].matchFound = false;
       m_masterObjects[masterNum].lifeCounter++;
       if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
+      m_masterObjects[masterNum].visibility = true;
     }
     else
     {
       m_masterObjects[masterNum].lifeCounter--;
+      m_masterObjects[masterNum].visibility = false;
     }
   }
 
@@ -243,11 +251,10 @@ void FlagSorting::mergeMaster()
     m_masterObjects[masterNum].objCenterY = m_masterObjects[masterNum].objCenterY;
     m_masterObjects[masterNum].matchFound = false;
     m_masterObjects[masterNum].lifeCounter = 1;
+    m_masterObjects[masterNum].visibility = true;
   }
 
-
-
-
+  m_masterCount = m_tempCount;
 
 }
 
@@ -255,8 +262,56 @@ void FlagSorting::mergeMaster()
 
 
 
+
+int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int startIndex, int lastIndex)
+{
+  int lastPos = 0;
+
+  for (startIndex = startIndex; startIndex < lastIndex - 1; startIndex++)
+  {
+    bool swapFound = false;
+    if(sortArray[startIndex].lifeCounter != lifeSearch)
+    {
+      // Loop between current and end looking for larger object
+      for(int currentIndex = startIndex + 1; currentIndex < lastIndex && !swapFound; currentIndex++)
+      {
+        if(sortArray[currentIndex].lifeCounter == lifeSearch)
+        {
+          swapObjects(sortArray, startIndex, currentIndex);
+          swapFound = true;
+          lastPos = lastPos;
+        }
+      }
+    }
+    else
+    {
+      lastPos = startIndex;
+    }
+  }
+  return lastPos;
+}
+
+
+
+
 void FlagSorting::sortMaster()
 {
+  int startPosition = 0;
+  int endPosision = 0;
+  for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--)
+  {
+    endPosision = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
+    sortArrayY(m_masterObjects, startPosition, endPosision);
+    startPosition = endPosision;
+  }
+
+  clearArray(m_masterObjects, startPosition, m_masterLength);
+
+
+
+  //sort by life
+  //sort by Y
+
   //Sorts master array by Y, and danging sorted by life than y at the end of the array
   //updates masterCount
 }

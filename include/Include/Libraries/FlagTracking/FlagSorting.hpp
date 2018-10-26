@@ -15,6 +15,7 @@ struct sortedObjects_t
 
   bool matchFound;
   int lifeCounter;
+  bool visibility;
 };
 
 
@@ -54,7 +55,7 @@ public:
 
   void clearArray(sortedObjects_t*, int, int);
   void swapObjects(sortedObjects_t*, int, int);
-  void sortArrayY(sortedObjects_t*, int);
+  void sortArrayY(sortedObjects_t*, int, int);
 
   void importSource(simpleObjects_t*, int);
 
@@ -64,6 +65,7 @@ public:
   int emaCalculate(int, int);
   void mergeMaster();
 
+  int sortArrayLife(sortedObjects_t*, int, int, int)
   void sortMaster();
 
 
