@@ -4,11 +4,12 @@
 #include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 
 
-FlagSorting::FlagSorting(int objectCount, int maxLife)
+FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha = 1)
 :
 m_sourceLength{objectCount},
 m_masterLength{objectCount * maxLife},
-m_maxLife{maxLife}
+m_maxLife{maxLife},
+m_emaAlpha{emaAlpha}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
   m_tempAllignIndex = new int[m_masterLength];
@@ -34,7 +35,7 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int e
     clearArray[objectNum].objHeight = 0;
     clearArray[objectNum].objCenterX = 0;
     clearArray[objectNum].objCenterY = 0;
-    clearArray[objectNum].matchFound = 0;
+    clearArray[objectNum].matchFound = false;
     clearArray[objectNum].lifeCounter = 0;
   }
 }
@@ -116,7 +117,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
       m_sourceObjects[objectNum].objHeight = importObjects[objectNum].objHeight;
       m_sourceObjects[objectNum].objCenterX = importObjects[objectNum].objCenterX;
       m_sourceObjects[objectNum].objCenterY = importObjects[objectNum].objCenterY;
-      m_sourceObjects[objectNum].matchFound = 0;
+      m_sourceObjects[objectNum].matchFound = false;
       m_sourceObjects[objectNum].lifeCounter = 0;
     }
     else
@@ -134,7 +135,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].objHeight = 0;
     m_sourceObjects[objectNum].objCenterX = 0;
     m_sourceObjects[objectNum].objCenterY = 0;
-    m_sourceObjects[objectNum].matchFound = 0;
+    m_sourceObjects[objectNum].matchFound = false;
     m_sourceObjects[objectNum].lifeCounter = 0;
   }
   sortArrayY(m_sourceObjects, m_sourceCount); //Sorts m_sourceObjects by Y
@@ -146,8 +147,9 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
 {
+  //compare sig, then Y, then X, then size
 
-return true;
+  return true;
 }
 
 
@@ -169,9 +171,9 @@ void FlagSorting::createAllignList()
   //if no match put it in m_masterCount + 1 and increment it
   //repeate for next object
 
-m_tempCount = m_masterCount; //size of temp is size of master
+  m_tempCount = m_masterCount; //size of temp is size of master
 
-//for every source object
+  //for every source object
   for(int sourceObjectNum = 0; sourceObjectNum < m_sourceCount; sourceObjectNum++)
   {
     //loop through all current master objects
@@ -200,25 +202,53 @@ m_tempCount = m_masterCount; //size of temp is size of master
   //any non-found objects to into arrays past masterCount
 }
 
-//merges arrays using EMA //updates the life of the master elements
-void FlagSorting::mergeMaster(int emaAlpha)
+
+int FlagSorting::emaCalculate(int lastValue, int newValue)
 {
-for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
-{
-  if(m_tempAllignIndex[masterNum] != -1)
-  {
-    //merge
-  }
-  else
-  {
-    //life
-  }
+  return (m_emaAlpha * newValue + (1.0 - m_emaAlpha) * lastValue);
 }
 
+//merges arrays using EMA //updates the life of the master elements
+void FlagSorting::mergeMaster()
+{
+  for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
+  {
+    if(m_tempAllignIndex[masterNum] != -1)
+    {
+      m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
+      m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY);
+      m_masterObjects[masterNum].objX = emaCalculate(m_masterObjects[masterNum].objX, m_sourceObjects[m_tempAllignIndex[masterNum]].objX);
+      m_masterObjects[masterNum].objWidth = emaCalculate(m_masterObjects[masterNum].objWidth, m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth);
+      m_masterObjects[masterNum].objHeight = emaCalculate(m_masterObjects[masterNum].objHeight, m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight);
+      m_masterObjects[masterNum].objCenterX = emaCalculate(m_masterObjects[masterNum].objCenterX, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX);
+      m_masterObjects[masterNum].objCenterY = emaCalculate(m_masterObjects[masterNum].objCenterY, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY);
+      m_masterObjects[masterNum].matchFound = false;
+      m_masterObjects[masterNum].lifeCounter++;
+      if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
+    }
+    else
+    {
+      m_masterObjects[masterNum].lifeCounter--;
+    }
+  }
+
+  for(int masterNum = m_masterCount; masterNum < m_tempCount; masterNum++) //loop through new objects in source
+  {
+    m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
+    m_masterObjects[masterNum].objY = m_masterObjects[masterNum].objY;
+    m_masterObjects[masterNum].objX = m_masterObjects[masterNum].objX;
+    m_masterObjects[masterNum].objWidth = m_masterObjects[masterNum].objWidth;
+    m_masterObjects[masterNum].objHeight = m_masterObjects[masterNum].objHeight;
+    m_masterObjects[masterNum].objCenterX = m_masterObjects[masterNum].objCenterX;
+    m_masterObjects[masterNum].objCenterY = m_masterObjects[masterNum].objCenterY;
+    m_masterObjects[masterNum].matchFound = false;
+    m_masterObjects[masterNum].lifeCounter = 1;
+  }
 
 
 
-filter.output = filter.alpha * readIn + (1.0 - filter.alpha) * filter.output_old;
+
+
 }
 
 

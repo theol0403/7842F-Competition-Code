@@ -31,7 +31,6 @@ private:
 
 
   const int m_masterLength; //Size of master array
-  const int m_maxLife; //Maximum life of objects (decay)
 
   int m_tempCount = 0;
   int* m_tempAllignIndex = nullptr; //Temp array to allign objects into master
@@ -39,6 +38,8 @@ private:
   int m_masterCount = 0; //Amount of objects currently in master array, sorted left
   sortedObjects_t* m_masterObjects = nullptr; //Master array
 
+  const int m_maxLife; //Maximum life of objects (decay)
+  const float m_emaAlpha;
 
 
 
@@ -48,7 +49,7 @@ private:
 public:
 
 
-  FlagSorting(int, int);
+  FlagSorting(int, int, float);
   ~FlagSorting();
 
   void clearArray(sortedObjects_t*, int, int);
@@ -60,7 +61,8 @@ public:
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
   void createAllignList();
 
-  void mergeMaster(int);
+  int emaCalculate(int, int);
+  void mergeMaster();
 
   void sortMaster();
 
