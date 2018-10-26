@@ -133,10 +133,10 @@ void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects)
 
 
 
-void ScreenDrawing::drawSortedObjects(sortedObjects_t* flagObjects)
+void ScreenDrawing::drawSortedObjects(sortedObjects_t* flagObjects, int masterCount)
 {
 
-  for(int objectNum = 0; objectNum < m_simpleObjectCount; objectNum++)
+  for(int objectNum = 0; objectNum < masterCount; objectNum++)
   {
     if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {

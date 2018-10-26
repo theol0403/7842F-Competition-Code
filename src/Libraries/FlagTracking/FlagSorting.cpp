@@ -314,7 +314,7 @@ void FlagSorting::sortMaster()
   clearArray(m_masterObjects, startPosition, m_masterLength);
 
 
-
+m_masterCount = startPosition;
   //sort by life
   //sort by Y
 
@@ -325,4 +325,9 @@ void FlagSorting::sortMaster()
 sortedObjects_t* FlagSorting::exportObjects()
 {
   return m_masterObjects;
+}
+
+int FlagSorting::exportMasterCount()
+{
+  return m_masterCount;
 }

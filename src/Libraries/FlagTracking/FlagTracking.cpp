@@ -53,9 +53,10 @@ void mainFlagTrackingTask(void*)
     mainFlagSorting.createAllignList();
     mainFlagSorting.mergeMaster();
     mainFlagSorting.sortMaster();
-
+    //
     exportObjects = mainFlagSorting.exportObjects();
-    mainScreenDrawing.drawSortedObjects(exportObjects);
+    mainScreenDrawing.drawSortedObjects(exportObjects, mainFlagSorting.exportMasterCount());
+    //getting stuck here
 
 
 

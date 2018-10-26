@@ -69,6 +69,7 @@ public:
   void sortMaster();
 
   sortedObjects_t* exportObjects();
+  int exportMasterCount();
 
 
 

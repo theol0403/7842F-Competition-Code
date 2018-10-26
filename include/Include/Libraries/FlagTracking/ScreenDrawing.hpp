@@ -36,7 +36,7 @@ public:
   void initSimpleObjects(int);
   void drawSimpleObjects(simpleObjects_t*);
 
-  void drawSortedObjects(sortedObjects_t*);
+  void drawSortedObjects(sortedObjects_t*, int);
 
 
 
