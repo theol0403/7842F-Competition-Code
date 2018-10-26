@@ -7,13 +7,13 @@
 pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
 
 
-pros::Motor m_RightBase2(2, true);
-pros::Motor m_RightBase(3, true);
-pros::Motor m_Intake(4, true);
-pros::Motor m_Flywheel(5);
-pros::Motor m_Arm(6);
-pros::Motor m_LeftBase(7);
-pros::Motor m_LeftBase2(8);
+pros::Motor m_RightBase2(4, true);
+pros::Motor m_RightBase(10, true);
+pros::Motor m_Intake(1, true);
+pros::Motor m_Flywheel(2);
+pros::Motor m_Arm(3);
+pros::Motor m_LeftBase(5);
+pros::Motor m_LeftBase2(20);
 pros::Motor m_Indexer(9, true);
 
 
