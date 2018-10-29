@@ -271,30 +271,37 @@ void FlagSorting::mergeMaster()
 
 int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int startIndex, int lastIndex)
 {
-  int lastPos = 0;
+  int lastMatch = 0;
+  bool abortScan = false;
 
-  for (startIndex = startIndex; startIndex < lastIndex - 1; startIndex++)
+  for (startIndex = startIndex; startIndex < lastIndex - 1 && !abortScan; startIndex++)
   {
-    bool swapFound = false;
-    if(sortArray[startIndex].lifeCounter != lifeSearch)
+    if(sortArray[startIndex].lifeCounter == lifeSearch)
     {
-      // Loop between current and end looking for larger object
-      for(int currentIndex = startIndex + 1; currentIndex < lastIndex && !swapFound; currentIndex++)
-      {
-        if(sortArray[currentIndex].lifeCounter == lifeSearch)
-        {
-          swapObjects(sortArray, startIndex, currentIndex);
-          swapFound = true;
-          lastPos = lastPos;
-        }
-      }
+      //If startIndex already has the proper life
+      lastMatch = startIndex;
     }
     else
     {
-      lastPos = startIndex;
+      //If start index needs to be swapped
+      // Loop between current and end looking for larger object
+      bool swapFound = false; //Exit if a swap has been made
+      for(int currentIndex = startIndex + 1; currentIndex < lastIndex && !swapFound; currentIndex++)
+      {
+        if(sortArray[currentIndex].lifeCounter == lifeSearch) //If match is found to the right
+        {
+          swapObjects(sortArray, startIndex, currentIndex); //Swap
+          swapFound = true; //Exit looping
+          lastMatch = startIndex; //Start index now has proper life
+        }
+      }
+      if(!swapFound) //If nothing found to the right
+      {
+        abortScan = true;
+      }
     }
   }
-  return lastPos;
+  return lastMatch;
 }
 
 
