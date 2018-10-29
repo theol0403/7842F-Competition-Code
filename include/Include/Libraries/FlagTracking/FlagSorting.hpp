@@ -32,6 +32,7 @@ private:
 
   const int m_masterLength; //Size of master array
 
+  const int m_objectPosThreshold;
   int m_tempCount = 0;
   int* m_tempAllignIndex = nullptr; //Temp array to allign objects into master
 
@@ -50,7 +51,7 @@ private:
 public:
 
 
-  FlagSorting(int, int, float);
+  FlagSorting(int, int, float, int);
   ~FlagSorting();
 
   void clearArray(sortedObjects_t*, int, int);

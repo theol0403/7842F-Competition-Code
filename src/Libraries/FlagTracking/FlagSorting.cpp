@@ -4,12 +4,13 @@
 #include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 
 
-FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha = 1)
+FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha = 1, int objectPosThreshold = 10)
 :
 m_sourceLength{objectCount},
 m_masterLength{objectCount * maxLife},
 m_maxLife{maxLife},
-m_emaAlpha{emaAlpha}
+m_emaAlpha{emaAlpha},
+m_objectPosThreshold{}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
   m_tempAllignIndex = new int[m_masterLength];

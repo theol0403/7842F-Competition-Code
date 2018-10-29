@@ -45,7 +45,7 @@ void ScreenDrawing::initContainer(int containerWidth, int containerHeight)
 
 void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
 {
-  m_simpleObjectCount = simpleObjectCount;
+  m_screenObjectLength = simpleObjectCount;
   m_screenObjects = new lv_obj_t*[simpleObjectCount];
 
   //Generic Object Style
@@ -88,8 +88,8 @@ void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
 
 void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects, int currentCount)
 {
-  currentCount = currentCount == -1 ? m_simpleObjectCount : currentCount;
-  currentCount = currentCount > m_simpleObjectCount ? m_simpleObjectCount : currentCount;
+  currentCount = currentCount == -1 ? m_screenObjectLength : currentCount;
+  currentCount = currentCount > m_screenObjectLength ? m_screenObjectLength : currentCount;
 
   for(int objectNum = 0; objectNum < currentCount; objectNum++)
   {

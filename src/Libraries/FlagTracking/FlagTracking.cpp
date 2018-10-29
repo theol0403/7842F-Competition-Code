@@ -18,7 +18,7 @@ void mainFlagTrackingTask(void*)
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
   mainScreenDrawing.initSimpleObjects(30);
 
-  FlagSorting mainFlagSorting(20, 6, 1);
+  FlagSorting mainFlagSorting(20, 6, 1, 20);
 
 
 

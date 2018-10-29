@@ -15,7 +15,7 @@ private:
 
 
   //Simple Objects
-  int m_simpleObjectCount = 0;
+  int m_screenObjectLength = 0;
 
   lv_obj_t** m_screenObjects = nullptr;
   lv_style_t m_defaultObjectStyle;
