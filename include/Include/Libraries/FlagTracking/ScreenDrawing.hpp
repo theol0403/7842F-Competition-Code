@@ -17,11 +17,11 @@ private:
   //Simple Objects
   int m_simpleObjectCount = 0;
 
-  lv_obj_t** m_simpleObjects = nullptr;
-  lv_style_t m_simpleObjectStyle;
-  lv_style_t m_blueSimpleObjectStyle;
-  lv_style_t m_redSimpleObjectStyle;
-  lv_style_t m_discardSimpleObjectStyle;
+  lv_obj_t** m_screenObjects = nullptr;
+  lv_style_t m_defaultObjectStyle;
+  lv_style_t m_blueObjectStyle;
+  lv_style_t m_redObjectStyle;
+  lv_style_t m_discardObjectStyle;
 
 
 
@@ -36,7 +36,6 @@ public:
   void initSimpleObjects(int);
   void drawSimpleObjects(simpleObjects_t*, int currentCount = -1);
 
-  void drawSortedObjects(sortedObjects_t*, int);
 
 
 
