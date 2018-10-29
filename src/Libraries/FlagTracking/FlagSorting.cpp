@@ -15,6 +15,7 @@ m_objectPosThreshold{}
   m_sourceObjects = new sortedObjects_t[objectCount];
   m_tempAllignIndex = new int[m_masterLength];
   m_masterObjects = new sortedObjects_t[m_masterLength];
+  m_exportObjects = new simpleObjects_t[objectCount];
 }
 
 FlagSorting::~FlagSorting()
@@ -22,6 +23,7 @@ FlagSorting::~FlagSorting()
   delete[] m_sourceObjects;
   delete[] m_tempAllignIndex;
   delete[] m_masterObjects;
+  delete[] m_exportObjects;
 }
 
 
@@ -310,11 +312,11 @@ void FlagSorting::sortMaster()
     startPosition = endCount; //Start on the next life
   }
 
-//Delete objects to the right of life 1, which is 0
+  //Delete objects to the right of life 1, which is 0
   clearArray(m_masterObjects, startPosition, m_masterLength);
 
 
-m_masterCount = startPosition;
+  m_masterCount = startPosition;
   //sort by life
   //sort by Y
 
@@ -327,25 +329,39 @@ m_masterCount = startPosition;
 
 simpleObjects_t* FlagSorting::exportObjects()
 {
-  static simpleObjects_t* exportObjects;
   //for each object in master down to 5 life
-  for(int objectNum = 0; m_masterObjects[objectNum].lifeCounter >= m_maxLife - 1; objectNum++)
+  for(int objectNum = 0; objectNum < m_sourceLength; objectNum++)
   {
-    exportObjects[objectNum].objSig = m_masterObjects[objectNum].objSig;
-    exportObjects[objectNum].objX = m_masterObjects[objectNum].objX;
-    exportObjects[objectNum].objY = m_masterObjects[objectNum].objY;
-    exportObjects[objectNum].objWidth = m_masterObjects[objectNum].objWidth;
-    exportObjects[objectNum].objHeight = m_masterObjects[objectNum].objHeight;
-    exportObjects[objectNum].objCenterX = m_masterObjects[objectNum].objCenterX;
-    exportObjects[objectNum].objCenterY = m_masterObjects[objectNum].objCenterY;
-    exportObjects[objectNum].objSize = (m_masterObjects[objectNum].objWidth + m_masterObjects[objectNum].objHeight) / 2;
-    exportObjects[objectNum].discardObject = false;
-    m_currentExportCount = objectNum + 1;
+    if(m_masterObjects[objectNum].lifeCounter >= m_maxLife - 1)
+    {
+      m_exportObjects[objectNum].objSig = m_masterObjects[objectNum].objSig;
+      m_exportObjects[objectNum].objX = m_masterObjects[objectNum].objX;
+      m_exportObjects[objectNum].objY = m_masterObjects[objectNum].objY;
+      m_exportObjects[objectNum].objWidth = m_masterObjects[objectNum].objWidth;
+      m_exportObjects[objectNum].objHeight = m_masterObjects[objectNum].objHeight;
+      m_exportObjects[objectNum].objSize = (m_masterObjects[objectNum].objWidth + m_masterObjects[objectNum].objHeight) / 2;
+      m_exportObjects[objectNum].objCenterX = m_masterObjects[objectNum].objCenterX;
+      m_exportObjects[objectNum].objCenterY = m_masterObjects[objectNum].objCenterY;
+      m_exportObjects[objectNum].discardObject = false;
+      m_exportCount = objectNum + 1;
+    }
+    else
+    {
+      m_exportObjects[objectNum].objSig = VISION_OBJECT_ERR_SIG;
+      m_exportObjects[objectNum].objX = 0;
+      m_exportObjects[objectNum].objY = 0;
+      m_exportObjects[objectNum].objWidth = 0;
+      m_exportObjects[objectNum].objHeight = 0;
+      m_exportObjects[objectNum].objSize = 0;
+      m_exportObjects[objectNum].objCenterX = 0;
+      m_exportObjects[objectNum].objCenterY = 0;
+      m_exportObjects[objectNum].discardObject = false;
+    }
   }
-  return exportObjects;
+  return m_exportObjects;
 }
 
 int FlagSorting::exportCount()
 {
-  return m_currentExportCount;
+  return m_exportCount;
 }

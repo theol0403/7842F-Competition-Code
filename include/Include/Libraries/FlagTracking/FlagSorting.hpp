@@ -43,7 +43,9 @@ private:
   const float m_emaAlpha;
 
 
-  int m_currentExportCount = 0;
+  int m_exportCount = 0;
+  simpleObjects_t* m_exportObjects = nullptr;
+
 
 
 

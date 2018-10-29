@@ -46,17 +46,15 @@ void mainFlagTrackingTask(void*)
     mainVisionReading.debugObjects(2);
 
 
-    //objectExport = mainVisionReading.exportObjects();
-    //objectCount = mainVisionReading.exportCurrentCount();
+    objectExport = mainVisionReading.exportObjects();
+    objectCount = mainVisionReading.exportCurrentCount();
     //mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
 
 
-    mainFlagSorting.importSource(objectExport, mainVisionReading.exportCurrentCount());
+    mainFlagSorting.importSource(objectExport, objectCount);
     mainFlagSorting.createAllignList();
     mainFlagSorting.mergeMaster();
     mainFlagSorting.sortMaster();
-
-
 
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
