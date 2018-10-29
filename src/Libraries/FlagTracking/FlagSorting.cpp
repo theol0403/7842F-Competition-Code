@@ -301,7 +301,7 @@ int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int s
       }
     }
   }
-  return lastMatch;
+  return lastMatch + 1; //This is because I need the amount of objects, not the index
 }
 
 
@@ -310,14 +310,15 @@ int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int s
 void FlagSorting::sortMaster()
 {
   int startPosition = 0;
-  int endPosision = 0;
+  int endCount = 0;
   for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--)
   {
-    endPosision = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
-    sortArrayY(m_masterObjects, startPosition, endPosision);
-    startPosition = endPosision;
+    endCount = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
+    sortArrayY(m_masterObjects, startPosition, endCount);
+    startPosition = endCount; //Start on the next life
   }
 
+//Delete objects to the right of life 1, which is 0
   clearArray(m_masterObjects, startPosition, m_masterLength);
 
 
