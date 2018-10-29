@@ -15,7 +15,6 @@ struct sortedObjects_t
 
   bool matchFound;
   int lifeCounter;
-  bool visibility;
 };
 
 
@@ -43,6 +42,7 @@ private:
   const float m_emaAlpha;
 
 
+  int m_currentExportCount = 0;
 
 
 
@@ -68,8 +68,9 @@ public:
   int sortArrayLife(sortedObjects_t*, int, int, int);
   void sortMaster();
 
-  sortedObjects_t* exportObjects();
-  int exportMasterCount();
+
+  simpleObjects_t* exportObjects();
+  int exportCount();
 
 
 

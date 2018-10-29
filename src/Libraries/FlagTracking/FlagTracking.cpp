@@ -20,10 +20,11 @@ void mainFlagTrackingTask(void*)
 
   FlagSorting mainFlagSorting(20, 6, 1);
 
+
+
   simpleObjects_t* objectExport;
   int objectCount;
 
-  sortedObjects_t* exportObjects;
 
   while(true)
   {
@@ -45,18 +46,22 @@ void mainFlagTrackingTask(void*)
     mainVisionReading.debugObjects(2);
 
 
-    objectExport = mainVisionReading.exportObjects();
-    //mainScreenDrawing.drawSimpleObjects(objectExport);
+    //objectExport = mainVisionReading.exportObjects();
+    //objectCount = mainVisionReading.exportCurrentCount();
+    //mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
 
 
     mainFlagSorting.importSource(objectExport, mainVisionReading.exportCurrentCount());
     mainFlagSorting.createAllignList();
     mainFlagSorting.mergeMaster();
     mainFlagSorting.sortMaster();
-    //
-    exportObjects = mainFlagSorting.exportObjects();
-    mainScreenDrawing.drawSortedObjects(exportObjects, mainFlagSorting.exportMasterCount());
-    //getting stuck here
+
+
+
+    objectExport = mainFlagSorting.exportObjects();
+    objectCount = mainFlagSorting.exportCount();
+
+    mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
 
 
 

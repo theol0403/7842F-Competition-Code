@@ -34,7 +34,7 @@ public:
   void initContainer(int, int);
 
   void initSimpleObjects(int);
-  void drawSimpleObjects(simpleObjects_t*);
+  void drawSimpleObjects(simpleObjects_t*, int currentCount = -1);
 
   void drawSortedObjects(sortedObjects_t*, int);
 

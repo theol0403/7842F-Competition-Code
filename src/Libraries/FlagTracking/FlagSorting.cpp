@@ -37,7 +37,6 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int e
     clearArray[objectNum].objCenterY = 0;
     clearArray[objectNum].matchFound = false;
     clearArray[objectNum].lifeCounter = 0;
-    clearArray[objectNum].visibility = false;
   }
 }
 
@@ -55,7 +54,6 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   tempObject.objCenterY = swapArray[firstObject].objCenterY;
   tempObject.matchFound = swapArray[firstObject].matchFound;
   tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
-  tempObject.visibility = swapArray[firstObject].visibility;
 
   swapArray[firstObject].objSig = swapArray[secondObject].objSig;
   swapArray[firstObject].objX = swapArray[secondObject].objX;
@@ -66,7 +64,6 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[firstObject].objCenterY = swapArray[secondObject].objCenterY;
   swapArray[firstObject].matchFound = swapArray[secondObject].matchFound;
   swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
-  swapArray[firstObject].visibility = swapArray[secondObject].visibility;
 
   swapArray[secondObject].objSig = tempObject.objSig;
   swapArray[secondObject].objX = tempObject.objX;
@@ -77,7 +74,6 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
   swapArray[secondObject].objCenterY = tempObject.objCenterY;
   swapArray[secondObject].matchFound = tempObject.matchFound;
   swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
-  swapArray[secondObject].visibility = tempObject.visibility;
 }
 
 
@@ -104,7 +100,7 @@ void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int startIndex, int las
 
 
 
-//Imports the source array and sorts it by Y into sourceArray
+//Imports the source array and sorts it by Y into sourceObjects
 void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSourceCount)
 {
   //Amount of objects to read. Not to exceed sourceCount
@@ -123,7 +119,6 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
       m_sourceObjects[objectNum].objCenterY = importObjects[objectNum].objCenterY;
       m_sourceObjects[objectNum].matchFound = false;
       m_sourceObjects[objectNum].lifeCounter = 0;
-      m_sourceObjects[objectNum].visibility = false;
     }
     else
     {
@@ -142,7 +137,6 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].objCenterY = 0;
     m_sourceObjects[objectNum].matchFound = false;
     m_sourceObjects[objectNum].lifeCounter = 0;
-    m_sourceObjects[objectNum].visibility = false;
   }
   sortArrayY(m_sourceObjects, 0, m_sourceCount); //Sorts m_sourceObjects by Y
 }
@@ -237,12 +231,10 @@ void FlagSorting::mergeMaster()
       m_masterObjects[masterNum].matchFound = false;
       m_masterObjects[masterNum].lifeCounter++;
       if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
-      m_masterObjects[masterNum].visibility = true;
     }
     else
     {
       m_masterObjects[masterNum].lifeCounter--;
-      m_masterObjects[masterNum].visibility = false;
     }
   }
 
@@ -257,7 +249,6 @@ void FlagSorting::mergeMaster()
     m_masterObjects[masterNum].objCenterY = m_masterObjects[masterNum].objCenterY;
     m_masterObjects[masterNum].matchFound = false;
     m_masterObjects[masterNum].lifeCounter = 1;
-    m_masterObjects[masterNum].visibility = true;
   }
 
   m_masterCount = m_tempCount;
@@ -330,12 +321,30 @@ m_masterCount = startPosition;
   //updates masterCount
 }
 
-sortedObjects_t* FlagSorting::exportObjects()
+
+
+
+simpleObjects_t* FlagSorting::exportObjects()
 {
-  return m_masterObjects;
+  static simpleObjects_t* exportObjects;
+  //for each object in master down to 5 life
+  for(int objectNum = 0; m_masterObjects[objectNum].lifeCounter >= m_maxLife - 1; objectNum++)
+  {
+    exportObjects[objectNum].objSig = m_masterObjects[objectNum].objSig;
+    exportObjects[objectNum].objX = m_masterObjects[objectNum].objX;
+    exportObjects[objectNum].objY = m_masterObjects[objectNum].objY;
+    exportObjects[objectNum].objWidth = m_masterObjects[objectNum].objWidth;
+    exportObjects[objectNum].objHeight = m_masterObjects[objectNum].objHeight;
+    exportObjects[objectNum].objCenterX = m_masterObjects[objectNum].objCenterX;
+    exportObjects[objectNum].objCenterY = m_masterObjects[objectNum].objCenterY;
+    exportObjects[objectNum].objSize = (m_masterObjects[objectNum].objWidth + m_masterObjects[objectNum].objHeight) / 2;
+    exportObjects[objectNum].discardObject = false;
+    m_currentExportCount = objectNum + 1;
+  }
+  return exportObjects;
 }
 
-int FlagSorting::exportMasterCount()
+int FlagSorting::exportCount()
 {
-  return m_masterCount;
+  return m_currentExportCount;
 }

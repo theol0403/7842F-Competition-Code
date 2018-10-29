@@ -86,10 +86,12 @@ void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
 
 
 
-void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects)
+void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects, int currentCount)
 {
+  currentCount = currentCount == -1 ? m_simpleObjectCount : currentCount;
+  currentCount = currentCount > m_simpleObjectCount ? m_simpleObjectCount : currentCount;
 
-  for(int objectNum = 0; objectNum < m_simpleObjectCount; objectNum++)
+  for(int objectNum = 0; objectNum < currentCount; objectNum++)
   {
     if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
