@@ -59,11 +59,11 @@ void mainFlagTrackingTask(void*)
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
 
-    mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
+    //mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
 
 
 
 
-    pros::delay(50);
+    pros::delay(500);
   }
 }

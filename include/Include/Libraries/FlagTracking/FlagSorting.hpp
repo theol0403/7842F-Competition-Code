@@ -62,7 +62,7 @@ public:
 
   void importSource(simpleObjects_t*, int);
 
-  bool compareObjects(sortedObjects_t&, sortedObjects_t&);
+  bool compareObjects(sortedObjects_t*, sortedObjects_t*);
   void createAllignList();
 
   int emaCalculate(int, int);

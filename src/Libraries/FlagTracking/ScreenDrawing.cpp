@@ -91,6 +91,11 @@ void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects, int currentC
   currentCount = currentCount == -1 ? m_screenObjectLength : currentCount;
   currentCount = currentCount > m_screenObjectLength ? m_screenObjectLength : currentCount;
 
+  for(int objectNum = 0; objectNum < m_screenObjectLength; objectNum++)
+  {
+    lv_obj_set_hidden(m_screenObjects[objectNum], true);
+  }
+
   for(int objectNum = 0; objectNum < currentCount; objectNum++)
   {
     if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)

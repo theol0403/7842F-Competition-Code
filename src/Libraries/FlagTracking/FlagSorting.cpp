@@ -13,8 +13,10 @@ m_emaAlpha{emaAlpha},
 m_objectPosThreshold{}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
+    clearArray(m_sourceObjects, 0, objectCount);
   m_tempAllignIndex = new int[m_masterLength];
   m_masterObjects = new sortedObjects_t[m_masterLength];
+  clearArray(m_masterObjects, 0, m_masterLength);
   m_exportObjects = new simpleObjects_t[objectCount];
 }
 
@@ -148,13 +150,13 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 
 
-bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
+bool FlagSorting::compareObjects(sortedObjects_t *sourceObject, sortedObjects_t *masterObject)
 {
   //compare sig, then Y, then X, then size
   bool cascadingTrue = true;
-  cascadingTrue = cascadingTrue && sourceObject.objSig == masterObject.objSig;
-  cascadingTrue = cascadingTrue && sourceObject.objCenterY > masterObject.objCenterY - 10 && sourceObject.objCenterY < masterObject.objCenterY + 10;
-  cascadingTrue = cascadingTrue && sourceObject.objCenterX > masterObject.objCenterX - 10 && sourceObject.objCenterX < masterObject.objCenterX + 10;
+  cascadingTrue = cascadingTrue && (sourceObject->objSig == masterObject->objSig);
+  cascadingTrue = cascadingTrue && ((sourceObject->objCenterY > masterObject->objCenterY - m_objectPosThreshold) && (sourceObject->objCenterY < masterObject->objCenterY + m_objectPosThreshold));
+  cascadingTrue = cascadingTrue && ((sourceObject->objCenterX > masterObject->objCenterX - m_objectPosThreshold) && (sourceObject->objCenterX < masterObject->objCenterX + m_objectPosThreshold));
   //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
   //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
@@ -190,7 +192,7 @@ void FlagSorting::createAllignList()
     {
       if(!m_masterObjects[masterObjectNum].matchFound)
       {
-        if(compareObjects(m_sourceObjects[sourceObjectNum], m_masterObjects[masterObjectNum]))
+        if(compareObjects(&m_sourceObjects[sourceObjectNum], &m_masterObjects[masterObjectNum]))
         {
           m_tempAllignIndex[masterObjectNum] = sourceObjectNum;
           m_masterObjects[masterObjectNum].matchFound = true;
@@ -206,6 +208,14 @@ void FlagSorting::createAllignList()
 
   }
 
+
+std::cout << "Temp Allign";
+  for(int tempNum = 0; tempNum < 5; tempNum++)
+  {
+    std::cout << " | " << m_tempAllignIndex[tempNum];
+  }
+  std::cout << " | Temp Cout | " << m_tempCount;
+  std::cout << "\n";
 
   //allign sorted source array into temp array symetrical to master, left to right
   //any non-found objects to into arrays past masterCount
@@ -305,12 +315,18 @@ void FlagSorting::sortMaster()
 {
   int startPosition = 0;
   int endCount = 0;
-  for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--)
-  {
-    endCount = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
-    sortArrayY(m_masterObjects, startPosition, endCount);
-    startPosition = endCount; //Start on the next life
-  }
+  // for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--)
+  // {
+  //   //endCount = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
+  //   std::cout << "YAYAYAYA";
+  //   pros::delay(1000);
+  //   sortArrayY(m_masterObjects, startPosition, endCount);
+  //   startPosition = endCount; //Start on the next life
+  // }
+
+  sortArrayY(m_masterObjects, startPosition, m_masterLength);
+
+
 
   //Delete objects to the right of life 1, which is 0
   clearArray(m_masterObjects, startPosition, m_masterLength);
