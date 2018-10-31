@@ -4,7 +4,7 @@
 #include "Include/Libraries/FlagTracking/FlagSorting.hpp"
 
 
-FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha = 1, int objectPosThreshold = 10)
+FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha, int objectPosThreshold)
 :
 m_sourceLength{objectCount},
 m_masterLength{objectCount * maxLife},
@@ -13,10 +13,12 @@ m_emaAlpha{emaAlpha},
 m_objectPosThreshold{}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
-  clearArray(m_sourceObjects, 0, objectCount);
+  clearArray(m_sourceObjects, 0, objectCount-1);
+
   m_tempAllignIndex = new int[m_masterLength];
   m_masterObjects = new sortedObjects_t[m_masterLength];
-  clearArray(m_masterObjects, 0, m_masterLength);
+  clearArray(m_masterObjects, 0, m_masterLength-1);
+
   m_exportObjects = new simpleObjects_t[objectCount];
 }
 
@@ -29,9 +31,9 @@ FlagSorting::~FlagSorting()
 }
 
 
-void FlagSorting::clearArray(sortedObjects_t* clearArray, int startObject, int endObject)
+void FlagSorting::clearArray(sortedObjects_t* clearArray, int startIndex, int endIndex)
 {
-  for (int objectNum = startObject; objectNum < endObject; objectNum++)
+  for (int objectNum = startIndex; objectNum < endIndex; objectNum++)
   {
     clearArray[objectNum].objSig = VISION_OBJECT_ERR_SIG;
     clearArray[objectNum].objY = 0;
@@ -171,7 +173,7 @@ void FlagSorting::createAllignList()
   //clear temp array
   for(int indexNum = 0; indexNum < m_masterLength; indexNum++)
   {
-    m_tempAllignIndex[indexNum] = -1;
+    m_tempAllignIndex[indexNum] = -1; //-1 Represents no match, as 0 would be a match with object 0
   }
 
   //take object 0
@@ -200,21 +202,23 @@ void FlagSorting::createAllignList()
         }
       }
     }
-    if(!m_sourceObjects[sourceObjectNum].matchFound) //If no match was found
+    //If no match was found, all matches have already been made, or if there are more sources than master
+    if(!m_sourceObjects[sourceObjectNum].matchFound)
     {
+      //Add extra object to the end of master
       m_tempAllignIndex[m_tempCount] = sourceObjectNum;
-      m_tempCount++;
+      m_tempCount++; //Let merge know there are extra objects
     }
 
   }
 
-
-  std::cout << "Temp Allign";
+std::cout << "Master Count | " << m_masterCount;
+std::cout << " | Temp Count | " << m_tempCount;
+  std::cout << " | Temp Allign";
   for(int tempNum = 0; tempNum < 5; tempNum++)
   {
     std::cout << " | " << m_tempAllignIndex[tempNum];
   }
-  std::cout << " | Temp Cout | " << m_tempCount;
   std::cout << "\n";
 
   //allign sorted source array into temp array symetrical to master, left to right
@@ -270,7 +274,7 @@ void FlagSorting::mergeMaster()
 
 
 
-
+//work here
 
 
 int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int startIndex, int lastIndex)

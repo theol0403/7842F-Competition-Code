@@ -53,7 +53,7 @@ private:
 public:
 
 
-  FlagSorting(int, int, float, int);
+  FlagSorting(int, int, float = 1, int = 10);
   ~FlagSorting();
 
   void clearArray(sortedObjects_t*, int, int);
