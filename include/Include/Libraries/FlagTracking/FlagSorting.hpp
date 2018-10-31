@@ -53,7 +53,7 @@ private:
 public:
 
 
-  FlagSorting(int, int, float = 1, int = 10);
+  FlagSorting(int, int, float = 0.5, int = 10);
   ~FlagSorting();
 
   void clearArray(sortedObjects_t*, int, int);
@@ -68,7 +68,6 @@ public:
   int emaCalculate(int, int);
   void mergeMaster();
 
-  int sortArrayLife(sortedObjects_t*, int, int, int);
   void sortMaster();
 
 

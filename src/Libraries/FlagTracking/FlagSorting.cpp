@@ -212,8 +212,8 @@ void FlagSorting::createAllignList()
 
   }
 
-std::cout << "Master Count | " << m_masterCount;
-std::cout << " | Temp Count | " << m_tempCount;
+  std::cout << "Master Count | " << m_masterCount;
+  std::cout << " | Temp Count | " << m_tempCount;
   std::cout << " | Temp Allign";
   for(int tempNum = 0; tempNum < 5; tempNum++)
   {
@@ -276,75 +276,82 @@ void FlagSorting::mergeMaster()
 
 
 
-//work here
-
-
-int FlagSorting::sortArrayLife(sortedObjects_t* sortArray, int lifeSearch, int startIndex, int lastIndex)
-{
-  int lastMatch = 0;
-  bool abortScan = false;
-
-  for (startIndex = startIndex; startIndex < lastIndex - 1 && !abortScan; startIndex++)
-  {
-    if(sortArray[startIndex].lifeCounter == lifeSearch)
-    {
-      //If startIndex already has the proper life
-      lastMatch = startIndex;
-    }
-    else
-    {
-      //If start index needs to be swapped
-      // Loop between current and end looking for larger object
-      bool swapFound = false; //Exit if a swap has been made
-      for(int currentIndex = startIndex + 1; currentIndex < lastIndex && !swapFound; currentIndex++)
-      {
-        if(sortArray[currentIndex].lifeCounter == lifeSearch) //If match is found to the right
-        {
-          swapObjects(sortArray, startIndex, currentIndex); //Swap
-          swapFound = true; //Exit looping
-          lastMatch = startIndex; //Start index now has proper life
-        }
-      }
-      if(!swapFound) //If nothing found to the right
-      {
-        abortScan = true;
-      }
-    }
-  }
-  return lastMatch + 1; //This is because I need the amount of objects, not the index
-}
 
 
 
 
 void FlagSorting::sortMaster()
 {
-  int startPosition = 0;
-  int endCount = 0;
-  // for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--)
-  // {
-  //   //endCount = sortArrayLife(m_masterObjects, lifeCounter, startPosition, m_masterLength);
-  //   std::cout << "YAYAYAYA";
-  //   pros::delay(1000);
-  //   sortArrayY(m_masterObjects, startPosition, endCount);
-  //   startPosition = endCount; //Start on the next life
-  // }
 
-  sortArrayY(m_masterObjects, startPosition, m_masterLength); //TODO fix index
+  int firstIndex = 0;
 
 
+  for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--) //Start at top life, end at 1
+  {
 
-  //Delete objects to the right of life 1, which is 0
-  clearArray(m_masterObjects, startPosition, m_masterLength-1);
+    bool abortScan = false; //Stop scanning for life when no more objects with proper life
+    int lastMatch = 0;
+
+    //For each master element except from the last
+    for (int startIndex = firstIndex; startIndex < m_masterLength - 1 && !abortScan; startIndex++)
+    {
+
+      //If startIndex needs swapping
+      if(m_masterObjects[startIndex].lifeCounter != lifeCounter)
+      {
+
+        bool swapFound = false; //Exit if a swap has been made
+        // Loop between startIndex and end of master looking for proper life
+        for(int currentIndex = startIndex + 1; currentIndex < m_masterLength && !swapFound; currentIndex++)
+        {
+          if(m_masterObjects[currentIndex].lifeCounter == lifeCounter) //If match is found to the right
+          {
+            swapObjects(m_masterObjects, startIndex, currentIndex); //Swap
+            swapFound = true; //Exit looping and move on to next startIndex
+            lastMatch = startIndex; //Mark index as having proper life
+          }
+          //else keep on looping through objects
+        }
+        if(!swapFound) //If no proper life was found
+        {
+          //Stop looping
+          abortScan = true;
+        }
 
 
-  m_masterCount = startPosition;
+      }
+      //If startIndex already has proper life
+      else
+      {
+        //Mark this index as having proper life and move on to next index
+        lastMatch = startIndex;
+      }
+
+    }
+
+    //now lastMatch contains the last index that has the proper life
+
+
+    sortArrayY(m_masterObjects, firstIndex, lastMatch);
+
+    firstIndex = lastMatch + 1; //First index is now the start index of the next object group
+
+
+  }
+
+
+  //Delete objects to the right of life 1, which is 0 life
+  clearArray(m_masterObjects, firstIndex, m_masterLength-1);
+
+
+  m_masterCount = firstIndex; //Master count contains the number of good objects in the master
+
   //sort by life
   //sort by Y
 
-  //Sorts master array by Y, and danging sorted by life than y at the end of the array
   //updates masterCount
 }
+
 
 
 
