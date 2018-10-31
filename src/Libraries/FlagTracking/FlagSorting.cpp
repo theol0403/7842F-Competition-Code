@@ -236,8 +236,9 @@ void FlagSorting::mergeMaster()
 {
   for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
   {
-    if(m_tempAllignIndex[masterNum] != -1) //If a match was found
+    if(m_tempAllignIndex[masterNum] != -1) //If a match was found with master
     {
+      //merge objects
       m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
       m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY);
       m_masterObjects[masterNum].objX = emaCalculate(m_masterObjects[masterNum].objX, m_sourceObjects[m_tempAllignIndex[masterNum]].objX);
@@ -246,16 +247,17 @@ void FlagSorting::mergeMaster()
       m_masterObjects[masterNum].objCenterX = emaCalculate(m_masterObjects[masterNum].objCenterX, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX);
       m_masterObjects[masterNum].objCenterY = emaCalculate(m_masterObjects[masterNum].objCenterY, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY);
       m_masterObjects[masterNum].matchFound = false;
-      m_masterObjects[masterNum].lifeCounter++;
+      m_masterObjects[masterNum].lifeCounter++; //Increase life
       if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
     }
-    else
+    else //If no match for an object in master
     {
       m_masterObjects[masterNum].lifeCounter--;
     }
   }
 
-  for(int masterNum = m_masterCount; masterNum < m_tempCount; masterNum++) //loop through new objects in source
+  //Loop through all extra new objects in temp and fill into master
+  for(int masterNum = m_masterCount; masterNum < m_tempCount; masterNum++)
   {
     m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
     m_masterObjects[masterNum].objY = m_sourceObjects[m_tempAllignIndex[masterNum]].objY;
@@ -268,7 +270,7 @@ void FlagSorting::mergeMaster()
     m_masterObjects[masterNum].lifeCounter = 1;
   }
 
-  m_masterCount = m_tempCount;
+  m_masterCount = m_tempCount; //Master now contains the new objects
 
 }
 
@@ -333,7 +335,7 @@ void FlagSorting::sortMaster()
 
 
   //Delete objects to the right of life 1, which is 0
-  clearArray(m_masterObjects, startPosition, m_masterLength);
+  clearArray(m_masterObjects, startPosition, m_masterLength-1);
 
 
   m_masterCount = startPosition;
