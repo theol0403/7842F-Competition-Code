@@ -15,10 +15,11 @@ void mainFlagTrackingTask(void*)
 
   VisionReading mainVisionReading(1, 30);
 
+  FlagSorting mainFlagSorting(20, 6, 1, 20);
+
+
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
   mainScreenDrawing.initSimpleObjects(30);
-
-  FlagSorting mainFlagSorting(20, 6, 1, 20);
 
 
 
@@ -30,17 +31,9 @@ void mainFlagTrackingTask(void*)
   {
 
     mainVisionReading.getObjects(); //Calculates Objects
-    mainVisionReading.debugErrorSig();
-
     mainVisionReading.filterNoise();
-    mainVisionReading.debugErrorSig();
-
     mainVisionReading.filterProp();
-    mainVisionReading.debugErrorSig();
-
     mainVisionReading.filterSize();
-    mainVisionReading.debugErrorSig();
-
     mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);
@@ -53,17 +46,18 @@ void mainFlagTrackingTask(void*)
 
     mainFlagSorting.importSource(objectExport, objectCount);
     mainFlagSorting.createAllignList();
+    mainFlagSorting.debugAllign();
     mainFlagSorting.mergeMaster();
     mainFlagSorting.sortMaster();
 
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
 
-    //mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
+    mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
 
 
 
 
-    pros::delay(500);
+    pros::delay(100);
   }
 }

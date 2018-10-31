@@ -64,6 +64,7 @@ public:
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
   void createAllignList();
+  void debugAllign();
 
   int emaCalculate(int, int);
   void mergeMaster();

@@ -212,6 +212,14 @@ void FlagSorting::createAllignList()
 
   }
 
+
+  //allign sorted source array into temp array symetrical to master, left to right
+  //any non-found objects to into arrays past masterCount
+}
+
+
+void FlagSorting::debugAllign()
+{
   std::cout << "Master Count | " << m_masterCount;
   std::cout << " | Temp Count | " << m_tempCount;
   std::cout << " | Temp Allign";
@@ -220,9 +228,6 @@ void FlagSorting::createAllignList()
     std::cout << " | " << m_tempAllignIndex[tempNum];
   }
   std::cout << "\n";
-
-  //allign sorted source array into temp array symetrical to master, left to right
-  //any non-found objects to into arrays past masterCount
 }
 
 
@@ -314,7 +319,7 @@ void FlagSorting::sortMaster()
         }
         if(!swapFound) //If no proper life was found
         {
-          //Stop looping
+          //Stop looping and move on to next life
           abortScan = true;
         }
 
