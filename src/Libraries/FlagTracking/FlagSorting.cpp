@@ -13,7 +13,7 @@ m_emaAlpha{emaAlpha},
 m_objectPosThreshold{}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
-    clearArray(m_sourceObjects, 0, objectCount);
+  clearArray(m_sourceObjects, 0, objectCount);
   m_tempAllignIndex = new int[m_masterLength];
   m_masterObjects = new sortedObjects_t[m_masterLength];
   clearArray(m_masterObjects, 0, m_masterLength);
@@ -82,16 +82,16 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int s
 }
 
 
-void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int startIndex, int lastIndex)
+void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int startIndex, int lastIndex) //Start and end index
 {
   // Loop through each object looking to swap the largest object to the right
   // except the last one, which will already be sorted by the time we get there
-  for (int startIndex = startIndex; startIndex < lastIndex - 1; startIndex++)
+  for (int startIndex = startIndex; startIndex < lastIndex; startIndex++)
   {
     int largestIndex = startIndex; //Assume current posision to swap
     bool swapNeeded = false;
     // Loop between current and end looking for larger object
-    for (int currentIndex = startIndex + 1; currentIndex < lastIndex; currentIndex++)
+    for (int currentIndex = startIndex + 1; currentIndex <= lastIndex; currentIndex++)
     {
       if (sortArray[currentIndex].objY > sortArray[largestIndex].objY)
       {
@@ -143,20 +143,20 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
     m_sourceObjects[objectNum].matchFound = false;
     m_sourceObjects[objectNum].lifeCounter = 0;
   }
-  sortArrayY(m_sourceObjects, 0, m_sourceCount); //Sorts m_sourceObjects by Y
+  sortArrayY(m_sourceObjects, 0, m_sourceCount-1); //Sorts m_sourceObjects by Y
 }
 
 
 
 
 
-bool FlagSorting::compareObjects(sortedObjects_t *sourceObject, sortedObjects_t *masterObject)
+bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
 {
   //compare sig, then Y, then X, then size
   bool cascadingTrue = true;
-  cascadingTrue = cascadingTrue && (sourceObject->objSig == masterObject->objSig);
-  cascadingTrue = cascadingTrue && ((sourceObject->objCenterY > masterObject->objCenterY - m_objectPosThreshold) && (sourceObject->objCenterY < masterObject->objCenterY + m_objectPosThreshold));
-  cascadingTrue = cascadingTrue && ((sourceObject->objCenterX > masterObject->objCenterX - m_objectPosThreshold) && (sourceObject->objCenterX < masterObject->objCenterX + m_objectPosThreshold));
+  cascadingTrue = cascadingTrue && (sourceObject.objSig == masterObject.objSig);
+  cascadingTrue = cascadingTrue && ((sourceObject.objCenterY > masterObject.objCenterY - m_objectPosThreshold) && (sourceObject.objCenterY < masterObject.objCenterY + m_objectPosThreshold));
+  cascadingTrue = cascadingTrue && ((sourceObject.objCenterX > masterObject.objCenterX - m_objectPosThreshold) && (sourceObject.objCenterX < masterObject.objCenterX + m_objectPosThreshold));
   //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
   //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
@@ -192,7 +192,7 @@ void FlagSorting::createAllignList()
     {
       if(!m_masterObjects[masterObjectNum].matchFound)
       {
-        if(compareObjects(&m_sourceObjects[sourceObjectNum], &m_masterObjects[masterObjectNum]))
+        if(compareObjects(m_sourceObjects[sourceObjectNum], m_masterObjects[masterObjectNum]))
         {
           m_tempAllignIndex[masterObjectNum] = sourceObjectNum;
           m_masterObjects[masterObjectNum].matchFound = true;
@@ -209,7 +209,7 @@ void FlagSorting::createAllignList()
   }
 
 
-std::cout << "Temp Allign";
+  std::cout << "Temp Allign";
   for(int tempNum = 0; tempNum < 5; tempNum++)
   {
     std::cout << " | " << m_tempAllignIndex[tempNum];
@@ -232,7 +232,7 @@ void FlagSorting::mergeMaster()
 {
   for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
   {
-    if(m_tempAllignIndex[masterNum] != -1)
+    if(m_tempAllignIndex[masterNum] != -1) //If a match was found
     {
       m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
       m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY);
@@ -254,12 +254,12 @@ void FlagSorting::mergeMaster()
   for(int masterNum = m_masterCount; masterNum < m_tempCount; masterNum++) //loop through new objects in source
   {
     m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
-    m_masterObjects[masterNum].objY = m_masterObjects[masterNum].objY;
-    m_masterObjects[masterNum].objX = m_masterObjects[masterNum].objX;
-    m_masterObjects[masterNum].objWidth = m_masterObjects[masterNum].objWidth;
-    m_masterObjects[masterNum].objHeight = m_masterObjects[masterNum].objHeight;
-    m_masterObjects[masterNum].objCenterX = m_masterObjects[masterNum].objCenterX;
-    m_masterObjects[masterNum].objCenterY = m_masterObjects[masterNum].objCenterY;
+    m_masterObjects[masterNum].objY = m_sourceObjects[m_tempAllignIndex[masterNum]].objY;
+    m_masterObjects[masterNum].objX = m_sourceObjects[m_tempAllignIndex[masterNum]].objX;
+    m_masterObjects[masterNum].objWidth = m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth;
+    m_masterObjects[masterNum].objHeight = m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight;
+    m_masterObjects[masterNum].objCenterX = m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX;
+    m_masterObjects[masterNum].objCenterY = m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY;
     m_masterObjects[masterNum].matchFound = false;
     m_masterObjects[masterNum].lifeCounter = 1;
   }
@@ -324,7 +324,7 @@ void FlagSorting::sortMaster()
   //   startPosition = endCount; //Start on the next life
   // }
 
-  sortArrayY(m_masterObjects, startPosition, m_masterLength);
+  sortArrayY(m_masterObjects, startPosition, m_masterLength); //TODO fix index
 
 
 
