@@ -53,24 +53,11 @@ ScreenDrawing::~ScreenDrawing()
 }
 
 
-screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount, lv_color_t blueColor, lv_color_t redColor)
+screenObjects_t ScreenDrawing::createSimpleObjects(int objectCount)
 {
   screenObjects_t screenObjects = {};
   screenObjects.screenObjectsArray = new lv_obj_t*[objectCount];
   screenObjects.objectCount = objectCount;
-
-  //Blue object style
-  lv_style_copy(&screenObjects.blueStyle, &m_defaultObjectStyle);
-  screenObjects.blueStyle.body.main_color = blueColor;
-  screenObjects.blueStyle.body.grad_color = blueColor;
-  screenObjects.blueStyle.body.border.color = LV_COLOR_YELLOW;
-
-  //Red object style
-  lv_style_copy(&screenObjects.redStyle, &m_defaultObjectStyle);
-  screenObjects.redStyle.body.main_color = redColor;
-  screenObjects.redStyle.body.grad_color = redColor;
-  screenObjects.redStyle.body.border.color = LV_COLOR_YELLOW;
-
 
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
@@ -79,6 +66,20 @@ screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount, lv_color_t blu
     lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], true);
   }
   return screenObjects;
+}
+
+
+
+lv_style_t ScreenDrawing::createStyle(lv_color_t bodyColor)
+{
+  lv_style_t objectStyle;
+
+  lv_style_copy(&objectStyle, &m_defaultObjectStyle);
+  objectStyle.body.main_color = bodyColor;
+  objectStyle.body.grad_color = bodyColor;
+  objectStyle.body.border.color = LV_COLOR_YELLOW;
+
+  return objectStyle;
 }
 
 

@@ -16,10 +16,16 @@ void mainFlagTrackingTask(void*)
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
 
   VisionReading mainVisionReading(1, 30);
-  screenObjects_t simpleScreenObjects = mainScreenDrawing.initSimpleObjects(30, LV_COLOR_BLUE, LV_COLOR_RED);
+  screenObjects_t simpleScreenObjects = mainScreenDrawing.createSimpleObjects(30);
+  simpleScreenObjects.blueStyle = mainScreenDrawing.createStyle(LV_COLOR_BLUE);
+  simpleScreenObjects.redStyle = mainScreenDrawing.createStyle(LV_COLOR_RED);
+  simpleScreenObjects.blueStyle.body.opa = LV_OPA_20;
+  simpleScreenObjects.redStyle.body.opa = LV_OPA_20;
 
   FlagSorting mainFlagSorting(20, 6, 1, 20);
-  screenObjects_t sortedScreenObjects = mainScreenDrawing.initSimpleObjects(20, LV_COLOR_BLUE, LV_COLOR_RED);
+  screenObjects_t sortedScreenObjects = mainScreenDrawing.createSimpleObjects(20);
+  sortedScreenObjects.blueStyle = mainScreenDrawing.createStyle(LV_COLOR_BLUE);
+  sortedScreenObjects.redStyle = mainScreenDrawing.createStyle(LV_COLOR_RED);
 
 
   simpleObjects_t* objectExport;

@@ -25,7 +25,8 @@ public:
   ~ScreenDrawing();
 
 
-screenObjects_t initSimpleObjects(int, lv_color_t, lv_color_t);
+screenObjects_t createSimpleObjects(int);
+lv_style_t createStyle(lv_color_t);
 
   void drawSimpleObjects(screenObjects_t, simpleObjects_t*, int = -1);
 
