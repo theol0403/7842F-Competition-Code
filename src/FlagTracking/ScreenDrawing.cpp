@@ -28,9 +28,6 @@ m_heightScale{containerHeight/VISION_FOV_HEIGHT}
 
 
 
-
-
-
   //Generic Object Style
   lv_style_copy(&m_defaultObjectStyle, &lv_style_pretty_color);
   m_defaultObjectStyle.body.main_color = LV_COLOR_GRAY;
@@ -40,17 +37,6 @@ m_heightScale{containerHeight/VISION_FOV_HEIGHT}
   m_defaultObjectStyle.body.border.width = 3;
   m_defaultObjectStyle.body.border.opa = LV_OPA_100;
 
-  //Blue object style
-  lv_style_copy(&m_blueObjectStyle, &m_defaultObjectStyle);
-  m_blueObjectStyle.body.main_color = LV_COLOR_BLUE;
-  m_blueObjectStyle.body.grad_color = LV_COLOR_BLUE;
-  m_blueObjectStyle.body.border.color = LV_COLOR_YELLOW;
-
-  //Red object style
-  lv_style_copy(&m_redObjectStyle, &m_defaultObjectStyle);
-  m_redObjectStyle.body.main_color = LV_COLOR_RED;
-  m_redObjectStyle.body.grad_color = LV_COLOR_RED;
-  m_redObjectStyle.body.border.color = LV_COLOR_YELLOW;
 
   //Discard object style
   lv_style_copy(&m_discardObjectStyle, &m_defaultObjectStyle);
@@ -67,11 +53,24 @@ ScreenDrawing::~ScreenDrawing()
 }
 
 
-screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount)
+screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount, lv_color_t blueColor, lv_color_t redColor)
 {
   screenObjects_t screenObjects = {};
   screenObjects.screenObjectsArray = new lv_obj_t*[objectCount];
   screenObjects.objectCount = objectCount;
+
+  //Blue object style
+  lv_style_copy(&screenObjects.blueStyle, &m_defaultObjectStyle);
+  screenObjects.blueStyle.body.main_color = blueColor;
+  screenObjects.blueStyle.body.grad_color = blueColor;
+  screenObjects.blueStyle.body.border.color = LV_COLOR_YELLOW;
+
+  //Red object style
+  lv_style_copy(&screenObjects.redStyle, &m_defaultObjectStyle);
+  screenObjects.redStyle.body.main_color = redColor;
+  screenObjects.redStyle.body.grad_color = redColor;
+  screenObjects.redStyle.body.border.color = LV_COLOR_YELLOW;
+
 
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
@@ -90,7 +89,10 @@ screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount)
 void ScreenDrawing::drawSimpleObjects(screenObjects_t screenObjects, simpleObjects_t* flagObjects, int objectCount)
 {
 
-  for(int objectNum = 0; objectNum < screenObjects.objectCount; objectNum++)
+  currentCount = currentCount == -1 ? m_screenObjectLength : currentCount;
+currentCount = currentCount > m_screenObjectLength ? m_screenObjectLength : currentCount;
+
+  for(int objectNum = 0; objectNum < screenObjects.objectCount; objectNum++) //Hide all objects
   {
     lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], true);
   }
@@ -114,11 +116,11 @@ void ScreenDrawing::drawSimpleObjects(screenObjects_t screenObjects, simpleObjec
       }
       else if(flagObjects[objectNum].objSig == m_flagSig.blueSig)
       {
-        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
+        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &screenObjects.blueStyle); //Give it the style for a blue flagObject
       }
       else if(flagObjects[objectNum].objSig == m_flagSig.redSig)
       {
-        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_redObjectStyle); //Give it the style for a red flagObject
+        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &screenObjects.redStyle); //Give it the style for a red flagObject
       }
       else
       {

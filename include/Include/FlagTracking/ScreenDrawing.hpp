@@ -16,8 +16,6 @@ private:
 
 
   lv_style_t m_defaultObjectStyle;
-  lv_style_t m_blueObjectStyle;
-  lv_style_t m_redObjectStyle;
   lv_style_t m_discardObjectStyle;
 
 
@@ -27,9 +25,9 @@ public:
   ~ScreenDrawing();
 
 
-screenObjects_t initSimpleObjects(int);
+screenObjects_t initSimpleObjects(int, lv_color_t, lv_color_t);
 
-  void drawSimpleObjects(screenObjects_t, simpleObjects_t*, int);
+  void drawSimpleObjects(screenObjects_t, simpleObjects_t*, int = -1);
 
 
 

@@ -17,10 +17,10 @@ void mainFlagTrackingTask(void*)
 
 
   VisionReading mainVisionReading(1, 30);
-  screenObjects_t simpleScreenObjects = mainScreenDrawing.initSimpleObjects(30);
+  screenObjects_t simpleScreenObjects = mainScreenDrawing.initSimpleObjects(30, LV_COLOR_BLUE, LV_COLOR_RED);
 
   FlagSorting mainFlagSorting(20, 6, 1, 20);
-  screenObjects_t sortedScreenObjects = mainScreenDrawing.initSimpleObjects(20);
+  screenObjects_t sortedScreenObjects = mainScreenDrawing.initSimpleObjects(20, LV_COLOR_BLUE, LV_COLOR_RED);
 
 
 

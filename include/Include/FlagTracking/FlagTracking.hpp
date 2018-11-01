@@ -30,4 +30,6 @@ struct screenObjects_t
 {
   lv_obj_t** screenObjectsArray = nullptr;
   int objectCount = 0;
+  lv_style_t blueStyle;
+  lv_style_t redStyle;
 };
