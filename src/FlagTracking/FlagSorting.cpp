@@ -84,24 +84,25 @@ void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstIndex, int se
 }
 
 
-void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int startIndex, int lastIndex) //Start and end index
+void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int firstIndex, int lastIndex)
 {
   // Loop through each object looking to swap the largest object to the right
   // except the last one, which will already be sorted by the time we get there
-  for (int startIndex = startIndex; startIndex < lastIndex; startIndex++)
+  for (int startIndex = firstIndex; startIndex < lastIndex; startIndex++)
   {
-    int largestIndex = startIndex; //Assume current posision to swap
+    int greatestIndex = startIndex; //Assume current posision to swap
     bool swapNeeded = false;
-    // Loop between current and end looking for larger object
+    // Loop between current and end looking for greatest object
     for (int currentIndex = startIndex + 1; currentIndex <= lastIndex; currentIndex++)
     {
-      if (sortArray[currentIndex].objY > sortArray[largestIndex].objY)
+      //If current object is greater than greatest object
+      if (sortArray[currentIndex].objY > sortArray[greatestIndex].objY)
       {
-        largestIndex = currentIndex;
+        greatestIndex = currentIndex;
         swapNeeded = true;
       }
     }
-    if(swapNeeded) swapObjects(sortArray, startIndex, largestIndex);
+    if(swapNeeded) swapObjects(sortArray, startIndex, greatestIndex); //Swap with the greatest
   }
 }
 
@@ -156,9 +157,9 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
 {
   //compare sig, then Y, then X, then size
   bool cascadingTrue = true;
-  cascadingTrue = cascadingTrue && (sourceObject.objSig == masterObject.objSig);
-  cascadingTrue = cascadingTrue && ((sourceObject.objCenterY > masterObject.objCenterY - m_objectPosThreshold) && (sourceObject.objCenterY < masterObject.objCenterY + m_objectPosThreshold));
-  cascadingTrue = cascadingTrue && ((sourceObject.objCenterX > masterObject.objCenterX - m_objectPosThreshold) && (sourceObject.objCenterX < masterObject.objCenterX + m_objectPosThreshold));
+  cascadingTrue = (cascadingTrue && (sourceObject.objSig == masterObject.objSig));
+  cascadingTrue = (cascadingTrue && ((sourceObject.objCenterY > masterObject.objCenterY - m_objectPosThreshold) && (sourceObject.objCenterY < masterObject.objCenterY + m_objectPosThreshold)));
+  cascadingTrue = (cascadingTrue && ((sourceObject.objCenterX > masterObject.objCenterX - m_objectPosThreshold) && (sourceObject.objCenterX < masterObject.objCenterX + m_objectPosThreshold)));
   //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
   //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
@@ -170,19 +171,20 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
 
 void FlagSorting::createAllignList()
 {
-  //clear temp array
-  for(int indexNum = 0; indexNum < m_masterLength; indexNum++)
-  {
-    m_tempAllignIndex[indexNum] = -1; //-1 Represents no match, as 0 would be a match with object 0
-  }
 
   //take object 0
-  //Search masterArray for same X, than Y, then life
+  //Search masterArray for same X, than Y
   //put objectNum in temp array with same index as master
   //mark master as a match found
   //mark object as match found
   //if no match put it in m_masterCount + 1 and increment it
   //repeate for next object
+
+  //clear temp array
+  for(int indexNum = 0; indexNum < m_masterLength; indexNum++)
+  {
+    m_tempAllignIndex[indexNum] = -1; //-1 Represents no match, as 0 would be a match with object 0
+  }
 
   m_tempCount = m_masterCount; //size of temp is size of master
 
