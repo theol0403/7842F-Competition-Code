@@ -14,39 +14,22 @@ m_flagSig(flagSig),
 m_widthScale{containerWidth/VISION_FOV_WIDTH},
 m_heightScale{containerHeight/VISION_FOV_HEIGHT}
 {
-  initContainer(containerWidth, containerHeight);
-}
 
-
-ScreenDrawing::~ScreenDrawing()
-{
-  delete[] m_screenObjects;
-  m_screenObjects = nullptr;
-}
-
-
-
-void ScreenDrawing::initContainer(int containerWidth, int containerHeight)
-{
   m_objectContainer = lv_obj_create(lv_scr_act(), NULL);
   lv_obj_set_size(m_objectContainer, containerWidth, containerHeight);
   lv_obj_align(m_objectContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
 
+
   // Style for background of screen
-  static lv_style_t backgroundStyle; //Static so the style will stay alive
-  lv_style_copy(&backgroundStyle, &lv_style_plain_color);
-  backgroundStyle.body.main_color = LV_COLOR_GRAY;
-  backgroundStyle.body.grad_color = LV_COLOR_GRAY;
-  lv_obj_set_style(m_objectContainer, &backgroundStyle);
-}
+  lv_style_copy(&m_objectContainerStyle, &lv_style_plain_color);
+  m_objectContainerStyle.body.main_color = LV_COLOR_GRAY;
+  m_objectContainerStyle.body.grad_color = LV_COLOR_GRAY;
+  lv_obj_set_style(m_objectContainer, &m_objectContainerStyle);
 
 
 
 
-void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
-{
-  m_screenObjectLength = simpleObjectCount;
-  m_screenObjects = new lv_obj_t*[simpleObjectCount];
+
 
   //Generic Object Style
   lv_style_copy(&m_defaultObjectStyle, &lv_style_pretty_color);
@@ -74,6 +57,38 @@ void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
   m_discardObjectStyle.body.main_color = LV_COLOR_OLIVE;
   m_discardObjectStyle.body.grad_color = LV_COLOR_OLIVE;
   m_discardObjectStyle.body.border.color = LV_COLOR_YELLOW;
+
+}
+
+
+ScreenDrawing::~ScreenDrawing()
+{
+  delete[] m_screenObjects;
+  m_screenObjects = nullptr;
+}
+
+
+lv_obj_t** ScreenDrawing::initSimpleObjects(int simpleObjectCount)
+{
+  lv_obj_t** simpleObjectArray = new lv_obj_t*[simpleObjectCount];
+
+  for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
+  {
+    simpleObjectArray[objectNum] = lv_obj_create(m_objectContainer, NULL);
+    lv_obj_set_style(simpleObjectArray[objectNum], &m_defaultObjectStyle);
+    lv_obj_set_hidden(simpleObjectArray[objectNum], true);
+  }
+}
+
+
+
+
+void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
+{
+  m_screenObjectLength = simpleObjectCount;
+  m_screenObjects = new lv_obj_t*[simpleObjectCount];
+
+
 
   for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
   {
