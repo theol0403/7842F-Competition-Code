@@ -1,9 +1,9 @@
 #include "main.h"
 
-#include "Include/Libraries/FlagTracking/FlagTracking.hpp"
-#include "Include/Libraries/FlagTracking/VisionReading.hpp"
-#include "Include/Libraries/FlagTracking/FlagSorting.hpp"
-#include "Include/Libraries/FlagTracking/ScreenDrawing.hpp"
+#include "Include/FlagTracking/FlagTracking.hpp"
+#include "Include/FlagTracking/VisionReading.hpp"
+#include "Include/FlagTracking/FlagSorting.hpp"
+#include "Include/FlagTracking/ScreenDrawing.hpp"
 
 
 
