@@ -15,14 +15,14 @@ void mainFlagTrackingTask(void*)
 
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
 
-  VisionReading mainVisionReading(1, 30);
+  VisionReading mainVisionReading(20, 30);
   screenObjects_t simpleScreenObjects = mainScreenDrawing.createSimpleObjects(30);
   simpleScreenObjects.blueStyle = mainScreenDrawing.createStyle(LV_COLOR_BLUE);
   simpleScreenObjects.redStyle = mainScreenDrawing.createStyle(LV_COLOR_RED);
-  simpleScreenObjects.blueStyle.body.opa = LV_OPA_20;
-  simpleScreenObjects.redStyle.body.opa = LV_OPA_20;
+  simpleScreenObjects.blueStyle.body.opa = LV_OPA_50;
+  simpleScreenObjects.redStyle.body.opa = LV_OPA_50;
 
-  FlagSorting mainFlagSorting(20, 6, 1, 20);
+  FlagSorting mainFlagSorting(20, 6, 0.5, 60);
   screenObjects_t sortedScreenObjects = mainScreenDrawing.createSimpleObjects(20);
   sortedScreenObjects.blueStyle = mainScreenDrawing.createStyle(LV_COLOR_BLUE);
   sortedScreenObjects.redStyle = mainScreenDrawing.createStyle(LV_COLOR_RED);
@@ -39,14 +39,15 @@ void mainFlagTrackingTask(void*)
     mainVisionReading.filterNoise();
     mainVisionReading.filterProp();
     mainVisionReading.filterSize();
-    mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);
 
 
     objectExport = mainVisionReading.exportObjects();
     objectCount = mainVisionReading.exportCurrentCount();
-    //mainScreenDrawing.drawSimpleObjects(simpleScreenObjects, objectExport, objectCount);
+    mainScreenDrawing.drawSimpleObjects(simpleScreenObjects, objectExport, objectCount);
+
+    mainVisionReading.discardObjects();
 
 
     mainFlagSorting.importSource(objectExport, objectCount);
@@ -54,10 +55,10 @@ void mainFlagTrackingTask(void*)
     mainFlagSorting.debugAllign();
     mainFlagSorting.mergeMaster();
     mainFlagSorting.sortMaster();
-
+    //
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
-
+    //
     mainScreenDrawing.drawSimpleObjects(sortedScreenObjects, objectExport, objectCount);
 
 

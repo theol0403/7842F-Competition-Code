@@ -8,7 +8,7 @@ FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha, int objec
 :
 m_sourceLength{objectCount},
 m_masterLength{objectCount * maxLife},
-m_maxLife{maxLife},
+m_maxLife(maxLife),
 m_emaAlpha{emaAlpha},
 m_objectPosThreshold{}
 {
@@ -163,7 +163,8 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
   //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
   //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
-  return cascadingTrue;
+  // return cascadingTrue;
+  return true;
 }
 
 
@@ -292,7 +293,7 @@ void FlagSorting::sortMaster()
 
   int firstIndex = 0;
 
-  for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--) //Start at top life, end at 1
+  for(int lifeCounter = m_maxLife; lifeCounter > 0; lifeCounter--) //Start at top life, end at 1
   {
 
     bool abortScan = false; //Stop scanning for life when no more objects with proper life
@@ -310,6 +311,7 @@ void FlagSorting::sortMaster()
         {
           if(m_masterObjects[currentIndex].lifeCounter == lifeCounter) //If match is found to the right
           {
+            std::cout << "Swap" << currentIndex << "\n";
             swapObjects(m_masterObjects, startIndex, currentIndex); //Swap
             swapFound = true; //Exit looping and move on to next startIndex
             lastMatch = startIndex; //Mark index as having proper life
@@ -337,7 +339,7 @@ void FlagSorting::sortMaster()
   }
 
   //Delete objects to the right of life 1, which is 0 life
-  clearArray(m_masterObjects, firstIndex, m_masterLength-1);
+  //clearArray(m_masterObjects, firstIndex, m_masterLength-1);
 
   m_masterCount = firstIndex; //Master count contains the number of good objects in the master
 
