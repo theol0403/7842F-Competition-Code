@@ -13,13 +13,17 @@ void mainFlagTrackingTask(void*)
 {
   flagSig_t mainFlagSig {1, 2};
 
+  ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
+
+
   VisionReading mainVisionReading(1, 30);
+  screenObjects_t simpleScreenObjects = mainScreenDrawing.initSimpleObjects(30);
 
   FlagSorting mainFlagSorting(20, 6, 1, 20);
+  screenObjects_t sortedScreenObjects = mainScreenDrawing.initSimpleObjects(20);
 
 
-  ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
-  mainScreenDrawing.initSimpleObjects(30);
+
 
 
 
@@ -41,7 +45,7 @@ void mainFlagTrackingTask(void*)
 
     objectExport = mainVisionReading.exportObjects();
     objectCount = mainVisionReading.exportCurrentCount();
-    //mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
+    //mainScreenDrawing.drawSimpleObjects(simpleScreenObjects, objectExport, objectCount);
 
 
     mainFlagSorting.importSource(objectExport, objectCount);
@@ -53,7 +57,7 @@ void mainFlagTrackingTask(void*)
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
 
-    mainScreenDrawing.drawSimpleObjects(objectExport, objectCount);
+    mainScreenDrawing.drawSimpleObjects(sortedScreenObjects, objectExport, objectCount);
 
 
 

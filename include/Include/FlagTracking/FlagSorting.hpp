@@ -48,7 +48,7 @@ private:
   void swapObjects(sortedObjects_t*, int, int);
   void sortArrayY(sortedObjects_t*, int, int);
 
-  void importSource(simpleObjects_t*, int);
+
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
 
@@ -58,6 +58,8 @@ public:
 
   FlagSorting(int, int, float = 0.5, int = 10);
   ~FlagSorting();
+
+  void importSource(simpleObjects_t*, int);
 
   void createAllignList();
   void debugAllign();

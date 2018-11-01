@@ -24,3 +24,10 @@ struct simpleObjects_t
   int objCenterY;
   bool discardObject;
 };
+
+
+struct screenObjects_t
+{
+  lv_obj_t** screenObjectsArray = nullptr;
+  int objectCount = 0;
+};

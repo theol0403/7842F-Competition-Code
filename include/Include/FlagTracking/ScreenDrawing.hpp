@@ -15,16 +15,10 @@ private:
   lv_style_t m_objectContainerStyle;
 
 
-  //Simple Objects
-  int m_screenObjectLength = 0;
-
-  lv_obj_t** m_screenObjects = nullptr;
   lv_style_t m_defaultObjectStyle;
   lv_style_t m_blueObjectStyle;
   lv_style_t m_redObjectStyle;
   lv_style_t m_discardObjectStyle;
-
-
 
 
 public:
@@ -33,8 +27,9 @@ public:
   ~ScreenDrawing();
 
 
-  void initSimpleObjects(int);
-  void drawSimpleObjects(simpleObjects_t*, int currentCount = -1);
+screenObjects_t initSimpleObjects(int);
+
+  void drawSimpleObjects(screenObjects_t, simpleObjects_t*, int);
 
 
 

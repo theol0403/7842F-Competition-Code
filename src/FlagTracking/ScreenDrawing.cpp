@@ -63,78 +63,62 @@ m_heightScale{containerHeight/VISION_FOV_HEIGHT}
 
 ScreenDrawing::~ScreenDrawing()
 {
-  delete[] m_screenObjects;
-  m_screenObjects = nullptr;
+
 }
 
 
-lv_obj_t** ScreenDrawing::initSimpleObjects(int simpleObjectCount)
+screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount)
 {
-  lv_obj_t** simpleObjectArray = new lv_obj_t*[simpleObjectCount];
+  screenObjects_t screenObjects = {};
+  screenObjects.screenObjectsArray = new lv_obj_t*[objectCount];
+  screenObjects.objectCount = objectCount;
 
-  for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
+  for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
-    simpleObjectArray[objectNum] = lv_obj_create(m_objectContainer, NULL);
-    lv_obj_set_style(simpleObjectArray[objectNum], &m_defaultObjectStyle);
-    lv_obj_set_hidden(simpleObjectArray[objectNum], true);
+    screenObjects.screenObjectsArray[objectNum] = lv_obj_create(m_objectContainer, NULL);
+    lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_defaultObjectStyle);
+    lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], true);
   }
-}
-
-
-
-
-void ScreenDrawing::initSimpleObjects(int simpleObjectCount)
-{
-  m_screenObjectLength = simpleObjectCount;
-  m_screenObjects = new lv_obj_t*[simpleObjectCount];
-
-
-
-  for(int objectNum = 0; objectNum < simpleObjectCount; objectNum++)
-  {
-    m_screenObjects[objectNum] = lv_obj_create(m_objectContainer, NULL);
-    lv_obj_set_style(m_screenObjects[objectNum], &m_defaultObjectStyle);
-    lv_obj_set_hidden(m_screenObjects[objectNum], true);
-  }
+  return screenObjects;
 }
 
 
 
 
-void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects, int currentCount)
-{
-  currentCount = currentCount == -1 ? m_screenObjectLength : currentCount;
-  currentCount = currentCount > m_screenObjectLength ? m_screenObjectLength : currentCount;
 
-  for(int objectNum = 0; objectNum < m_screenObjectLength; objectNum++)
+
+void ScreenDrawing::drawSimpleObjects(screenObjects_t screenObjects, simpleObjects_t* flagObjects, int objectCount)
+{
+
+  for(int objectNum = 0; objectNum < screenObjects.objectCount; objectNum++)
   {
-    lv_obj_set_hidden(m_screenObjects[objectNum], true);
+    lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], true);
   }
 
-  for(int objectNum = 0; objectNum < currentCount; objectNum++)
+  for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
     if(flagObjects[objectNum].objSig != VISION_OBJECT_ERR_SIG)
     {
-      lv_obj_set_hidden(m_screenObjects[objectNum], false); // make visible
+      lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], false); // make visible
 
       //Set posisitons and size
-      lv_obj_set_x(m_screenObjects[objectNum], flagObjects[objectNum].objX * m_widthScale);
-      lv_obj_set_y(m_screenObjects[objectNum], flagObjects[objectNum].objY * m_heightScale);
+      lv_obj_set_x(screenObjects.screenObjectsArray[objectNum], flagObjects[objectNum].objX * m_widthScale);
+      lv_obj_set_y(screenObjects.screenObjectsArray[objectNum], flagObjects[objectNum].objY * m_heightScale);
 
-      lv_obj_set_width(m_screenObjects[objectNum], flagObjects[objectNum].objWidth * m_widthScale);
-      lv_obj_set_height(m_screenObjects[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
+      lv_obj_set_width(screenObjects.screenObjectsArray[objectNum], flagObjects[objectNum].objWidth * m_widthScale);
+      lv_obj_set_height(screenObjects.screenObjectsArray[objectNum], flagObjects[objectNum].objHeight * m_heightScale);
 
       if(flagObjects[objectNum].discardObject)
       {
-        lv_obj_set_style(m_screenObjects[objectNum], &m_discardObjectStyle);
+        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_discardObjectStyle);
       }
       else if(flagObjects[objectNum].objSig == m_flagSig.blueSig)
       {
-        lv_obj_set_style(m_screenObjects[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
+        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_blueObjectStyle); //Give it the style for a blue flagObject
       }
       else if(flagObjects[objectNum].objSig == m_flagSig.redSig)
       {
-        lv_obj_set_style(m_screenObjects[objectNum], &m_redObjectStyle); //Give it the style for a red flagObject
+        lv_obj_set_style(screenObjects.screenObjectsArray[objectNum], &m_redObjectStyle); //Give it the style for a red flagObject
       }
       else
       {
@@ -143,7 +127,7 @@ void ScreenDrawing::drawSimpleObjects(simpleObjects_t* flagObjects, int currentC
     }
     else
     {
-      lv_obj_set_hidden(m_screenObjects[objectNum], true);
+      lv_obj_set_hidden(screenObjects.screenObjectsArray[objectNum], true);
     }
   }
 
