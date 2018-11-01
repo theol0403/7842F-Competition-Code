@@ -292,7 +292,6 @@ void FlagSorting::sortMaster()
 
   int firstIndex = 0;
 
-
   for(int lifeCounter = m_maxLife; m_maxLife > 0; lifeCounter--) //Start at top life, end at 1
   {
 
@@ -302,11 +301,9 @@ void FlagSorting::sortMaster()
     //For each master element except from the last
     for (int startIndex = firstIndex; startIndex < m_masterLength - 1 && !abortScan; startIndex++)
     {
-
       //If startIndex needs swapping
       if(m_masterObjects[startIndex].lifeCounter != lifeCounter)
       {
-
         bool swapFound = false; //Exit if a swap has been made
         // Loop between startIndex and end of master looking for proper life
         for(int currentIndex = startIndex + 1; currentIndex < m_masterLength && !swapFound; currentIndex++)
@@ -324,8 +321,6 @@ void FlagSorting::sortMaster()
           //Stop looping and move on to next life
           abortScan = true;
         }
-
-
       }
       //If startIndex already has proper life
       else
@@ -333,29 +328,21 @@ void FlagSorting::sortMaster()
         //Mark this index as having proper life and move on to next index
         lastMatch = startIndex;
       }
-
     }
-
     //now lastMatch contains the last index that has the proper life
-
 
     sortArrayY(m_masterObjects, firstIndex, lastMatch);
 
     firstIndex = lastMatch + 1; //First index is now the start index of the next object group
-
-
   }
-
 
   //Delete objects to the right of life 1, which is 0 life
   clearArray(m_masterObjects, firstIndex, m_masterLength-1);
-
 
   m_masterCount = firstIndex; //Master count contains the number of good objects in the master
 
   //sort by life
   //sort by Y
-
   //updates masterCount
 }
 
@@ -365,6 +352,7 @@ void FlagSorting::sortMaster()
 
 simpleObjects_t* FlagSorting::exportObjects()
 {
+  m_exportCount = 0;
   //for each object in master down to 5 life
   for(int objectNum = 0; objectNum < m_sourceLength; objectNum++)
   {

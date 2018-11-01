@@ -89,8 +89,8 @@ screenObjects_t ScreenDrawing::initSimpleObjects(int objectCount, lv_color_t blu
 void ScreenDrawing::drawSimpleObjects(screenObjects_t screenObjects, simpleObjects_t* flagObjects, int objectCount)
 {
 
-  currentCount = currentCount == -1 ? m_screenObjectLength : currentCount;
-currentCount = currentCount > m_screenObjectLength ? m_screenObjectLength : currentCount;
+  objectCount = objectCount == -1 ? screenObjects.objectCount : objectCount;
+  if(objectCount > screenObjects.objectCount) objectCount = screenObjects.objectCount;
 
   for(int objectNum = 0; objectNum < screenObjects.objectCount; objectNum++) //Hide all objects
   {

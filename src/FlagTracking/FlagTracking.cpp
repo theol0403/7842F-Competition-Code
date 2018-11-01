@@ -15,16 +15,11 @@ void mainFlagTrackingTask(void*)
 
   ScreenDrawing mainScreenDrawing(mainFlagSig, 316, 212);
 
-
   VisionReading mainVisionReading(1, 30);
   screenObjects_t simpleScreenObjects = mainScreenDrawing.initSimpleObjects(30, LV_COLOR_BLUE, LV_COLOR_RED);
 
   FlagSorting mainFlagSorting(20, 6, 1, 20);
   screenObjects_t sortedScreenObjects = mainScreenDrawing.initSimpleObjects(20, LV_COLOR_BLUE, LV_COLOR_RED);
-
-
-
-
 
 
   simpleObjects_t* objectExport;
@@ -58,8 +53,6 @@ void mainFlagTrackingTask(void*)
     objectCount = mainFlagSorting.exportCount();
 
     mainScreenDrawing.drawSimpleObjects(sortedScreenObjects, objectExport, objectCount);
-
-
 
 
     pros::delay(100);
