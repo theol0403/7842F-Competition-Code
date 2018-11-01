@@ -33,7 +33,7 @@ FlagSorting::~FlagSorting()
 
 void FlagSorting::clearArray(sortedObjects_t* clearArray, int startIndex, int endIndex)
 {
-  for (int objectNum = startIndex; objectNum < endIndex; objectNum++)
+  for (int objectNum = startIndex; objectNum <= endIndex; objectNum++)
   {
     clearArray[objectNum].objSig = VISION_OBJECT_ERR_SIG;
     clearArray[objectNum].objY = 0;
@@ -48,39 +48,39 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startIndex, int en
 }
 
 
-void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstObject, int secondObject)
+void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstIndex, int secondIndex)
 {
   sortedObjects_t tempObject;
 
-  tempObject.objSig = swapArray[firstObject].objSig;
-  tempObject.objX = swapArray[firstObject].objX;
-  tempObject.objY = swapArray[firstObject].objY;
-  tempObject.objWidth = swapArray[firstObject].objWidth;
-  tempObject.objHeight = swapArray[firstObject].objHeight;
-  tempObject.objCenterX = swapArray[firstObject].objCenterX;
-  tempObject.objCenterY = swapArray[firstObject].objCenterY;
-  tempObject.matchFound = swapArray[firstObject].matchFound;
-  tempObject.lifeCounter = swapArray[firstObject].lifeCounter;
+  tempObject.objSig = swapArray[firstIndex].objSig;
+  tempObject.objX = swapArray[firstIndex].objX;
+  tempObject.objY = swapArray[firstIndex].objY;
+  tempObject.objWidth = swapArray[firstIndex].objWidth;
+  tempObject.objHeight = swapArray[firstIndex].objHeight;
+  tempObject.objCenterX = swapArray[firstIndex].objCenterX;
+  tempObject.objCenterY = swapArray[firstIndex].objCenterY;
+  tempObject.matchFound = swapArray[firstIndex].matchFound;
+  tempObject.lifeCounter = swapArray[firstIndex].lifeCounter;
 
-  swapArray[firstObject].objSig = swapArray[secondObject].objSig;
-  swapArray[firstObject].objX = swapArray[secondObject].objX;
-  swapArray[firstObject].objY = swapArray[secondObject].objY;
-  swapArray[firstObject].objWidth = swapArray[secondObject].objWidth;
-  swapArray[firstObject].objHeight = swapArray[secondObject].objHeight;
-  swapArray[firstObject].objCenterX = swapArray[secondObject].objCenterX;
-  swapArray[firstObject].objCenterY = swapArray[secondObject].objCenterY;
-  swapArray[firstObject].matchFound = swapArray[secondObject].matchFound;
-  swapArray[firstObject].lifeCounter = swapArray[secondObject].lifeCounter;
+  swapArray[firstIndex].objSig = swapArray[secondIndex].objSig;
+  swapArray[firstIndex].objX = swapArray[secondIndex].objX;
+  swapArray[firstIndex].objY = swapArray[secondIndex].objY;
+  swapArray[firstIndex].objWidth = swapArray[secondIndex].objWidth;
+  swapArray[firstIndex].objHeight = swapArray[secondIndex].objHeight;
+  swapArray[firstIndex].objCenterX = swapArray[secondIndex].objCenterX;
+  swapArray[firstIndex].objCenterY = swapArray[secondIndex].objCenterY;
+  swapArray[firstIndex].matchFound = swapArray[secondIndex].matchFound;
+  swapArray[firstIndex].lifeCounter = swapArray[secondIndex].lifeCounter;
 
-  swapArray[secondObject].objSig = tempObject.objSig;
-  swapArray[secondObject].objX = tempObject.objX;
-  swapArray[secondObject].objY = tempObject.objY;
-  swapArray[secondObject].objWidth = tempObject.objWidth;
-  swapArray[secondObject].objHeight = tempObject.objHeight;
-  swapArray[secondObject].objCenterX = tempObject.objCenterX;
-  swapArray[secondObject].objCenterY = tempObject.objCenterY;
-  swapArray[secondObject].matchFound = tempObject.matchFound;
-  swapArray[secondObject].lifeCounter = tempObject.lifeCounter;
+  swapArray[secondIndex].objSig = tempObject.objSig;
+  swapArray[secondIndex].objX = tempObject.objX;
+  swapArray[secondIndex].objY = tempObject.objY;
+  swapArray[secondIndex].objWidth = tempObject.objWidth;
+  swapArray[secondIndex].objHeight = tempObject.objHeight;
+  swapArray[secondIndex].objCenterX = tempObject.objCenterX;
+  swapArray[secondIndex].objCenterY = tempObject.objCenterY;
+  swapArray[secondIndex].matchFound = tempObject.matchFound;
+  swapArray[secondIndex].lifeCounter = tempObject.lifeCounter;
 }
 
 
