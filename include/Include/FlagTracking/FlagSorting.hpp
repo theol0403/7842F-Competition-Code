@@ -29,7 +29,6 @@ private:
   sortedObjects_t* m_sourceObjects = nullptr; //Source object container
   int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
 
-
   const int m_masterLength; //Size of master array
 
   const int m_objectPosThreshold;
@@ -42,19 +41,8 @@ private:
   const int m_maxLife; //Maximum life of objects (decay)
   const float m_emaAlpha;
 
-
   int m_exportCount = 0;
   simpleObjects_t* m_exportObjects = nullptr;
-
-
-
-
-
-public:
-
-
-  FlagSorting(int, int, float = 0.5, int = 10);
-  ~FlagSorting();
 
   void clearArray(sortedObjects_t*, int, int);
   void swapObjects(sortedObjects_t*, int, int);
@@ -63,18 +51,22 @@ public:
   void importSource(simpleObjects_t*, int);
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
+
+  int emaCalculate(int, int);
+
+public:
+
+  FlagSorting(int, int, float = 0.5, int = 10);
+  ~FlagSorting();
+
   void createAllignList();
   void debugAllign();
 
-  int emaCalculate(int, int);
   void mergeMaster();
 
   void sortMaster();
 
-
   simpleObjects_t* exportObjects();
   int exportCount();
-
-
 
 };
