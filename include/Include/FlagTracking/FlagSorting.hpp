@@ -52,7 +52,7 @@ private:
 
   bool compareObjects(sortedObjects_t&, sortedObjects_t&);
 
-  int emaCalculate(int, int);
+  int emaCalculate(int, int, float = 1.0);
 
 public:
 

@@ -10,7 +10,7 @@ m_sourceLength{objectCount},
 m_masterLength{objectCount * maxLife},
 m_maxLife(maxLife),
 m_emaAlpha{emaAlpha},
-m_objectPosThreshold{}
+m_objectPosThreshold{objectPosThreshold}
 {
   m_sourceObjects = new sortedObjects_t[objectCount];
   clearArray(m_sourceObjects, 0, objectCount-1);
@@ -164,6 +164,7 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
   //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
 
   // return cascadingTrue;
+  if(cascadingTrue) {std::cout << "Match Found \n";};
   return true;
 }
 
@@ -193,7 +194,7 @@ void FlagSorting::createAllignList()
   for(int sourceObjectNum = 0; sourceObjectNum < m_sourceCount; sourceObjectNum++)
   {
     //loop through all current master objects
-    for(int masterObjectNum = 0; masterObjectNum < m_masterCount && !m_sourceObjects[sourceObjectNum].matchFound; masterObjectNum++)
+    for(int masterObjectNum = 0; (masterObjectNum < m_masterCount) && !m_sourceObjects[sourceObjectNum].matchFound; masterObjectNum++)
     {
       if(!m_masterObjects[masterObjectNum].matchFound)
       {
@@ -223,7 +224,8 @@ void FlagSorting::createAllignList()
 
 void FlagSorting::debugAllign()
 {
-  std::cout << "Master Count | " << m_masterCount;
+  std::cout << "Source Count | " << m_sourceCount;
+  std::cout << " | Master Count | " << m_masterCount;
   std::cout << " | Temp Count | " << m_tempCount;
   std::cout << " | Temp Allign";
   for(int tempNum = 0; tempNum < 5; tempNum++)
@@ -234,9 +236,9 @@ void FlagSorting::debugAllign()
 }
 
 
-int FlagSorting::emaCalculate(int lastValue, int newValue)
+int FlagSorting::emaCalculate(int lastValue, int newValue, float emaAlpha)
 {
-  return (m_emaAlpha * newValue + (1.0 - m_emaAlpha) * lastValue);
+  return (emaAlpha * newValue + (1.0 - emaAlpha) * lastValue);
 }
 
 //merges arrays using EMA //updates the life of the master elements
@@ -248,12 +250,12 @@ void FlagSorting::mergeMaster()
     {
       //merge objects
       m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
-      m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY);
-      m_masterObjects[masterNum].objX = emaCalculate(m_masterObjects[masterNum].objX, m_sourceObjects[m_tempAllignIndex[masterNum]].objX);
-      m_masterObjects[masterNum].objWidth = emaCalculate(m_masterObjects[masterNum].objWidth, m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth);
-      m_masterObjects[masterNum].objHeight = emaCalculate(m_masterObjects[masterNum].objHeight, m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight);
-      m_masterObjects[masterNum].objCenterX = emaCalculate(m_masterObjects[masterNum].objCenterX, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX);
-      m_masterObjects[masterNum].objCenterY = emaCalculate(m_masterObjects[masterNum].objCenterY, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY);
+      m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY, 0.5);
+      m_masterObjects[masterNum].objX = emaCalculate(m_masterObjects[masterNum].objX, m_sourceObjects[m_tempAllignIndex[masterNum]].objX, 0.5);
+      m_masterObjects[masterNum].objWidth = emaCalculate(m_masterObjects[masterNum].objWidth, m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth, 0.1);
+      m_masterObjects[masterNum].objHeight = emaCalculate(m_masterObjects[masterNum].objHeight, m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight, 0.1);
+      m_masterObjects[masterNum].objCenterX = emaCalculate(m_masterObjects[masterNum].objCenterX, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX, 0.5);
+      m_masterObjects[masterNum].objCenterY = emaCalculate(m_masterObjects[masterNum].objCenterY, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY, 0.5);
       m_masterObjects[masterNum].matchFound = false;
       m_masterObjects[masterNum].lifeCounter++; //Increase life
       if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
@@ -311,7 +313,6 @@ void FlagSorting::sortMaster()
         {
           if(m_masterObjects[currentIndex].lifeCounter == lifeCounter) //If match is found to the right
           {
-            std::cout << "Swap" << currentIndex << "\n";
             swapObjects(m_masterObjects, startIndex, currentIndex); //Swap
             swapFound = true; //Exit looping and move on to next startIndex
             lastMatch = startIndex; //Mark index as having proper life
