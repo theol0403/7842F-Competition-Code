@@ -111,6 +111,7 @@ void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int firstIndex, int las
 //Imports the source array and sorts it by Y into sourceObjects
 void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSourceCount)
 {
+  std::cout << "CURRENT COUNT" << currentSourceCount << "\n";
   //Amount of objects to read. Not to exceed sourceCount
   m_sourceCount = currentSourceCount > m_sourceLength ? m_sourceLength : currentSourceCount;
   //Copies source into m_source array
@@ -165,7 +166,7 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
 
   // return cascadingTrue;
   if(cascadingTrue) {std::cout << "Match Found \n";};
-  return true;
+  return cascadingTrue;
 }
 
 
@@ -224,13 +225,13 @@ void FlagSorting::createAllignList()
 
 void FlagSorting::debugAllign()
 {
-  std::cout << "Source Count | " << m_sourceCount;
-  std::cout << " | Master Count | " << m_masterCount;
-  std::cout << " | Temp Count | " << m_tempCount;
+  std::cout << "Source Count: " << m_sourceCount;
+  std::cout << " | Master Count: " << m_masterCount;
+  std::cout << " | Temp Count: " << m_tempCount;
   std::cout << " | Temp Allign";
   for(int tempNum = 0; tempNum < 5; tempNum++)
   {
-    std::cout << " | " << m_tempAllignIndex[tempNum];
+    std::cout << " , " << m_tempAllignIndex[tempNum];
   }
   std::cout << "\n";
 }
@@ -262,6 +263,7 @@ void FlagSorting::mergeMaster()
     }
     else //If no match for an object in master
     {
+      m_masterObjects[masterNum].matchFound = false;
       m_masterObjects[masterNum].lifeCounter--;
     }
   }
@@ -340,7 +342,7 @@ void FlagSorting::sortMaster()
   }
 
   //Delete objects to the right of life 1, which is 0 life
-  //clearArray(m_masterObjects, firstIndex, m_masterLength-1);
+  clearArray(m_masterObjects, firstIndex, m_masterLength-1);
 
   m_masterCount = firstIndex; //Master count contains the number of good objects in the master
 

@@ -39,6 +39,7 @@ void mainFlagTrackingTask(void*)
     mainVisionReading.filterNoise();
     mainVisionReading.filterProp();
     mainVisionReading.filterSize();
+    mainVisionReading.discardObjects();
 
     mainVisionReading.debugObjects(2);
 
@@ -46,10 +47,6 @@ void mainFlagTrackingTask(void*)
     objectExport = mainVisionReading.exportObjects();
     objectCount = mainVisionReading.exportCurrentCount();
     //mainScreenDrawing.drawSimpleObjects(simpleScreenObjects, objectExport, objectCount);
-
-    mainVisionReading.discardObjects();
-    objectExport = mainVisionReading.exportObjects();
-    objectCount = mainVisionReading.exportCurrentCount();
 
 
     mainFlagSorting.importSource(objectExport, objectCount);
