@@ -2,50 +2,42 @@
 #include "Include/Shared/FlywheelTask.hpp"
 #include "Include/Shared/MotorConfig.hpp"
 
+int wantedFlywheelRPM = 0;
 
+void setFlywheelRPM(int wantedRPM)
+{
+  wantedFlywheelRPM = wantedRPM;
+}
 
 
 void flywheelTask(void*)
 {
-
+setFlywheelRPM(2000);
 
 auto FlywheelRPM = VelMathArgs(imev5TPR * 15, std::make_shared<EmaFilter>(0.5));
 auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
 FlywheelPID.setOutputLimits(127, -127);
 
-FlywheelPID.setTarget(2000);
-
 
     const int slewRate = 1;
-
 
       int motorPower = 0;
     	int lastPower = 0;
 
-      QAngularSpeed flywheelRPM = 0_rpm;
-
-
     	while(true)
     	{
+        FlywheelPID.setTarget(wantedFlywheelRPM);
 
         motorPower = FlywheelPID.step(getFlywheelEncoder());
 
-        flywheelRPM = FlywheelPID.getVel();
-
-
-
     		if(motorPower < 0) motorPower = 0;
-
     		if(motorPower > lastPower && lastPower < 20) lastPower = 20;
-
     		if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
         lastPower = motorPower;
 
-
-
     		setFlywheelPower(motorPower);
 
-        std::cout << "RPM: " << (rpm) flywheelRPM << " Power: "<< motorPower << "\n";
+        std::cout << "RPM: " << FlywheelPID.getVel().convert(rpm) << " Power: "<< motorPower << " Error: "<< FlywheelPID.getError() << "\n";
 
 
     pros::delay(20);
