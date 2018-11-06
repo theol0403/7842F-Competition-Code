@@ -20,8 +20,16 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+ #include "Include/Shared/FlywheelTask.hpp"
+ #include "Include/FlagTracking/FlagTracking.hpp"
+ 
 void initialize()
 {
+
+	pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTajs");
+
+	pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 }
 
@@ -102,16 +110,10 @@ void disabled() {}
  */
 
 #include "Include/Driver/DriverMainTasks.hpp"
-#include "Include/Shared/FlywheelTask.hpp"
-
-#include "Include/FlagTracking/FlagTracking.hpp"
 
 void opcontrol()
 {
 	pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
-pros::Task DriverFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTajs");
-
-	pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 pros::delay(100000);
 
