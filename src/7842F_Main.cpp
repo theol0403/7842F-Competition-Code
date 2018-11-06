@@ -23,13 +23,13 @@
 
  #include "Include/Shared/FlywheelTask.hpp"
  #include "Include/FlagTracking/FlagTracking.hpp"
- 
+
 void initialize()
 {
 
 	pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTajs");
 
-	pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
+	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 }
 

@@ -8,54 +8,44 @@
 void flywheelTask(void*)
 {
 
-  pros::Motor m_flywheel(15, true);
-  pros::Motor m_intake(14);
 
-  float slewRate = 1;
-  float motorPower = 0;
-  float lastPower = 0;
+auto FlywheelRPM = VelMathArgs(imev5TPR * 15, std::make_shared<EmaFilter>(0.5));
+auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
+FlywheelPID.setOutputLimits(127, -127);
 
-
-  while(true)
-  {
+FlywheelPID.setTarget(2000);
 
 
+    const int slewRate = 1;
 
 
-    if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
-    {
-      m_flywheel.move(-127);
-    }
-    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
-    {
-      motorPower = 127;
-      if(motorPower > lastPower && lastPower < 20) lastPower = 20;
-      if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
-      m_flywheel.move(motorPower);
-    }
-    else
-    {
-      motorPower = 0;
-      m_flywheel.move(0);
-    }
+      int motorPower = 0;
+    	int lastPower = 0;
 
-    lastPower = motorPower;
+      QAngularSpeed flywheelRPM = 0_rpm;
+
+
+    	while(true)
+    	{
+
+        motorPower = FlywheelPID.step(getFlywheelEncoder());
+
+        flywheelRPM = FlywheelPID.getVel();
 
 
 
+    		if(motorPower < 0) motorPower = 0;
 
-    if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
-    {
-      m_intake.move(-127);
-    }
-    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_L2))
-    {
-      m_intake.move(127);
-    }
-    else
-    {
-      m_intake.move(0);
-    }
+    		if(motorPower > lastPower && lastPower < 20) lastPower = 20;
+
+    		if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
+        lastPower = motorPower;
+
+
+
+    		setFlywheelPower(motorPower);
+
+        std::cout << "RPM: " << (rpm) flywheelRPM << " Power: "<< motorPower << "\n";
 
 
     pros::delay(20);
