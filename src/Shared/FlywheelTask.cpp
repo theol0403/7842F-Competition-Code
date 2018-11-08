@@ -12,7 +12,6 @@ void setFlywheelRPM(int wantedRPM)
 
 void flywheelTask(void*)
 {
-setFlywheelRPM(2000);
 
 auto FlywheelRPM = VelMathArgs(imev5TPR * 15, std::make_shared<EmaFilter>(0.5));
 auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
