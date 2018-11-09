@@ -3,12 +3,12 @@
 
 struct pidTune_t
 {
-  float kP = 0;
-  float kI = 0;
-  float kD = 0;
-  float kF = 0;
-  float readingEma = 1;
-  float dirivativeEma = 1;
+  double kP = 0;
+  double kI = 0;
+  double kD = 0;
+  double kF = 0;
+  double readingEma = 1;
+  double dirivativeEma = 1;
 };
 
 
@@ -19,7 +19,7 @@ struct tunerButtons_t
   lv_obj_t* textLabel;
   lv_obj_t* variableLabel;
   char* variableName;
-  float* variablePtr;
+  double* variablePtr;
 };
 
 
@@ -39,7 +39,7 @@ public:
   PIDScreenTuner(pidTune_t*, int, int);
   ~PIDScreenTuner();
 
-  void initButton(tunerButtons_t*, int, float*, const char*, bool = false);
+  void initButton(tunerButtons_t*, int, double*, const char*, bool = false);
 
   static lv_res_t tuneClickAction(lv_obj_t*);
   static void incrementVariable(int, tunerButtons_t*);

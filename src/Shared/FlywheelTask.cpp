@@ -11,7 +11,7 @@ void setFlywheelRPM(int wantedRPM)
 }
 
 
-float countMultiplier = 0.1;
+double countMultiplier = 0.1;
 
 
 void flywheelTask(void*)
@@ -23,14 +23,14 @@ void flywheelTask(void*)
   PIDScreenTuner tuneFlywheel(&flywheelPIDParams, LV_HOR_RES, LV_VER_RES);
 
   tunerButtons_t buttonKp;
-  tuneFlywheel.initButton(&buttonKp, 0, &flywheelPIDParams.kP, "kP");
+  tuneFlywheel.initButton(&buttonKp, 50, &flywheelPIDParams.kP, "kP");
   tunerButtons_t buttonKd;
-  tuneFlywheel.initButton(&buttonKd, 100, &flywheelPIDParams.kD, "kD");
+  tuneFlywheel.initButton(&buttonKd, 150, &flywheelPIDParams.kD, "kD");
   tunerButtons_t buttonKf;
-  tuneFlywheel.initButton(&buttonKf, 200, &flywheelPIDParams.kF, "kF");
+  tuneFlywheel.initButton(&buttonKf, 250, &flywheelPIDParams.kF, "kF");
 
   tunerButtons_t buttonMultiplier;
-  tuneFlywheel.initButton(&buttonMultiplier, 400, &countMultiplier, "Multiplier", true);
+  tuneFlywheel.initButton(&buttonMultiplier, 350, &countMultiplier, "Multiplier", true);
 
 
 

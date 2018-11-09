@@ -3,7 +3,7 @@
 
 
 
-    extern float countMultiplier;
+    extern double countMultiplier;
 
 PIDScreenTuner::PIDScreenTuner(pidTune_t* pidTune, int containerWidth, int containerHeight)
 {
@@ -38,12 +38,12 @@ PIDScreenTuner::~PIDScreenTuner()
 }
 
 
-void PIDScreenTuner::initButton(tunerButtons_t* tunerButtons, int xPos, float* variablePtr, const char* variableName, bool multiplier)
+void PIDScreenTuner::initButton(tunerButtons_t* tunerButtons, int xPos, double* variablePtr, const char* variableName, bool multiplier)
 {
   tunerButtons->minusButton = lv_btn_create(m_buttonContainer, NULL);
-  lv_obj_set_size(tunerButtons->minusButton, 50, 50);
+  lv_obj_set_size(tunerButtons->minusButton, 45, 45);
   //lv_obj_set_pos(tunerButtons->minusButton, xPos, yPos);
-  lv_obj_align(tunerButtons->minusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos, -75);
+  lv_obj_align(tunerButtons->minusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos, -90);
   /*Add a label to the button*/
   lv_obj_t * minusLabel = lv_label_create(tunerButtons->minusButton, NULL);
   lv_obj_align(tunerButtons->minusButton, minusLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
@@ -51,9 +51,9 @@ void PIDScreenTuner::initButton(tunerButtons_t* tunerButtons, int xPos, float* v
 
 
   tunerButtons->plusButton = lv_btn_create(m_buttonContainer, NULL);
-  lv_obj_set_size(tunerButtons->plusButton, 50, 50);
+  lv_obj_set_size(tunerButtons->plusButton, 45, 45);
   //lv_obj_set_pos(tunerButtons->plusButton, xPos + 40, yPos);
-  lv_obj_align(tunerButtons->plusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos+50, -75);
+  lv_obj_align(tunerButtons->plusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos+45, -90);
   /*Add a label to the button*/
   lv_obj_t * plusLabel = lv_label_create(tunerButtons->plusButton, NULL);
   lv_obj_align(tunerButtons->plusButton, plusLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
