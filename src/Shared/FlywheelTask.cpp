@@ -11,14 +11,14 @@ void setFlywheelRPM(int wantedRPM)
 }
 
 
-double countMultiplier = 0.1;
+double countMultiplier = 0.01;
 
 
 void flywheelTask(void*)
 {
 
 
-  pidTune_t flywheelPIDParams = {0.23, 0, 0.1, 0.1, 0.8, 0.8};
+  pidTune_t flywheelPIDParams = {0.01, 0, 0.1, 0.1, 0.8, 0.8};
 
   PIDScreenTuner tuneFlywheel(&flywheelPIDParams, LV_HOR_RES, LV_VER_RES);
 
@@ -34,7 +34,7 @@ void flywheelTask(void*)
 
 
 
-auto FlywheelRPM = VelMathArgs(imev5TPR * 15, std::make_shared<EmaFilter>(0.5));
+auto FlywheelRPM = VelMathArgs(imev5TPR/2, std::make_shared<EmaFilter>(0.5));
 auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
 FlywheelPID.setOutputLimits(127, -127);
 
@@ -46,6 +46,7 @@ FlywheelPID.setOutputLimits(127, -127);
 
     	while(true)
     	{
+        FlywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, 0);
         FlywheelPID.setTarget(wantedFlywheelRPM);
 
         motorPower = FlywheelPID.step(getFlywheelEncoder());
