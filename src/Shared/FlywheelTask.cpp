@@ -1,6 +1,7 @@
 #include "main.h"
 #include "Include/Shared/FlywheelTask.hpp"
 #include "Include/Shared/MotorConfig.hpp"
+#include "Include/Shared/PIDTuner.hpp"
 
 int wantedFlywheelRPM = 0;
 
@@ -10,8 +11,28 @@ void setFlywheelRPM(int wantedRPM)
 }
 
 
+float countMultiplier = 0.1;
+
+
 void flywheelTask(void*)
 {
+
+
+  pidTune_t flywheelPIDParams = {0.23, 0, 0.1, 0.1, 0.8, 0.8};
+
+  PIDScreenTuner tuneFlywheel(&flywheelPIDParams, LV_HOR_RES, LV_VER_RES);
+
+  tunerButtons_t buttonKp;
+  tuneFlywheel.initButton(&buttonKp, 0, &flywheelPIDParams.kP, "kP");
+  tunerButtons_t buttonKd;
+  tuneFlywheel.initButton(&buttonKd, 100, &flywheelPIDParams.kD, "kD");
+  tunerButtons_t buttonKf;
+  tuneFlywheel.initButton(&buttonKf, 200, &flywheelPIDParams.kF, "kF");
+
+  tunerButtons_t buttonMultiplier;
+  tuneFlywheel.initButton(&buttonMultiplier, 400, &countMultiplier, "Multiplier", true);
+
+
 
 auto FlywheelRPM = VelMathArgs(imev5TPR * 15, std::make_shared<EmaFilter>(0.5));
 auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
