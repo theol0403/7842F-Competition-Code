@@ -1,36 +1,66 @@
 #include "main.h"
 #include "Include/Shared/PIDTuner.hpp"
 
-
-
-    extern double countMultiplier;
-
-PIDScreenTuner::PIDScreenTuner(pidTune_t* pidTune, int containerWidth, int containerHeight)
+PIDScreenTuner::PIDScreenTuner(int tunerWidth, int tunerHeight, int buttonHeight)
+:
+m_tunerWidth(tunerWidth), m_tunerHeight(tunerHeight), m_buttonHeight(buttonHeight)
 {
 
-  m_tunerContainer = lv_obj_create(lv_scr_act(), NULL);
-  lv_obj_set_size(m_tunerContainer, containerWidth, containerHeight);
-  lv_obj_align(m_tunerContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-  // Style for background of screen
-  lv_style_copy(&m_tunerContainerStyle, &lv_style_plain_color);
-  m_tunerContainerStyle.body.main_color = LV_COLOR_GRAY;
-  m_tunerContainerStyle.body.grad_color = LV_COLOR_GRAY;
-  lv_obj_set_style(m_tunerContainer, &m_tunerContainerStyle);
+  //Screen Container
+  //Object
+  m_screenContainer = lv_obj_create(lv_scr_act(), NULL);
+  lv_obj_set_size(m_screenContainer, m_tunerWidth, m_tunerHeight);
+  lv_obj_align(m_screenContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  //Style
+  lv_style_copy(&m_screenContainerStyle, &lv_style_plain_color);
+  m_screenContainerStyle.body.main_color = LV_COLOR_GRAY;
+  m_screenContainerStyle.body.grad_color = LV_COLOR_GRAY;
+  lv_obj_set_style(m_screenContainer, &m_screenContainerStyle);
 
-  m_buttonContainer = lv_obj_create(m_tunerContainer, NULL);
-  lv_obj_set_size(m_buttonContainer, containerWidth, 100);
-  lv_obj_align(m_buttonContainer, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
-  // Style for buttons area
-  lv_style_copy(&m_buttonContainerStyle, &lv_style_plain_color);
-  m_buttonContainerStyle.body.main_color = LV_COLOR_BLUE;
-  m_buttonContainerStyle.body.grad_color = LV_COLOR_BLUE;
-  lv_obj_set_style(m_buttonContainer, &m_buttonContainerStyle);
+  //Buttons Container
+  //Object
+  m_buttonsContainer = lv_obj_create(m_screenContainer, NULL);
+  lv_obj_set_size(m_buttonsContainer, m_tunerWidth, m_buttonHeight);
+  lv_obj_align(m_buttonsContainer, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+  //Style
+  lv_style_copy(&m_buttonsContainerStyle, &lv_style_plain_color);
+  m_buttonsContainerStyle.body.main_color = LV_COLOR_BLUE;
+  m_buttonsContainerStyle.body.grad_color = LV_COLOR_BLUE;
+  lv_obj_set_style(m_buttonsContainer, &m_buttonsContainerStyle);
+  //Text
+  lv_style_copy(&m_buttonTextStyle, &lv_style_plain_color);
+  m_buttonTextStyle.text.font = &lv_font_dejavu_20;
+  m_buttonTextStyle.text.color = LV_COLOR_BLACK;
+
+
+  //Info Container
+  //Object
+  m_infoContainer = lv_obj_create(m_screenContainer, NULL);
+  lv_obj_set_size(m_infoContainer, m_tunerWidth, m_tunerHeight - m_buttonHeight);
+  lv_obj_align(m_infoContainer, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
+  //Style
+  lv_style_copy(&m_infoContainerStyle, &lv_style_plain_color);
+  m_infoContainerStyle.body.main_color = LV_COLOR_ORANGE;
+  m_infoContainerStyle.body.grad_color = LV_COLOR_ORANGE;
+  lv_obj_set_style(m_infoContainer, &m_infoContainerStyle);
 
 
 
+  //Gauge
+  lv_style_copy(&m_gaugeStyle, &lv_style_pretty_color);
+  m_gaugeStyle.body.main_color = LV_COLOR_HEX3(0x666);     /*Line color at the beginning*/
+  m_gaugeStyle.body.grad_color =  LV_COLOR_HEX3(0x666);    /*Line color at the end*/
+  m_gaugeStyle.body.padding.hor = 10;                      /*Scale line length*/
+  m_gaugeStyle.body.padding.inner = 8 ;                    /*Scale label padding*/
+  m_gaugeStyle.body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
+  m_gaugeStyle.line.width = 3;
+  m_gaugeStyle.text.color = LV_COLOR_HEX3(0x333);
+  m_gaugeStyle.line.color = LV_COLOR_RED;                  /*Line color after the critical value*/
+  //Needle Color
+  m_needleColors[0] = LV_COLOR_BLUE;
+  m_needleColors[1] = LV_COLOR_RED;
+  m_needleColors[3] = LV_COLOR_PURPLE;
 }
-
-
 
 PIDScreenTuner::~PIDScreenTuner()
 {
@@ -38,92 +68,155 @@ PIDScreenTuner::~PIDScreenTuner()
 }
 
 
-void PIDScreenTuner::initButton(tunerButtons_t* tunerButtons, int xPos, double* variablePtr, const char* variableName, bool multiplier)
+
+void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* variableName, int charLength, buttonType_t buttonType, int incrementAmount)
 {
-  tunerButtons->minusButton = lv_btn_create(m_buttonContainer, NULL);
-  lv_obj_set_size(tunerButtons->minusButton, 45, 45);
-  //lv_obj_set_pos(tunerButtons->minusButton, xPos, yPos);
-  lv_obj_align(tunerButtons->minusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos, -90);
-  /*Add a label to the button*/
+  tunerButtons_t* tunerButtons = new tunerButtons_t;
+  tunerButtons->variablePtr = variablePtr;
+
+  tunerButtons->variableName = new char[strlen(variableName)];
+  sprintf(tunerButtons->variableName, variableName);
+  tunerButtons->charLength = charLength + (strlen(variableName) + 1);
+  tunerButtons->labelContent = new char[tunerButtons->charLength];
+
+  tunerButtons->buttonType = buttonType;
+  tunerButtons->multiplierPtr = &m_buttonMultiplier;
+  tunerButtons->incrementAmount = incrementAmount;
+
+  //Minus Button
+  tunerButtons->minusButton = lv_btn_create(m_buttonsContainer, NULL);
+  lv_obj_set_size(tunerButtons->minusButton, m_buttonHeight/1.3, m_buttonHeight/2);
+  lv_obj_align(tunerButtons->minusButton, m_buttonsContainer, LV_ALIGN_IN_BOTTOM_LEFT, xPos, -m_buttonHeight/2);
+  //Label
   lv_obj_t * minusLabel = lv_label_create(tunerButtons->minusButton, NULL);
   lv_obj_align(tunerButtons->minusButton, minusLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   lv_label_set_text(minusLabel, "-");
 
-
-  tunerButtons->plusButton = lv_btn_create(m_buttonContainer, NULL);
-  lv_obj_set_size(tunerButtons->plusButton, 45, 45);
-  //lv_obj_set_pos(tunerButtons->plusButton, xPos + 40, yPos);
-  lv_obj_align(tunerButtons->plusButton, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos+45, -90);
-  /*Add a label to the button*/
+  //Plus Button
+  tunerButtons->plusButton = lv_btn_create(m_buttonsContainer, NULL);
+  lv_obj_set_size(tunerButtons->plusButton, m_buttonHeight/1.3, m_buttonHeight/2);
+  lv_obj_align(tunerButtons->plusButton, m_buttonsContainer, LV_ALIGN_IN_BOTTOM_LEFT, xPos, -m_buttonHeight*2/2);
+  //Label
   lv_obj_t * plusLabel = lv_label_create(tunerButtons->plusButton, NULL);
   lv_obj_align(tunerButtons->plusButton, plusLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   lv_label_set_text(plusLabel, "+");
 
+  //Assign ID, assign direction, assign function
   lv_obj_set_free_ptr(tunerButtons->minusButton, tunerButtons);
-  lv_btn_set_action(tunerButtons->minusButton, LV_BTN_ACTION_CLICK, tuneClickAction);
-
   lv_obj_set_free_ptr(tunerButtons->plusButton, tunerButtons);
-  lv_btn_set_action(tunerButtons->plusButton, LV_BTN_ACTION_CLICK, tuneClickAction);
-
-  if(!multiplier)
-  {
-      lv_obj_set_free_num(tunerButtons->minusButton, 1);
-      lv_obj_set_free_num(tunerButtons->plusButton, 2);
-  }
-  else
-  {
-    lv_obj_set_free_num(tunerButtons->minusButton, 3);
-    lv_obj_set_free_num(tunerButtons->plusButton, 4);
-  }
+  lv_obj_set_free_num(tunerButtons->minusButton, buttonMinus);
+  lv_obj_set_free_num(tunerButtons->plusButton, buttonPlus);
+  lv_btn_set_action(tunerButtons->minusButton, LV_BTN_ACTION_CLICK, buttonAction);
+  lv_btn_set_action(tunerButtons->plusButton, LV_BTN_ACTION_CLICK, buttonAction);
 
 
-tunerButtons->textLabel = lv_label_create(m_buttonContainer, NULL);
-  lv_label_set_text(tunerButtons->textLabel, variableName);
-  lv_obj_align(tunerButtons->textLabel, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos, -90);
-  tunerButtons->variableLabel = lv_label_create(m_buttonContainer, NULL);
-  char* variableContent = new char[20];
-  sprintf(variableContent, "%f", *variablePtr);
-  lv_label_set_text(tunerButtons->variableLabel, variableContent);
-  delete[] variableContent;
-  lv_obj_align(tunerButtons->variableLabel, m_buttonContainer, LV_ALIGN_OUT_BOTTOM_LEFT, xPos, -70);
+  //Button Labels
+  tunerButtons->buttonLabel = lv_label_create(m_buttonsContainer, NULL);
+  lv_obj_set_style(tunerButtons->buttonLabel, &m_buttonTextStyle);
+  lv_label_set_long_mode(tunerButtons->buttonLabel, LV_LABEL_LONG_BREAK);
+  lv_obj_set_size(tunerButtons->buttonLabel, m_buttonHeight, m_buttonHeight);
+  lv_obj_align(tunerButtons->buttonLabel, m_buttonsContainer, LV_ALIGN_IN_BOTTOM_LEFT, xPos, -m_buttonHeight/2);
 
-  tunerButtons->variablePtr = variablePtr;
+  //Assign Label Text
+  sprintf(tunerButtons->labelContent, "%s\n%f", tunerButtons->variableName, *tunerButtons->variablePtr);
+  tunerButtons->labelContent[tunerButtons->charLength] = '\0';
+  lv_label_set_text(tunerButtons->buttonLabel, tunerButtons->labelContent);
+
 }
 
 
-
-lv_res_t PIDScreenTuner::tuneClickAction(lv_obj_t* btn)
+lv_res_t PIDScreenTuner::buttonAction(lv_obj_t* btn)
 {
+  tunerButtons_t* tunerButtons = static_cast<tunerButtons_t*>(lv_obj_get_free_ptr(btn));
+  buttonDirection_t buttonDirection = static_cast<buttonDirection_t>(lv_obj_get_free_num(btn));
 
-  incrementVariable(lv_obj_get_free_num(btn), static_cast <tunerButtons_t*>(lv_obj_get_free_ptr(btn)));
-  pros::delay(50);       /*Just to let the system breath*/
+  switch(tunerButtons->buttonType)
+  {
+    case buttonAdd:
+    {
+      if(buttonDirection == buttonMinus)
+      {
+        *tunerButtons->variablePtr -= *tunerButtons->multiplierPtr;
+      }
+      else if(buttonDirection == buttonPlus)
+      {
+        *tunerButtons->variablePtr += *tunerButtons->multiplierPtr;
+      }
+      //Stops button from going smaller than 0
+      if(*tunerButtons->variablePtr <= 0) *tunerButtons->variablePtr = 0.00000;
+      break;
+    }
+
+    case buttonMultiply:
+    {
+      if(buttonDirection == buttonMinus)
+      {
+        *tunerButtons->variablePtr /= tunerButtons->incrementAmount;
+      }
+      else if(buttonDirection == buttonPlus)
+      {
+        *tunerButtons->variablePtr *= tunerButtons->incrementAmount;
+      }
+      break;
+    }
+
+    case buttonIncrement:
+    {
+      if(buttonDirection == buttonMinus)
+      {
+        *tunerButtons->variablePtr -= tunerButtons->incrementAmount;
+      }
+      else if(buttonDirection == buttonPlus)
+      {
+        *tunerButtons->variablePtr += tunerButtons->incrementAmount;
+      }
+      break;
+    }
+
+    default:
+    {
+
+    }
+  }
+
+  //Assign Label Text
+  sprintf(tunerButtons->labelContent, "%s\n%f", tunerButtons->variableName, *tunerButtons->variablePtr);
+  tunerButtons->labelContent[tunerButtons->charLength] = '\0';
+  lv_label_set_text(tunerButtons->buttonLabel, tunerButtons->labelContent);
+
   return LV_RES_OK;
 }
 
 
-void PIDScreenTuner::incrementVariable(int actionType, tunerButtons_t* tunerButtons)
+
+lv_obj_t* PIDScreenTuner::initGauge(int xPos, const char* variableName, int needleCount, int minReading, int maxReading)
 {
-  if(actionType == 1)
-  {
-    *tunerButtons->variablePtr = *tunerButtons->variablePtr - countMultiplier;
-    if(*tunerButtons->variablePtr <= 0) *tunerButtons->variablePtr = 0.001;
-  }
-  else if(actionType == 2)
-  {
-    *tunerButtons->variablePtr = *tunerButtons->variablePtr + countMultiplier;
-  }
-  else if(actionType == 3)
-  {
-    *tunerButtons->variablePtr /= 10;
-  }
-  else if(actionType == 4)
-  {
-    *tunerButtons->variablePtr *= 10;
-  }
+/*Create a gauge*/
+lv_obj_t* newGauge = lv_gauge_create(m_infoContainer, NULL);
+lv_obj_set_size(newGauge, m_tunerHeight - m_buttonHeight, m_tunerHeight - m_buttonHeight);
+lv_gauge_set_range(newGauge, minReading, maxReading);
+lv_gauge_set_critical_value(newGauge, maxReading);
+lv_gauge_set_needle_count(newGauge, needleCount, m_needleColors);
+lv_gauge_set_style(newGauge, &m_gaugeStyle);
+lv_obj_align(newGauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
+
+return newGauge;
+
+}
 
 
-  char* variableContent = new char[20];
-  sprintf(variableContent, "%f", *tunerButtons->variablePtr);
-  lv_label_set_text(tunerButtons->variableLabel, variableContent);
-  delete[] variableContent;
+
+
+
+lv_obj_t* PIDScreenTuner::initMeter(int xPos, const char* variableName, int minReading, int maxReading)
+{
+/*Create a gauge*/
+lv_obj_t* newMeter = lv_gauge_create(m_infoContainer, NULL);
+lv_obj_set_size(newMeter, m_tunerHeight - m_buttonHeight, m_tunerHeight - m_buttonHeight);
+lv_lmeter_set_range(newMeter, minReading, maxReading);
+lv_lmeter_set_style(newMeter, &m_gaugeStyle);
+lv_obj_align(newMeter, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
+
+return newMeter;
+
 }

@@ -8,43 +8,84 @@ struct pidTune_t
   double kD = 0;
   double kF = 0;
   double readingEma = 1;
-  double dirivativeEma = 1;
+  double derivativeEma = 1;
+};
+
+
+enum buttonType_t
+{
+  buttonAdd,
+  buttonMultiply,
+  buttonIncrement
+};
+
+enum buttonDirection_t
+{
+  buttonMinus,
+  buttonPlus
 };
 
 
 struct tunerButtons_t
 {
-  lv_obj_t* plusButton;
-  lv_obj_t* minusButton;
-  lv_obj_t* textLabel;
-  lv_obj_t* variableLabel;
-  char* variableName;
-  double* variablePtr;
+
+  double* variablePtr = nullptr;
+  char* variableName = nullptr;
+  int charLength = 0;
+  char* labelContent = nullptr;
+
+  buttonType_t buttonType = buttonAdd;
+  double* multiplierPtr = nullptr;
+  int incrementAmount = 1;
+
+  lv_obj_t* minusButton = nullptr;
+  lv_obj_t* plusButton = nullptr;
+
+  lv_obj_t* buttonLabel = nullptr;
+
 };
+
+
 
 
 class PIDScreenTuner
 {
 private:
 
+  lv_obj_t* m_screenContainer = nullptr;
+  lv_style_t m_screenContainerStyle;
 
-  _lv_obj_t* m_tunerContainer = nullptr;
-  lv_style_t m_tunerContainerStyle;
+  const int m_tunerWidth;
+  const int m_tunerHeight;
 
-  _lv_obj_t* m_buttonContainer = nullptr;
-  lv_style_t m_buttonContainerStyle;
+  const int m_buttonHeight;
+
+  lv_obj_t* m_buttonsContainer = nullptr;
+  lv_style_t m_buttonsContainerStyle;
+  lv_style_t m_buttonTextStyle;
+
+
+  lv_obj_t* m_infoContainer = nullptr;
+  lv_style_t m_infoContainerStyle;
+
+
+  lv_style_t m_gaugeStyle;
+  lv_color_t m_needleColors[5];
+
 
 public:
 
-  PIDScreenTuner(pidTune_t*, int, int);
+  PIDScreenTuner(int, int, int);
   ~PIDScreenTuner();
 
-  void initButton(tunerButtons_t*, int, double*, const char*, bool = false);
+  double m_buttonMultiplier = 1;
+  void initButton(int, double*, const char*, int, buttonType_t = buttonAdd, int = 1);
+  static lv_res_t buttonAction(lv_obj_t*);
 
-  static lv_res_t tuneClickAction(lv_obj_t*);
-  static void incrementVariable(int, tunerButtons_t*);
 
 
+  lv_obj_t* initGauge(int, const char*, int, int, int);
+  lv_obj_t* initMeter(int, const char*, int, int);
 
 
 };

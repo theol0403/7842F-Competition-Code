@@ -3,16 +3,12 @@
 #include "Include/Shared/MotorConfig.hpp"
 #include "Include/Shared/PIDTuner.hpp"
 
-int wantedFlywheelRPM = 0;
+double wantedFlywheelRPM = 0;
 
 void setFlywheelRPM(int wantedRPM)
 {
   wantedFlywheelRPM = wantedRPM;
 }
-
-
-double countMultiplier = 0.01;
-
 
 void flywheelTask(void*)
 {
@@ -20,29 +16,32 @@ void flywheelTask(void*)
 
   pidTune_t flywheelPIDParams = {0.01, 0, 0.1, 0.1, 0.8, 0.8};
 
-  PIDScreenTuner tuneFlywheel(&flywheelPIDParams, LV_HOR_RES, LV_VER_RES);
+  PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
 
-  tunerButtons_t buttonKp;
-  tuneFlywheel.initButton(&buttonKp, 50, &flywheelPIDParams.kP, "kP");
-  tunerButtons_t buttonKd;
-  tuneFlywheel.initButton(&buttonKd, 150, &flywheelPIDParams.kD, "kD");
-  tunerButtons_t buttonKf;
-  tuneFlywheel.initButton(&buttonKf, 250, &flywheelPIDParams.kF, "kF");
+    tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
+    tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
+    tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
+    tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
+    tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
+    tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, buttonIncrement, 50);
+    tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, buttonMultiply, 10);
 
-  tunerButtons_t buttonMultiplier;
-  tuneFlywheel.initButton(&buttonMultiplier, 350, &countMultiplier, "Multiplier", true);
+    int currentRPM = 0;
+    lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 200);
+    double flywheelError = 0;
+    lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -10, 10);
+    float motorPower = 0;
+    lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, -127, 127);
 
 
 
-auto FlywheelRPM = VelMathArgs(imev5TPR/2, std::make_shared<EmaFilter>(0.5));
-auto FlywheelPID = IterativeControllerFactory::velPID(0.01, 1, 0.1, 0, FlywheelRPM, std::make_unique<EmaFilter>(0.04));
+auto FlywheelRPM = VelMathArgs(imev5TPR/2, std::make_shared<EmaFilter>(flywheelPIDParams.readingEma));
+auto FlywheelPID = IterativeControllerFactory::velPID(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, 0, FlywheelRPM, std::make_unique<EmaFilter>(flywheelPIDParams.derivativeEma));
 FlywheelPID.setOutputLimits(127, -127);
 
 
-    const int slewRate = 1;
-
-      int motorPower = 0;
-    	int lastPower = 0;
+    const float slewRate = 0.3;
+    	float lastPower = 0;
 
     	while(true)
     	{
@@ -58,8 +57,15 @@ FlywheelPID.setOutputLimits(127, -127);
 
     		setFlywheelPower(motorPower);
 
-        std::cout << "RPM: " << FlywheelPID.getVel().convert(rpm) << " Power: "<< motorPower << " Error: "<< FlywheelPID.getError() << "\n";
+        currentRPM = FlywheelPID.getVel().convert(rpm);
+        flywheelError = FlywheelPID.getError();
+        std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelError << "\n";
 
+      lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
+      lv_gauge_set_value(rpmGauge, 1, currentRPM);
+
+      lv_gauge_set_value(errorGauge, 0, flywheelError);
+      lv_gauge_set_value(powerGauge, 0, motorPower);
 
     pros::delay(20);
   }
