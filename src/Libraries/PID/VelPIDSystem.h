@@ -20,3 +20,8 @@ struct pidStruct
 
   EMAFilter raName;
 };
+
+class velPID
+{
+
+};
