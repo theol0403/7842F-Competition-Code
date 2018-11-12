@@ -7,48 +7,50 @@ namespace lib7842
 {
 
 
-velPID::velPID(double Kp, double Kd, double Kf, double emaAlpha)
-: m_timer(), m_dFilter(emaAlpha)
-{
-	m_Kp = Kp;
-	m_Kd = Kd;
-	m_Kf = Kf;
+	velPID::velPID(double Kp, double Kd, double Kf, double emaAlpha)
+	: m_timer(), m_dFilter(emaAlpha)
+	{
+		m_Kp = Kp;
+		m_Kd = Kd;
+		m_Kf = Kf;
 
-	m_lastTime = m_timer.elapsed();
-}
-
-
-double velPID::calculate(double wantedRPM, double currentRPM)
-{
-  m_Error = wantedRPM - currentRPM;
-	double deltaTime = m_timer.elapsed() - m_lastTime;
-	m_lastTime = m_timer.elapsed();
-
-	m_derivative = m_Error - m_lastError;
-	m_lastError = m_Error;
-	if(m_derivative < 0) m_derivative /= 4; //So it will not drop too much speed if it speeds up suddenly
-	m_derivative = m_dFilter.filter(m_derivative);
-
-  double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd) + (wantedRPM * m_Kf);
-  if(fabs(finalPower) > 127)
-  {
-    finalPower = sgn(finalPower) * 127;
-  }
-
-  return finalPower;
-}
+		m_lastTime = m_timer.elapsed();
+	}
 
 
-void velPID::setGains(double Kp, double Kd, double Kf, double emaAlpha)
-{
-	m_Kp = Kp;
-	m_Kd = Kd;
-	m_Kf = Kf;
+	double velPID::calculate(double wantedRPM, double currentRPM)
+	{
+		m_Error = wantedRPM - currentRPM;
+		double deltaTime = m_timer.elapsed() - m_lastTime;
+		m_lastTime = m_timer.elapsed();
 
-	m_dFilter.setGains(emaAlpha);
-}
+		m_derivative = m_Error - m_lastError;
+		m_lastError = m_Error;
+		if(m_derivative < 0) m_derivative /= 4; //So it will not drop too much speed if it speeds up suddenly
+		m_derivative = m_dFilter.filter(m_derivative);
 
-double velPID::getError()
-{
-	return m_Error;
+		double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd) + (wantedRPM * m_Kf);
+		if(fabs(finalPower) > 127)
+		{
+			finalPower = sgn(finalPower) * 127;
+		}
+
+		return finalPower;
+	}
+
+
+	void velPID::setGains(double Kp, double Kd, double Kf, double emaAlpha)
+	{
+		m_Kp = Kp;
+		m_Kd = Kd;
+		m_Kf = Kf;
+
+		m_dFilter.setGains(emaAlpha);
+	}
+	
+	double velPID::getError()
+	{
+		return m_Error;
+	}
+
 }

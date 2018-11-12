@@ -2,6 +2,7 @@
 #include "main.h"
 #include "../Other/timingSystem.hpp"
 #include "../Filter/emaFilter.hpp"
+#include "../Other/miscUtils.hpp"
 
 
 namespace lib7842
