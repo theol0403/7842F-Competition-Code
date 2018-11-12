@@ -1,62 +1,54 @@
+#include "main.h"
+#include "VelPIDSystem.h"
 
 
-void pidEMAInit (pidStruct &deviceName, float Kp, float Ki, float Kd, float Kf = 0, int Icap = 100000, int Iin = 0, int Iout = 100000, EMAFilter &raName, float emaAlpha)
+
+namespace 7842Lib
 {
-	deviceName.Kp = Kp;
-	deviceName.Ki = Ki;
-	deviceName.Kd = Kd;
-	deviceName.Kf = Kf;
-
-	deviceName.integralCap = Icap;
-  deviceName.integralInner = Iin;
-	deviceName.integralOuter = Iout;
-
-  deviceName.Error = 0;
-	deviceName.lastError = 0;
-  deviceName.totalError = 0;
-	deviceName.lastTime = nPgmTime;
-	deviceName.lastIntegral = 0;
-	deviceName.derivative = 0;
 
 
-	deviceName.raName = raName;
-	filter_Init_EMA(deviceName.raName, emaAlpha);
+velPID::velPID(double Kp, double Kd, double Kf, double emaAlpha)
+: m_timer(), m_dFilter(emaAlpha)
+{
+	m_Kp = Kp;
+	m_Kd = Kd;
+	m_Kf = Kf;
+
+	m_lastTime = timer.time();
 }
 
 
-
-
-float pidEMACalculate(pidStruct &deviceName, int wantedSig, int currentSig)
+double velPID::calculate(double wantedRPM, double currentRPM)
 {
-  deviceName.Error = wantedSig - currentSig;
-	int deltaTime = nPgmTime - deviceName.lastTime;
+  m_Error = wantedRPM - currentRPM;
+	double deltaTime = m_timer.time() - m_lastTime;
+	m_lastTime = m_timer.time();
 
-  deviceName.totalError += (deviceName.Error * deltaTime);
-  if(abs(deviceName.totalError) > deviceName.integralCap)
-  {
-    deviceName.totalError = sgn(deviceName.totalError) * deviceName.integralCap;
-  }
-  if(abs(deviceName.Error) < deviceName.integralInner) deviceName.totalError = deviceName.lastIntegral;
-	if(abs(deviceName.Error) > deviceName.integralOuter) deviceName.totalError = deviceName.lastIntegral;
+	m_derivative = m_Error - m_lastError;
+	m_lastError = m_Error;
+	if(m_derivative < 0) m_derivative /= 4; //So it will not drop too much speed if it speeds up suddenly
+	m_derivative = m_dFilter.filter(m_derivative);
 
-
-	deviceName.derivative = deviceName.Error - deviceName.lastError;
-	if(deviceName.derivative < 0) deviceName.derivative /= 4;
-
-	deviceName.derivative = filter_EMA(deviceName.raName, deviceName.derivative);
-
-  float finalPower = (deviceName.Error * deviceName.Kp) + (deviceName.totalError * deviceName.Ki) + (deviceName.derivative * deviceName.Kd) + (wantedSig * deviceName.Kf);
-
-
-  deviceName.lastError = deviceName.Error;
-
-	deviceName.lastTime = nPgmTime;
-	deviceName.lastIntegral = deviceName.totalError;
-
-  if(abs(finalPower) > 127)
+  double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd) + (wantedRPM * m_Kf);
+  if(fabs(finalPower) > 127)
   {
     finalPower = sgn(finalPower) * 127;
   }
 
   return finalPower;
+}
+
+
+void velPID::setGains(double Kp, double Kd, double Kf, double emaAlpha)
+{
+	m_Kp = Kp;
+	m_Kd = Kd;
+	m_Kf = Kf;
+
+	m_dFilter.setGains(emaAlpha);
+}
+
+double velPID:getError()
+{
+	return m_Error;
 }
