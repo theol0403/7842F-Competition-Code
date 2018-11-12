@@ -14,7 +14,7 @@ void flywheelTask(void*)
 {
 
 
-  pidTune_t flywheelPIDParams = {0.01, 0, 0.1, 0.1, 0.8, 0.8};
+  pidTune_t flywheelPIDParams = {0.01, 0.0, 0.0, 0.1, 0.9, 1};
 
   PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
 
@@ -29,30 +29,36 @@ void flywheelTask(void*)
     int currentRPM = 0;
     lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 200);
     double flywheelError = 0;
-    lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -10, 10);
+    lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -100, 100);
     float motorPower = 0;
     lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, -127, 127);
 
-
-
-auto FlywheelRPM = VelMathArgs(imev5TPR/2, std::make_shared<EmaFilter>(flywheelPIDParams.readingEma));
-auto FlywheelPID = IterativeControllerFactory::velPID(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, 0, FlywheelRPM, std::make_unique<EmaFilter>(flywheelPIDParams.derivativeEma));
+std::shared_ptr<EmaFilter> rpmFilter = std::make_shared<EmaFilter>(flywheelPIDParams.readingEma);
+std::unique_ptr<EmaFilter> dFilter = std::make_unique<EmaFilter>(flywheelPIDParams.derivativeEma);
+auto FlywheelRPM = VelMathArgs(imev5TPR/2, rpmFilter);
+auto FlywheelPID = IterativeControllerFactory::velPID(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, 0, FlywheelRPM, std::move(dFilter));
 FlywheelPID.setOutputLimits(127, -127);
 
 
-    const float slewRate = 0.3;
+    const float slewRate = 0.7;
     	float lastPower = 0;
 
     	while(true)
     	{
         FlywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, 0);
+        rpmFilter->setGains(flywheelPIDParams.readingEma);
+        //dFilter->setGains(flywheelPIDParams.derivativeEma);
         FlywheelPID.setTarget(wantedFlywheelRPM);
 
         motorPower = FlywheelPID.step(getFlywheelEncoder());
 
-    		if(motorPower < 0) motorPower = 0;
-    		if(motorPower > lastPower && lastPower < 20) lastPower = 20;
+        if(wantedFlywheelRPM <= 0) motorPower = 0;
+    		if(motorPower <= 0) motorPower = 0;
+        if(motorPower > lastPower)
+        {
+    		if(motorPower > lastPower && lastPower < 10) lastPower = 10;
     		if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
+      }
         lastPower = motorPower;
 
     		setFlywheelPower(motorPower);
@@ -64,7 +70,7 @@ FlywheelPID.setOutputLimits(127, -127);
       lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
       lv_gauge_set_value(rpmGauge, 1, currentRPM);
 
-      lv_gauge_set_value(errorGauge, 0, flywheelError);
+      lv_gauge_set_value(errorGauge, 0, flywheelError*10.0);
       lv_gauge_set_value(powerGauge, 0, motorPower);
 
     pros::delay(20);

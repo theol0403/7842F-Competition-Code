@@ -74,10 +74,10 @@ void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* varia
   tunerButtons_t* tunerButtons = new tunerButtons_t;
   tunerButtons->variablePtr = variablePtr;
 
-  tunerButtons->variableName = new char[strlen(variableName)];
+  tunerButtons->variableName = new char[5];
   sprintf(tunerButtons->variableName, variableName);
   tunerButtons->charLength = charLength + (strlen(variableName) + 1);
-  tunerButtons->labelContent = new char[tunerButtons->charLength];
+  tunerButtons->labelContent = new char[10];
 
   tunerButtons->buttonType = buttonType;
   tunerButtons->multiplierPtr = &m_buttonMultiplier;
