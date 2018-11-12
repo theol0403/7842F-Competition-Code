@@ -6,26 +6,26 @@ namespace lib7842
 {
 
 
-  EMAFilter::EMAFilter(double alpha)
+  emaFilter::emaFilter(double alpha)
   :
 	m_alpha(alpha)
 	{
 	}
 
-	double EMAFilter::filter(double readIn)
+	double emaFilter::filter(double readIn)
 	{
 		m_output = m_alpha * readIn + (1.0 - m_alpha) * m_outputOld;
 		m_outputOld = m_output;
 		return m_output;
 	}
 
-	double EMAFilter::filter(double readIn, double alpha)
+	double emaFilter::filter(double readIn, double alpha)
 	{
 		m_alpha = alpha;
 		return filter(readIn);
 	}
 
-	void EMAFilter::setGains(double alpha)
+	void emaFilter::setGains(double alpha)
 	{
 		m_alpha = alpha;
 	}

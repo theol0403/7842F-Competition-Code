@@ -47,11 +47,6 @@ int getFlywheelRPM()
 	return m_Flywheel.get_actual_velocity() * 15;
 }
 
-int getFlywheelEncoder()
-{
-	return m_Flywheel.get_position();
-}
-
 
 void setIntakePower(int speed)
 {

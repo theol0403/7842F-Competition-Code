@@ -2,7 +2,7 @@
 
 namespace lib7842
 {
-  class EMAFilter
+  class emaFilter
   {
 
   private:
@@ -13,7 +13,7 @@ namespace lib7842
 
   public:
 
-    EMAFilter(double);
+    emaFilter(double);
     double filter(double);
     double filter(double, double);
     void setGains(double);

@@ -21,7 +21,7 @@ namespace lib7842
 		  double m_derivative = 0;
 
 			Timer m_timer;
-		  EMAFilter m_dFilter;
+		  emaFilter m_dFilter;
 
 
 	public:
