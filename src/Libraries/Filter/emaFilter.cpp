@@ -1,31 +1,31 @@
 #include "main.h"
 
-#include "emaFilter.h"
+#include "emaFilter.hpp"
 
-namespace 7842Lib
+namespace lib7842
 {
 
 
-  EMAFilter::EMAFilter(float alpha)
+  EMAFilter::EMAFilter(double alpha)
+  :
 	m_alpha(alpha)
 	{
 	}
 
-	float EMAFilter::filter(float readIn)
+	double EMAFilter::filter(double readIn)
 	{
 		m_output = m_alpha * readIn + (1.0 - m_alpha) * m_outputOld;
 		m_outputOld = m_output;
 		return m_output;
 	}
 
-	float EMAFilter::filter(float readIn, float alpha)
+	double EMAFilter::filter(double readIn, double alpha)
 	{
 		m_alpha = alpha;
-		return filterEMA(readIn);
-		m_output = m_alpha * readIn + (1.0 - m_alpha) * m_outputOld;
+		return filter(readIn);
 	}
 
-	void EMAFilter::setGains(float alpha)
+	void EMAFilter::setGains(double alpha)
 	{
 		m_alpha = alpha;
 	}

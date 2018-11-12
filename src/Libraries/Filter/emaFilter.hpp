@@ -1,6 +1,6 @@
 #include "main.h"
 
-namespace 7842Lib
+namespace lib7842
 {
   class EMAFilter
   {
@@ -16,10 +16,8 @@ namespace 7842Lib
     EMAFilter(double);
     double filter(double);
     double filter(double, double);
-    double setGains(double);
+    void setGains(double);
 
 
-
-
-  }
+  };
 }

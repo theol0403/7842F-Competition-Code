@@ -1,9 +1,9 @@
 #include "main.h"
-#include "VelPIDSystem.h"
+#include "VelPIDSystem.hpp"
 
 
 
-namespace 7842Lib
+namespace lib7842
 {
 
 
@@ -14,15 +14,15 @@ velPID::velPID(double Kp, double Kd, double Kf, double emaAlpha)
 	m_Kd = Kd;
 	m_Kf = Kf;
 
-	m_lastTime = timer.time();
+	m_lastTime = m_timer.elapsed();
 }
 
 
 double velPID::calculate(double wantedRPM, double currentRPM)
 {
   m_Error = wantedRPM - currentRPM;
-	double deltaTime = m_timer.time() - m_lastTime;
-	m_lastTime = m_timer.time();
+	double deltaTime = m_timer.elapsed() - m_lastTime;
+	m_lastTime = m_timer.elapsed();
 
 	m_derivative = m_Error - m_lastError;
 	m_lastError = m_Error;
@@ -48,7 +48,7 @@ void velPID::setGains(double Kp, double Kd, double Kf, double emaAlpha)
 	m_dFilter.setGains(emaAlpha);
 }
 
-double velPID:getError()
+double velPID::getError()
 {
 	return m_Error;
 }

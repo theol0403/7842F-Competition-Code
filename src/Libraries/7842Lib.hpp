@@ -1,6 +1,6 @@
 #pragma once
 
-namespace 7842Lib
+namespace lib7842
 {
   
 }

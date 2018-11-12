@@ -2,7 +2,7 @@
 #pragma once
 #include <chrono> // for std::chrono functions
 
- namespace 7842Lib
+ namespace lib7842
  {
    class Timer
    {
@@ -18,7 +18,6 @@
 
    	Timer();
    	void reset();
-    double time();
    	double elapsed();
 
    };

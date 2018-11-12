@@ -1,9 +1,10 @@
 #pragma once
 #include "main.h"
-#include "timingSystem.h"
+#include "../Other/timingSystem.hpp"
+#include "../Filter/emaFilter.hpp"
 
 
-namespace 7842Lib
+namespace lib7842
 {
 	class velPID
 	{
@@ -18,8 +19,8 @@ namespace 7842Lib
 			double m_lastTime = 0;
 		  double m_derivative = 0;
 
-			Timer m_timer();
-		  EMAFilter m_dFilter();
+			Timer m_timer;
+		  EMAFilter m_dFilter;
 
 
 	public:
