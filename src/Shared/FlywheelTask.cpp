@@ -14,6 +14,8 @@ void flywheelTask(void*)
 
   pidTune_t flywheelPIDParams = {0.01, 0.0, 0.0, 0.1, 0.9, 1};
 
+  int flywheelRPM = 0;
+
   const double slewRate = 0.7;
   double lastPower = 0;
   double motorPower = 0;
@@ -41,7 +43,8 @@ void flywheelTask(void*)
     flywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
     rpmEma.setGains(flywheelPIDParams.readingEma);
 
-    motorPower = flywheelPID.calculate(wantedFlywheelRPM, getFlywheelRPM());
+    flywheelRPM = rpmEma.filter(getFlywheelRPM());
+    motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
 
     if(wantedFlywheelRPM <= 0) motorPower = 0;
     if(motorPower <= 0) motorPower = 0;
@@ -52,10 +55,10 @@ void flywheelTask(void*)
     setFlywheelPower(motorPower);
 
 
-    std::cout << "RPM: " << getFlywheelRPM() << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
+    std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
     lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
-    lv_gauge_set_value(rpmGauge, 1, getFlywheelRPM());
+    lv_gauge_set_value(rpmGauge, 1, flywheelRPM);
 
     lv_gauge_set_value(errorGauge, 0, flywheelPID.getError());
     lv_gauge_set_value(powerGauge, 0, motorPower);

@@ -24,7 +24,7 @@ namespace lib7842
 		double deltaTime = m_timer.elapsed() - m_lastTime;
 		m_lastTime = m_timer.elapsed();
 
-		m_derivative = m_Error - m_lastError;
+		m_derivative = (m_Error - m_lastError) / deltaTime;
 		m_lastError = m_Error;
 		if(m_derivative < 0) m_derivative /= 4; //So it will not drop too much speed if it speeds up suddenly
 		m_derivative = m_dFilter.filter(m_derivative);
@@ -47,7 +47,7 @@ namespace lib7842
 
 		m_dFilter.setGains(emaAlpha);
 	}
-	
+
 	double velPID::getError()
 	{
 		return m_Error;
