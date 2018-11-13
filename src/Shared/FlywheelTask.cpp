@@ -12,7 +12,7 @@ void setFlywheelRPM(int wantedRPM)
 void flywheelTask(void*)
 {
 
-  pidTune_t flywheelPIDParams = {0.01, 0.0, 0.0, 0.1, 0.9, 1};
+  pidTune_t flywheelPIDParams = {0.4, 0.0, 0.0, 0.044, 0.15, 1};
 
   int flywheelRPM = 0;
 
