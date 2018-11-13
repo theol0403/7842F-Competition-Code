@@ -38,7 +38,8 @@ void flywheelTask(void*)
   {
     setFlywheelPower(0);
     while(wantedFlywheelRPM == 0) {pros::delay(20);} //Wait until power > 0
-    lastPower = getFlywheelRPM() / 3000 * 127; //Hopefully power should resume to motor speed
+    lastPower = getFlywheelRPM() / 3000 * 127; //Hopefully power should resume to motor
+
     while(wantedFlywheelRPM != 0) //Loop until power is back to 0
     {
       flywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
@@ -55,7 +56,7 @@ void flywheelTask(void*)
 
       setFlywheelPower(motorPower);
 
-      std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
+      //std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
       lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
       lv_gauge_set_value(rpmGauge, 1, flywheelRPM);
