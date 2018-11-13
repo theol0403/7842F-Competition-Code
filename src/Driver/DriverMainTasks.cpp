@@ -9,6 +9,8 @@
 
 void DriverMainTask(void*)
 {
+	std::cout << "Driver started";
+	pros::delay(200);
 	int joystickLeftX;
 	int joystickRightY;
 	int joystickRightX;
@@ -117,5 +119,6 @@ void DriverMainTask(void*)
 
 		pros::delay(30);
 	}
+	std::cout << "Driver stopped";
 
 }

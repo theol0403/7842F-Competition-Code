@@ -1,8 +1,26 @@
 #include "main.h"
 
 #include "Include/Shared/MotorConfig.hpp"
+#include "Include/Shared/FlywheelTask.hpp"
+
+#include "Include/FlagTracking/FlagTracking.hpp"
+
+#include "Include/Driver/DriverMainTasks.hpp"
 
 
+
+
+
+/***   _____         _
+ *    |_   _|       | |
+ *      | | __ _ ___| | _____
+ *      | |/ _` / __| |/ / __|
+ *      | | (_| \__ \   <\__ \
+ *      \_/\__,_|___/_|\_\___/
+ */
+
+// pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
+// pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
 
 
 
@@ -20,14 +38,10 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-
- #include "Include/Shared/FlywheelTask.hpp"
- #include "Include/FlagTracking/FlagTracking.hpp"
-
 void initialize()
 {
 
-	pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
+  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
 
 	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
@@ -78,17 +92,6 @@ void disabled() {}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /***
  *     _   _                              _             _
  *    | | | |                            | |           | |
@@ -108,20 +111,14 @@ void disabled() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-
-#include "Include/Driver/DriverMainTasks.hpp"
-
 void opcontrol()
 {
-	pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
+  pros::delay(200);
+  pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000, "DriverTask");
 
-pros::delay(100000);
 
-
+  while(true) {pros::delay(10000);} //Never exits
 }
-
-
-
 
 
 
@@ -145,4 +142,7 @@ pros::delay(100000);
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous()
+{
+
+}
