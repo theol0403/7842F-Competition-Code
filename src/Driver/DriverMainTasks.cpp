@@ -2,35 +2,80 @@
 #include "Include/Shared/MotorConfig.hpp"
 #include "Include/Driver/DriverMainTasks.hpp"
 
-int joystickLeftX;
-int joystickRightY;
-int joystickRightX;
 
-const int BASE_THRESHOLD = 0;
 
 
 
 void DriverMainTask(void*)
 {
+	int joystickLeftX;
+	int joystickRightY;
+	int joystickRightX;
+
+	bool flywheelManual = false;
 
 	while(true)
 	{
-
-		// Base Control --------------------------------------------------------------------------------
-
 
 			joystickLeftX = j_Main.get_analog(ANALOG_LEFT_X);
 			joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
 			joystickRightX = j_Main.get_analog(ANALOG_RIGHT_X);
 
-			joystickLeftX = abs(joystickLeftX) > BASE_THRESHOLD ? joystickLeftX : 0;
-			joystickRightY = abs(joystickRightY) > BASE_THRESHOLD ? joystickRightY : 0;
-			joystickRightX = abs(joystickRightX) > BASE_THRESHOLD ? joystickRightX : 0;
-
-
 			setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
 			setHPower(joystickRightX);
-		// Base Control --------------------------------------------------------------------------------
+
+
+		if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
+    {
+      setIntakePower(127);
+    }
+    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
+    {
+      setIntakePower(-127);
+    }
+    else
+    {
+			setIntakePower(0);
+    }
+
+
+		if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
+    {
+      setIndexerPower(-127);
+    }
+    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_L2))
+    {
+      setIndexerPower(127);
+    }
+    else
+    {
+      setIndexerPower(0);
+		}
+
+
+    if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_UP))
+    {
+      wantedPower = 70;
+    }
+    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT))
+    {
+      wantedPower = 127;
+    }
+    else if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN))
+    {
+      wantedPower = 0;
+    }
+
+
+
+    if(j_Main.get_digital(pros::E_CONTROLLER_DIGITAL_X))
+    {
+      m_flywheel.move(-127);
+    }
+
+
+
+
 
 
 

@@ -13,3 +13,4 @@ int getFlywheelRPM();
 int getFlywheelEncoder();
 
 void setIntakePower(int);
+void setIndexerPower(int);

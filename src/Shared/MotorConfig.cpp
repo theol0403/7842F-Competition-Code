@@ -17,9 +17,8 @@ pros::Motor m_hBase(6, true);
 
 pros::Motor m_Flywheel(7);
 
-pros::Motor m_Intake(8);
-
-
+pros::Motor m_Intake(14);
+pros::Motor m_Indexer(1);
 
 
 
@@ -51,4 +50,9 @@ int getFlywheelRPM()
 void setIntakePower(int speed)
 {
 	m_Intake.move(speed);
+}
+
+void setIndexerPower(int speed)
+{
+	m_Indexer.move(speed);
 }

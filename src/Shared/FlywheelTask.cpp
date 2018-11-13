@@ -4,15 +4,11 @@
 
 double wantedFlywheelRPM = 0;
 
-void setFlywheelRPM(int wantedRPM)
-{
-  wantedFlywheelRPM = wantedRPM;
-}
 
 void flywheelTask(void*)
 {
 
-  pidTune_t flywheelPIDParams = {0.4, 0.0, 0.0, 0.044, 0.15, 1};
+  pidTune_t flywheelPIDParams = {0.4, 0.0, 0.05, 0.044, 0.15, 0.9};
 
   int flywheelRPM = 0;
 
@@ -40,36 +36,43 @@ void flywheelTask(void*)
 
   while(true)
   {
-    flywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
-    rpmEma.setGains(flywheelPIDParams.readingEma);
+    setFlywheelPower(0);
+    while(wantedFlywheelRPM == 0) {pros::delay(20);} //Wait until power > 0
+    lastPower = getFlywheelRPM() / 3000 * 127; //Hopefully power should resume to motor speed
+    while(wantedFlywheelRPM != 0) //Loop until power is back to 0
+    {
+      flywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
+      rpmEma.setGains(flywheelPIDParams.readingEma);
 
-    flywheelRPM = rpmEma.filter(getFlywheelRPM());
-    motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
+      flywheelRPM = rpmEma.filter(getFlywheelRPM());
+      motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
 
-    if(wantedFlywheelRPM <= 0) motorPower = 0;
-    if(motorPower <= 0) motorPower = 0;
-    if(motorPower > lastPower && lastPower < 10) lastPower = 10;
-    if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
-    lastPower = motorPower;
+      if(wantedFlywheelRPM <= 0) motorPower = 0;
+      if(motorPower <= 0) motorPower = 0;
+      if(motorPower > lastPower && lastPower < 10) lastPower = 10;
+      if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
+      lastPower = motorPower;
 
-    setFlywheelPower(motorPower);
+      setFlywheelPower(motorPower);
 
+      std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
-    std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
+      lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
+      lv_gauge_set_value(rpmGauge, 1, flywheelRPM);
+      lv_gauge_set_value(errorGauge, 0, flywheelPID.getError());
+      lv_gauge_set_value(powerGauge, 0, motorPower);
 
-    lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
-    lv_gauge_set_value(rpmGauge, 1, flywheelRPM);
-
-    lv_gauge_set_value(errorGauge, 0, flywheelPID.getError());
-    lv_gauge_set_value(powerGauge, 0, motorPower);
-
-    pros::delay(20);
+      pros::delay(20);
+    }
   }
 }
 
 
 
-
+void setFlywheelRPM(int wantedRPM)
+{
+  wantedFlywheelRPM = wantedRPM;
+}
 
 
 
