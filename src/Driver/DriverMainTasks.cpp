@@ -5,12 +5,10 @@
 
 
 
-
-
 void DriverMainTask(void*)
 {
 	std::cout << "Driver started";
-	pros::delay(200);
+
 	int joystickLeftX;
 	int joystickRightY;
 	int joystickRightX;
@@ -27,8 +25,11 @@ void DriverMainTask(void*)
 		joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
 		joystickRightX = j_Main.get_analog(ANALOG_RIGHT_X);
 
-		setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
-		setHPower(joystickRightX);
+		if(pros::competition::get_status() == COMPETITION_CONNECTED)
+		{
+			setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
+		}
+
 
 
 		if(j_Main.get_digital(DIGITAL_R1))
@@ -119,6 +120,5 @@ void DriverMainTask(void*)
 
 		pros::delay(30);
 	}
-	std::cout << "Driver stopped";
 
 }

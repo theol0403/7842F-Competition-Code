@@ -63,7 +63,7 @@ void compManagerTask(void*)
       //Motors Off
     }
 
-    pros::delay(100);
+    pros::delay(50);
   }
 }
 
@@ -185,6 +185,6 @@ void opcontrol()
  */
 void autonomous()
 {
-  DriverMainTask_t.suspend();
+  //Auto code
 
 }
