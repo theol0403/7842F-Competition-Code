@@ -18,9 +18,67 @@
  *      | | (_| \__ \   <\__ \
  *      \_/\__,_|___/_|\_\___/
  */
+pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
+pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000, "DriverTask");
 
-// pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
-// pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "DriverTask");
+
+void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode)
+{
+  if(taskPtr->get_state() != taskMode) //If state is wrong
+  {
+    switch(taskMode)
+    {
+      case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
+      case TASK_STATE_RUNNING: taskPtr->resume(); break;
+      default:
+      {
+
+      }
+    }
+  }
+}
+
+//COMPETITION_{DISABLED,AUTONOMOUS,CONNECTED}.
+
+void taskCompetitionWatch(void*)
+{
+  int currentStatus;
+  while(true)
+  {
+    currentStatus = pros::competition::get_status();
+
+    if(currentStatus != COMPETITION_DISABLED) //Not disabled
+    {
+      if(currentStatus != COMPETITION_AUTONOMOUS) //Driver Control
+      {
+        //Driver on
+        //Auto off
+      }
+      else if(currentStatus == COMPETITION_AUTONOMOUS) //Autonomous
+      {
+        //Driver off
+        //Auto on
+      }
+    }
+    else if(currentStatus != COMPETITION_CONNECTED) //Disconnected
+    {
+      //Nothing NOTE Make driver motors turn off if not connected
+    }
+    else //Disabled
+    {
+      //Auton Selector
+      //All other tasks off
+      //Motors Off
+    }
+    switch (pros::competition::get_status())
+    {
+      case COMPETITION_AUTONOMOUS:
+      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+    }
+
+    pros::delay(200);
+  }
+}
 
 
 
@@ -41,7 +99,8 @@
 void initialize()
 {
 
-  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
+  MainFlywheelTask_t.resume();
+  DriverMainTask_t.suspend();
 
 	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
@@ -113,7 +172,8 @@ void disabled() {}
  */
 void opcontrol()
 {
-  pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000, "DriverTask");
+  DriverMainTask_t.resume();
+  DriverMainTask_t.resume();
 
 
   while(true) {pros::delay(10000);} //Never exits
@@ -143,5 +203,6 @@ void opcontrol()
  */
 void autonomous()
 {
+  DriverMainTask_t.suspend();
 
 }
