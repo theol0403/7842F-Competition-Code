@@ -113,7 +113,6 @@ void disabled() {}
  */
 void opcontrol()
 {
-  pros::delay(200);
   pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000, "DriverTask");
 
 
