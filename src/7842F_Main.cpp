@@ -9,8 +9,6 @@
 
 
 
-
-
 /***   _____         _
  *    |_   _|       | |
  *      | | __ _ ___| | _____
@@ -18,69 +16,59 @@
  *      | | (_| \__ \   <\__ \
  *      \_/\__,_|___/_|\_\___/
  */
-pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FywheelTask");
-pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000, "DriverTask");
+//Sets task state
+ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
+   if(taskPtr->get_state() != taskMode) { //If state is wrong
+     switch(taskMode) {
+       case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
+       case TASK_STATE_RUNNING: taskPtr->resume(); break;
+       default: {} } } }
 
+//Shared
+pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
+//Driver
+pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
+//Auton
 
-void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode)
+void compManagerTask(void*)
 {
-  if(taskPtr->get_state() != taskMode) //If state is wrong
-  {
-    switch(taskMode)
-    {
-      case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
-      case TASK_STATE_RUNNING: taskPtr->resume(); break;
-      default:
-      {
-
-      }
-    }
-  }
-}
-
-//COMPETITION_{DISABLED,AUTONOMOUS,CONNECTED}.
-
-void taskCompetitionWatch(void*)
-{
-  int currentStatus;
+  int currentStatus = COMPETITION_DISABLED;
   while(true)
   {
     currentStatus = pros::competition::get_status();
-
-    if(currentStatus != COMPETITION_DISABLED) //Not disabled
+    if(currentStatus != COMPETITION_DISABLED) //Enabled
     {
+      //Shared
+      setTaskState(&MainFlywheelTask_t, TASK_STATE_RUNNING);
       if(currentStatus != COMPETITION_AUTONOMOUS) //Driver Control
       {
         //Driver on
+        setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
         //Auto off
       }
       else if(currentStatus == COMPETITION_AUTONOMOUS) //Autonomous
       {
         //Driver off
+        setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
         //Auto on
       }
     }
-    else if(currentStatus != COMPETITION_CONNECTED) //Disconnected
-    {
-      //Nothing NOTE Make driver motors turn off if not connected
-    }
+    else if(currentStatus != COMPETITION_CONNECTED) {} //Disconnected
     else //Disabled
     {
       //Auton Selector
       //All other tasks off
+      setTaskState(&MainFlywheelTask_t, TASK_STATE_SUSPENDED); setFlywheelRPM(0);
+      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //Motors Off
     }
-    switch (pros::competition::get_status())
-    {
-      case COMPETITION_AUTONOMOUS:
-      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
-    }
 
-    pros::delay(200);
+    pros::delay(100);
   }
 }
 
-
+//Manager
+pros::Task compManagerTask_t(compManagerTask, NULL, TASK_PRIORITY_DEFAULT+2, TASK_STACK_DEPTH_DEFAULT);
 
 
 
@@ -99,8 +87,6 @@ void taskCompetitionWatch(void*)
 void initialize()
 {
 
-  MainFlywheelTask_t.resume();
-  DriverMainTask_t.suspend();
 
 	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
@@ -172,10 +158,6 @@ void disabled() {}
  */
 void opcontrol()
 {
-  DriverMainTask_t.resume();
-  DriverMainTask_t.resume();
-
-
   while(true) {pros::delay(10000);} //Never exits
 }
 
