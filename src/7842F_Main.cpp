@@ -89,9 +89,19 @@ pros::Task compManagerTask_t(compManagerTask, NULL, TASK_PRIORITY_DEFAULT+2, TAS
 void initialize()
 {
 
-
 	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
+
+
+
+
+  robotChassis = ChassisControllerFactory::createPtr(
+  {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
+  IterativePosPIDController::Gains{0.5, 0, 0}, //Driving PID
+  IterativePosPIDController::Gains{0.1, 0.05, 0}, //Angle PID
+  //IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
+  AbstractMotor::gearset::green, {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
+  );
 }
 
 
@@ -202,17 +212,9 @@ void opcontrol()
   }
  };
 
-
 void autonomous()
 {
-  robotChassis = ChassisControllerFactory::createPtr(
-  {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
-  IterativePosPIDController::Gains{0.5, 0, 0}, //Driving PID
-  IterativePosPIDController::Gains{0.1, 0.05, 0}, //Angle PID
-  IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
-  AbstractMotor::gearset::green,
-  {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
-);
+
 
 std::shared_ptr<chassisControl> robotChassisControl;
 std::unique_ptr<PIDTuner> chassisTuner = PIDTunerFactory::createPtr(
@@ -223,9 +225,11 @@ std::unique_ptr<PIDTuner> chassisTuner = PIDTunerFactory::createPtr(
                      5, 16,
                      1, 2);
 
+okapi::PIDTuner::Output tunerOutput = chassisTuner->autotune();
 
+std::cout << "kP: " << tunerOutput.kP << " | kI: " << tunerOutput.kI << " | kD: " << tunerOutput.kD << "\n";
 
-robotChassis->moveDistance(4_ft);
+//robotChassis->moveDistance(4_ft);
 
-
+pros::delay(500000);
 }

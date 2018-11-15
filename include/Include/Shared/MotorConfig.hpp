@@ -1,7 +1,5 @@
 #include "main.h"
-
-
-extern pros::Controller j_Main;
+#pragma once
 
 enum motorConfig_t
 {
@@ -13,6 +11,8 @@ enum motorConfig_t
 	e_Intake = 14,
 	e_Indexer = 1
 };
+
+extern pros::Controller j_Main;
 
 
 void setBasePower(int, int);

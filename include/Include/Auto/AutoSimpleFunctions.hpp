@@ -1,4 +1,5 @@
 #include "main.h"
+#include "Include/Shared/MotorConfig.hpp"
 
 
 enum intakeModes_t
