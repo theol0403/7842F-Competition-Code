@@ -7,6 +7,8 @@
 
 #include "Include/Driver/DriverMainTasks.hpp"
 
+#include "Include/Auto/AutoConfig.hpp"
+
 
 
 /***   _____         _
@@ -58,7 +60,7 @@ void compManagerTask(void*)
     {
       //Auton Selector
       //All other tasks off
-      setTaskState(&MainFlywheelTask_t, TASK_STATE_SUSPENDED); setFlywheelRPM(0);
+      setFlywheelRPM(0);
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //Motors Off
     }
@@ -183,8 +185,47 @@ void opcontrol()
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+
+ class chassisControl: public ControllerInput<double>, public ControllerOutput<double>
+ {
+ public:
+     chassisControl()
+     {
+     }
+  void controllerSet(double ivalue)
+  {
+    setBasePower(ivalue, ivalue);
+  }
+  double controllerGet(double ivalue)
+  {
+    return (getBaseRight() + getBaseLeft()) / 2;
+  }
+ };
+
+
 void autonomous()
 {
-  //Auto code
+  robotChassis = ChassisControllerFactory::createPtr(
+  {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
+  IterativePosPIDController::Gains{0.5, 0, 0}, //Driving PID
+  IterativePosPIDController::Gains{0.1, 0.05, 0}, //Angle PID
+  IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
+  AbstractMotor::gearset::green,
+  {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
+);
+
+std::shared_ptr<chassisControl> robotChassisControl;
+std::unique_ptr<PIDTuner> chassisTuner = PIDTunerFactory::createPtr(
+                     robotChassisControl, robotChassisControl,
+                     2_s, 360*4,
+                     0, 0,
+                     0.01, 5,
+                     5, 16,
+                     1, 2);
+
+
+
+robotChassis->moveDistance(4_ft);
+
 
 }
