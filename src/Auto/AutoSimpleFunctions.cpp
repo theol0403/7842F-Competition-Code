@@ -5,13 +5,13 @@ void setIntakeMode(intakeModes_t intakeMode)
 {
   if(intakeMode == intakeCollect)
   {
-    setIntakePower(127);
-    setIndexerPower(15);
+    setIntakePower(-127);
+    setIndexerPower(0);
   }
   else if(intakeMode == intakeShoot)
   {
-    setIntakePower(127);
-    setIndexerPower(127);
+    setIntakePower(-127);
+    setIndexerPower(-127);
   }
   else if(intakeMode == intakeOff)
   {
@@ -20,12 +20,12 @@ void setIntakeMode(intakeModes_t intakeMode)
   }
   else if(intakeMode == intakeOut)
   {
-    setIntakePower(-127);
-    setIndexerPower(-127);
+    setIntakePower(127);
+    setIndexerPower(127);
   }
   else if(intakeMode == indexShoot)
   {
-    setIndexerPower(127);
+    setIndexerPower(-127);
     setIntakePower(0);
   }
 

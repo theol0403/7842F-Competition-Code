@@ -7,7 +7,7 @@
 
 void DriverMainTask(void*)
 {
-	std::cout << "Driver started";
+
 
 	int joystickLeftX;
 	int joystickRightY;
@@ -77,17 +77,17 @@ void DriverMainTask(void*)
 
 		if(j_Main.get_digital(DIGITAL_LEFT))
 		{
-			wantedFlywheelSpeed = flywheelManual ? 50 : 2100;
+			wantedFlywheelSpeed = flywheelManual ? 50 : 2400;
 			triggerUpdate = true;
 		}
 		else if(j_Main.get_digital(DIGITAL_UP))
 		{
-			wantedFlywheelSpeed = flywheelManual ? 70 : 2400;
+			wantedFlywheelSpeed = flywheelManual ? 70 : 2600;
 			triggerUpdate = true;
 		}
 		else if(j_Main.get_digital(DIGITAL_RIGHT))
 		{
-			wantedFlywheelSpeed = flywheelManual ? 127 : 2900;
+			wantedFlywheelSpeed = flywheelManual ? 90 : 2800;
 			triggerUpdate = true;
 		}
 		else if(j_Main.get_digital(DIGITAL_DOWN))

@@ -32,45 +32,45 @@ pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_ST
 pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
 //Auton
 
-void compManagerTask(void*)
-{
-  int currentStatus = COMPETITION_DISABLED;
-  while(true)
-  {
-    currentStatus = pros::competition::get_status();
-    if(currentStatus != COMPETITION_DISABLED) //Enabled
-    {
-      //Shared
-      setTaskState(&MainFlywheelTask_t, TASK_STATE_RUNNING);
-      if(currentStatus != COMPETITION_AUTONOMOUS) //Driver Control
-      {
-        //Driver on
-        setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
-        //Auto off
-      }
-      else if(currentStatus == COMPETITION_AUTONOMOUS) //Autonomous
-      {
-        //Driver off
-        setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
-        //Auto on
-      }
-    }
-    else //Disabled
-    {
-      //Auton Selector
-      //All other tasks off
-      setFlywheelRPM(0);
-      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
-      //Motors Off
-      robotChassis->stop();
-    }
-
-    pros::delay(50);
-  }
-}
-
-//Manager
-pros::Task compManagerTask_t(compManagerTask, NULL, TASK_PRIORITY_DEFAULT+2, TASK_STACK_DEPTH_DEFAULT);
+// void compManagerTask(void*)
+// {
+//   int currentStatus = COMPETITION_DISABLED;
+//   while(true)
+//   {
+//     currentStatus = pros::competition::get_status();
+//     if(currentStatus != COMPETITION_DISABLED) //Enabled
+//     {
+//       //Shared
+//       setTaskState(&MainFlywheelTask_t, TASK_STATE_RUNNING);
+//       if(currentStatus != COMPETITION_AUTONOMOUS) //Driver Control
+//       {
+//         //Driver on
+//         setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
+//         //Auto off
+//       }
+//       else if(currentStatus == COMPETITION_AUTONOMOUS) //Autonomous
+//       {
+//         //Driver off
+//         setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+//         //Auto on
+//       }
+//     }
+//     else //Disabled
+//     {
+//       //Auton Selector
+//       //All other tasks off
+//       setFlywheelRPM(0);
+//       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+//       //Motors Off
+//       robotChassis->stop();
+//     }
+//
+//     pros::delay(50);
+//   }
+// }
+//
+// //Manager
+// pros::Task compManagerTask_t(compManagerTask, NULL, TASK_PRIORITY_DEFAULT+2, TASK_STACK_DEPTH_DEFAULT);
 
 
 
@@ -88,13 +88,19 @@ pros::Task compManagerTask_t(compManagerTask, NULL, TASK_PRIORITY_DEFAULT+2, TAS
  */
 void initialize()
 {
+  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
 	//pros::Task FlagTrackingTask_t(mainFlagTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
 
 
 
-
-//Put robotChassis here
+  robotChassis = ChassisControllerFactory::createPtr(
+  {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
+  IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
+  IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
+  IterativePosPIDController::Gains{0.0016, 0, 0}, //Turning PID
+  AbstractMotor::gearset::green, {4_in, 25.15_in} //Wheel Diam, Chassis Width
+);
 }
 
 
@@ -136,7 +142,7 @@ void competition_initialize() {}
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);}
 
 
 
@@ -163,6 +169,7 @@ void disabled() {}
  */
 void opcontrol()
 {
+  setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
   while(true) {pros::delay(10000);} //Never exits
 }
 
@@ -191,18 +198,8 @@ void opcontrol()
 
 void autonomous()
 {
+  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
-    robotChassis = ChassisControllerFactory::createPtr(
-    {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
-    IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
-    IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
-    //IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
-    AbstractMotor::gearset::green, {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
-  );
-
-  robotChassis->moveDistance(1_ft);
-
-pros::delay(500000);
 
 #include "Auto/AutoExec/AutoBlue1.auton"
 
