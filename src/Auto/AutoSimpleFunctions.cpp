@@ -25,8 +25,8 @@ void setIntakeMode(intakeModes_t intakeMode)
   }
   else if(intakeMode == indexShoot)
   {
-    setIndexerPower(-127);
     setIntakePower(0);
+    setIndexerPower(-127);
   }
 
 }
