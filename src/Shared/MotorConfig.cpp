@@ -26,9 +26,11 @@ double getBaseLeft()
 }
 
 pros::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0);
+pros::Motor m_Flywheel2(abs(e_Flywheel2), e_Flywheel2<0);
 void setFlywheelPower(int speed)
 {
 	m_Flywheel.move(speed);
+	m_Flywheel2.move(speed);
 }
 
 int getFlywheelRPM()

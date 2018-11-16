@@ -8,6 +8,7 @@ enum motorConfig_t
 	e_LeftBase = 4,
 	e_LeftBase2 = 5,
 	e_Flywheel = 7,
+	e_Flywheel2 = -8,
 	e_Intake = 14,
 	e_Indexer = 1
 };

@@ -219,7 +219,7 @@ void autonomous()
 std::shared_ptr<chassisControl> robotChassisControl;
 std::unique_ptr<PIDTuner> chassisTuner = PIDTunerFactory::createPtr(
                      robotChassisControl, robotChassisControl,
-                     2_s, 360*4,
+                     5_s, 360*4,
                      0, 0,
                      0.01, 5,
                      5, 16,
@@ -229,7 +229,7 @@ okapi::PIDTuner::Output tunerOutput = chassisTuner->autotune();
 
 std::cout << "kP: " << tunerOutput.kP << " | kI: " << tunerOutput.kI << " | kD: " << tunerOutput.kD << "\n";
 
-//robotChassis->moveDistance(4_ft);
+#include "Auto/AutoExec/AutoBlue1.auton"
 
 pros::delay(500000);
 }
