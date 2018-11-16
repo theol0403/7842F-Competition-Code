@@ -20,8 +20,7 @@
 */
 //Sets task state
 void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
-  if(taskPtr->get_state() != taskMode) { //If state is wrong
-    switch(taskMode) {
+  if(taskPtr->get_state() != taskMode) { switch(taskMode) { //If state is wrong
       case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
       case TASK_STATE_RUNNING: taskPtr->resume(); break;
       default: {} } } }
@@ -134,6 +133,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       */
       void opcontrol()
       {
+        robotChassis->stop();
         setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
         while(true) {pros::delay(10000);} //Never exits
       }
