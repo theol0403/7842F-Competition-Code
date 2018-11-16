@@ -62,6 +62,7 @@ void compManagerTask(void*)
       setFlywheelRPM(0);
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //Motors Off
+      robotChassis->stop();
     }
 
     pros::delay(50);
@@ -93,14 +94,7 @@ void initialize()
 
 
 
-
-  robotChassis = ChassisControllerFactory::createPtr(
-  {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
-  IterativePosPIDController::Gains{0.5, 0, 0}, //Driving PID
-  IterativePosPIDController::Gains{0.1, 0.05, 0}, //Angle PID
-  //IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
-  AbstractMotor::gearset::green, {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
-  );
+//Put robotChassis here
 }
 
 
@@ -195,38 +189,20 @@ void opcontrol()
  * from where it left off.
  */
 
- class chassisControl: public ControllerInput<double>, public ControllerOutput<double>
- {
- public:
-     chassisControl()
-     {
-     }
-  void controllerSet(double ivalue)
-  {
-    setBasePower(ivalue, ivalue);
-  }
-  double controllerGet(double ivalue)
-  {
-    return (getBaseRight() + getBaseLeft()) / 2;
-  }
- };
-
 void autonomous()
 {
 
+    robotChassis = ChassisControllerFactory::createPtr(
+    {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
+    IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
+    IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
+    //IterativePosPIDController::Gains{0.2, 0, 0}, //Turning PID
+    AbstractMotor::gearset::green, {2.75_in, 10.5_in} //Wheel Diam, Chassis Width
+  );
 
-std::shared_ptr<chassisControl> robotChassisControl;
-std::unique_ptr<PIDTuner> chassisTuner = PIDTunerFactory::createPtr(
-                     robotChassisControl, robotChassisControl,
-                     5_s, 360*4,
-                     0, 0,
-                     0.01, 5,
-                     5, 16,
-                     1, 2);
+  robotChassis->moveDistance(1_ft);
 
-okapi::PIDTuner::Output tunerOutput = chassisTuner->autotune();
-
-std::cout << "kP: " << tunerOutput.kP << " | kI: " << tunerOutput.kI << " | kD: " << tunerOutput.kD << "\n";
+pros::delay(500000);
 
 #include "Auto/AutoExec/AutoBlue1.auton"
 
