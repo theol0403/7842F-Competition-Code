@@ -20,7 +20,7 @@ namespace lib7842
 			double m_lastTime = 0;
 		  double m_derivative = 0;
 
-			Timer m_timer;
+			7842lib::Timer m_timer;
 		  emaFilter m_dFilter;
 
 
