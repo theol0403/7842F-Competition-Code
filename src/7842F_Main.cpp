@@ -55,7 +55,6 @@ void compManagerTask(void*)
         //Auto on
       }
     }
-    else if(currentStatus != COMPETITION_CONNECTED) {} //Disconnected
     else //Disabled
     {
       //Auton Selector

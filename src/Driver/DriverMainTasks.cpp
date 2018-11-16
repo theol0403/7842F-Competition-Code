@@ -25,10 +25,7 @@ void DriverMainTask(void*)
 		joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
 		joystickRightX = j_Main.get_analog(ANALOG_RIGHT_X);
 
-		if(pros::competition::get_status() == COMPETITION_CONNECTED)
-		{
-			setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
-		}
+		setBasePower(joystickRightY + joystickLeftX, joystickRightY - joystickLeftX);
 
 
 
@@ -48,11 +45,11 @@ void DriverMainTask(void*)
 
 		if(j_Main.get_digital(DIGITAL_L1))
 		{
-			setIndexerPower(-127);
+			setIndexerPower(127);
 		}
 		else if(j_Main.get_digital(DIGITAL_L2))
 		{
-			setIndexerPower(127);
+			setIndexerPower(-127);
 		}
 		else
 		{

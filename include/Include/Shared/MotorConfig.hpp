@@ -3,14 +3,14 @@
 
 enum motorConfig_t
 {
-	e_RightBase = -2,
-	e_RightBase2 = -3,
-	e_LeftBase = 4,
-	e_LeftBase2 = 5,
-	e_Flywheel = 7,
-	e_Flywheel2 = -8,
-	e_Intake = 14,
-	e_Indexer = 1
+	e_RightBase = -15,
+	e_RightBase2 = -16,
+	e_LeftBase = 17,
+	e_LeftBase2 = 18,
+	e_Flywheel = 13,
+	e_Flywheel2 = -14,
+	e_Intake = 11,
+	e_Indexer = 12
 };
 
 extern pros::Controller j_Main;
