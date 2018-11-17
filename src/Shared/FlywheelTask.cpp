@@ -26,6 +26,7 @@ void flywheelTask(void*)
 
     while(wantedFlywheelRPM) //Loop until power is back to 0
     {
+      std::cout << "wantedFlywheelRPM";
 
       flywheelRPM = rpmEma.filter(getFlywheelRPM());
       motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
