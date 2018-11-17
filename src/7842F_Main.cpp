@@ -166,7 +166,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
 
-        #include "Auto/AutoExec/AutoBlue1.auton"
+        #include "Auto/AutoExec/AutoBlueClose.auton"
 
         pros::delay(500000);
       }
