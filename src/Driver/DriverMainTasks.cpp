@@ -111,7 +111,14 @@ void DriverMainTask(void*)
 		}
 
 
-
+if(j_Main.get_digital(DIGITAL_X))
+{
+	extendArm = true;
+}
+else
+{
+	extendArm = false;
+}
 
 
 

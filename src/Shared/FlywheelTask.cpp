@@ -3,6 +3,7 @@
 
 
 double wantedFlywheelRPM = 0;
+bool extendArm = false;
 
 
 void flywheelTask(void*)
@@ -21,23 +22,30 @@ void flywheelTask(void*)
   while(true)
   {
     setFlywheelPower(0);
-    while(wantedFlywheelRPM == 0) {pros::delay(20);} //Wait until power > 0
+    while(wantedFlywheelRPM == 0 && !extendArm) {pros::delay(20);} //Wait until power > 0
     lastPower = getFlywheelRPM() / 3000 * 127; //Hopefully power should resume to motor
 
-    while(wantedFlywheelRPM) //Loop until power is back to 0
+    while(wantedFlywheelRPM || extendArm) //Loop until power is back to 0
     {
-      std::cout << "wantedFlywheelRPM";
+      if(extendArm)
+      {
+        setFlywheelPower(-80);
+        lastPower = lastPower <= 0 ? 0 : lastPower-0.27;
+      }
+      else
+      {
+        flywheelRPM = rpmEma.filter(getFlywheelRPM());
+        motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
 
-      flywheelRPM = rpmEma.filter(getFlywheelRPM());
-      motorPower = flywheelPID.calculate(wantedFlywheelRPM, flywheelRPM);
+        if(wantedFlywheelRPM <= 0) motorPower = 0;
+        if(motorPower <= 0) motorPower = 0;
+        if(motorPower > lastPower && lastPower < 10) lastPower = 10;
+        if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
+        lastPower = motorPower;
 
-      if(wantedFlywheelRPM <= 0) motorPower = 0;
-      if(motorPower <= 0) motorPower = 0;
-      if(motorPower > lastPower && lastPower < 10) lastPower = 10;
-      if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
-      lastPower = motorPower;
+        setFlywheelPower(motorPower);
+      }
 
-      setFlywheelPower(motorPower);
 
       //std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
