@@ -14,7 +14,7 @@ setFlywheelRPM(2800);
 setIntakeMode(intakeCollect);
 robotChassis->moveDistance(40_in);
 robotChassis->moveDistance(-40_in);
-robotChassis->turnAngle(90_deg);
+robotChassis->turnAngle(91_deg);
 robotChassis->moveDistance(-13_in);
 setIntakeMode(indexShoot);
 pros::delay(200);
