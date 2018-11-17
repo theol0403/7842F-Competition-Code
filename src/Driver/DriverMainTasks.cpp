@@ -31,7 +31,7 @@ void DriverMainTask(void*)
 
 		if(j_Main.get_digital(DIGITAL_R1))
 		{
-			setIntakePower(127);
+			setIntakePower(90);
 		}
 		else if(j_Main.get_digital(DIGITAL_R2))
 		{
