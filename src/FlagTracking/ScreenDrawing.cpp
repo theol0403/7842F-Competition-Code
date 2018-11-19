@@ -1,10 +1,4 @@
-#include "main.h"
-
-#include "Include/FlagTracking/FlagTracking.hpp"
-#include "Include/FlagTracking/FlagSorting.hpp"
-#include "Include/FlagTracking/ScreenDrawing.hpp"
-
-
+#include "ScreenDrawing.hpp"
 
 
 

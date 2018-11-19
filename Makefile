@@ -38,7 +38,7 @@ TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-INCLUDE=-iquote$(INCDIR)
+INCLUDE=-iquote$(INCDIR) -iquote$(SRCDIR)
 
 ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))

@@ -1,7 +1,4 @@
-#include "main.h"
-
-#include "Include/FlagTracking/FlagTracking.hpp"
-#include "Include/FlagTracking/FlagSorting.hpp"
+#include "FlagTracking/FlagSorting.hpp"
 
 
 FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha, int objectPosThreshold)

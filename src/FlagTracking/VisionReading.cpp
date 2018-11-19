@@ -1,7 +1,4 @@
-#include "main.h"
-
-#include "Include/FlagTracking/FlagTracking.hpp"
-#include "Include/FlagTracking/VisionReading.hpp"
+#include "VisionReading.hpp"
 
 
 
