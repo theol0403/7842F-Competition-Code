@@ -1,4 +1,4 @@
-#include "FlagTracking/FlagSorting.hpp"
+#include "FlagSorting.hpp"
 
 
 FlagSorting::FlagSorting(int objectCount, int maxLife, float emaAlpha, int objectPosThreshold)
@@ -101,7 +101,6 @@ void FlagSorting::sortArrayY(sortedObjects_t* sortArray, int firstIndex, int las
 }
 
 
-
 //Imports the source array and sorts it by Y into sourceObjects
 void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSourceCount)
 {
@@ -142,7 +141,6 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 }
 
 
-
 bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
 {
   //compare sig, then Y, then X, then size
@@ -162,7 +160,7 @@ int FlagSorting::emaCalculate(int lastValue, int newValue, float emaAlpha)
   return (emaAlpha * newValue + (1.0 - emaAlpha) * lastValue);
 }
 
-void FlagSorting::mergeObject(&destObject, &newObject)
+void FlagSorting::mergeObject(sortedObjects_t &destObject, sortedObjects_t &newObject)
 {
   destObject.objSig = newObject.objSig;
   destObject.objY = emaCalculate(destObject.objY, newObject.objY, 0.5);
@@ -176,7 +174,7 @@ void FlagSorting::mergeObject(&destObject, &newObject)
   if(destObject.lifeCounter > m_maxLife) destObject.lifeCounter = m_maxLife;
 }
 
-void FlagSorting::pushObject(&destObject, &newObject)
+void FlagSorting::pushObject(sortedObjects_t &destObject, sortedObjects_t &newObject)
 {
   destObject.objSig = newObject.objSig;
   destObject.objY = newObject.objY;
@@ -190,7 +188,7 @@ void FlagSorting::pushObject(&destObject, &newObject)
   if(destObject.lifeCounter > m_maxLife) destObject.lifeCounter = m_maxLife;
 }
 
-void FlagSorting::trimObject(&destObject)
+void FlagSorting::trimObject(sortedObjects_t &destObject)
 {
   destObject.lifeCounter--;
 }
@@ -198,9 +196,7 @@ void FlagSorting::trimObject(&destObject)
 
 void FlagSorting::mergeObjects()
 {
-
   bool sourceMatchFound = false;
-
   //for every source object
   for(int sourceObjectNum = 0; sourceObjectNum < m_sourceCount; sourceObjectNum++)
   {
@@ -212,7 +208,7 @@ void FlagSorting::mergeObjects()
       {
         if(compareObjects(m_masterObjects[masterNum], m_sourceObjects[sourceObjectNum]))
         {
-          mergeObject(m_masterObjects[masterNum], m_sourceObjects[sourceObjectNum])
+          mergeObject(m_masterObjects[masterNum], m_sourceObjects[sourceObjectNum]);
           sourceMatchFound = true;
         }
       }
@@ -226,7 +222,7 @@ void FlagSorting::mergeObjects()
     }
   }
 
-  for(int masterNum = 0, masterNum < m_masterCount, masterNum++) //Scan through master looking for non-matches
+  for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //Scan through master looking for non-matches
   {
     if(!m_masterObjects[masterNum].matchFound)
     {
@@ -237,13 +233,15 @@ void FlagSorting::mergeObjects()
 }
 
 
-
-
-
 void FlagSorting::sortMaster()
 {
 
-  int firstIndex = 0;
+  for(int masterNum = 0; masterNum > m_masterLength; masterNum++) //Clear match bool
+  {
+    m_masterObjects[masterNum].matchFound = false;
+  }
+
+  int firstIndex = 0; //Index of master to start looking through
 
   for(int lifeCounter = m_maxLife; lifeCounter > 0; lifeCounter--) //Start at top life, end at 1
   {
@@ -290,7 +288,7 @@ void FlagSorting::sortMaster()
   }
 
   //Delete objects to the right of life 1, which is 0 life
-  clearArray(m_masterObjects, firstIndex, m_masterLength-1);
+  clearArray(m_masterObjects, firstIndex, m_masterLength - 1);
 
   m_masterCount = firstIndex; //Master count contains the number of good objects in the master
 
@@ -298,8 +296,6 @@ void FlagSorting::sortMaster()
   //sort by Y
   //updates masterCount
 }
-
-
 
 
 
