@@ -10,16 +10,10 @@
 //90 right
 //shoot 2500
 
-setFlywheelRPM(2800);
+setFlywheelRPM(2600);
 setIntakeMode(intakeCollect);
 robotChassis->moveDistance(40_in);
 robotChassis->moveDistance(-40_in);
-robotChassis->turnAngle(91_deg);
-robotChassis->moveDistance(-13_in);
+pros::delay(300);
+robotChassis->turnAngle(62_deg);
 setIntakeMode(indexShoot);
-pros::delay(200);
-setIntakeMode(intakeOff);
-robotChassis->moveDistance(23_in);
-robotChassis->turnAngle(4_deg);
-setIntakeMode(indexShoot);
-robotChassis->moveDistance(20_in);

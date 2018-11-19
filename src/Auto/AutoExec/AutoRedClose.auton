@@ -19,5 +19,6 @@ robotChassis->moveDistance(-15_in);
 setIntakeMode(indexShoot);
 pros::delay(200);
 setIntakeMode(intakeOff);
-robotChassis->moveDistance(20_in);
+robotChassis->turnAngle(-4_deg);
 setIntakeMode(indexShoot);
+robotChassis->moveDistance(20_in);
