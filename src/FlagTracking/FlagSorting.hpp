@@ -28,8 +28,6 @@ private:
   const int m_masterLength; //Size of master array
 
   const int m_objectPosThreshold;
-  int m_tempCount = 0;
-  int* m_tempAllignIndex = nullptr; //Temp array to allign objects into master
 
   int m_masterCount = 0; //Amount of objects currently in master array, sorted left
   sortedObjects_t* m_masterObjects = nullptr; //Master array

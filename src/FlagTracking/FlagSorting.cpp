@@ -12,7 +12,6 @@ m_objectPosThreshold{objectPosThreshold}
   m_sourceObjects = new sortedObjects_t[objectCount];
   clearArray(m_sourceObjects, 0, objectCount-1);
 
-  m_tempAllignIndex = new int[m_masterLength];
   m_masterObjects = new sortedObjects_t[m_masterLength];
   clearArray(m_masterObjects, 0, m_masterLength-1);
 
@@ -22,7 +21,6 @@ m_objectPosThreshold{objectPosThreshold}
 FlagSorting::~FlagSorting()
 {
   delete[] m_sourceObjects;
-  delete[] m_tempAllignIndex;
   delete[] m_masterObjects;
   delete[] m_exportObjects;
 }
@@ -48,7 +46,6 @@ void FlagSorting::clearArray(sortedObjects_t* clearArray, int startIndex, int en
 void FlagSorting::swapObjects(sortedObjects_t* swapArray, int firstIndex, int secondIndex)
 {
   sortedObjects_t tempObject;
-
   tempObject.objSig = swapArray[firstIndex].objSig;
   tempObject.objX = swapArray[firstIndex].objX;
   tempObject.objY = swapArray[firstIndex].objY;
@@ -126,10 +123,7 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
       m_sourceObjects[objectNum].matchFound = false;
       m_sourceObjects[objectNum].lifeCounter = 0;
     }
-    else
-    {
-      std::cout << "SORTING: ERR_SIG IN SOURCE " << objectNum << "\n";
-    }
+    else std::cout << "SORTING: ERR_SIG IN SOURCE " << objectNum << "\n";
   }
   //Resets the remaining slots in the m_sourceObjects
   for (int objectNum = m_sourceCount; objectNum < m_sourceLength; objectNum++)
@@ -149,8 +143,6 @@ void FlagSorting::importSource(simpleObjects_t* importObjects, int currentSource
 
 
 
-
-
 bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t &masterObject)
 {
   //compare sig, then Y, then X, then size
@@ -159,78 +151,9 @@ bool FlagSorting::compareObjects(sortedObjects_t &sourceObject, sortedObjects_t 
   cascadingTrue = (cascadingTrue && ((sourceObject.objCenterY > masterObject.objCenterY - m_objectPosThreshold) && (sourceObject.objCenterY < masterObject.objCenterY + m_objectPosThreshold)));
   cascadingTrue = (cascadingTrue && ((sourceObject.objCenterX > masterObject.objCenterX - m_objectPosThreshold) && (sourceObject.objCenterX < masterObject.objCenterX + m_objectPosThreshold)));
   //cascadingTrue = cascadingTrue && sourceObject.objWidth > masterObject.objWidth - 10 && sourceObject.objWidth < masterObject.objWidth + 10;
-  //  cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
-
-  // return cascadingTrue;
+  // cascadingTrue = cascadingTrue && sourceObject.objY > masterObject.objY - 10 && sourceObject.objY < masterObject.objY + 10;
   if(cascadingTrue) {std::cout << "Match Found \n";};
   return cascadingTrue;
-}
-
-
-
-
-void FlagSorting::createAllignList()
-{
-
-  //take object 0
-  //Search masterArray for same X, than Y
-  //put objectNum in temp array with same index as master
-  //mark master as a match found
-  //mark object as match found
-  //if no match put it in m_masterCount + 1 and increment it
-  //repeate for next object
-
-  //clear temp array
-  for(int indexNum = 0; indexNum < m_masterLength; indexNum++)
-  {
-    m_tempAllignIndex[indexNum] = -1; //-1 Represents no match, as 0 would be a match with object 0
-  }
-
-  m_tempCount = m_masterCount; //size of temp is size of master
-
-  //for every source object
-  for(int sourceObjectNum = 0; sourceObjectNum < m_sourceCount; sourceObjectNum++)
-  {
-    //loop through all current master objects
-    for(int masterObjectNum = 0; (masterObjectNum < m_masterCount) && !m_sourceObjects[sourceObjectNum].matchFound; masterObjectNum++)
-    {
-      if(!m_masterObjects[masterObjectNum].matchFound)
-      {
-        if(compareObjects(m_sourceObjects[sourceObjectNum], m_masterObjects[masterObjectNum]))
-        {
-          m_tempAllignIndex[masterObjectNum] = sourceObjectNum;
-          m_masterObjects[masterObjectNum].matchFound = true;
-          m_sourceObjects[sourceObjectNum].matchFound = true;
-        }
-      }
-    }
-    //If no match was found, all matches have already been made, or if there are more sources than master
-    if(!m_sourceObjects[sourceObjectNum].matchFound)
-    {
-      //Add extra object to the end of master
-      m_tempAllignIndex[m_tempCount] = sourceObjectNum;
-      m_tempCount++; //Let merge know there are extra objects
-    }
-
-  }
-
-
-  //allign sorted source array into temp array symetrical to master, left to right
-  //any non-found objects to into arrays past masterCount
-}
-
-
-void FlagSorting::debugAllign()
-{
-  std::cout << "Source Count: " << m_sourceCount;
-  std::cout << " | Master Count: " << m_masterCount;
-  std::cout << " | Temp Count: " << m_tempCount;
-  std::cout << " | Temp Allign";
-  for(int tempNum = 0; tempNum < 5; tempNum++)
-  {
-    std::cout << " , " << m_tempAllignIndex[tempNum];
-  }
-  std::cout << "\n";
 }
 
 
@@ -239,51 +162,79 @@ int FlagSorting::emaCalculate(int lastValue, int newValue, float emaAlpha)
   return (emaAlpha * newValue + (1.0 - emaAlpha) * lastValue);
 }
 
-//merges arrays using EMA //updates the life of the master elements
-void FlagSorting::mergeMaster()
+void FlagSorting::mergeObject(&destObject, &newObject)
 {
-  for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //loop through existing objects in master
-  {
-    if(m_tempAllignIndex[masterNum] != -1) //If a match was found with master
-    {
-      //merge objects
-      m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
-      m_masterObjects[masterNum].objY = emaCalculate(m_masterObjects[masterNum].objY, m_sourceObjects[m_tempAllignIndex[masterNum]].objY, 0.5);
-      m_masterObjects[masterNum].objX = emaCalculate(m_masterObjects[masterNum].objX, m_sourceObjects[m_tempAllignIndex[masterNum]].objX, 0.5);
-      m_masterObjects[masterNum].objWidth = emaCalculate(m_masterObjects[masterNum].objWidth, m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth, 0.1);
-      m_masterObjects[masterNum].objHeight = emaCalculate(m_masterObjects[masterNum].objHeight, m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight, 0.1);
-      m_masterObjects[masterNum].objCenterX = emaCalculate(m_masterObjects[masterNum].objCenterX, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX, 0.5);
-      m_masterObjects[masterNum].objCenterY = emaCalculate(m_masterObjects[masterNum].objCenterY, m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY, 0.5);
-      m_masterObjects[masterNum].matchFound = false;
-      m_masterObjects[masterNum].lifeCounter++; //Increase life
-      if(m_masterObjects[masterNum].lifeCounter > m_maxLife) m_masterObjects[masterNum].lifeCounter = m_maxLife;
-    }
-    else //If no match for an object in master
-    {
-      m_masterObjects[masterNum].matchFound = false;
-      m_masterObjects[masterNum].lifeCounter--;
-    }
-  }
+  destObject.objSig = newObject.objSig;
+  destObject.objY = emaCalculate(destObject.objY, newObject.objY, 0.5);
+  destObject.objX = emaCalculate(destObject.objX, newObject.objX, 0.5);
+  destObject.objWidth = emaCalculate(destObject.objWidth, newObject.objWidth, 0.1);
+  destObject.objHeight = emaCalculate(destObject.objHeight, newObject.objHeight, 0.1);
+  destObject.objCenterX = emaCalculate(destObject.objCenterX, newObject.objCenterX, 0.5);
+  destObject.objCenterY = emaCalculate(destObject.objCenterY, newObject.objCenterY, 0.5);
+  destObject.matchFound = true;
+  destObject.lifeCounter++; //Increase life
+  if(destObject.lifeCounter > m_maxLife) destObject.lifeCounter = m_maxLife;
+}
 
-  //Loop through all extra new objects in temp and fill into master
-  for(int masterNum = m_masterCount; masterNum < m_tempCount; masterNum++)
-  {
-    m_masterObjects[masterNum].objSig = m_sourceObjects[m_tempAllignIndex[masterNum]].objSig;
-    m_masterObjects[masterNum].objY = m_sourceObjects[m_tempAllignIndex[masterNum]].objY;
-    m_masterObjects[masterNum].objX = m_sourceObjects[m_tempAllignIndex[masterNum]].objX;
-    m_masterObjects[masterNum].objWidth = m_sourceObjects[m_tempAllignIndex[masterNum]].objWidth;
-    m_masterObjects[masterNum].objHeight = m_sourceObjects[m_tempAllignIndex[masterNum]].objHeight;
-    m_masterObjects[masterNum].objCenterX = m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterX;
-    m_masterObjects[masterNum].objCenterY = m_sourceObjects[m_tempAllignIndex[masterNum]].objCenterY;
-    m_masterObjects[masterNum].matchFound = false;
-    m_masterObjects[masterNum].lifeCounter = 1;
-  }
+void FlagSorting::pushObject(&destObject, &newObject)
+{
+  destObject.objSig = newObject.objSig;
+  destObject.objY = newObject.objY;
+  destObject.objX = newObject.objX;
+  destObject.objWidth = newObject.objWidth;
+  destObject.objHeight = newObject.objHeight;
+  destObject.objCenterX = newObject.objCenterX;
+  destObject.objCenterY = newObject.objCenterY;
+  destObject.matchFound = true;
+  destObject.lifeCounter = 1;
+  if(destObject.lifeCounter > m_maxLife) destObject.lifeCounter = m_maxLife;
+}
 
-  m_masterCount = m_tempCount; //Master now contains the new objects
-
+void FlagSorting::trimObject(&destObject)
+{
+  destObject.lifeCounter--;
 }
 
 
+void FlagSorting::mergeObjects()
+{
+
+  bool sourceMatchFound = false;
+
+  //for every source object
+  for(int sourceObjectNum = 0; sourceObjectNum < m_sourceCount; sourceObjectNum++)
+  {
+    sourceMatchFound = false;
+    //loop through all current master objects
+    for(int masterNum = 0; masterNum < m_masterCount && !sourceMatchFound; masterNum++)
+    {
+      if(!m_masterObjects[masterNum].matchFound)
+      {
+        if(compareObjects(m_masterObjects[masterNum], m_sourceObjects[sourceObjectNum]))
+        {
+          mergeObject(m_masterObjects[masterNum], m_sourceObjects[sourceObjectNum])
+          sourceMatchFound = true;
+        }
+      }
+    }
+    //If no match was found, if all matches have already been made, or if there are more sources than master
+    if(!sourceMatchFound)
+    {
+      //Add extra object to the end of master
+      pushObject(m_masterObjects[m_masterCount], m_sourceObjects[sourceObjectNum]);
+      m_masterCount++; //Let merge know there are extra objects
+    }
+  }
+
+  for(int masterNum = 0, masterNum < m_masterCount, masterNum++) //Scan through master looking for non-matches
+  {
+    if(!m_masterObjects[masterNum].matchFound)
+    {
+      trimObject(m_masterObjects[masterNum]);
+    }
+  }
+
+}
 
 
 
