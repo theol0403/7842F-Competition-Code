@@ -42,10 +42,7 @@ void mainFlagTrackingTask(void*)
 
 
     mainFlagSorting.importSource(objectExport, objectCount);
-    mainFlagSorting.createAllignList();
-    mainFlagSorting.debugAllign();
-    mainFlagSorting.mergeMaster();
-    mainFlagSorting.sortMaster();
+
     //
     objectExport = mainFlagSorting.exportObjects();
     objectCount = mainFlagSorting.exportCount();
