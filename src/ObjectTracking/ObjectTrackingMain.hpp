@@ -2,6 +2,7 @@
 
 #ifndef TRACKING_EMULATOR
 #include "main.h"
+void mainObjectTrackingTask(void*);
 #endif
 
 #ifdef TRACKING_EMULATOR

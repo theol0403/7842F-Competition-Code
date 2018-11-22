@@ -1,7 +1,7 @@
 #include "ObjectTrackingMain.hpp"
 
 // main task
-void mainFlagTrackingTask(void*)
+void mainObjectTrackingTask(void*)
 {
 
   objectSig_t mainFlagSig {1, 2};

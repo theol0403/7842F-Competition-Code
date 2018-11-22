@@ -1,6 +1,6 @@
 // #include "main.h"
-// #include "FlagTrackingData.hpp"
-// #include "FlagTrackingFunctions.hpp"
+// #include "ObjectTrackingData.hpp"
+// #include "ObjectTrackingFunctions.hpp"
 //
 //
 // // Count the amount of objects filled in the array
