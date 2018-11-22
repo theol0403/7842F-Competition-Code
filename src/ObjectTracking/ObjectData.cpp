@@ -8,7 +8,7 @@ m_objectCount(objectCount)
 {
   m_arrayNum = 0;
   char filePath[100];
-  sprintf(filePath, "Source\\ObjectTracking\\ObjectData\\%s%s", fileName, ".h");
+  sprintf(filePath, "/usd/%s%s", fileName, ".h");
   outputFile = fopen(filePath, "w");
 
   fprintf(outputFile, "//#include \"ObjectTracking/ObjectData/%s.h\"\n", fileName);
@@ -20,7 +20,7 @@ ObjectPrinting::~ObjectPrinting()
 {
   fprintf(outputFile, "};\n");
   fclose(outputFile);
-  usleep(20000);
+  pros::delay(1000);
   exit(0);
 }
 

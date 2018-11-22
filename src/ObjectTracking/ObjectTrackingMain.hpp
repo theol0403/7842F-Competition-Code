@@ -1,5 +1,5 @@
-#define TRACKING_EMULATOR
 #pragma once
+
 #ifndef TRACKING_EMULATOR
 #include "main.h"
 #endif
