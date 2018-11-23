@@ -1,9 +1,9 @@
 #include "MotorConfig.hpp"
 
-const int8_t e_RightBase = -5;
-const int8_t e_RightBase2 = -6;
-const int8_t e_LeftBase = 7;
-const int8_t e_LeftBase2 = 8;
+const int8_t e_RightFront = -5;
+const int8_t e_RightBack = -6;
+const int8_t e_LeftFront = 7;
+const int8_t e_LeftBack = 8;
 const int8_t e_Flywheel = 11;
 const int8_t e_Flywheel2 = -12;
 const int8_t e_Intake = 1;
@@ -11,24 +11,17 @@ const int8_t e_Indexer = 2;
 
 pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
 
-pros::Motor m_RightBase(abs(e_RightBase), e_RightBase<0);
-pros::Motor m_RightBase2(abs(e_RightBase2), e_RightBase2<0);
-pros::Motor m_LeftBase(abs(e_LeftBase), e_LeftBase<0);
-pros::Motor m_LeftBase2(abs(e_LeftBase2), e_LeftBase2<0);
-void setBasePower(int leftPower, int rightPower)
+pros::Motor m_RightFront(abs(e_RightFront), e_RightFront<0);
+pros::Motor m_RightBack(abs(e_RightBack), e_RightBack<0);
+pros::Motor m_LeftFront(abs(e_LeftFront), e_LeftFront<0);
+pros::Motor m_LeftBack(abs(e_LeftBack), e_LeftBack<0);
+
+void setBasePower(int yPower, int xPower, int zPower)
 {
-	m_RightBase.move(rightPower);
-	m_RightBase2.move(rightPower);
-	m_LeftBase.move(leftPower);
-	m_LeftBase2.move(leftPower);
-}
-double getBaseRight()
-{
-	return (m_RightBase.get_position() + m_RightBase2.get_position()) / 2;
-}
-double getBaseLeft()
-{
-	return (m_LeftBase.get_position() + m_LeftBase2.get_position()) / 2;
+	m_RightFront.move(yPower+xPower-zPower);
+	m_RightBack.move(yPower-xPower-zPower);
+	m_LeftFront.move(yPower+xPower+zPower);
+	m_LeftBack.move(yPower-xPower+zPower);
 }
 
 pros::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0);

@@ -27,7 +27,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     //Shared
     pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
-    pros::Task ObjectTrackingTask_t(mainObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
+    //pros::Task ObjectTrackingTask_t(mainObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
     //Driver
     pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
     //Auton
@@ -48,11 +48,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
     }
 
 
     std::shared_ptr<ChassisControllerPID> robotChassis = ChassisControllerFactory::createPtr(
-      {e_LeftBase, e_LeftBase2}, {e_RightBase, e_RightBase2},
+      {e_LeftFront, e_LeftBack}, {e_RightFront, e_RightBack},
       IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
       IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
       IterativePosPIDController::Gains{0.0016, 0, 0}, //Turning PID
@@ -99,6 +100,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       setFlywheelRPM(0);
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       //Motors Off
       robotChassis->stop();
     }
@@ -130,6 +132,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       robotChassis->stop();
       setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
+      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       while(true) {pros::delay(10000);} //Never exits
     }
 

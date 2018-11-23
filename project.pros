@@ -1,7 +1,7 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "7842F Shawnigan Code",
+        "project_name": "7842F Competition Code",
         "target": "v5",
         "templates": {
             "kernel": {
