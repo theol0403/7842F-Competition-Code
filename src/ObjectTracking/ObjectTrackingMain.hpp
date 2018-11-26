@@ -33,6 +33,8 @@ struct simpleObjects_t
   bool discardObject = false;
 };
 
+class ObjectContainer;
+class ObjectDrawing;
 
 #ifndef TRACKING_EMULATOR
 #include "VisionReading.hpp"

@@ -1,8 +1,6 @@
 #pragma once
 #include "ObjectTrackingMain.hpp"
 
-class ObjectContainer;
-
 class ObjectDrawing
 {
 private:
