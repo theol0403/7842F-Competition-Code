@@ -47,7 +47,7 @@ void ObjectDrawing::drawSimpleObjects(ObjectContainer& objectContainer)
     lv_obj_set_hidden(screenObject, true);
   }
 
-  for(int objectNum = 0; objectNum < objectContainer.currentObjectCount; objectNum++)
+  for(int objectNum = 0; objectNum < objectContainer.currentCount; objectNum++)
   {
     if(objectContainer.objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG)
     {

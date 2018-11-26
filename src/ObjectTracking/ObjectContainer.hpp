@@ -25,7 +25,7 @@ public:
   std::vector<lv_obj_t*> screenArray;
   std::array<lv_style_t, NUM_SIGNATURES+1> styleArray;
 
-  int currentObjectCount = 0;
+  int currentCount = 0;
 
 
 };
