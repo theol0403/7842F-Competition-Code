@@ -22,14 +22,14 @@ void mainObjectTrackingTask(void*)
   while(true)
   {
 
-    mainScreenDrawing.drawSimpleObjects(rawObjects);
 
     mainVisionReading.getObjects();
     mainVisionReading.filterNoise();
     mainVisionReading.filterProp();
     mainVisionReading.filterSize();
     mainVisionReading.discardObjects();
-    mainVisionReading.exportObjects();
+
+    mainScreenDrawing.drawSimpleObjects(rawObjects);
 
 
 

@@ -53,3 +53,9 @@ void ObjectContainer::setSigStyle(int sigNum, lv_color_t bodyColor, lv_color_t b
   styleArray.at(sigNum).body.border.color = borderColor;
   styleArray.at(sigNum).body.opa = opaNum;
 }
+
+
+int ObjectContainer::getArrayLength()
+{
+  return m_arrayLength;
+}

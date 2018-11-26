@@ -27,5 +27,7 @@ public:
 
   int currentCount = 0;
 
+  int getArrayLength();
+
 
 };

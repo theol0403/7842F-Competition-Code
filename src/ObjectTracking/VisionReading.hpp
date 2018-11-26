@@ -1,24 +1,23 @@
 #pragma once
 #include "ObjectTrackingMain.hpp"
 
+class ObjectContainer;
+
 class VisionReading
 {
 
 private:
 
-  const pros::Vision* m_thisVision = nullptr;
+  pros::Vision* m_thisVision = nullptr;
 
-  const int m_arrayLength;
-  const ObjectContainer* m_destContainer = nullptr;
-
-  int m_currentCount = 0;
+  ObjectContainer* m_destContainer = nullptr;
 
   pros::vision_object* m_visionArray = nullptr; //Temp array for vision objects
 
 public:
 
 
-  VisionReading(int, int);
+  VisionReading(pros::Vision&, ObjectContainer&);
   ~VisionReading();
 
   void resetObject(int);
@@ -30,8 +29,6 @@ public:
   int filterProp(float propThreshold = 0.3, float wantedProp = 0.8); //Width:Height = 1:x
   int discardObjects();
 
-  void exportObjects(objectContainer_t*);
-  int exportCurrentCount();
   void debugObjects(int);
   void debugErrorSig();
 
