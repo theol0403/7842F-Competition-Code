@@ -175,10 +175,10 @@ int VisionReading::discardObjects()
     }
   }
 
-  for(int objectNum = destNum; objectNum < m_destContainer->arrayLength; objectNum++) //Cleans the rest of the objects
-  {
-    resetObject(objectNum);
-  }
+  // for(int objectNum = destNum; objectNum < m_destContainer->arrayLength; objectNum++) //Cleans the rest of the objects
+  // {
+  //   resetObject(objectNum);
+  // }
 
   m_destContainer->currentCount = destNum;
   return destNum;

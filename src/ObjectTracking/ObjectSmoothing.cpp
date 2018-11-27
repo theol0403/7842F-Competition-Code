@@ -217,7 +217,7 @@ void ObjectSmoothing::mergeObject(sortedObjects_t &destObject, sortedObjects_t &
   destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
   //std::cout << "XVel:" << destObject.objXVel << "\n";
 
-  destObject.lifeCounter++; //Increase life
+  destObject.lifeCounter+=5; //Increase life
   if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
 }
 
@@ -233,7 +233,6 @@ void ObjectSmoothing::pushObject(sortedObjects_t &destObject, sortedObjects_t &n
   destObject.objXVel = 0;
   destObject.objYVel = 0;
   destObject.lifeCounter = 1;
-  if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
 }
 
 void ObjectSmoothing::trimObject(sortedObjects_t &destObject)
@@ -304,7 +303,7 @@ void ObjectSmoothing::mergeObjects()
 
   m_masterCount = newMasterCount;
 
-  //std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
+  std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
 
 }
 
@@ -334,10 +333,9 @@ void ObjectSmoothing::sortMaster()
       newMasterCount--;
     }
   }
-  // if(m_debugInfo)
-  // {
-  //   std::cout << " | " << "R:" << purgeCount;
-  // }
+
+    std::cout << " | " << "R:" << purgeCount;
+
   sortArrayLife(m_masterObjects, 0, m_masterCount); //Moves all 0 objects to the right
   m_masterCount = newMasterCount;
 
@@ -353,10 +351,8 @@ void ObjectSmoothing::sortMaster()
     }
     if(sortNeeded && startIndex != searchBoundary-1)
     {
-      // if(m_debugInfo)
-      // {
-      //   std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
-      // }
+
+        std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
       sortArrayY(m_masterObjects, startIndex, searchBoundary-1);
     }
     startIndex = searchBoundary;
