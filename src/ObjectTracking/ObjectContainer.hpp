@@ -18,7 +18,7 @@ public:
   void setContainerStyle(lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
   void setSigStyle(int, lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
 
-  const int m_arrayLength;
+  const int arrayLength;
   std::vector<simpleObjects_t> objectArray;
 
   std::vector<lv_obj_t*> screenArray;

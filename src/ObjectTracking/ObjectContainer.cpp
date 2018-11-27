@@ -1,21 +1,21 @@
 #include "ObjectContainer.hpp"
 
 
-ObjectContainer::ObjectContainer(int arrayLength)
-: m_arrayLength(arrayLength)
+ObjectContainer::ObjectContainer(int objectCount)
+: arrayLength(objectCount)
 {
-  objectArray.resize(m_arrayLength);
+  objectArray.resize(arrayLength);
 }
 
 
-ObjectContainer::ObjectContainer(int arrayLength, ObjectDrawing& screenParent)
+ObjectContainer::ObjectContainer(int objectCount, ObjectDrawing& screenParent)
 :
-m_arrayLength(arrayLength)
+arrayLength(objectCount)
 {
-  objectArray.resize(m_arrayLength);
+  objectArray.resize(arrayLength);
 
-  screenArray.resize(m_arrayLength);
-  for(int objectNum = 0; objectNum < m_arrayLength; objectNum++)
+  screenArray.resize(arrayLength);
+  for(int objectNum = 0; objectNum < arrayLength; objectNum++)
   {
     screenArray.at(objectNum) = lv_obj_create(screenParent.m_drawingContainer, NULL);
     lv_obj_set_style(screenArray.at(objectNum), &screenParent.m_defaultObjectStyle);
@@ -57,5 +57,5 @@ void ObjectContainer::setSigStyle(int sigNum, lv_color_t bodyColor, lv_color_t b
 
 int ObjectContainer::getArrayLength()
 {
-  return m_arrayLength;
+  return arrayLength;
 }

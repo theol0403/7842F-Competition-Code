@@ -17,7 +17,7 @@ void mainObjectTrackingTask(void*)
   ObjectContainer sortedObjects(20, mainScreenDrawing);
   sortedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE);
   sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED);
-
+  ObjectSmoothing objectSmoothing(rawObjects, sortedObjects, 30, 0.1, true, 0.1, 20, 10);
 
   while(true)
   {
@@ -31,6 +31,8 @@ void mainObjectTrackingTask(void*)
     mainScreenDrawing.drawSimpleObjects(rawObjects);
     mainVisionReading.discardObjects();
 
+    objectSmoothing.smoothObjects();
+    mainScreenDrawing.drawSimpleObjects(sortedObjects);
 
 
     // testInput.outputObjects();

@@ -8,7 +8,7 @@ VisionReading::VisionReading(pros::Vision& thisVision, ObjectContainer& destCont
 m_thisVision(&thisVision),
 m_destContainer(&destContainer)
 {
-  m_visionArray = new pros::vision_object[m_destContainer->m_arrayLength];
+  m_visionArray = new pros::vision_object[m_destContainer->arrayLength];
 }
 
 VisionReading::~VisionReading()
@@ -36,7 +36,7 @@ void VisionReading::resetObject(int objectNum)
 // Looks at vision for color, counts objects, and fills them in to master array
 int VisionReading::getObjects()
 {
-  for(int objectNum = 0; objectNum < m_destContainer->m_arrayLength; objectNum++) //Resets vision array
+  for(int objectNum = 0; objectNum < m_destContainer->arrayLength; objectNum++) //Resets vision array
   {
     m_visionArray[objectNum].signature = VISION_OBJECT_ERR_SIG;
     m_visionArray[objectNum].left_coord = 0;
@@ -47,10 +47,10 @@ int VisionReading::getObjects()
     m_visionArray[objectNum].y_middle_coord = 0;
   }
 
-  m_destContainer->currentCount = m_thisVision->read_by_size(0, m_destContainer->m_arrayLength, m_visionArray);
-  if(m_destContainer->currentCount > m_destContainer->m_arrayLength) m_destContainer->currentCount = 0; //If there are no objects pros returns a huge number
+  m_destContainer->currentCount = m_thisVision->read_by_size(0, m_destContainer->arrayLength, m_visionArray);
+  if(m_destContainer->currentCount > m_destContainer->arrayLength) m_destContainer->currentCount = 0; //If there are no objects pros returns a huge number
 
-  for (int objectNum = 0; objectNum < m_destContainer->m_arrayLength; objectNum++)
+  for (int objectNum = 0; objectNum < m_destContainer->arrayLength; objectNum++)
   {
     if(m_visionArray[objectNum].signature == VISION_OBJECT_ERR_SIG)
     {
@@ -158,7 +158,7 @@ int VisionReading::discardObjects()
 {
   int destNum = 0;
 
-  for (int objectNum = 0; objectNum < m_destContainer->m_arrayLength; objectNum++)
+  for (int objectNum = 0; objectNum < m_destContainer->arrayLength; objectNum++)
   {
     if(m_destContainer->objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG && !m_destContainer->objectArray.at(destNum).discardObject)
     {
@@ -175,7 +175,7 @@ int VisionReading::discardObjects()
     }
   }
 
-  for(int objectNum = destNum; objectNum < m_destContainer->m_arrayLength; objectNum++) //Cleans the rest of the objects
+  for(int objectNum = destNum; objectNum < m_destContainer->arrayLength; objectNum++) //Cleans the rest of the objects
   {
     resetObject(objectNum);
   }
@@ -188,7 +188,7 @@ int VisionReading::discardObjects()
 
 void VisionReading::debugObjects(int objectCount)
 {
-  if(objectCount > m_destContainer->m_arrayLength) objectCount = m_destContainer->m_arrayLength; //Bounds Checking
+  if(objectCount > m_destContainer->arrayLength) objectCount = m_destContainer->arrayLength; //Bounds Checking
 
   for(int objectNum = 0; objectNum < objectCount; objectNum++)
   {
@@ -205,7 +205,7 @@ void VisionReading::debugObjects(int objectCount)
     std::cout << "\n";
   }
 
-  std::cout << "ObjectCount " << m_destContainer->m_arrayLength << " | ";
+  std::cout << "ObjectCount " << m_destContainer->arrayLength << " | ";
   std::cout << "CurrentCount " << m_destContainer->currentCount << " | ";
   std::cout << "\n";
 }

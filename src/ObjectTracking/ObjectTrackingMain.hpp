@@ -41,7 +41,7 @@ class ObjectDrawing;
 #include "VisionReading.hpp"
 #endif
 
-//#include "ObjectSmoothing.hpp"
+#include "ObjectSmoothing.hpp"
 #include "ObjectDrawing.hpp"
 #include "ObjectContainer.hpp"
 //#include "ObjectRecorder.hpp"
