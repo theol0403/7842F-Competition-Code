@@ -15,7 +15,7 @@ extern const int8_t e_Indexer;
 extern pros::Controller j_Main;
 
 
-void setBasePower(int, int, int);
+void setBasePower(int, int);
 
 
 void setFlywheelPower(int);

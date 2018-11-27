@@ -16,12 +16,12 @@ pros::Motor m_RightBack(abs(e_RightBack), e_RightBack<0);
 pros::Motor m_LeftFront(abs(e_LeftFront), e_LeftFront<0);
 pros::Motor m_LeftBack(abs(e_LeftBack), e_LeftBack<0);
 
-void setBasePower(int yPower, int xPower, int zPower)
+void setBasePower(int yPower, int zPower)
 {
-	m_RightFront.move(yPower+xPower-zPower);
-	m_RightBack.move(yPower-xPower-zPower);
-	m_LeftFront.move(yPower+xPower+zPower);
-	m_LeftBack.move(yPower-xPower+zPower);
+	m_RightFront.move(yPower-zPower);
+	m_RightBack.move(yPower-zPower);
+	m_LeftFront.move(yPower+zPower);
+	m_LeftBack.move(yPower+zPower);
 }
 
 pros::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0);

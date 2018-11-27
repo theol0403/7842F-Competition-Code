@@ -18,9 +18,8 @@ void DriverMainTask(void*)
 
 		joystickLeftX = j_Main.get_analog(ANALOG_LEFT_X);
 		joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
-		joystickRightX = j_Main.get_analog(ANALOG_RIGHT_X);
 
-		setBasePower(joystickRightY, joystickRightX, joystickLeftX);
+		setBasePower(joystickRightY, joystickLeftX);
 
 
 		if(j_Main.get_digital(DIGITAL_R1))
