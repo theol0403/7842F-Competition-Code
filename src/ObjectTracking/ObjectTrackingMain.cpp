@@ -6,7 +6,13 @@ void mainObjectTrackingTask(void*)
 
   const int BLUESIG = 1;
   const int REDSIG = 2;
-  pros::Vision mainVision(6);
+  pros::Vision mainVision(20);
+  //pros::delay(1000);
+  //pros::vision_signature_s_t ballSig = mainVision.get_signature(1);
+  //mainVision.print_signature(ballSig);
+  pros::vision_signature_s_t ballSig = {1, {1, 0, 0}, 3.100000, 437, 1051, 744, -4369, -3967, -4168, 0, 0};
+  mainVision.set_signature(1, &ballSig);
+  //mainVision.set_exposure(55);
 
   ObjectDrawing mainScreenDrawing(LV_HOR_RES, LV_VER_RES);
 
