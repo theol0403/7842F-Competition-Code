@@ -25,11 +25,11 @@ void mainObjectTrackingTask(void*)
 
     mainVisionReading.getObjects();
     mainVisionReading.filterNoise();
-    mainVisionReading.filterProp();
+    //mainVisionReading.filterProp();
     mainVisionReading.filterSize();
-    mainVisionReading.discardObjects();
 
     mainScreenDrawing.drawSimpleObjects(rawObjects);
+    mainVisionReading.discardObjects();
 
 
 
