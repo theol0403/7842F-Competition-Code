@@ -1,5 +1,5 @@
 #include "ObjectSmoothing.hpp"
-
+#define DEGUBBB false
 
 ObjectSmoothing::ObjectSmoothing(ObjectContainer& sourceContainer, ObjectContainer& destContainer, double objectPosThreshold, double emaAlpha, bool differentVel, double emaAlphaVel, int lifeMax, int lifeThreshold)
 :
@@ -303,7 +303,7 @@ void ObjectSmoothing::mergeObjects()
 
   m_masterCount = newMasterCount;
 
-  std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
+  if(DEGUBBB) std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
 
 }
 
@@ -334,7 +334,7 @@ void ObjectSmoothing::sortMaster()
     }
   }
 
-    std::cout << " | " << "R:" << purgeCount;
+    if(DEGUBBB) std::cout << " | " << "R:" << purgeCount;
 
   sortArrayLife(m_masterObjects, 0, m_masterCount); //Moves all 0 objects to the right
   m_masterCount = newMasterCount;
@@ -352,7 +352,7 @@ void ObjectSmoothing::sortMaster()
     if(sortNeeded && startIndex != searchBoundary-1)
     {
 
-        std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
+        if(DEGUBBB) std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
       sortArrayY(m_masterObjects, startIndex, searchBoundary-1);
     }
     startIndex = searchBoundary;
