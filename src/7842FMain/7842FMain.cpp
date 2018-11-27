@@ -27,7 +27,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     //Shared
     pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
-    //pros::Task ObjectTrackingTask_t(mainObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
+    pros::Task ObjectTrackingTask_t(mainObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
     //Driver
     pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
     //Auton
