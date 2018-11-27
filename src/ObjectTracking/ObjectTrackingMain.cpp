@@ -17,7 +17,7 @@ void mainObjectTrackingTask(void*)
   ObjectContainer sortedObjects(20, mainScreenDrawing);
   sortedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE);
   sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED);
-  ObjectSmoothing objectSmoothing(rawObjects, sortedObjects, 30, 0.1, true, 0.1, 20, 10);
+  ObjectSmoothing objectSmoothing(rawObjects, sortedObjects, 50, 0.3, false, 0.3, 10, 3);
 
   while(true)
   {
@@ -43,6 +43,6 @@ void mainObjectTrackingTask(void*)
     // rawObjectSmoothing.exportObjects(ghostObjects, 0, 20);
     // mainScreenDrawing.drawSimpleObjects(ghostObjects);
 
-    pros::delay(100);
+    pros::delay(50);
   }
 }

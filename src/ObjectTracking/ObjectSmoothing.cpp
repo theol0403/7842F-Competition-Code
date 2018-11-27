@@ -215,6 +215,7 @@ void ObjectSmoothing::mergeObject(sortedObjects_t &destObject, sortedObjects_t &
 
   destObject.objXVel = emaCalculate(destObject.objXVel, (newObject.objCenterX - destObject.objCenterX), m_emaAlphaVel);
   destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
+  std::cout << "XVel:" << destObject.objXVel << "\n";
 
   destObject.lifeCounter++; //Increase life
   if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
