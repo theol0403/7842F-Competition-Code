@@ -18,8 +18,8 @@ pros::Motor m_LeftBack(abs(e_LeftBack), e_LeftBack<0);
 
 void setBasePower(int yPower, int xPower, int zPower)
 {
-	m_RightFront.move(yPower+xPower-zPower);
-	m_RightBack.move(yPower-xPower-zPower);
+	m_RightFront.move(yPower-xPower-zPower);
+	m_RightBack.move(yPower+xPower-zPower);
 	m_LeftFront.move(yPower+xPower+zPower);
 	m_LeftBack.move(yPower-xPower+zPower);
 }
