@@ -1,19 +1,23 @@
 #include "MotorConfig.hpp"
 
-const int8_t e_RightFront = -5;
-const int8_t e_RightBack = -6;
-const int8_t e_LeftFront = 7;
-const int8_t e_LeftBack = 8;
-const int8_t e_Flywheel = 11;
-const int8_t e_Flywheel2 = -12;
-const int8_t e_Intake = 1;
-const int8_t e_Indexer = 2;
+const int8_t em_RightFront = -5;
+const int8_t em_RightBack = -6;
+const int8_t em_LeftFront = 7;
+const int8_t em_LeftBack = 8;
+const int8_t em_Flywheel = 11;
+const int8_t em_Flywheel2 = -12;
+const int8_t em_Intake = 1;
+const int8_t em_Indexer = 2;
+
+const int8_t es_BaseLeftEncoder = 1;
+const int8_t es_BaseRightEncoder = 3;
+const int8_t es_BaseBackEncoder = 5;
 
 pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
 
 //Flywheel -----------------------
-okapi::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-okapi::Motor m_Flywheel2(abs(e_Flywheel2), e_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Flywheel(abs(em_Flywheel), em_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Flywheel2(abs(em_Flywheel2), em_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 okapi::MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
 void setFlywheelPower(int speed)
 {
@@ -26,14 +30,14 @@ int getFlywheelRPM()
 }
 
 //Intake -----------------------
-okapi::Motor m_Intake(abs(e_Intake), e_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Intake(abs(em_Intake), em_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIntakePower(int speed)
 {
 	m_Intake.moveVoltage(speed/127*12000);
 }
 
 //Indexer -----------------------
-okapi::Motor m_Indexer(abs(e_Indexer), e_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Indexer(abs(em_Indexer), em_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIndexerPower(int speed)
 {
 	m_Indexer.moveVoltage(speed/127*12000);
@@ -41,31 +45,19 @@ void setIndexerPower(int speed)
 
 
 //Base -----------------------
-okapi::ADIEncoder s_LeftBaseEncoder(1, 1);
-okapi::ADIEncoder s_RightBaseEncoder(1, 1);
-okapi::ADIEncoder s_BackBaseEncoder(1, 1);
-
-// ThreeEncoderSkidSteerModel chassisModel = ChassisModelFactory::create
-// (
-// 	MotorGroup({e_LeftFront, e_LeftBack}), MotorGroup({e_RightFront, e_RightBack}),
-// 	s_LeftBaseEncoder, s_BackBaseEncoder, s_RightBaseEncoder,
-// 	200, 12000
-// );
-
-std::shared_ptr<ThreeEncoderSkidSteerModel> chassisModel = std::make_shared<ThreeEncoderSkidSteerModel>
-(
-	std::make_shared<MotorGroup>(MotorGroup({e_LeftFront, e_LeftBack})),
-	std::make_shared<MotorGroup>(MotorGroup({e_RightFront, e_RightBack})),
-	std::make_shared<ADIEncoder>(s_LeftBaseEncoder),
-	std::make_shared<ADIEncoder>(s_BackBaseEncoder),
-	std::make_shared<ADIEncoder>(s_RightBaseEncoder),
-	200, 12000
-);
 
 std::shared_ptr<ChassisControllerPID> robotChassis = std::make_shared<ChassisControllerPID>
 (
 	TimeUtilFactory::create(),
-	chassisModel,
+	std::make_shared<ThreeEncoderSkidSteerModel>
+	(
+		std::make_shared<MotorGroup>(MotorGroup({em_LeftFront, em_LeftBack})),
+		std::make_shared<MotorGroup>(MotorGroup({em_RightFront, em_RightBack})),
+		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseLeftEncoder, es_BaseLeftEncoder+1)),
+		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseBackEncoder, es_BaseBackEncoder+1)),
+		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
+		200, 12000
+	),
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
