@@ -11,25 +11,28 @@ const int8_t e_Indexer = 2;
 
 pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
 
-pros::Motor m_RightFront(abs(e_RightFront), e_RightFront<0);
-pros::Motor m_RightBack(abs(e_RightBack), e_RightBack<0);
-pros::Motor m_LeftFront(abs(e_LeftFront), e_LeftFront<0);
-pros::Motor m_LeftBack(abs(e_LeftBack), e_LeftBack<0);
+
+std::shared_ptr<ChassisControllerPID> robotChassis = ChassisControllerFactory::createPtr(
+	{e_LeftFront, e_LeftBack}, {e_RightFront, e_RightBack},
+	IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
+	IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
+	IterativePosPIDController::Gains{0.0016, 0, 0}, //Turning PID
+	AbstractMotor::gearset::green, {4_in, 25.15_in} //Wheel Diam, Chassis Width
+);
 
 void setBasePower(int yPower, int zPower)
 {
-	m_RightFront.move(yPower-zPower);
-	m_RightBack.move(yPower-zPower);
-	m_LeftFront.move(yPower+zPower);
-	m_LeftBack.move(yPower+zPower);
+	robotChassis->arcade(yPower/127, zPower/127, 0);
 }
 
-pros::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0);
-pros::Motor m_Flywheel2(abs(e_Flywheel2), e_Flywheel2<0);
+
+okapi::Motor m_Flywheel(abs(e_Flywheel), e_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Flywheel2(abs(e_Flywheel2), e_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
+
 void setFlywheelPower(int speed)
 {
-	m_Flywheel.move(speed);
-	m_Flywheel2.move(speed);
+	m_FlywheelGroup.moveVoltage(speed/127*12000);
 }
 
 int getFlywheelRPM()
@@ -37,14 +40,14 @@ int getFlywheelRPM()
 	return m_Flywheel.get_actual_velocity() * 15;
 }
 
-pros::Motor m_Intake(abs(e_Intake), e_Intake<0);
+okapi::Motor m_Intake(abs(e_Intake), e_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIntakePower(int speed)
 {
-	m_Intake.move(speed);
+	m_Intake.moveVoltage(speed/127*12000);
 }
 
-pros::Motor m_Indexer(abs(e_Indexer), e_Indexer<0);
+okapi::Motor m_Indexer(abs(e_Indexer), e_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIndexerPower(int speed)
 {
-	m_Indexer.move(speed);
+	m_Indexer.moveVoltage(speed/127*12000);
 }

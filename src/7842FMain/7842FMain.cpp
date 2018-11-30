@@ -52,14 +52,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     }
 
 
-    std::shared_ptr<ChassisControllerPID> robotChassis = ChassisControllerFactory::createPtr(
-      {e_LeftFront, e_LeftBack}, {e_RightFront, e_RightBack},
-      IterativePosPIDController::Gains{0.0022, 0.00, 0}, //Driving PID
-      IterativePosPIDController::Gains{0.002, 0.0, 0}, //Angle PID
-      IterativePosPIDController::Gains{0.0016, 0, 0}, //Turning PID
-      AbstractMotor::gearset::green, {4_in, 25.15_in} //Wheel Diam, Chassis Width
-    );
-
 
 
 
