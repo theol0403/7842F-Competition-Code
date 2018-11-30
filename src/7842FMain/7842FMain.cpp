@@ -94,7 +94,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       //Motors Off
-      robotChassis->stop();
+      //robotChassis->stop();
     }
 
 
@@ -122,7 +122,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void opcontrol()
     {
-      robotChassis->stop();
+      //robotChassis->stop();
       setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       while(true) {pros::delay(10000);} //Never exits
@@ -156,7 +156,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
 
-      #include "Auto/AutoExec/AutoBlueMiddle.auton"
+      //#include "Auto/AutoExec/AutoBlueMiddle.auton"
 
       pros::delay(500000);
     }

@@ -2,7 +2,7 @@
 #include "main.h"
 #include "7842FMain/Shared/MotorConfig.hpp"
 
-extern std::shared_ptr<ChassisControllerPID> robotChassis;
+//extern std::shared_ptr<ChassisControllerPID> robotChassis;
 
 enum intakeModes_t
 {
