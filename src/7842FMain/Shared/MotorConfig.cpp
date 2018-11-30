@@ -45,17 +45,27 @@ okapi::ADIEncoder s_LeftBaseEncoder(1, 1);
 okapi::ADIEncoder s_RightBaseEncoder(1, 1);
 okapi::ADIEncoder s_BackBaseEncoder(1, 1);
 
-ThreeEncoderSkidSteerModel chassisModel = ChassisModelFactory::create
+// ThreeEncoderSkidSteerModel chassisModel = ChassisModelFactory::create
+// (
+// 	MotorGroup({e_LeftFront, e_LeftBack}), MotorGroup({e_RightFront, e_RightBack}),
+// 	s_LeftBaseEncoder, s_BackBaseEncoder, s_RightBaseEncoder,
+// 	200, 12000
+// );
+
+std::shared_ptr<ThreeEncoderSkidSteerModel> chassisModel = std::make_shared<ThreeEncoderSkidSteerModel>
 (
-	{e_LeftFront, e_LeftBack}, {e_RightFront, e_RightBack},
-	s_LeftBaseEncoder, s_BackBaseEncoder, s_RightBaseEncoder,
+	std::make_shared<MotorGroup>(MotorGroup({e_LeftFront, e_LeftBack})),
+	std::make_shared<MotorGroup>(MotorGroup({e_RightFront, e_RightBack})),
+	std::make_shared<ADIEncoder>(s_LeftBaseEncoder),
+	std::make_shared<ADIEncoder>(s_BackBaseEncoder),
+	std::make_shared<ADIEncoder>(s_RightBaseEncoder),
 	200, 12000
 );
 
 std::shared_ptr<ChassisControllerPID> robotChassis = std::make_shared<ChassisControllerPID>
 (
 	TimeUtilFactory::create(),
-	std::make_shared<ThreeEncoderSkidSteerModel>(chassisModel),
+	chassisModel,
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
