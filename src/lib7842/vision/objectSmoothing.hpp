@@ -33,6 +33,7 @@ namespace lib7842
 
     const int m_lifeMax; //Maximum life of objects (decay)
     const int m_lifeThreshold; //Amount of room the objects have
+    const int m_lifeIncrement; //Amount to increment for a sucessful merge
     const double m_emaAlpha;
     const double m_objectPosThreshold;
     const double m_emaAlphaVel;
@@ -49,7 +50,7 @@ namespace lib7842
     void sortArrayY(std::vector<sortedObjects_t>&, int, int);
     void sortArrayLife(std::vector<sortedObjects_t>&, int, int);
 
-    bool compareObjects(sortedObjects_t*, sortedObjects_t*);
+    bool compareObjects(sortedObjects_t&, sortedObjects_t&);
     double emaCalculate(double, double, double = 1.0);
 
     void mergeObject(sortedObjects_t&, sortedObjects_t&);
@@ -64,7 +65,7 @@ namespace lib7842
 
   public:
 
-    ObjectSmoothing(ObjectContainer&, ObjectContainer&, int, int, double, double, double, bool, bool = false);
+    ObjectSmoothing(ObjectContainer&, ObjectContainer&, int, int, int, double, double, double, bool, bool = false);
     ~ObjectSmoothing();
 
     void exportObjects(lib7842::ObjectContainer*, int, int);

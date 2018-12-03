@@ -30,7 +30,7 @@ void ObjectTrackingTask(void*)
   sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED);
   lib7842::ObjectSmoothing objectSmoothing(
     rawObjects, sortedObjects,
-    40, 20,
+    40, 20, 5,
     0.35, 30,
     0.3, false,
     false

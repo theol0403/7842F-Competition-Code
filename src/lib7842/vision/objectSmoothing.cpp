@@ -3,12 +3,13 @@
 namespace lib7842
 {
 
-  ObjectSmoothing::ObjectSmoothing(ObjectContainer& sourceContainer, ObjectContainer& destContainer, int lifeMax, int lifeThreshold, double emaAlpha, double objectPosThreshold, double emaAlphaVel, bool differentVel, bool debugMode)
+  ObjectSmoothing::ObjectSmoothing(ObjectContainer& sourceContainer, ObjectContainer& destContainer, int lifeMax, int lifeThreshold, int lifeIncrement, double emaAlpha, double objectPosThreshold, double emaAlphaVel, bool differentVel, bool debugMode)
   :
   m_sourceContainer(&sourceContainer),
   m_destContainer(&destContainer),
   m_lifeMax(lifeMax),
   m_lifeThreshold(lifeThreshold),
+  m_lifeIncrement(lifeIncrement),
   m_emaAlpha(emaAlpha),
   m_objectPosThreshold(objectPosThreshold),
   m_emaAlphaVel(emaAlphaVel),
@@ -175,16 +176,16 @@ namespace lib7842
   }
 
 
-  bool ObjectSmoothing::compareObjects(sortedObjects_t* masterObject, sortedObjects_t* sourceObject)
+  bool ObjectSmoothing::compareObjects(sortedObjects_t& masterObject, sortedObjects_t& sourceObject)
   {
     //compare sig, then Y, then X, then size
     bool cascadingTrue = true;
-    cascadingTrue = cascadingTrue && sourceObject->objSig == masterObject->objSig;
-    //std::cout << "Y Increment " << sourceObject->objCenterY - masterObject->objCenterY<< "\n";
-    cascadingTrue = cascadingTrue && (sourceObject->objCenterX > masterObject->objCenterX - m_objectPosThreshold) && (sourceObject->objCenterX < masterObject->objCenterX + m_objectPosThreshold);
-    cascadingTrue = cascadingTrue && (sourceObject->objCenterY > masterObject->objCenterY - m_objectPosThreshold) && (sourceObject->objCenterY < masterObject->objCenterY + m_objectPosThreshold);
-    cascadingTrue = cascadingTrue && (sourceObject->objWidth > masterObject->objWidth - m_objectPosThreshold/2) && (sourceObject->objWidth < masterObject->objWidth + m_objectPosThreshold/2);
-    cascadingTrue = cascadingTrue && (sourceObject->objHeight > masterObject->objHeight - m_objectPosThreshold/2) && (sourceObject->objHeight < masterObject->objHeight + m_objectPosThreshold/2);
+    cascadingTrue = cascadingTrue && sourceObject.objSig == masterObject.objSig;
+    //std::cout << "Y Increment " << sourceObject.objCenterY - masterObject.objCenterY<< "\n";
+    cascadingTrue = cascadingTrue && (sourceObject.objCenterX > masterObject.objCenterX - m_objectPosThreshold) && (sourceObject.objCenterX < masterObject.objCenterX + m_objectPosThreshold);
+    cascadingTrue = cascadingTrue && (sourceObject.objCenterY > masterObject.objCenterY - m_objectPosThreshold) && (sourceObject.objCenterY < masterObject.objCenterY + m_objectPosThreshold);
+    cascadingTrue = cascadingTrue && (sourceObject.objWidth > masterObject.objWidth - m_objectPosThreshold/2) && (sourceObject.objWidth < masterObject.objWidth + m_objectPosThreshold/2);
+    cascadingTrue = cascadingTrue && (sourceObject.objHeight > masterObject.objHeight - m_objectPosThreshold/2) && (sourceObject.objHeight < masterObject.objHeight + m_objectPosThreshold/2);
     return cascadingTrue;
   }
 
@@ -220,7 +221,7 @@ namespace lib7842
     destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
     //std::cout << "XVel:" << destObject.objXVel << "\n";
 
-    destObject.lifeCounter+=5; //Increase life
+    destObject.lifeCounter += m_lifeIncrement; //Increase life
     if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
   }
 
@@ -235,7 +236,7 @@ namespace lib7842
     destObject.objCenterY = newObject.objCenterY;
     destObject.objXVel = 0;
     destObject.objYVel = 0;
-    destObject.lifeCounter = 1;
+    destObject.lifeCounter = m_lifeIncrement;
   }
 
   void ObjectSmoothing::trimObject(sortedObjects_t &destObject)
@@ -276,7 +277,7 @@ namespace lib7842
       {
         if(!m_masterObjects.at(masterNum).matchFound)
         {
-          if(compareObjects(&m_masterObjects.at(masterNum), &m_sourceObjects[sourceObjectNum]))
+          if(compareObjects(m_masterObjects.at(masterNum), m_sourceObjects[sourceObjectNum]))
           {
             mergeCount++;
             mergeObject(m_masterObjects.at(masterNum), m_sourceObjects[sourceObjectNum]);
@@ -290,11 +291,12 @@ namespace lib7842
       {
         pushCount++;
         //Add extra object to the end of master
-        pushObject(m_masterObjects.at(m_masterCount), m_sourceObjects[sourceObjectNum]);
-        m_masterObjects.at(m_masterCount).matchFound = true;
+        pushObject(m_masterObjects.at(newMasterCount), m_sourceObjects[sourceObjectNum]);
+        m_masterObjects.at(newMasterCount).matchFound = true;
         newMasterCount++; //Let merge know there are extra objects
       }
     }
+
     for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //Scan through master looking for non-matches
     {
       if(!m_masterObjects.at(masterNum).matchFound)
