@@ -120,8 +120,27 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * operator control task will be stopped. Re-enabling the robot will restart the
     * task, not resume it from where it left off.
     */
+
+
+    enum autonModes_t
+ {
+     redFront,
+     blueFront,
+     redBack,
+     blueBack
+ };
+
     void opcontrol()
     {
+
+      autonModes_t autoMode = autonModes_t::redFront;
+      int autoModeInt = autonModes_t::redFront;
+
+
+
+
+
+
       //robotChassis->stop();
       setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);

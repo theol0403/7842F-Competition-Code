@@ -143,10 +143,10 @@ namespace lib7842
         }
       }
     }
-    // if(m_debugInfo)
-    // {
-    //   std::cout << " | " << "L Swap: " << swapCount;
-    // }
+    if(DEGUBBB)
+    {
+      std::cout << " | " << "L Swap: " << swapCount;
+    }
   }
 
 
@@ -366,39 +366,39 @@ namespace lib7842
   }
 
 
-  void ObjectSmoothing::exportObjects(int minLife, int maxLife)
+  void ObjectSmoothing::exportObjects(lib7842::ObjectContainer* destContainer, int minLife, int maxLife)
   {
     int exportCount = 0;
     //for each object in master down to x life
-    for(int objectNum = 0; objectNum < m_destContainer->arrayLength; objectNum++)
+    for(int objectNum = 0; objectNum < destContainer->arrayLength && objectNum < m_masterLength; objectNum++)
     {
       if(m_masterObjects.at(objectNum).lifeCounter <= maxLife && m_masterObjects.at(objectNum).lifeCounter >= minLife)
       {
-        m_destContainer->objectArray.at(objectNum).objSig = m_masterObjects.at(objectNum).objSig;
-        m_destContainer->objectArray.at(objectNum).objX = m_masterObjects.at(objectNum).objX;
-        m_destContainer->objectArray.at(objectNum).objY = m_masterObjects.at(objectNum).objY;
-        m_destContainer->objectArray.at(objectNum).objWidth = m_masterObjects.at(objectNum).objWidth;
-        m_destContainer->objectArray.at(objectNum).objHeight = m_masterObjects.at(objectNum).objHeight;
-        m_destContainer->objectArray.at(objectNum).objSize = (m_masterObjects.at(objectNum).objWidth + m_masterObjects.at(objectNum).objHeight) / 2;
-        m_destContainer->objectArray.at(objectNum).objCenterX = m_masterObjects.at(objectNum).objCenterX;
-        m_destContainer->objectArray.at(objectNum).objCenterY = m_masterObjects.at(objectNum).objCenterY;
-        m_destContainer->objectArray.at(objectNum).discardObject = false;
+        destContainer->objectArray.at(objectNum).objSig = m_masterObjects.at(objectNum).objSig;
+        destContainer->objectArray.at(objectNum).objX = m_masterObjects.at(objectNum).objX;
+        destContainer->objectArray.at(objectNum).objY = m_masterObjects.at(objectNum).objY;
+        destContainer->objectArray.at(objectNum).objWidth = m_masterObjects.at(objectNum).objWidth;
+        destContainer->objectArray.at(objectNum).objHeight = m_masterObjects.at(objectNum).objHeight;
+        destContainer->objectArray.at(objectNum).objSize = (m_masterObjects.at(objectNum).objWidth + m_masterObjects.at(objectNum).objHeight) / 2;
+        destContainer->objectArray.at(objectNum).objCenterX = m_masterObjects.at(objectNum).objCenterX;
+        destContainer->objectArray.at(objectNum).objCenterY = m_masterObjects.at(objectNum).objCenterY;
+        destContainer->objectArray.at(objectNum).discardObject = false;
         exportCount = objectNum + 1;
       }
       else
       {
-        m_destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
-        m_destContainer->objectArray.at(objectNum).objX = 0;
-        m_destContainer->objectArray.at(objectNum).objY = 0;
-        m_destContainer->objectArray.at(objectNum).objWidth = 0;
-        m_destContainer->objectArray.at(objectNum).objHeight = 0;
-        m_destContainer->objectArray.at(objectNum).objSize = 0;
-        m_destContainer->objectArray.at(objectNum).objCenterX = 0;
-        m_destContainer->objectArray.at(objectNum).objCenterY = 0;
-        m_destContainer->objectArray.at(objectNum).discardObject = false;
+        destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
+        destContainer->objectArray.at(objectNum).objX = 0;
+        destContainer->objectArray.at(objectNum).objY = 0;
+        destContainer->objectArray.at(objectNum).objWidth = 0;
+        destContainer->objectArray.at(objectNum).objHeight = 0;
+        destContainer->objectArray.at(objectNum).objSize = 0;
+        destContainer->objectArray.at(objectNum).objCenterX = 0;
+        destContainer->objectArray.at(objectNum).objCenterY = 0;
+        destContainer->objectArray.at(objectNum).discardObject = false;
       }
     }
-    m_destContainer->currentCount = exportCount;
+    destContainer->currentCount = exportCount;
   }
 
 
@@ -408,7 +408,7 @@ namespace lib7842
     importSource();
     mergeObjects();
     sortMaster();
-    exportObjects(m_lifeMax - m_lifeThreshold, m_lifeMax);
+    exportObjects(m_destContainer, m_lifeMax - m_lifeThreshold, m_lifeMax);
   }
 
 }

@@ -67,7 +67,7 @@ namespace lib7842
     ObjectSmoothing(lib7842::ObjectContainer&, lib7842::ObjectContainer&, double, double, bool, double, int, int);
     ~ObjectSmoothing();
 
-    void exportObjects(int, int);
+    void exportObjects(lib7842::ObjectContainer*, int, int);
 
     void smoothObjects();
 
