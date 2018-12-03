@@ -28,7 +28,13 @@ void ObjectTrackingTask(void*)
   lib7842::ObjectContainer sortedObjects(20, mainScreenDrawing);
   sortedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE);
   sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED);
-  lib7842::ObjectSmoothing objectSmoothing(rawObjects, sortedObjects, 30, 0.35, false, 0.3, 40, 20);
+  lib7842::ObjectSmoothing objectSmoothing(
+    rawObjects, sortedObjects,
+    40, 20,
+    0.35, 30,
+    0.3, false,
+    false
+  );
 
   while(true)
   {

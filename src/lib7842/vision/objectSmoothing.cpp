@@ -3,18 +3,17 @@
 namespace lib7842
 {
 
-  #define DEGUBBB false
-
-  ObjectSmoothing::ObjectSmoothing(ObjectContainer& sourceContainer, ObjectContainer& destContainer, double objectPosThreshold, double emaAlpha, bool differentVel, double emaAlphaVel, int lifeMax, int lifeThreshold)
+  ObjectSmoothing::ObjectSmoothing(ObjectContainer& sourceContainer, ObjectContainer& destContainer, int lifeMax, int lifeThreshold, double emaAlpha, double objectPosThreshold, double emaAlphaVel, bool differentVel, bool debugMode)
   :
   m_sourceContainer(&sourceContainer),
   m_destContainer(&destContainer),
-  m_objectPosThreshold(objectPosThreshold),
-  m_emaAlpha(emaAlpha),
-  m_differentVel(differentVel),
-  m_emaAlphaVel(emaAlphaVel),
   m_lifeMax(lifeMax),
   m_lifeThreshold(lifeThreshold),
+  m_emaAlpha(emaAlpha),
+  m_objectPosThreshold(objectPosThreshold),
+  m_emaAlphaVel(emaAlphaVel),
+  m_differentVel(differentVel),
+  m_debugMode(debugMode),
   m_masterLength(m_sourceContainer->arrayLength * lifeMax)
   {
     m_sourceObjects.resize(m_sourceContainer->arrayLength);
@@ -143,7 +142,7 @@ namespace lib7842
         }
       }
     }
-    if(DEGUBBB)
+    if(m_debugMode)
     {
       std::cout << " | " << "L Swap: " << swapCount;
     }
@@ -307,7 +306,7 @@ namespace lib7842
 
     m_masterCount = newMasterCount;
 
-    if(DEGUBBB) std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
+    if(m_debugMode) std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
 
   }
 
@@ -338,7 +337,7 @@ namespace lib7842
       }
     }
 
-    if(DEGUBBB) std::cout << " | " << "R:" << purgeCount;
+    if(m_debugMode) std::cout << " | " << "R:" << purgeCount;
 
     sortArrayLife(m_masterObjects, 0, m_masterCount); //Moves all 0 objects to the right
     m_masterCount = newMasterCount;
@@ -356,7 +355,7 @@ namespace lib7842
       if(sortNeeded && startIndex != searchBoundary-1)
       {
 
-        if(DEGUBBB) std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
+        if(m_debugMode) std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
         sortArrayY(m_masterObjects, startIndex, searchBoundary-1);
       }
       startIndex = searchBoundary;

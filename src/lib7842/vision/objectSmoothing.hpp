@@ -31,17 +31,17 @@ namespace lib7842
     std::vector<sortedObjects_t> m_sourceObjects; //Source object container
     int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
 
-    const double m_objectPosThreshold;
-    const double m_emaAlpha;
-    const bool m_differentVel;
-    const double m_emaAlphaVel;
     const int m_lifeMax; //Maximum life of objects (decay)
     const int m_lifeThreshold; //Amount of room the objects have
+    const double m_emaAlpha;
+    const double m_objectPosThreshold;
+    const double m_emaAlphaVel;
+    const bool m_differentVel;
+    const bool m_debugMode;
 
     const int m_masterLength; //Size of master array
     std::vector<sortedObjects_t> m_masterObjects; //Master array
     int m_masterCount = 0; //Amount of objects currently in master array, sorted left
-
 
 
     void clearArray(std::vector<sortedObjects_t>&, int, int);
@@ -64,7 +64,7 @@ namespace lib7842
 
   public:
 
-    ObjectSmoothing(lib7842::ObjectContainer&, lib7842::ObjectContainer&, double, double, bool, double, int, int);
+    ObjectSmoothing(ObjectContainer&, ObjectContainer&, int, int, double, double, double, bool, bool = false);
     ~ObjectSmoothing();
 
     void exportObjects(lib7842::ObjectContainer*, int, int);
