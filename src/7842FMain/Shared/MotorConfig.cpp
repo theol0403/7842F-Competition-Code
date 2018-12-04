@@ -57,12 +57,12 @@ std::shared_ptr<OdomChassisController> robotChassis = ChassisControllerBuilder()
 							 .buildOdometry();
 
 
-void setBaseArcade(int yPower, int zPower)
+void setBaseArcade(float yPower, float zPower)
 {
-	robotChassis->arcade(yPower/127, zPower/127, 0);
+	robotChassis->arcade(yPower/127.0, zPower/127.0, 0);
 }
 
-void setBasePower(int leftPower, int rightPower)
+void setBasePower(float leftPower, float rightPower)
 {
-	robotChassis->tank(leftPower/127, rightPower/127, 0);
+	robotChassis->tank(leftPower/127.0, rightPower/127.0, 0);
 }

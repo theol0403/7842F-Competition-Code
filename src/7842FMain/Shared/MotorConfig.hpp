@@ -20,5 +20,5 @@ void setIntakePower(int);
 void setIndexerPower(int);
 
 extern std::shared_ptr<OdomChassisController> robotChassis;
-void setBaseArcade(int, int);
-void setBasePower(int, int);
+void setBaseArcade(float, float);
+void setBasePower(float, float);
