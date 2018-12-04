@@ -46,24 +46,15 @@ void setIndexerPower(int speed)
 
 //Base -----------------------
 
-std::shared_ptr<ChassisControllerPID> robotChassis = std::make_shared<ChassisControllerPID>
-(
-	TimeUtilFactory::create(),
-	std::make_shared<ThreeEncoderSkidSteerModel>
-	(
-		std::make_shared<MotorGroup>(MotorGroup({em_LeftFront, em_LeftBack})),
-		std::make_shared<MotorGroup>(MotorGroup({em_RightFront, em_RightBack})),
-		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseLeftEncoder, es_BaseLeftEncoder+1)),
-		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseBackEncoder, es_BaseBackEncoder+1)),
-		std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
-		200, 12000
-	),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
-	AbstractMotor::gearset::green,
-	ChassisScales({4.125_in, 25.15_in})
-);
+std::shared_ptr<OdomChassisController> robotChassis = ChassisControllerBuilder()
+							 .withMotors({em_LeftFront, em_LeftBack}, {em_RightFront, em_RightBack})
+							 .withGains(IterativePosPIDController::Gains{0.0022, 0.00, 0}, IterativePosPIDController::Gains{0.002, 0.0, 0}, IterativePosPIDController::Gains{0.0016, 0, 0})
+							 .withSensors({es_BaseLeftEncoder, es_BaseLeftEncoder+1}, {es_BaseRightEncoder, es_BaseRightEncoder+1})
+							 .withMiddleEncoder({es_BaseBackEncoder, es_BaseBackEncoder+1})
+							 .withDimensions({{4.125_in, 25.15_in, 10_in}, quadEncoderTPR})
+							 .withOdometry()
+							 .buildOdometry();
+
 
 void setBaseArcade(int yPower, int zPower)
 {

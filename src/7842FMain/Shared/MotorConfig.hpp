@@ -19,6 +19,6 @@ int getFlywheelEncoder();
 void setIntakePower(int);
 void setIndexerPower(int);
 
-extern std::shared_ptr<ChassisControllerPID> robotChassis;
+//extern std::shared_ptr<ChassisControllerPID> robotChassis;
 void setBaseArcade(int, int);
 void setBasePower(int, int);
