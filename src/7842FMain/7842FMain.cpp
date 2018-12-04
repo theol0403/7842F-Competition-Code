@@ -6,6 +6,7 @@
 #include "Shared/ObjectTracking.hpp"
 
 #include "Driver/DriverMainTasks.hpp"
+#include "Driver/OdomTask.hpp"
 
 #include "Auto/AutoConfig.hpp"
 
@@ -124,6 +125,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void opcontrol()
     {
+      pros::Task driverOdomTask_t(driverOdomTask);
+
 
       //robotChassis->stop();
       setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
