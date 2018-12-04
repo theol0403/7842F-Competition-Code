@@ -4,9 +4,7 @@
 void DriverMainTask(void*)
 {
 
-	int joystickLeftX;
-	int joystickRightY;
-	int joystickRightX;
+
 
 	int wantedFlywheelSpeed = 0;
 	bool triggerUpdate = true;
@@ -16,17 +14,12 @@ void DriverMainTask(void*)
 	while(true)
 	{
 
-		joystickLeftX = j_Main.get_analog(ANALOG_LEFT_X);
-		joystickRightY = j_Main.get_analog(ANALOG_RIGHT_Y);
 
-		setBaseArcade(joystickRightY, joystickLeftX);
-
-
-		if(j_Main.get_digital(DIGITAL_R1))
+		if(j_Main.getDigital(ControllerDigital::R1))
 		{
 			setIntakePower(90);
 		}
-		else if(j_Main.get_digital(DIGITAL_R2))
+		else if(j_Main.getDigital(ControllerDigital::R2))
 		{
 			setIntakePower(-127);
 		}
@@ -36,11 +29,11 @@ void DriverMainTask(void*)
 		}
 
 
-		if(j_Main.get_digital(DIGITAL_L1))
+		if(j_Main.getDigital(ControllerDigital::L1))
 		{
 			setIndexerPower(127);
 		}
-		else if(j_Main.get_digital(DIGITAL_L2))
+		else if(j_Main.getDigital(ControllerDigital::L2))
 		{
 			setIndexerPower(-127);
 		}
@@ -50,7 +43,7 @@ void DriverMainTask(void*)
 		}
 
 
-		if(j_Main.get_digital(DIGITAL_Y) && !manualToggle)
+		if(j_Main.getDigital(ControllerDigital::Y) && !manualToggle)
 		{
 			manualToggle = true;
 			if(flywheelManual)
@@ -62,28 +55,28 @@ void DriverMainTask(void*)
 				flywheelManual = true;
 			}
 		}
-		else if(!j_Main.get_digital(DIGITAL_Y) && manualToggle)
+		else if(!j_Main.getDigital(ControllerDigital::Y) && manualToggle)
 		{
 			manualToggle = false;
 		}
 
 
-		if(j_Main.get_digital(DIGITAL_LEFT))
+		if(j_Main.getDigital(ControllerDigital::left))
 		{
 			wantedFlywheelSpeed = flywheelManual ? 50 : 2400;
 			triggerUpdate = true;
 		}
-		else if(j_Main.get_digital(DIGITAL_UP))
+		else if(j_Main.getDigital(ControllerDigital::up))
 		{
 			wantedFlywheelSpeed = flywheelManual ? 70 : 2600;
 			triggerUpdate = true;
 		}
-		else if(j_Main.get_digital(DIGITAL_RIGHT))
+		else if(j_Main.getDigital(ControllerDigital::right))
 		{
 			wantedFlywheelSpeed = flywheelManual ? 90 : 2800;
 			triggerUpdate = true;
 		}
-		else if(j_Main.get_digital(DIGITAL_DOWN))
+		else if(j_Main.getDigital(ControllerDigital::down))
 		{
 			wantedFlywheelSpeed = 0;
 			triggerUpdate = true;
@@ -104,14 +97,14 @@ void DriverMainTask(void*)
 		}
 
 
-if(j_Main.get_digital(DIGITAL_X))
-{
-	extendArm = true;
-}
-else
-{
-	extendArm = false;
-}
+		if(j_Main.getDigital(ControllerDigital::X))
+		{
+			extendArm = true;
+		}
+		else
+		{
+			extendArm = false;
+		}
 
 
 

@@ -13,12 +13,12 @@ const int8_t es_BaseLeftEncoder = 1;
 const int8_t es_BaseRightEncoder = 3;
 const int8_t es_BaseBackEncoder = 5;
 
-pros::Controller j_Main(pros::E_CONTROLLER_MASTER);
+Controller j_Main(ControllerId::master);
 
 //Flywheel -----------------------
-okapi::Motor m_Flywheel(abs(em_Flywheel), em_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-okapi::Motor m_Flywheel2(abs(em_Flywheel2), em_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-okapi::MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
+Motor m_Flywheel(abs(em_Flywheel), em_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Flywheel2(abs(em_Flywheel2), em_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
 void setFlywheelPower(int speed)
 {
 	m_FlywheelGroup.moveVoltage(speed/127*12000);
@@ -30,14 +30,14 @@ int getFlywheelRPM()
 }
 
 //Intake -----------------------
-okapi::Motor m_Intake(abs(em_Intake), em_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Intake(abs(em_Intake), em_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIntakePower(int speed)
 {
 	m_Intake.moveVoltage(speed/127*12000);
 }
 
 //Indexer -----------------------
-okapi::Motor m_Indexer(abs(em_Indexer), em_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Indexer(abs(em_Indexer), em_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 void setIndexerPower(int speed)
 {
 	m_Indexer.moveVoltage(speed/127*12000);

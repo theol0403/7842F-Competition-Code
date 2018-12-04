@@ -10,7 +10,7 @@ extern const int8_t e_Flywheel2;
 extern const int8_t e_Intake;
 extern const int8_t e_Indexer;
 
-extern pros::Controller j_Main;
+extern Controller j_Main;
 
 void setFlywheelPower(int);
 int getFlywheelRPM();
