@@ -50,8 +50,9 @@ std::shared_ptr<OdomChassisController> robotChassis = ChassisControllerBuilder()
 							 .withMotors({em_LeftFront, em_LeftBack}, {em_RightFront, em_RightBack})
 							 .withGains(IterativePosPIDController::Gains{0.0022, 0.00, 0}, IterativePosPIDController::Gains{0.002, 0.0, 0}, IterativePosPIDController::Gains{0.0016, 0, 0})
 							 .withSensors({es_BaseLeftEncoder, es_BaseLeftEncoder+1}, {es_BaseRightEncoder, es_BaseRightEncoder+1})
-							 .withMiddleEncoder({es_BaseBackEncoder, es_BaseBackEncoder+1})
-							 .withDimensions({{4.125_in, 25.15_in, 10_in}, quadEncoderTPR})
+							 //.withMiddleEncoder({es_BaseBackEncoder, es_BaseBackEncoder+1})
+							 .withDimensions({{2.75_in * 1.6, 12.9_in, //10_in
+							 }, quadEncoderTPR})
 							 .withOdometry()
 							 .buildOdometry();
 
