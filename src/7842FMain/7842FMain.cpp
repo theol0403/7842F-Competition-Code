@@ -27,10 +27,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     default: {} } } }
 
     //Shared
-    pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
+  //  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
     //pros::Task ObjectTrackingTask_t(ObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
     //Driver
-    pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
+  //  pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
     //Auton
 
 
@@ -48,7 +48,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+      //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
     }
 
@@ -92,7 +92,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void disabled()
     {
       setFlywheelRPM(0);
-      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+      //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       //Motors Off
       //robotChassis->stop();
@@ -125,15 +125,14 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void opcontrol()
     {
-      //pros::Task driverOdomTask_t(driverOdomTask);
+      pros::Task driverOdomTask_t(driverOdomTask);
 
 
       //robotChassis->stop();
-      setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
+      //setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       while(true) {pros::delay(10000);} //Never exits
     }
-
 
 
 
@@ -159,7 +158,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void autonomous()
     {
-      setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+    //  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
 
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"

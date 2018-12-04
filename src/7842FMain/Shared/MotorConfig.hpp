@@ -19,6 +19,6 @@ int getFlywheelEncoder();
 void setIntakePower(int);
 void setIndexerPower(int);
 
-extern std::shared_ptr<OdomChassisController> robotChassis;
+extern std::shared_ptr<okapi::OdomChassisController> robotChassis;
 void setBaseArcade(float, float);
 void setBasePower(float, float);

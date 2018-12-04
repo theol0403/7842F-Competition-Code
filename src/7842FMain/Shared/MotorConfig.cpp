@@ -9,8 +9,8 @@ const int8_t em_Flywheel2 = -12;
 const int8_t em_Intake = 1;
 const int8_t em_Indexer = 2;
 
-const int8_t es_BaseLeftEncoder = 1;
-const int8_t es_BaseRightEncoder = 3;
+const int8_t es_BaseLeftEncoder = 3;
+const int8_t es_BaseRightEncoder = 5;
 const int8_t es_BaseBackEncoder = 5;
 
 Controller j_Main(ControllerId::master);
@@ -46,12 +46,12 @@ void setIndexerPower(int speed)
 
 //Base -----------------------
 
-std::shared_ptr<OdomChassisController> robotChassis = ChassisControllerBuilder()
+std::shared_ptr<okapi::OdomChassisController> robotChassis = ChassisControllerBuilder()
 							 .withMotors({em_LeftFront, em_LeftBack}, {em_RightFront, em_RightBack})
-							 .withGains(IterativePosPIDController::Gains{0.0022, 0.00, 0}, IterativePosPIDController::Gains{0.002, 0.0, 0}, IterativePosPIDController::Gains{0.0016, 0, 0})
+							 .withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 							 .withSensors({es_BaseLeftEncoder, es_BaseLeftEncoder+1}, {es_BaseRightEncoder, es_BaseRightEncoder+1})
 							 //.withMiddleEncoder({es_BaseBackEncoder, es_BaseBackEncoder+1})
-							 .withDimensions({{2.75_in * 1.6, 12.9_in, //10_in
+							 .withDimensions({{2.75_in * 1.6, 12.9_in//, 10_in
 							 }, quadEncoderTPR})
 							 .withOdometry()
 							 .buildOdometry();
