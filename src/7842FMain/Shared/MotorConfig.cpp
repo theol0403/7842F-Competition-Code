@@ -1,17 +1,10 @@
 #include "MotorConfig.hpp"
 
-const int8_t em_RightFront = -5;
-const int8_t em_RightBack = -6;
-const int8_t em_LeftFront = 7;
-const int8_t em_LeftBack = 8;
 const int8_t em_Flywheel = 11;
 const int8_t em_Flywheel2 = -12;
 const int8_t em_Intake = 1;
 const int8_t em_Indexer = 2;
 
-const int8_t es_BaseLeftEncoder = 3;
-const int8_t es_BaseRightEncoder = 5;
-const int8_t es_BaseBackEncoder = 5;
 
 Controller j_Main(ControllerId::master);
 
@@ -46,34 +39,7 @@ void setIndexerPower(int speed)
 
 //Base -----------------------
 
-std::shared_ptr<ThreeEncoderSkidSteerModel> robotModel = std::make_shared<ThreeEncoderSkidSteerModel>
-(
-	std::make_shared<MotorGroup>(MotorGroup({em_LeftFront, em_LeftBack})),
-	std::make_shared<MotorGroup>(MotorGroup({em_RightFront, em_RightBack})),
-	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseLeftEncoder, es_BaseLeftEncoder+1)),
-	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseBackEncoder, es_BaseBackEncoder+1)),
-	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
-	200, 12000
-);
 
-ChassisScales robotScales {{2.75_in * 1.6, 12.9_in}, quadEncoderTPR};
-
-std::shared_ptr<OdomChassisControllerPID> robotChassis = std::make_shared<OdomChassisControllerPID>
-(
-	TimeUtilFactory::create(),
-	robotModel,
-	std::make_unique<Odometry>
-	(
-		robotModel,
-		robotScales,
-		TimeUtilFactory::create()
-	),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
-	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
-	AbstractMotor::gearset::green,
-	robotScales
-);
 
 
 

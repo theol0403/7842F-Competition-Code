@@ -27,11 +27,11 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     default: {} } } }
 
     //Shared
-  //  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
+    //  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
     //pros::Task ObjectTrackingTask_t(ObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
     //Driver
-  //pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
-  pros::Task driverOdomTask_t(driverOdomTask);
+    //pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
+
     //Auton
 
 
@@ -47,10 +47,57 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * All other competition modes are blocked by initialize; it is recommended
     * to keep execution time for this mode under a few seconds.
     */
+
+    std::shared_ptr<okapi::OdomChassisController> robotChassis = nullptr;
+
+
     void initialize()
     {
+      pros::delay(1000);
       //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
+
+
+      const int8_t em_RightFront = -5;
+      const int8_t em_RightBack = -6;
+      const int8_t em_LeftFront = 7;
+      const int8_t em_LeftBack = 8;
+
+      ADIEncoder leftEncoder(3, 4);
+      ADIEncoder rightEncoder(5, 6);
+      ADIEncoder middleEncoder(7, 8);
+
+
+      robotChassis = ChassisControllerBuilder()
+      .withMotors(MotorGroup{em_LeftFront, em_LeftBack}, MotorGroup{em_RightFront, em_RightBack})
+      .withSensors(leftEncoder, rightEncoder)
+      .withMiddleEncoder(middleEncoder)
+      .withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in * 1.6}, quadEncoderTPR})
+      .withOdometry()
+      .buildOdometry();
+
+
+      robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
+
+      while(true)
+      {
+        OdomState odomState = robotChassis->getState();
+        printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
+        odomState.x.convert(inch),
+        odomState.y.convert(inch),
+        odomState.theta.convert(degree));
+
+        printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
+        leftEncoder.get(),
+        rightEncoder.get(),
+        middleEncoder.get());
+
+        pros::delay(100);
+      }
+
+
+
+      pros::Task driverOdomTask_t(driverOdomTask);
     }
 
 
@@ -159,7 +206,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void autonomous()
     {
-    //  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
+      //  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
 
 
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"

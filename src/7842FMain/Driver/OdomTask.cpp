@@ -8,8 +8,6 @@ void driverOdomTask(void*)
   .buildMotionProfileController();
 
 
-  robotChassis->startThread();
-
   ControllerButton b_odomToggle(ControllerId::master, ControllerDigital::B);
   bool odomToggled = false;
 
@@ -54,6 +52,15 @@ void driverOdomTask(void*)
     odomState.x.convert(inch),
     odomState.y.convert(inch),
     odomState.theta.convert(degree));
+
+    ADIEncoder leftEncoder(3, 4);
+    ADIEncoder rightEncoder(5, 6);
+    ADIEncoder middleEncoder(7, 8);
+
+      printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
+      leftEncoder.get(),
+      rightEncoder.get(),
+      middleEncoder.get());
 
 
     pros::delay(100);
