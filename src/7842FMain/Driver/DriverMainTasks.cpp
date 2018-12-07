@@ -4,8 +4,6 @@
 void DriverMainTask(void*)
 {
 
-
-
 	int wantedFlywheelSpeed = 0;
 	bool triggerUpdate = true;
 	bool flywheelManual = false;

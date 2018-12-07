@@ -46,23 +46,45 @@ void setIndexerPower(int speed)
 
 //Base -----------------------
 
-std::shared_ptr<okapi::OdomChassisController> robotChassis = ChassisControllerBuilder()
-							 .withMotors({em_LeftFront, em_LeftBack}, {em_RightFront, em_RightBack})
-							 .withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
-							 .withSensors({es_BaseLeftEncoder, es_BaseLeftEncoder+1}, {es_BaseRightEncoder, es_BaseRightEncoder+1})
-							 //.withMiddleEncoder({es_BaseBackEncoder, es_BaseBackEncoder+1})
-							 .withDimensions({{2.75_in * 1.6, 12.9_in//, 10_in
-							 }, quadEncoderTPR})
-							 .withOdometry()
-							 .buildOdometry();
+std::shared_ptr<SkidSteerModel> robotModel = std::make_shared<SkidSteerModel>
+(
+	std::make_shared<MotorGroup>(MotorGroup({em_LeftFront, em_LeftBack})),
+	std::make_shared<MotorGroup>(MotorGroup({em_RightFront, em_RightBack})),
+	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseLeftEncoder, es_BaseLeftEncoder+1)),
+	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseBackEncoder, es_BaseBackEncoder+1)),
+	//std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
+	200
+);
+
+ChassisScales robotScales {{2.75_in * 1.6, 12.9_in}, quadEncoderTPR};
+
+std::shared_ptr<OdomChassisControllerPID> robotChassis = std::make_shared<OdomChassisControllerPID>
+(
+	TimeUtilFactory::create(),
+	robotModel,
+	std::make_unique<Odometry>
+	(
+		robotModel,
+		robotScales,
+		TimeUtilFactory::create()
+	),
+	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
+	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
+	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
+	AbstractMotor::gearset::green,
+	robotScales
+);
+
+
+
 
 
 void setBaseArcade(float yPower, float zPower)
 {
-	robotChassis->arcade(yPower/127.0, zPower/127.0, 0);
+	robotChassis->arcade(yPower, zPower, 0);
 }
 
 void setBasePower(float leftPower, float rightPower)
 {
-	robotChassis->tank(leftPower/127.0, rightPower/127.0, 0);
+	robotChassis->tank(leftPower, rightPower, 0);
 }

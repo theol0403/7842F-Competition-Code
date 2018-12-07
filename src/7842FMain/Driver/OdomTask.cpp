@@ -2,21 +2,25 @@
 
 void driverOdomTask(void*)
 {
-  OdomState odomState = robotChassis->getState();
+  std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = AsyncMotionProfileControllerBuilder()
+  .withOutput(robotChassis)
+  .withLimits(PathfinderLimits{1.0, 2.0, 10.0})
+  .buildMotionProfileController();
+
+
+  robotChassis->startThread();
 
   ControllerButton b_odomToggle(ControllerId::master, ControllerDigital::B);
   bool odomToggled = false;
 
   ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
-  auto profileController = AsyncMotionProfileControllerBuilder()
-  .withOutput(robotChassis)
-  .withLimits(PathfinderLimits{1.0, 2.0, 10.0})
-  .buildMotionProfileController();
+
 
 
   while (true)
   {
+    OdomState odomState = robotChassis->getState();
 
     if(b_odomToggle.changedToPressed())
     {
@@ -25,7 +29,7 @@ void driverOdomTask(void*)
 
     if(b_odomMotionToggle.changedToPressed())
     {
-      profileController->moveTo({
+      robotProfile->moveTo({
         Point{odomState.x, odomState.y, odomState.theta},
         Point{4_ft, 4_ft, 0_deg}
       });
@@ -37,16 +41,21 @@ void driverOdomTask(void*)
     }
     else
     {
-      setBaseArcade(j_Main.getAnalog(ControllerAnalog::rightX), j_Main.getAnalog(ControllerAnalog::leftX));
+      setBaseArcade(j_Main.getAnalog(ControllerAnalog::rightY), j_Main.getAnalog(ControllerAnalog::leftX));
+    }
+
+    if(j_Main.getDigital(ControllerDigital::X))
+    {
+      robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
     }
 
 
-    printf("x: %1.23f, y: %1.23f, theta: %1.23f\n",
+    printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
     odomState.x.convert(inch),
     odomState.y.convert(inch),
     odomState.theta.convert(degree));
 
 
-    pros::delay(20);
+    pros::delay(100);
   }
 }
