@@ -8,8 +8,7 @@ void driverOdomTask(void*)
   .buildMotionProfileController();
 
 
-  ControllerButton b_odomToggle(ControllerId::master, ControllerDigital::B);
-  bool odomToggled = false;
+  ControllerButton b_turnToZero(ControllerId::master, ControllerDigital::B);
 
   ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
@@ -20,22 +19,18 @@ void driverOdomTask(void*)
   {
     OdomState odomState = robotChassis->getState();
 
-    if(b_odomToggle.changedToPressed())
-    {
-      odomToggled = !odomToggled;
-    }
 
     if(b_odomMotionToggle.changedToPressed())
     {
       robotProfile->moveTo({
         Point{odomState.x, odomState.y, odomState.theta},
-        Point{4_ft, 4_ft, 0_deg}
+        Point{0_ft, 0_ft, 0_deg}
       });
     }
 
-    if(odomToggled)
+    if(b_turnToZero.changedToPressed())
     {
-      robotChassis->turnAngle(0 - odomState.theta.convert(degree));
+      robotChassis->turnAngle(odomState.theta.convert(degree));
     }
     else
     {
@@ -57,10 +52,10 @@ void driverOdomTask(void*)
     ADIEncoder rightEncoder(5, 6);
     ADIEncoder middleEncoder(7, 8);
 
-      printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
-      leftEncoder.get(),
-      rightEncoder.get(),
-      middleEncoder.get());
+    printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
+    leftEncoder.get(),
+    rightEncoder.get(),
+    middleEncoder.get());
 
 
     pros::delay(100);

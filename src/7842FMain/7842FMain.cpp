@@ -72,7 +72,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       .withMotors(MotorGroup{em_LeftFront, em_LeftBack}, MotorGroup{em_RightFront, em_RightBack})
       .withSensors(leftEncoder, rightEncoder)
       .withMiddleEncoder(middleEncoder)
-      .withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in * 1.6}, quadEncoderTPR})
+      .withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
       .withOdometry()
       .buildOdometry();
 
