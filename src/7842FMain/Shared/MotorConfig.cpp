@@ -46,14 +46,14 @@ void setIndexerPower(int speed)
 
 //Base -----------------------
 
-std::shared_ptr<SkidSteerModel> robotModel = std::make_shared<SkidSteerModel>
+std::shared_ptr<ThreeEncoderSkidSteerModel> robotModel = std::make_shared<ThreeEncoderSkidSteerModel>
 (
 	std::make_shared<MotorGroup>(MotorGroup({em_LeftFront, em_LeftBack})),
 	std::make_shared<MotorGroup>(MotorGroup({em_RightFront, em_RightBack})),
 	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseLeftEncoder, es_BaseLeftEncoder+1)),
 	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseBackEncoder, es_BaseBackEncoder+1)),
-	//std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
-	200
+	std::make_shared<ADIEncoder>(ADIEncoder(es_BaseRightEncoder, es_BaseRightEncoder+1)),
+	200, 12000
 );
 
 ChassisScales robotScales {{2.75_in * 1.6, 12.9_in}, quadEncoderTPR};
