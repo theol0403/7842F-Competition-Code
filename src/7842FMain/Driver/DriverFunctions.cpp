@@ -91,10 +91,10 @@ void driverFlywheelControl()
 
 	if(j_Main.getDigital(ControllerDigital::X))
 	{
-		flywheelExtendArm = true;
+		setFlywheelArmMode(true);
 	}
 	else
 	{
-		flywheelExtendArm = false;
+		setFlywheelArmMode(false);
 	}
 }

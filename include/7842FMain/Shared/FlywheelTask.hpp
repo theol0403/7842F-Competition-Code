@@ -3,7 +3,7 @@
 #include "7842FMain/Shared/MotorConfig.hpp"
 #include "lib7842/pid/pidVelSystem.hpp"
 
-extern bool flywheelExtendArm;
+void flywheelTask(void*);
 
 void setFlywheelRPM(int);
-void flywheelTask(void*);
+void setFlywheelArmMode(bool);
