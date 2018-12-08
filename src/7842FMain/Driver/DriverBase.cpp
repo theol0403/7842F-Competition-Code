@@ -1,10 +1,9 @@
 #include "DriverBase.hpp"
 
-ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
+static ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
 void driverBaseControl()
 {
-
   OdomState odomState = robotChassis->getState();
 
 
@@ -38,6 +37,5 @@ void driverBaseControl()
   robotChassis->getSensorVals()[0],
   robotChassis->getSensorVals()[1],
   robotChassis->getSensorVals()[2]);
-
 
 }

@@ -11,7 +11,6 @@
 #include "Auto/AutoConfig.hpp"
 
 
-
 /***   _____         _
 *    |_   _|       | |
 *      | | __ _ ___| | _____
@@ -19,18 +18,14 @@
 *      | | (_| \__ \   <\__ \
 *      \_/\__,_|___/_|\_\___/
 */
-//Sets task state
 void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
-  if(taskPtr->get_state() != taskMode) { switch(taskMode) { //If state is wrong
+  if(taskPtr != nullptr) { if(taskPtr->get_state() != taskMode) { switch(taskMode) { //If state is wrong
     case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
     case TASK_STATE_RUNNING: taskPtr->resume(); break;
-    default: {} } } }
+    default: {} } } } }
 
-    //Shared
-    //  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
-    //pros::Task ObjectTrackingTask_t(ObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
-
-    //Auton
+    pros::Task* flywheelTask_t = nullptr;
+    pros::Task* objectTask_t = nullptr;
 
 
     /***
@@ -47,8 +42,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      pros::delay(1000);
-      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
+      pros::delay(500);
+
+      flywheelTask_t = new pros::Task(flywheelTask);
+      objectTask_t = new pros::Task(ObjectTrackingTask);
+
+
       initializeBase();
 
       // while(true)
@@ -100,9 +99,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void disabled()
     {
       setFlywheelRPM(0);
-      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
-      //Motors Off
-      //robotChassis->stop();
+      robotChassis->stop();
     }
 
     /***
@@ -126,6 +123,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void opcontrol()
     {
+      robotChassis->stop();
 
       while(true)
       {
@@ -135,13 +133,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         driverIntakeControl();
         driverFlywheelControl();
 
-
         pros::delay(20);
       }
-
-
-      //robotChassis->stop();
-      //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
     }
 
 
@@ -165,8 +158,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void autonomous()
     {
-      //  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
-
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
 
       pros::delay(500000);
