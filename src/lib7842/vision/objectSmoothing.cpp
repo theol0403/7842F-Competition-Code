@@ -1,4 +1,4 @@
-#include "objectSmoothing.hpp"
+#include "lib7842/vision/objectSmoothing.hpp"
 
 namespace lib7842
 {

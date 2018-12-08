@@ -27,10 +27,10 @@ namespace lib7842
 
 
 #ifndef TRACKING_EMULATOR
-#include "objectReading.hpp"
+#include "lib7842/vision/objectReading.hpp"
 #endif
 
-#include "objectSmoothing.hpp"
-#include "objectDrawing.hpp"
-#include "objectContainer.hpp"
+#include "lib7842/vision/objectSmoothing.hpp"
+#include "lib7842/vision/objectDrawing.hpp"
+#include "lib7842/vision/objectContainer.hpp"
 //#include "ObjectRecorder.hpp"
