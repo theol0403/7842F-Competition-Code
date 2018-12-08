@@ -24,7 +24,6 @@ namespace lib7842
     clearArray(m_masterObjects, 0, m_masterLength-1);
 
     m_masterCount = 0;
-
   }
 
   ObjectSmoothing::~ObjectSmoothing()
@@ -216,7 +215,6 @@ namespace lib7842
       destObject.objCenterY = emaCalculate(destObject.objCenterY, newObject.objCenterY, m_emaAlpha) + destObject.objYVel;
     }
 
-
     destObject.objXVel = emaCalculate(destObject.objXVel, (newObject.objCenterX - destObject.objCenterX), m_emaAlphaVel);
     destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
     //std::cout << "XVel:" << destObject.objXVel << "\n";
@@ -401,7 +399,6 @@ namespace lib7842
     }
     destContainer->currentCount = exportCount;
   }
-
 
 
   void ObjectSmoothing::smoothObjects()

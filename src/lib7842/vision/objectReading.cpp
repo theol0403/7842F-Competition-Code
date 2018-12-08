@@ -3,7 +3,6 @@
 namespace lib7842
 {
 
-
   ObjectReading::ObjectReading(pros::Vision& thisVision, ObjectContainer& destContainer)
   :
   m_thisVision(&thisVision),
@@ -18,7 +17,6 @@ namespace lib7842
     m_visionArray = nullptr;
   }
 
-
   void ObjectReading::resetObject(int objectNum)
   {
     m_destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
@@ -31,8 +29,6 @@ namespace lib7842
     m_destContainer->objectArray.at(objectNum).objCenterY = 0;
     m_destContainer->objectArray.at(objectNum).discardObject = false;
   }
-
-
 
   // Looks at vision for color, counts objects, and fills them in to master array
   int ObjectReading::getObjects()
@@ -74,7 +70,6 @@ namespace lib7842
   }
 
 
-
   int ObjectReading::filterNoise(float minSize)
   {
     int discardCounter = 0;
@@ -89,7 +84,6 @@ namespace lib7842
     }
     return discardCounter;
   }
-
 
 
   int ObjectReading::filterSize(float sizeThreshold)
@@ -154,7 +148,6 @@ namespace lib7842
   }
 
 
-
   int ObjectReading::discardObjects()
   {
     int destNum = 0;
@@ -184,7 +177,6 @@ namespace lib7842
     m_destContainer->currentCount = destNum;
     return destNum;
   }
-
 
 
   void ObjectReading::debugObjects(int objectCount)
@@ -223,6 +215,5 @@ namespace lib7842
       }
     }
   }
-
 
 }

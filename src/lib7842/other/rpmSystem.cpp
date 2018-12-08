@@ -1,9 +1,7 @@
 #include "rpmSystem.hpp"
 
-
 namespace lib7842
 {
-
 
   rpmMeasure::rpmMeasure(int topEncoderPort, bool reverseEncoder, double ticksPerRev, double flywheelEncoderRatio)
   : m_timer(), m_encoder(topEncoderPort, topEncoderPort+1, reverseEncoder),
@@ -12,7 +10,6 @@ namespace lib7842
     m_lastTime = m_timer.elapsed();
     m_lastEncoder = m_encoder.get_value();
   }
-
 
   int rpmMeasure::calculate()
   {

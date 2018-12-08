@@ -4,8 +4,8 @@ static ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigit
 
 void driverBaseControl()
 {
-  OdomState odomState = robotChassis->getState();
 
+  OdomState odomState = robotChassis->getState();
 
   if(j_Main.getDigital(ControllerDigital::B))
   {

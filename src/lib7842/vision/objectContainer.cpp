@@ -3,13 +3,11 @@
 namespace lib7842
 {
 
-
   ObjectContainer::ObjectContainer(int objectCount)
   : arrayLength(objectCount)
   {
     objectArray.resize(arrayLength);
   }
-
 
   ObjectContainer::ObjectContainer(int objectCount, ObjectDrawing& screenParent)
   :
@@ -29,12 +27,10 @@ namespace lib7842
     {
       lv_style_copy(&sigStyle, &screenParent.m_defaultObjectStyle);
     }
-
   }
 
   ObjectContainer::~ObjectContainer()
   {
-
   }
 
 

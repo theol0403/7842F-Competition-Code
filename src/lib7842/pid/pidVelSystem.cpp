@@ -3,7 +3,6 @@
 namespace lib7842
 {
 
-
 	velPID::velPID(double Kp, double Kd, double Kf, double emaAlpha)
 	: m_timer(), m_dFilter(emaAlpha)
 	{

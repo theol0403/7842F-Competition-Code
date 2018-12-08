@@ -3,7 +3,6 @@
 namespace lib7842
 {
 
-
   PIDScreenTuner::PIDScreenTuner(int tunerWidth, int tunerHeight, int buttonHeight)
   :
   m_tunerWidth(tunerWidth), m_tunerHeight(tunerHeight), m_buttonHeight(buttonHeight)
@@ -48,7 +47,6 @@ namespace lib7842
     lv_obj_set_style(m_infoContainer, &m_infoContainerStyle);
 
 
-
     //Gauge
     lv_style_copy(&m_gaugeStyle, &lv_style_pretty_color);
     m_gaugeStyle.body.main_color = LV_COLOR_HEX3(0x666);     /*Line color at the beginning*/
@@ -69,7 +67,6 @@ namespace lib7842
   {
 
   }
-
 
 
   void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* variableName, int charLength, buttonType_t buttonType, int incrementAmount)
@@ -206,8 +203,6 @@ namespace lib7842
     return newGauge;
 
   }
-
-
 
 
 

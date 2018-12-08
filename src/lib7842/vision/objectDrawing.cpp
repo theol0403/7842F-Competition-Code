@@ -36,10 +36,7 @@ namespace lib7842
 
   ObjectDrawing::~ObjectDrawing()
   {
-
   }
-
-
 
 
   void ObjectDrawing::drawSimpleObjects(ObjectContainer& objectContainer)
@@ -79,5 +76,4 @@ namespace lib7842
     }
 
   }
-
 }
