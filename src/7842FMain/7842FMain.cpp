@@ -19,10 +19,10 @@
 *      \_/\__,_|___/_|\_\___/
 */
 void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
-  if(taskPtr != nullptr) { if(taskPtr->get_state() != taskMode) { switch(taskMode) { //If state is wrong
+  if(taskPtr != nullptr && taskPtr->get_state() != taskMode) { switch(taskMode) {
     case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
     case TASK_STATE_RUNNING: taskPtr->resume(); break;
-    default: {} } } } }
+    default: {} } } }
 
     pros::Task* flywheelTask_t = nullptr;
     pros::Task* objectTask_t = nullptr;
