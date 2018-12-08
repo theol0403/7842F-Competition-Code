@@ -5,6 +5,16 @@ const int8_t em_Flywheel2 = -12;
 const int8_t em_Intake = 1;
 const int8_t em_Indexer = 2;
 
+const int8_t em_RightFront = -5;
+const int8_t em_RightBack = -6;
+const int8_t em_LeftFront = 7;
+const int8_t em_LeftBack = 8;
+
+ADIEncoder leftEncoder(3, 4);
+ADIEncoder rightEncoder(5, 6);
+ADIEncoder middleEncoder(7, 8);
+
+
 
 Controller j_Main(ControllerId::master);
 
@@ -41,6 +51,13 @@ void setIndexerPower(int speed)
 
 
 //Base -----------------------
+std::shared_ptr<okapi::OdomChassisController> robotChassis = ChassisControllerBuilder()
+.withMotors(MotorGroup{em_LeftFront, em_LeftBack}, MotorGroup{em_RightFront, em_RightBack})
+.withSensors(leftEncoder, rightEncoder)
+.withMiddleEncoder(middleEncoder)
+.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
+.withOdometry()
+.buildOdometry();
 
 
 void setBaseArcade(float yPower, float zPower)

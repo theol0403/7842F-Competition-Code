@@ -5,7 +5,7 @@
 
 #include "Shared/ObjectTracking.hpp"
 
-#include "Driver/DriverMainTasks.hpp"
+#include "Driver/DriverFunctions.hpp"
 #include "Driver/OdomTask.hpp"
 
 #include "Auto/AutoConfig.hpp"
@@ -48,8 +48,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * to keep execution time for this mode under a few seconds.
     */
 
-    std::shared_ptr<okapi::OdomChassisController> robotChassis = nullptr;
-
 
     void initialize()
     {
@@ -57,43 +55,23 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
 
-
-      const int8_t em_RightFront = -5;
-      const int8_t em_RightBack = -6;
-      const int8_t em_LeftFront = 7;
-      const int8_t em_LeftBack = 8;
-
-      ADIEncoder leftEncoder(3, 4);
-      ADIEncoder rightEncoder(5, 6);
-      ADIEncoder middleEncoder(7, 8);
-
-
-      robotChassis = ChassisControllerBuilder()
-      .withMotors(MotorGroup{em_LeftFront, em_LeftBack}, MotorGroup{em_RightFront, em_RightBack})
-      .withSensors(leftEncoder, rightEncoder)
-      .withMiddleEncoder(middleEncoder)
-      .withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
-      .withOdometry()
-      .buildOdometry();
-
-
       robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
 
-      while(true)
-      {
-        OdomState odomState = robotChassis->getState();
-        printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-        odomState.x.convert(inch),
-        odomState.y.convert(inch),
-        odomState.theta.convert(degree));
-
-        printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
-        leftEncoder.get(),
-        rightEncoder.get(),
-        middleEncoder.get());
-
-        pros::delay(100);
-      }
+      // while(true)
+      // {
+      //   OdomState odomState = robotChassis->getState();
+      //   printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
+      //   odomState.x.convert(inch),
+      //   odomState.y.convert(inch),
+      //   odomState.theta.convert(degree));
+      //
+      //   printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
+      //   leftEncoder.get(),
+      //   rightEncoder.get(),
+      //   middleEncoder.get());
+      //
+      //   pros::delay(100);
+      // }
 
 
 

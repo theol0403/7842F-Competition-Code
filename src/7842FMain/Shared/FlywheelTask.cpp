@@ -2,7 +2,7 @@
 
 
 double wantedFlywheelRPM = 0;
-bool extendArm = false;
+bool flywheelExtendArm = false;
 
 
 void flywheelTask(void*)
@@ -21,12 +21,12 @@ void flywheelTask(void*)
   while(true)
   {
     setFlywheelPower(0);
-    while(wantedFlywheelRPM == 0 && !extendArm) {pros::delay(20);} //Wait until power > 0
+    while(wantedFlywheelRPM == 0 && !flywheelExtendArm) {pros::delay(20);} //Wait until power > 0
     lastPower = getFlywheelRPM() / 3000 * 127; //Hopefully power should resume to motor
 
-    while(wantedFlywheelRPM || extendArm) //Loop until power is back to 0
+    while(wantedFlywheelRPM || flywheelExtendArm) //Loop until power is back to 0
     {
-      if(extendArm)
+      if(flywheelExtendArm)
       {
         setFlywheelPower(-80);
         lastPower = lastPower <= 0 ? 0 : lastPower-0.27;

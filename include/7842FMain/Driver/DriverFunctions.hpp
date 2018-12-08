@@ -5,4 +5,5 @@
 #include "7842FMain/Shared/FlywheelTask.hpp"
 
 
-void DriverMainTask(void*);
+void driverIntakeControl();
+void driverFlywheelControl();
