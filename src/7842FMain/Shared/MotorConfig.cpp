@@ -1,6 +1,6 @@
 #include "MotorConfig.hpp"
 
-#define motorEnum(x) abs(x),x<0 // Used to convert port number (negative for reversed) doubleo motor constructor
+#define motorEnum(x) abs(x),x<0 // Used to convert port number (negative for reversed) into motor constructor
 
 Controller j_Main(ControllerId::master);
 
@@ -17,7 +17,6 @@ const int8_t e_m_LeftBack = 8;
 ADIEncoder leftEncoder(3, 4);
 ADIEncoder rightEncoder(5, 6);
 ADIEncoder middleEncoder(7, 8);
-
 
 
 //Flywheel -----------------------
@@ -69,7 +68,7 @@ void initializeBase()
 
 	robotProfile = AsyncMotionProfileControllerBuilder()
 	.withOutput(robotChassis)
-	.withLimits(PathfinderLimits{1.0, 2.0, 10.0})
+	.withLimits({1.0, 2.0, 10.0})
 	.buildMotionProfileController();
 
 	robotChassis->setState({0_ft, 0_ft, 0_deg});
