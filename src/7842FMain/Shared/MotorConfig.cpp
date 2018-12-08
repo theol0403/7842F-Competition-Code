@@ -59,10 +59,11 @@ std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 void initializeBase()
 {
 	robotChassis = ChassisControllerBuilder()
-	.withMotors(MotorGroup{e_m_LeftFront, e_m_LeftBack}, MotorGroup{e_m_RightFront, e_m_RightBack})
+	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
 	.withSensors(leftEncoder, rightEncoder)
 	.withMiddleEncoder(middleEncoder)
-	.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
+	.withDimensions({{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
+	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 	.withOdometry()
 	.buildOdometry();
 
@@ -71,7 +72,7 @@ void initializeBase()
 	.withLimits(PathfinderLimits{1.0, 2.0, 10.0})
 	.buildMotionProfileController();
 
-	robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
+	robotChassis->setState({0_ft, 0_ft, 0_deg});
 }
 
 void checkBaseStatus()
