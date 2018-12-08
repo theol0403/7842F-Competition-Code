@@ -6,7 +6,7 @@
 #include "Shared/ObjectTracking.hpp"
 
 #include "Driver/DriverFunctions.hpp"
-#include "Driver/OdomTask.hpp"
+#include "Driver/DriverBase.hpp"
 
 #include "Auto/AutoConfig.hpp"
 
@@ -45,14 +45,11 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * All other competition modes are blocked by initialize; it is recommended
     * to keep execution time for this mode under a few seconds.
     */
-
-
     void initialize()
     {
       pros::delay(1000);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
-
-      robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
+      initializeBase();
 
       // while(true)
       // {
@@ -69,15 +66,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //
       //   pros::delay(100);
       // }
-
-
-
-      pros::Task driverOdomTask_t(driverOdomTask);
     }
-
-
-
-
 
     /***
     *     _____                           _____      _ _
@@ -96,10 +85,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * starts.
     */
     void competition_initialize() {}
-
-
-
-
 
     /***
     *    ______ _           _     _          _
@@ -120,10 +105,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //robotChassis->stop();
     }
 
-
-
-
-
     /***
     *     _   _                              _             _
     *    | | | |                            | |           | |
@@ -143,16 +124,16 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     * operator control task will be stopped. Re-enabling the robot will restart the
     * task, not resume it from where it left off.
     */
-
-
     void opcontrol()
     {
 
       while(true)
       {
+        checkBaseStatus();
+        driverBaseControl();
 
-      driverIntakeControl();
-      driverFlywheelControl();
+        driverIntakeControl();
+        driverFlywheelControl();
 
 
         pros::delay(20);
@@ -162,9 +143,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //robotChassis->stop();
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
     }
-
-
-
 
 
     /***
@@ -188,7 +166,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //  setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
-
 
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
 

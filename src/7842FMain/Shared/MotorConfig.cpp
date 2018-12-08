@@ -1,14 +1,18 @@
 #include "MotorConfig.hpp"
 
-const int8_t em_Flywheel = 11;
-const int8_t em_Flywheel2 = -12;
-const int8_t em_Intake = 1;
-const int8_t em_Indexer = 2;
+#define motorEnum(x) abs(x),x<0 // Used to convert port number (negative for reversed) doubleo motor constructor
 
-const int8_t em_RightFront = -5;
-const int8_t em_RightBack = -6;
-const int8_t em_LeftFront = 7;
-const int8_t em_LeftBack = 8;
+Controller j_Main(ControllerId::master);
+
+const int8_t e_m_Flywheel = 11;
+const int8_t e_m_Flywheel2 = -12;
+const int8_t e_m_Intake = 1;
+const int8_t e_m_Indexer = 2;
+
+const int8_t e_m_RightFront = -5;
+const int8_t e_m_RightBack = -6;
+const int8_t e_m_LeftFront = 7;
+const int8_t e_m_LeftBack = 8;
 
 ADIEncoder leftEncoder(3, 4);
 ADIEncoder rightEncoder(5, 6);
@@ -16,56 +20,78 @@ ADIEncoder middleEncoder(7, 8);
 
 
 
-Controller j_Main(ControllerId::master);
-
 //Flywheel -----------------------
-Motor m_Flywheel(abs(em_Flywheel), em_Flywheel<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-Motor m_Flywheel2(abs(em_Flywheel2), em_Flywheel2<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Flywheel(motorEnum(e_m_Flywheel), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Flywheel2(motorEnum(e_m_Flywheel2), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
 
-void setFlywheelPower(int speed)
+void setFlywheelPower(double speed)
 {
-	m_FlywheelGroup.moveVoltage(speed/127*12000);
+	m_FlywheelGroup.moveVoltage(speed/127.0*12000);
 }
 
-int getFlywheelRPM()
+double getFlywheelRPM()
 {
-	return m_Flywheel.get_actual_velocity() * 15;
+	return m_FlywheelGroup.getActualVelocity() * 15; // 1:15 ratio from motor output to flywhel speed
 }
 
 //Intake -----------------------
-Motor m_Intake(abs(em_Intake), em_Intake<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Intake(motorEnum(e_m_Intake), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
-void setIntakePower(int speed)
+void setIntakePower(double speed)
 {
-	m_Intake.moveVoltage(speed/127*12000);
+	m_Intake.moveVoltage(speed/127.0*12000);
 }
 
 //Indexer -----------------------
-Motor m_Indexer(abs(em_Indexer), em_Indexer<0, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_Indexer(motorEnum(e_m_Indexer), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
-void setIndexerPower(int speed)
+void setIndexerPower(double speed)
 {
-	m_Indexer.moveVoltage(speed/127*12000);
+	m_Indexer.moveVoltage(speed/127.0*12000);
 }
 
 
 //Base -----------------------
-std::shared_ptr<okapi::OdomChassisController> robotChassis = ChassisControllerBuilder()
-.withMotors(MotorGroup{em_LeftFront, em_LeftBack}, MotorGroup{em_RightFront, em_RightBack})
-.withSensors(leftEncoder, rightEncoder)
-.withMiddleEncoder(middleEncoder)
-.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
-.withOdometry()
-.buildOdometry();
+std::shared_ptr<okapi::OdomChassisController> robotChassis = nullptr;
+std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
-
-void setBaseArcade(float yPower, float zPower)
+void initializeBase()
 {
+	robotChassis = ChassisControllerBuilder()
+	.withMotors(MotorGroup{e_m_LeftFront, e_m_LeftBack}, MotorGroup{e_m_RightFront, e_m_RightBack})
+	.withSensors(leftEncoder, rightEncoder)
+	.withMiddleEncoder(middleEncoder)
+	.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
+	.withOdometry()
+	.buildOdometry();
+
+	robotProfile = AsyncMotionProfileControllerBuilder()
+	.withOutput(robotChassis)
+	.withLimits(PathfinderLimits{1.0, 2.0, 10.0})
+	.buildMotionProfileController();
+
+	robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
+}
+
+void checkBaseStatus()
+{
+	if(robotChassis == nullptr)
+	{
+		std::cout << "USING BASE BEFORE INIT\n";
+		pros::delay(500);
+	}
+}
+
+
+void setBaseArcade(double yPower, double zPower)
+{
+	checkBaseStatus();
 	robotChassis->arcade(yPower, zPower, 0);
 }
 
-void setBasePower(float leftPower, float rightPower)
+void setBasePower(double leftPower, double rightPower)
 {
+	checkBaseStatus();
 	robotChassis->tank(leftPower, rightPower, 0);
 }
