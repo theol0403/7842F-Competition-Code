@@ -1,9 +1,10 @@
 #include "FlywheelTask.hpp"
 
 
-double wantedFlywheelRPM = 0;
-bool flywheelExtendArm = false;
 
+bool flywheelExtendArm = false; //Controlled externally
+
+static double wantedFlywheelRPM = 0;
 
 void flywheelTask(void*)
 {

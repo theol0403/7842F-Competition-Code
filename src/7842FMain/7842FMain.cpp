@@ -29,8 +29,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     //Shared
     //  pros::Task MainFlywheelTask_t(flywheelTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
     //pros::Task ObjectTrackingTask_t(ObjectTrackingTask, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "FlagTask");
-    //Driver
-    //pros::Task DriverMainTask_t(DriverMainTask, NULL, TASK_PRIORITY_DEFAULT, 0x3000);
 
     //Auton
 
@@ -52,7 +50,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       pros::delay(1000);
-      //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
 
       robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
@@ -118,7 +115,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void disabled()
     {
       setFlywheelRPM(0);
-      //setTaskState(&DriverMainTask_t, TASK_STATE_SUSPENDED);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
       //Motors Off
       //robotChassis->stop();
@@ -152,12 +148,19 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void opcontrol()
     {
 
+      while(true)
+      {
+
+      driverIntakeControl();
+      driverFlywheelControl();
+
+
+        pros::delay(20);
+      }
 
 
       //robotChassis->stop();
-      //setTaskState(&DriverMainTask_t, TASK_STATE_RUNNING);
       //setTaskState(&ObjectTrackingTask_t, TASK_STATE_RUNNING);
-      while(true) {pros::delay(10000);} //Never exits
     }
 
 
