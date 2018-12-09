@@ -1,24 +1,24 @@
 #include "DriverBase.hpp"
 
-static ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
+static okapi::ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
 void driverBaseControl()
 {
 
-  OdomState odomState = robotChassis->getState();
+  okapi::OdomState odomState = robotChassis->getState();
 
-  if(j_Main.getDigital(ControllerDigital::B))
+  if(j_Main.getDigital(okapi::ControllerDigital::B))
   {
     robotChassis->turnToAngle(0_deg);
   }
   else
   {
-    setBaseArcade(j_Main.getAnalog(ControllerAnalog::rightY), j_Main.getAnalog(ControllerAnalog::leftX));
+    setBaseArcade(j_Main.getAnalog(okapi::ControllerAnalog::rightY), j_Main.getAnalog(okapi::ControllerAnalog::leftX));
   }
 
-  if(j_Main.getDigital(ControllerDigital::X))
+  if(j_Main.getDigital(okapi::ControllerDigital::X))
   {
-    robotChassis->setState(OdomState{0_ft, 0_ft, 0_deg});
+    robotChassis->setState({0_ft, 0_ft, 0_deg});
   }
 
   if(b_odomMotionToggle.changedToPressed())

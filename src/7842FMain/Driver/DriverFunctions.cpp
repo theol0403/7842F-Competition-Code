@@ -4,11 +4,11 @@
 void driverIntakeControl()
 {
 
-	if(j_Main.getDigital(ControllerDigital::R1))
+	if(j_Main.getDigital(okapi::ControllerDigital::R1))
 	{
 		setIntakePower(90);
 	}
-	else if(j_Main.getDigital(ControllerDigital::R2))
+	else if(j_Main.getDigital(okapi::ControllerDigital::R2))
 	{
 		setIntakePower(-127);
 	}
@@ -17,11 +17,11 @@ void driverIntakeControl()
 		setIntakePower(0);
 	}
 
-	if(j_Main.getDigital(ControllerDigital::L1))
+	if(j_Main.getDigital(okapi::ControllerDigital::L1))
 	{
 		setIndexerPower(127);
 	}
-	else if(j_Main.getDigital(ControllerDigital::L2))
+	else if(j_Main.getDigital(okapi::ControllerDigital::L2))
 	{
 		setIndexerPower(-127);
 	}
@@ -42,33 +42,33 @@ static bool togglePressed = false; // Used to compare button state to last to se
 void driverFlywheelControl()
 {
 
-	if(j_Main.getDigital(ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
+	if(j_Main.getDigital(okapi::ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
 	{
 		togglePressed = true;
 		flywheelManual = flywheelManual ? false : true; //Switch flywheel mode
 	}
-	else if(!j_Main.getDigital(ControllerDigital::Y) && togglePressed) // Is button not pressed but it was before?
+	else if(!j_Main.getDigital(okapi::ControllerDigital::Y) && togglePressed) // Is button not pressed but it was before?
 	{
 		togglePressed = false;
 	}
 
 
-	if(j_Main.getDigital(ControllerDigital::left))
+	if(j_Main.getDigital(okapi::ControllerDigital::left))
 	{
 		wantedFlywheelSpeed = flywheelManual ? 50 : 2400;
 		triggerUpdate = true;
 	}
-	else if(j_Main.getDigital(ControllerDigital::up))
+	else if(j_Main.getDigital(okapi::ControllerDigital::up))
 	{
 		wantedFlywheelSpeed = flywheelManual ? 70 : 2600;
 		triggerUpdate = true;
 	}
-	else if(j_Main.getDigital(ControllerDigital::right))
+	else if(j_Main.getDigital(okapi::ControllerDigital::right))
 	{
 		wantedFlywheelSpeed = flywheelManual ? 90 : 2800;
 		triggerUpdate = true;
 	}
-	else if(j_Main.getDigital(ControllerDigital::down))
+	else if(j_Main.getDigital(okapi::ControllerDigital::down))
 	{
 		wantedFlywheelSpeed = 0;
 		triggerUpdate = true;
@@ -89,7 +89,7 @@ void driverFlywheelControl()
 	}
 
 
-	if(j_Main.getDigital(ControllerDigital::X))
+	if(j_Main.getDigital(okapi::ControllerDigital::X))
 	{
 		setFlywheelArmMode(true);
 	}

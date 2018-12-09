@@ -2,7 +2,7 @@
 
 #define motorEnum(x) abs(x),x<0 // Used to convert port number (negative for reversed) into motor constructor
 
-Controller j_Main(ControllerId::master);
+okapi::Controller j_Main(okapi::ControllerId::master);
 
 const int8_t e_m_Flywheel = 11;
 const int8_t e_m_Flywheel2 = -12;
@@ -14,15 +14,15 @@ const int8_t e_m_RightBack = -6;
 const int8_t e_m_LeftFront = 7;
 const int8_t e_m_LeftBack = 8;
 
-ADIEncoder leftEncoder(3, 4);
-ADIEncoder rightEncoder(5, 6);
-ADIEncoder middleEncoder(7, 8);
+okapi::ADIEncoder leftEncoder(3, 4);
+okapi::ADIEncoder rightEncoder(5, 6);
+okapi::ADIEncoder middleEncoder(7, 8);
 
 
 //Flywheel -----------------------
-Motor m_Flywheel(motorEnum(e_m_Flywheel), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-Motor m_Flywheel2(motorEnum(e_m_Flywheel2), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
+okapi::Motor m_Flywheel(motorEnum(e_m_Flywheel), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Flywheel2(motorEnum(e_m_Flywheel2), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+okapi::MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
 
 void setFlywheelPower(double speed)
 {
@@ -35,7 +35,7 @@ double getFlywheelRPM()
 }
 
 //Intake -----------------------
-Motor m_Intake(motorEnum(e_m_Intake), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Intake(motorEnum(e_m_Intake), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
 
 void setIntakePower(double speed)
 {
@@ -43,7 +43,7 @@ void setIntakePower(double speed)
 }
 
 //Indexer -----------------------
-Motor m_Indexer(motorEnum(e_m_Indexer), AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+okapi::Motor m_Indexer(motorEnum(e_m_Indexer), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
 
 void setIndexerPower(double speed)
 {
@@ -57,21 +57,21 @@ std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 void initializeBase()
 {
-	robotChassis = ChassisControllerBuilder()
+	robotChassis = okapi::ChassisControllerBuilder()
 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
 	.withSensors(leftEncoder, rightEncoder)
 	.withMiddleEncoder(middleEncoder)
-	.withDimensions({{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, quadEncoderTPR})
+	.withDimensions({{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
 	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 	.withOdometry()
 	.buildOdometry();
 
-	robotProfile = AsyncMotionProfileControllerBuilder()
+	robotProfile = okapi::AsyncMotionProfileControllerBuilder()
 	.withOutput(robotChassis)
 	.withLimits({1.0, 2.0, 10.0})
 	.buildMotionProfileController();
 
-	robotChassis->setState({0_ft, 0_ft, 0_deg});
+	robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
 }
 
 void checkBaseStatus()

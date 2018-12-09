@@ -1,7 +1,7 @@
 #pragma once
 #include "main.h"
 
-extern Controller j_Main;
+extern okapi::Controller j_Main;
 
 
 
