@@ -3,16 +3,6 @@
 
 extern Controller j_Main;
 
-extern const int8_t e_Flywheel;
-extern const int8_t e_Flywheel2;
-extern const int8_t e_Intake;
-extern const int8_t e_Indexer;
-
-extern const int8_t e_RightFront;
-extern const int8_t e_RightBack;
-extern const int8_t e_LeftFront;
-extern const int8_t e_LeftBack;
-
 
 
 void setFlywheelPower(double);
