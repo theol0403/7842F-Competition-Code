@@ -241,7 +241,7 @@ namespace lib7842
   {
     if(m_differentVel)
     {
-      destObject.objX += destObject.objXVel;
+      destObject.objX += destObject.objXVel; // I might need to devide by emaAlpha
       destObject.objY += destObject.objYVel;
       destObject.objCenterX += destObject.objXVel;
       destObject.objCenterY += destObject.objYVel;
