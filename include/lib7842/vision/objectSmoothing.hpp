@@ -6,7 +6,7 @@ namespace lib7842
 
   struct sortedObjects_t
   {
-    int objSig = 0;
+    int objSig = VISION_OBJECT_ERR_SIG;
     double objX = 0;
     double objY = 0;
     double objWidth = 0;
@@ -18,6 +18,20 @@ namespace lib7842
 
     bool matchFound = false;
     int lifeCounter = 0;
+
+    std::array<bool, NUM_SIGNATURES+1> signaturesFound {false};
+  };
+
+  struct sigReroute_t
+  {
+    int sourceSig = VISION_OBJECT_ERR_SIG;
+    int destSig = VISION_OBJECT_ERR_SIG;
+  };
+
+  struct compareThresh_t
+  {
+    int posThresh = 0;
+    int dimThresh = 0;
   };
 
   class ObjectSmoothing
@@ -31,14 +45,16 @@ namespace lib7842
     std::vector<sortedObjects_t> m_sourceObjects; //Source object container
     int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
 
+    std::vector<sigReroute_t> m_sigReroutes;
+
     const int m_lifeMax; //Maximum life of objects (decay)
     const int m_lifeThreshold; //Amount of room the objects have
     const int m_lifeIncrement; //Amount to increment for a sucessful merge
     const double m_emaAlpha;
-    const double m_objectPosThreshold;
     const double m_emaAlphaVel;
-    const bool m_differentVel;
-    const bool m_debugMode;
+    std::vector<compareThresh_t> m_compareThresh;
+
+    const int m_debugMode;
 
     const int m_masterLength; //Size of master array
     std::vector<sortedObjects_t> m_masterObjects; //Master array
@@ -50,11 +66,11 @@ namespace lib7842
     void sortArrayY(std::vector<sortedObjects_t>&, int, int);
     void sortArrayLife(std::vector<sortedObjects_t>&, int, int);
 
-    bool compareObjects(sortedObjects_t&, sortedObjects_t&);
+    bool compareObjects(int, sortedObjects_t&, sortedObjects_t&);
     double emaCalculate(double, double, double = 1.0);
 
     void mergeObject(sortedObjects_t&, sortedObjects_t&);
-    void pushObject(sortedObjects_t&, sortedObjects_t&);
+    void pushObject(int, sortedObjects_t&, sortedObjects_t&);
     void trimObject(sortedObjects_t&);
 
     void importSource();
@@ -65,7 +81,14 @@ namespace lib7842
 
   public:
 
-    ObjectSmoothing(ObjectContainer&, ObjectContainer&, int, int, int, double, double, double, bool, bool = false);
+    ObjectSmoothing(
+      ObjectContainer&, ObjectContainer&,
+      std::initializer_list<sigReroute_t>,
+      int, int, int,
+      double, double,
+      std::initializer_list<compareThresh_t>,
+      int = 0
+    );
     ~ObjectSmoothing();
 
     void exportObjects(lib7842::ObjectContainer*, int, int);
