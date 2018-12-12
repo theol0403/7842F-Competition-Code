@@ -21,17 +21,9 @@ namespace lib7842
     ObjectReading(pros::Vision&, lib7842::ObjectContainer&);
     ~ObjectReading();
 
-    void resetObject(int);
 
-    int getObjects();
+    void getObjects();
 
-    int filterNoise(float minSize = 25);
-    int filterSize(float sizeThreshold = 0.5);
-    int filterProp(float propThreshold = 0.3, float wantedProp = 0.8); //Width:Height = 1:x
-    int discardObjects();
-
-    void debugObjects(int);
-    void debugErrorSig();
 
   };
 
