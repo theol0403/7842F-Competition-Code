@@ -39,9 +39,6 @@ namespace lib7842
     delete[] tempVisionArray;
   }
 
-  //TODO: Clear vision count at beginning of loop
-  //So I can do getSig, getCode
-  //Getcode needs a code and a dest sig
 
   void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::vector<int> wantedSignatures)
   {
@@ -54,6 +51,7 @@ namespace lib7842
 
       for (int objectNum = 0; objectNum < objectCount; objectNum++)
       {
+        if(tempVisionArray[objectNum].signature != wantedSig) std::cout << "REEEEEE";
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;

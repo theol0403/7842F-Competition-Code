@@ -41,7 +41,8 @@ void ObjectTrackingTask(void*)
   lib7842::ObjectContainer smoothedObjects(20, mainScreenDrawing);
   smoothedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_YELLOW, LV_OPA_70);
   smoothedObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_YELLOW, LV_OPA_70);
-  lib7842::ObjectSmoothing objectSmoothing(
+  lib7842::ObjectSmoothing objectSmoothing
+  (
     rawObjects, smoothedObjects, // Source, Dest
     {{BLUESIG2, BLUESIG}, {BLUECODE.destSig, BLUESIG}, {REDSIG2, REDSIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
     40, 20, 3, // Maxlife, LifeZone, lifeIncrement
