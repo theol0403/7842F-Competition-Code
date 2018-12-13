@@ -17,7 +17,7 @@ namespace lib7842
     bool discardObject = false;
   };
 
-  enum class sortModes_t
+  enum objMode_t
   {
     objSig,
     objX,
@@ -57,17 +57,21 @@ namespace lib7842
 
     simpleObjects_t getObject(int);
     simpleObjects_t getObject(int, int);
+    double getObjValue(objMode_t, int);
 
-    void filterAreaRange(double, double, bool = true); //Example 25
+    void discardObjects();
+
+    void sortBy(objMode_t, bool = true);
+    void removeRange(objMode_t, double, double, bool = true);
+    void removeWith(objMode_t, double, bool = true);
+    void shrinkTo(int);
+
     void filterAvgArea(double, bool = true); //Example 0.5
     void filterProp(double, double, bool = true); //Width:Height = 1:x Example 0.3, 0.8
-    void discardObjects();
 
     void debugObjects(int);
     void debugErrorSig();
 
-    void sortBy(sortModes_t, bool = true);
-    void shrinkTo(int);
 
     static void copyObjects(ObjectContainer&, ObjectContainer&, int = -1);
 

@@ -105,13 +105,120 @@ namespace lib7842
   }
 
 
+  double ObjectContainer::getObjValue(objMode_t objMode, int objIndex)
+  {
+    if(objIndex >= currentCount) objIndex = currentCount-1;
+    if(objIndex < 0) objIndex = 0;
 
-  void ObjectContainer::filterAreaRange(double lowArea, double highArea, bool discard)
+    double objValue = 0;
+    switch (objMode)
+    {
+      case objMode_t::objSig:
+      objValue = objectArray.at(objIndex).objSig;
+      break;
+      case objMode_t::objX:
+      objValue = objectArray.at(objIndex).objX;
+      break;
+      case objMode_t::objY:
+      objValue = objectArray.at(objIndex).objY;
+      break;
+      case objMode_t::objWidth:
+      objValue = objectArray.at(objIndex).objWidth;
+      break;
+      case objMode_t::objHeight:
+      objValue = objectArray.at(objIndex).objHeight;
+      break;
+      case objMode_t::objArea:
+      objValue = objectArray.at(objIndex).objArea;
+      break;
+      case objMode_t::objCenterX:
+      objValue = objectArray.at(objIndex).objCenterX;
+      break;
+      case objMode_t::objCenterY:
+      objValue = objectArray.at(objIndex).objCenterY;
+      break;
+    }
+    return objValue;
+  }
+
+
+
+
+  void ObjectContainer::discardObjects()
+  {
+    int destNum = 0;
+
+    for (int objectNum = 0; objectNum < currentCount; objectNum++)
+    {
+      if(objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG && !objectArray.at(objectNum).discardObject)
+      {
+        objectArray.at(destNum).objSig = objectArray.at(objectNum).objSig;
+        objectArray.at(destNum).objX = objectArray.at(objectNum).objX;
+        objectArray.at(destNum).objY = objectArray.at(objectNum).objY;
+        objectArray.at(destNum).objWidth = objectArray.at(objectNum).objWidth;
+        objectArray.at(destNum).objHeight = objectArray.at(objectNum).objHeight;
+        objectArray.at(destNum).objArea = objectArray.at(objectNum).objArea;
+        objectArray.at(destNum).objCenterX = objectArray.at(objectNum).objCenterX;
+        objectArray.at(destNum).objCenterY = objectArray.at(objectNum).objCenterY;
+        objectArray.at(destNum).discardObject = false;
+        destNum++;
+      }
+    }
+    // for(int objectNum = destNum; objectNum < arrayLength; objectNum++) //Cleans the rest of the objects
+    // {
+    //   resetObject(objectNum);
+    // }
+    currentCount = destNum;
+    debugErrorSig();
+  }
+
+
+
+
+
+  void ObjectContainer::sortBy(objMode_t sortMode, bool largeToSmall)
+  {
+    // Loop through each object looking to swap the largest object to the right
+    // except the last one, which will already be sorted by the time we get there
+    for (int startIndex = 0; startIndex < currentCount - 1; startIndex++)
+    {
+      int greatestIndex = startIndex; //Assume current posision to swap
+      bool swapNeeded = false;
+      // Loop between current and end looking for greatest object
+      for (int currentIndex = startIndex + 1; currentIndex < currentCount; currentIndex++)
+      {
+        double firstCompare = getObjValue(sortMode, currentIndex);
+        double secondCompare = getObjValue(sortMode, greatestIndex);
+
+        bool sortFound = false;
+        if(largeToSmall)
+        {
+          sortFound = firstCompare > secondCompare;
+        }
+        else
+        {
+          sortFound = firstCompare < secondCompare;
+        }
+        //If current object is greater than greatest object
+        if (sortFound)
+        {
+          greatestIndex = currentIndex;
+          swapNeeded = true;
+        }
+      }
+      if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
+    }
+  }
+
+
+  void ObjectContainer::removeRange(objMode_t objMode, double lowRange, double highRange, bool discard)
   {
     // loop through objects, look for size, and mark to discard
     for (int objectNum = 0; objectNum < currentCount; objectNum++)
     {
-      if(objectArray.at(objectNum).objArea >= lowArea && objectArray.at(objectNum).objArea <= highArea)
+      double objValue = getObjValue(objMode, objectNum);
+
+      if(objValue >= lowRange && objValue <= highRange)
       {
         objectArray.at(objectNum).discardObject = true;
       }
@@ -121,6 +228,35 @@ namespace lib7842
       discardObjects();
     }
   }
+
+  void ObjectContainer::removeWith(objMode_t objMode, double removeNum, bool discard)
+  {
+    // loop through objects, look for size, and mark to discard
+    for (int objectNum = 0; objectNum < currentCount; objectNum++)
+    {
+      double objValue = getObjValue(objMode, objectNum);
+
+      if(objValue == removeNum)
+      {
+        objectArray.at(objectNum).discardObject = true;
+      }
+    }
+    if(discard)
+    {
+      discardObjects();
+    }
+  }
+
+
+  void ObjectContainer::shrinkTo(int count)
+  {
+    count = count > currentCount ? currentCount : count;
+    currentCount = count;
+  }
+
+
+
+
 
 
   void ObjectContainer::filterAvgArea(double thresholdPercent, bool discard)
@@ -188,33 +324,9 @@ namespace lib7842
   }
 
 
-  void ObjectContainer::discardObjects()
-  {
-    int destNum = 0;
 
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      if(objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG && !objectArray.at(destNum).discardObject)
-      {
-        objectArray.at(destNum).objSig = objectArray.at(objectNum).objSig;
-        objectArray.at(destNum).objX = objectArray.at(objectNum).objX;
-        objectArray.at(destNum).objY = objectArray.at(objectNum).objY;
-        objectArray.at(destNum).objWidth = objectArray.at(objectNum).objWidth;
-        objectArray.at(destNum).objHeight = objectArray.at(objectNum).objHeight;
-        objectArray.at(destNum).objArea = objectArray.at(objectNum).objArea;
-        objectArray.at(destNum).objCenterX = objectArray.at(objectNum).objCenterX;
-        objectArray.at(destNum).objCenterY = objectArray.at(objectNum).objCenterY;
-        objectArray.at(destNum).discardObject = false;
-        destNum++;
-      }
-    }
-    // for(int objectNum = destNum; objectNum < arrayLength; objectNum++) //Cleans the rest of the objects
-    // {
-    //   resetObject(objectNum);
-    // }
-    currentCount = destNum;
-    debugErrorSig();
-  }
+
+
 
 
   void ObjectContainer::debugObjects(int objectCount)
@@ -239,7 +351,6 @@ namespace lib7842
     }
   }
 
-
   void ObjectContainer::debugErrorSig()
   {
     for(int objectNum = 0; objectNum < currentCount; objectNum++)
@@ -253,83 +364,6 @@ namespace lib7842
 
 
 
-  void ObjectContainer::sortBy(sortModes_t sortMode, bool largeToSmall)
-  {
-    // Loop through each object looking to swap the largest object to the right
-    // except the last one, which will already be sorted by the time we get there
-    for (int startIndex = 0; startIndex < currentCount - 1; startIndex++)
-    {
-      int greatestIndex = startIndex; //Assume current posision to swap
-      bool swapNeeded = false;
-      // Loop between current and end looking for greatest object
-      for (int currentIndex = startIndex + 1; currentIndex < currentCount; currentIndex++)
-      {
-
-        int firstCompare = 0;
-        int secondCompare = 0;
-        switch (sortMode)
-        {
-          case sortModes_t::objSig:
-          firstCompare = objectArray.at(currentIndex).objSig;
-          secondCompare = objectArray.at(greatestIndex).objSig;
-          break;
-          case sortModes_t::objX:
-          firstCompare = objectArray.at(currentIndex).objX;
-          secondCompare = objectArray.at(greatestIndex).objX;
-          break;
-          case sortModes_t::objY:
-          firstCompare = objectArray.at(currentIndex).objY;
-          secondCompare = objectArray.at(greatestIndex).objY;
-          break;
-          case sortModes_t::objWidth:
-          firstCompare = objectArray.at(currentIndex).objWidth;
-          secondCompare = objectArray.at(greatestIndex).objWidth;
-          break;
-          case sortModes_t::objHeight:
-          firstCompare = objectArray.at(currentIndex).objHeight;
-          secondCompare = objectArray.at(greatestIndex).objHeight;
-          break;
-          case sortModes_t::objArea:
-          firstCompare = objectArray.at(currentIndex).objArea;
-          secondCompare = objectArray.at(greatestIndex).objArea;
-          break;
-          case sortModes_t::objCenterX:
-          firstCompare = objectArray.at(currentIndex).objCenterX;
-          secondCompare = objectArray.at(greatestIndex).objCenterX;
-          break;
-          case sortModes_t::objCenterY:
-          firstCompare = objectArray.at(currentIndex).objCenterY;
-          secondCompare = objectArray.at(greatestIndex).objCenterY;
-          break;
-        }
-
-        bool sortFound = false;
-        if(largeToSmall)
-        {
-          sortFound = firstCompare > secondCompare;
-        }
-        else
-        {
-          sortFound = firstCompare < secondCompare;
-        }
-
-        //If current object is greater than greatest object
-        if (sortFound)
-        {
-          greatestIndex = currentIndex;
-          swapNeeded = true;
-        }
-      }
-      if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
-    }
-  }
-
-
-void ObjectContainer::shrinkTo(int count)
-{
-  count = count > currentCount ? currentCount : count;
-  currentCount = count;
-}
 
 
 
