@@ -11,7 +11,7 @@ namespace lib7842
     double objY = 0;
     double objWidth = 0;
     double objHeight = 0;
-    double objSize = 0; // Avg of width and height
+    double objArea = 0; // Avg of width and height
     double objCenterX = 0;
     double objCenterY = 0;
     bool discardObject = false;
@@ -22,8 +22,17 @@ namespace lib7842
   {
   private:
 
+    static const simpleObjects_t emptyObject;
 
   public:
+
+    const int arrayLength;
+    std::vector<simpleObjects_t> objectArray;
+
+    std::vector<lv_obj_t*> screenArray;
+    std::array<lv_style_t, NUM_SIGNATURES+1> styleArray;
+
+    int currentCount = 0;
 
 
     ObjectContainer(int);
@@ -34,17 +43,18 @@ namespace lib7842
     void setContainerStyle(lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
     void setSigStyle(int, lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
 
-    const int arrayLength;
-    std::vector<simpleObjects_t> objectArray;
+    void sortBySize();
+    simpleObjects_t getObject(int);
+    simpleObjects_t getObject(int, int);
 
-    std::vector<lv_obj_t*> screenArray;
-    std::array<lv_style_t, NUM_SIGNATURES+1> styleArray;
+    void filterAreaRange(double, double, bool = true); //Example 25
+    void filterAvgArea(double, bool = true); //Example 0.5
+    void filterProp(double, double, bool = true); //Width:Height = 1:x Example 0.3, 0.8
+    void discardObjects();
 
-    int currentCount = 0;
-
-    int getArrayLength();
+    void debugObjects(int);
+    void debugErrorSig();
 
 
   };
-
 }

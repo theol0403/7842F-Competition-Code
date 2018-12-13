@@ -1,5 +1,5 @@
-#pragma once
 
+#pragma once
 #ifndef TRACKING_EMULATOR
 #include "main.h"
 #endif
@@ -16,7 +16,6 @@ namespace pros {void delay(int);}
 #endif
 
 
-
 #define NUM_SIGNATURES 10
 #include <vector>
 #include <array>
@@ -29,10 +28,10 @@ namespace lib7842
 
 
 #ifndef TRACKING_EMULATOR
-#include "lib7842/vision/objectReading.hpp"
+#include "objectReading.hpp"
 #endif
 
-#include "lib7842/vision/objectSmoothing.hpp"
-#include "lib7842/vision/objectDrawing.hpp"
-#include "lib7842/vision/objectContainer.hpp"
+#include "objectSmoothing.hpp"
+#include "objectDrawing.hpp"
+#include "objectContainer.hpp"
 //#include "ObjectRecorder.hpp"

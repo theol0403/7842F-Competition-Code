@@ -16,19 +16,20 @@ namespace lib7842
     double objXVel = 0;
     double objYVel = 0;
 
-    bool matchFound = false;
-    int lifeCounter = 0;
+    double lifeCounter = 0;
 
-    std::array<bool, NUM_SIGNATURES+1> signaturesFound {false};
+    bool matchFound = false;
+    std::array<bool, NUM_SIGNATURES+1> sigFound {false};
+
   };
 
-  struct sigReroute_t
+  struct sigMerge_t
   {
     int sourceSig = VISION_OBJECT_ERR_SIG;
     int destSig = VISION_OBJECT_ERR_SIG;
   };
 
-  struct compareThresh_t
+  struct compareZones_t
   {
     int posThresh = 0;
     int dimThresh = 0;
@@ -45,14 +46,14 @@ namespace lib7842
     std::vector<sortedObjects_t> m_sourceObjects; //Source object container
     int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
 
-    std::vector<sigReroute_t> m_sigReroutes;
+    std::vector<sigMerge_t> m_sigReroutes;
 
     const int m_lifeMax; //Maximum life of objects (decay)
     const int m_lifeThreshold; //Amount of room the objects have
-    const int m_lifeIncrement; //Amount to increment for a sucessful merge
+    const double m_lifeIncrement; //Amount to increment for a sucessful merge
     const double m_emaAlpha;
     const double m_emaAlphaVel;
-    std::vector<compareThresh_t> m_compareThresh;
+    std::vector<compareZones_t> m_compareZones;
 
     const int m_debugMode;
 
@@ -65,36 +66,37 @@ namespace lib7842
     void swapObjects(std::vector<sortedObjects_t>&, int, int);
     void sortArrayY(std::vector<sortedObjects_t>&, int, int);
     void sortArrayLife(std::vector<sortedObjects_t>&, int, int);
+    void sortArraySig(std::vector<sortedObjects_t>&, int, int);
 
-    bool compareObjects(int, sortedObjects_t&, sortedObjects_t&);
+    void importSource();
+
+    bool compareObjects(sortedObjects_t&, sortedObjects_t&, int);
     double emaCalculate(double, double, double = 1.0);
 
     void mergeObject(sortedObjects_t&, sortedObjects_t&);
     void pushObject(int, sortedObjects_t&, sortedObjects_t&);
     void trimObject(sortedObjects_t&);
 
-    void importSource();
-
     void mergeObjects();
+
     void sortMaster();
 
 
   public:
 
-    ObjectSmoothing(
+    ObjectSmoothing
+    (
       ObjectContainer&, ObjectContainer&,
-      std::initializer_list<sigReroute_t>,
-      int, int, int,
+      std::initializer_list<sigMerge_t>,
+      int, int, double,
       double, double,
-      std::initializer_list<compareThresh_t>,
+      std::initializer_list<compareZones_t>,
       int = 0
     );
-    ~ObjectSmoothing();
+
+    void smoothObjects(); //Automates Process
 
     void exportObjects(lib7842::ObjectContainer*, int, int);
 
-    void smoothObjects();
-
   };
-
 }

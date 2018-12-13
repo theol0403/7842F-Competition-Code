@@ -42,7 +42,7 @@ namespace lib7842
       m_destContainer->objectArray.at(objectNum).objY = m_visionArray[objectNum].top_coord;
       m_destContainer->objectArray.at(objectNum).objWidth = m_visionArray[objectNum].width;
       m_destContainer->objectArray.at(objectNum).objHeight = m_visionArray[objectNum].height;
-      m_destContainer->objectArray.at(objectNum).objSize = (m_visionArray[objectNum].height + m_visionArray[objectNum].width) / 2;
+      m_destContainer->objectArray.at(objectNum).objArea = m_visionArray[objectNum].height * m_visionArray[objectNum].width;
       m_destContainer->objectArray.at(objectNum).objCenterX = m_visionArray[objectNum].x_middle_coord;
       m_destContainer->objectArray.at(objectNum).objCenterY = m_visionArray[objectNum].y_middle_coord;
       m_destContainer->objectArray.at(objectNum).discardObject = false;

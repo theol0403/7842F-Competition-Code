@@ -25,6 +25,7 @@ namespace lib7842
 
 
     void drawSimpleObjects(lib7842::ObjectContainer&);
+    void clearSimpleObjects(lib7842::ObjectContainer&);
 
     friend class lib7842::ObjectContainer;
 

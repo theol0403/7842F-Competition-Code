@@ -3,25 +3,30 @@
 namespace lib7842
 {
 
-  ObjectSmoothing::ObjectSmoothing(
+  ObjectSmoothing::ObjectSmoothing
+  (
     ObjectContainer& sourceContainer, ObjectContainer& destContainer,
-    std::initializer_list<sigReroute_t> sigReroutes,
-    int lifeMax, int lifeThreshold, int lifeIncrement,
+    std::initializer_list<sigMerge_t> sigReroutes,
+    int lifeMax, int lifeThreshold, double lifeIncrement,
     double emaAlpha, double emaAlphaVel,
-    std::initializer_list<compareThresh_t> compareThresh,
+    std::initializer_list<compareZones_t> compareZones,
     int debugMode
   )
   :
   m_sourceContainer(&sourceContainer),
   m_destContainer(&destContainer),
+
   m_sigReroutes(sigReroutes),
+
   m_lifeMax(lifeMax),
   m_lifeThreshold(lifeThreshold),
   m_lifeIncrement(lifeIncrement),
   m_emaAlpha(emaAlpha),
   m_emaAlphaVel(emaAlphaVel),
-  m_compareThresh(compareThresh),
+  m_compareZones(compareZones),
+
   m_debugMode(debugMode),
+
   m_masterLength(m_sourceContainer->arrayLength * lifeMax)
   {
     m_sourceObjects.resize(m_sourceContainer->arrayLength);
@@ -29,14 +34,29 @@ namespace lib7842
 
     m_masterObjects.resize(m_masterLength);
     clearArray(m_masterObjects, 0, m_masterLength-1);
-
     m_masterCount = 0;
   }
 
-  ObjectSmoothing::~ObjectSmoothing()
+
+  void ObjectSmoothing::smoothObjects()
   {
+    importSource();
+    mergeObjects();
+    sortMaster();
+    exportObjects(m_destContainer, m_lifeMax - m_lifeThreshold, m_lifeMax);
   }
 
+
+  /***
+  *    ___  ___                                             _
+  *    |  \/  |                                            | |
+  *    | .  . | __ _ _ __   __ _  __ _ _ __ ___   ___ _ __ | |_
+  *    | |\/| |/ _` | '_ \ / _` |/ _` | '_ ` _ \ / _ \ '_ \| __|
+  *    | |  | | (_| | | | | (_| | (_| | | | | | |  __/ | | | |_
+  *    \_|  |_/\__,_|_| |_|\__,_|\__, |_| |_| |_|\___|_| |_|\__|
+  *                               __/ |
+  *                              |___/
+  * Functions that manage the arrays */
 
   void ObjectSmoothing::clearArray(std::vector<sortedObjects_t>& clearArray, int startIndex, int endIndex)
   {
@@ -57,12 +77,10 @@ namespace lib7842
     }
   }
 
-
   void ObjectSmoothing::swapObjects(std::vector<sortedObjects_t>& swapArray, int firstIndex, int secondIndex)
   {
     std::swap(swapArray.at(firstIndex), swapArray.at(secondIndex));
   }
-
 
   void ObjectSmoothing::sortArrayY(std::vector<sortedObjects_t>& sortArray, int firstIndex, int lastIndex)
   {
@@ -121,7 +139,39 @@ namespace lib7842
   }
 
 
-  //Imports the source array and sorts it by Y into sourceObjects
+  void ObjectSmoothing::sortArraySig(std::vector<sortedObjects_t>& sortArray, int firstIndex, int lastIndex)
+  {
+    // Loop through each object looking to swap the largest object to the right
+    // except the last one, which will already be sorted by the time we get there
+    for (int startIndex = firstIndex; startIndex < lastIndex; startIndex++)
+    {
+      int greatestIndex = startIndex; //Assume current posision to swap
+      bool swapNeeded = false;
+      // Loop between current and end looking for smallest object
+      for (int currentIndex = startIndex + 1; currentIndex <= lastIndex; currentIndex++)
+      {
+        //If current object is smaller than smallest object
+        if (sortArray.at(currentIndex).objSig > sortArray.at(greatestIndex).objSig)
+        {
+          greatestIndex = currentIndex;
+          swapNeeded = true;
+        }
+      }
+      if(swapNeeded) swapObjects(sortArray, startIndex, greatestIndex); //Swap with the smallest
+    }
+  }
+
+
+  /*** Step 1:
+  *     _____                           _
+  *    |_   _|                         | |
+  *      | | _ __ ___  _ __   ___  _ __| |_
+  *      | || '_ ` _ \| '_ \ / _ \| '__| __|
+  *     _| || | | | | | |_) | (_) | |  | |_
+  *     \___/_| |_| |_| .__/ \___/|_|   \__|
+  *                   | |
+  *                   |_|
+  * Imports the source array and sorts it by Y into sourceObjects*/
   void ObjectSmoothing::importSource()
   {
     //Copies source into m_source array
@@ -147,17 +197,29 @@ namespace lib7842
   }
 
 
-  bool ObjectSmoothing::compareObjects(int destSig, sortedObjects_t& masterObject, sortedObjects_t& sourceObject)
+
+  /***
+  *    ___  ___               _              ______                _   _
+  *    |  \/  |              (_)             |  ___|              | | (_)
+  *    | .  . | ___ _ __ __ _ _ _ __   __ _  | |_ _   _ _ __   ___| |_ _  ___  _ __  ___
+  *    | |\/| |/ _ \ '__/ _` | | '_ \ / _` | |  _| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+  *    | |  | |  __/ | | (_| | | | | | (_| | | | | |_| | | | | (__| |_| | (_) | | | \__ \
+  *    \_|  |_/\___|_|  \__, |_|_| |_|\__, | \_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+  *                      __/ |         __/ |
+  *                     |___/         |___/
+  * Functions that compare and merge source objects into master*/
+
+  bool ObjectSmoothing::compareObjects(sortedObjects_t& sourceObject, sortedObjects_t& wantedObject, int wantedSig)
   {
-    for(compareThresh_t& compareThresh : m_compareThresh)
+    for(compareZones_t& compareZone : m_compareZones)
     {
       //compare sig, then Pos, then size
       bool cascadingTrue = true;
-      cascadingTrue = cascadingTrue && destSig == masterObject.objSig;
-      cascadingTrue = cascadingTrue && (sourceObject.objCenterX >= masterObject.objCenterX - compareThresh.posThresh) && (sourceObject.objCenterX <= masterObject.objCenterX + compareThresh.posThresh);
-      cascadingTrue = cascadingTrue && (sourceObject.objCenterY >= masterObject.objCenterY - compareThresh.posThresh) && (sourceObject.objCenterY <= masterObject.objCenterY + compareThresh.posThresh);
-      cascadingTrue = cascadingTrue && (sourceObject.objWidth >= masterObject.objWidth - compareThresh.dimThresh) && (sourceObject.objWidth <= masterObject.objWidth + compareThresh.dimThresh);
-      cascadingTrue = cascadingTrue && (sourceObject.objHeight >= masterObject.objHeight - compareThresh.dimThresh) && (sourceObject.objHeight <= masterObject.objHeight + compareThresh.dimThresh);
+      cascadingTrue = cascadingTrue && wantedSig == wantedObject.objSig;
+      cascadingTrue = cascadingTrue && (sourceObject.objCenterX >= wantedObject.objCenterX - compareZone.posThresh) && (sourceObject.objCenterX <= wantedObject.objCenterX + compareZone.posThresh);
+      cascadingTrue = cascadingTrue && (sourceObject.objCenterY >= wantedObject.objCenterY - compareZone.posThresh) && (sourceObject.objCenterY <= wantedObject.objCenterY + compareZone.posThresh);
+      cascadingTrue = cascadingTrue && (sourceObject.objWidth >= wantedObject.objWidth - compareZone.dimThresh) && (sourceObject.objWidth <= wantedObject.objWidth + compareZone.dimThresh);
+      cascadingTrue = cascadingTrue && (sourceObject.objHeight >= wantedObject.objHeight - compareZone.dimThresh) && (sourceObject.objHeight <= wantedObject.objHeight + compareZone.dimThresh);
       if(cascadingTrue)
       {
         return true;
@@ -165,7 +227,6 @@ namespace lib7842
     }
     return false;
   }
-
 
   double ObjectSmoothing::emaCalculate(double lastValue, double newValue, double emaAlpha)
   {
@@ -184,9 +245,8 @@ namespace lib7842
 
     destObject.objXVel = emaCalculate(destObject.objXVel, (newObject.objCenterX - destObject.objCenterX), m_emaAlphaVel);
     destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
-    //std::cout << "XVel:" << destObject.objXVel << "\n";
 
-    destObject.lifeCounter += m_lifeIncrement; //Increase life
+    destObject.lifeCounter += m_lifeIncrement;
     if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
   }
 
@@ -210,25 +270,56 @@ namespace lib7842
     destObject.objY += destObject.objYVel;
     destObject.objCenterX += destObject.objXVel;
     destObject.objCenterY += destObject.objYVel;
-
-    destObject.lifeCounter--;
+    destObject.lifeCounter -= 1.0;
   }
 
 
+  /*** Step 2:
+  *    ___  ___
+  *    |  \/  |
+  *    | .  . | ___ _ __ __ _  ___
+  *    | |\/| |/ _ \ '__/ _` |/ _ \
+  *    | |  | |  __/ | | (_| |  __/
+  *    \_|  |_/\___|_|  \__, |\___|
+  *                      __/ |
+  *                     |___/
+  * Compares, Pushes, Merges, and Trims the source objects into Master*/
   void ObjectSmoothing::mergeObjects()
   {
+    //Reset Flags Indicating Master Objects Merged
+    for(int masterNum = 0; masterNum < m_masterLength; masterNum++)
+    {
+      m_masterObjects.at(masterNum).matchFound = false;
+      for(bool &matchFound : m_masterObjects.at(masterNum).sigFound)
+      {
+        matchFound = false;
+      }
+    }
+
+
+    if(m_debugMode > 2)
+    {
+      for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
+      {
+        std::cout << std::endl << "Master:" << masterNum << ", Sig:" << m_masterObjects.at(masterNum).objSig;
+      }
+    }
+
+    //Variables keeping track of different actions for debugging
     int mergeCount = 0;
     int pushCount = 0;
     int trimCount = 0;
 
-    bool sourceMatchFound = false;
-    //for every source object
+    bool sourceMatchFound = false; // Indicates whether source has found a match
+
+    //Loop through every source object
     for(int sourceObjectNum = 0; sourceObjectNum < m_sourceContainer->currentCount; sourceObjectNum++)
     {
+
       //Find out whether to merge into different sig
-      int sourceSig = m_sourceObjects[sourceObjectNum].objSig;
+      int sourceSig = m_sourceObjects.at(sourceObjectNum).objSig;
       int destSig = sourceSig;
-      for (sigReroute_t &sigReroute : m_sigReroutes) //Loop through sigReroutes and find if there is a swap
+      for (sigMerge_t &sigReroute : m_sigReroutes) //Loop through sigReroutes and find if there is a swap
       {
         if(sourceSig == sigReroute.sourceSig)
         {
@@ -236,18 +327,18 @@ namespace lib7842
         }
       }
 
-      sourceMatchFound = false;
       //loop through all current master objects
+      sourceMatchFound = false; //Exit looping through master when match found
       for(int masterNum = 0; masterNum < m_masterCount && !sourceMatchFound; masterNum++)
       {
-        if(!m_masterObjects.at(masterNum).signaturesFound.at(sourceSig))
+        if(!m_masterObjects.at(masterNum).sigFound.at(sourceSig)) //If current signature not already merged
         {
-          if(compareObjects(destSig, m_masterObjects.at(masterNum), m_sourceObjects[sourceObjectNum]))
+          if(compareObjects(m_sourceObjects.at(sourceObjectNum), m_masterObjects.at(masterNum), destSig))
           {
             if(m_debugMode > 1) std::cout << std::endl << "Master:" << masterNum << ", Sig:" << m_masterObjects.at(masterNum).objSig << " <- Source:" << sourceObjectNum << ", Sig:" << sourceSig;
             mergeCount++;
-            mergeObject(m_masterObjects.at(masterNum), m_sourceObjects[sourceObjectNum]);
-            m_masterObjects.at(masterNum).signaturesFound.at(sourceSig) = true;
+            mergeObject(m_masterObjects.at(masterNum), m_sourceObjects.at(sourceObjectNum));
+            m_masterObjects.at(masterNum).sigFound.at(sourceSig) = true;
             m_masterObjects.at(masterNum).matchFound = true;
             sourceMatchFound = true;
           }
@@ -258,14 +349,15 @@ namespace lib7842
       {
         pushCount++;
         //Add extra object to the end of master
-        pushObject(destSig, m_masterObjects.at(m_masterCount), m_sourceObjects[sourceObjectNum]);
+        pushObject(destSig, m_masterObjects.at(m_masterCount), m_sourceObjects.at(sourceObjectNum));
         m_masterObjects.at(m_masterCount).matchFound = true;
-        m_masterObjects.at(m_masterCount).signaturesFound.at(sourceSig) = true;
+        m_masterObjects.at(m_masterCount).sigFound.at(sourceSig) = true;
         m_masterCount++; //Let merge know there are extra objects
       }
     }
 
-    for(int masterNum = 0; masterNum < m_masterCount; masterNum++) //Scan through master looking for non-matches
+    //Scan through master looking for objects with no match
+    for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
     {
       if(!m_masterObjects.at(masterNum).matchFound)
       {
@@ -274,12 +366,18 @@ namespace lib7842
       }
     }
 
-
     if(m_debugMode > 0) std::cout << std::endl << "Count:" << m_masterCount << " | " << "M:" << mergeCount << " " << "P:" << pushCount << " " << "T:" << trimCount;
-
   }
 
 
+  /*** Step 3:
+  *     _____ _                      _______            _
+  *    /  __ \ |                    / /  ___|          | |
+  *    | /  \/ | ___  __ _ _ __    / /\ `--.  ___  _ __| |_
+  *    | |   | |/ _ \/ _` | '_ \  / /  `--. \/ _ \| '__| __|
+  *    | \__/\ |  __/ (_| | | | |/ /  /\__/ / (_) | |  | |_
+  *     \____/_|\___|\__,_|_| |_/_/   \____/ \___/|_|   \__|
+  * Cleans and Sorts Master and Updates Counts*/
   void ObjectSmoothing::sortMaster()
   {
     //Reset master match found bools
@@ -288,20 +386,25 @@ namespace lib7842
     //Sort array by life
     //sort array by y
 
-    for(int masterNum = 0; masterNum < m_masterLength; masterNum++) //Clear match bool
+    int simTrimCount = 0;
+    for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
     {
-      m_masterObjects.at(masterNum).matchFound = false;
-      for(bool &matchFound : m_masterObjects.at(masterNum).signaturesFound)
+      for(int masterNum2 = masterNum+1; masterNum2 < m_masterCount; masterNum2++)
       {
-        matchFound = false;
+        //  std::cout << std::endl << "Comparing:" << masterNum2 << " with:" << masterNum;
+        if(compareObjects(m_masterObjects.at(masterNum), m_masterObjects.at(masterNum2), m_masterObjects.at(masterNum).objSig))
+        {
+          simTrimCount++;
+          trimObject(m_masterObjects.at(masterNum2));
+        }
       }
     }
+    if(m_debugMode > 0) std::cout << " + " << simTrimCount;
 
     int purgeCount = 0;
 
     int newMasterCount = m_masterCount;
-    bool endScan = false;
-    for(int masterNum = 0; masterNum < m_masterCount && !endScan; masterNum++) //Clear match bool
+    for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
     {
       if(m_masterObjects.at(masterNum).lifeCounter <= 0)
       {
@@ -327,7 +430,6 @@ namespace lib7842
       }
       if(sortNeeded && startIndex != searchBoundary-1)
       {
-
         if(m_debugMode > 0) std::cout << " | Y Sort: " << startIndex << "-" << searchBoundary-1;
         sortArrayY(m_masterObjects, startIndex, searchBoundary-1);
       }
@@ -338,6 +440,16 @@ namespace lib7842
   }
 
 
+  /*** Step 4:
+  *     _____                      _
+  *    |  ___|                    | |
+  *    | |____  ___ __   ___  _ __| |_
+  *    |  __\ \/ / '_ \ / _ \| '__| __|
+  *    | |___>  <| |_) | (_) | |  | |_
+  *    \____/_/\_\ .__/ \___/|_|   \__|
+  *              | |
+  *              |_|
+  * Copy objects into destination container*/
   void ObjectSmoothing::exportObjects(lib7842::ObjectContainer* destContainer, int minLife, int maxLife)
   {
     int exportCount = 0;
@@ -351,7 +463,7 @@ namespace lib7842
         destContainer->objectArray.at(objectNum).objY = m_masterObjects.at(objectNum).objY;
         destContainer->objectArray.at(objectNum).objWidth = m_masterObjects.at(objectNum).objWidth;
         destContainer->objectArray.at(objectNum).objHeight = m_masterObjects.at(objectNum).objHeight;
-        destContainer->objectArray.at(objectNum).objSize = (m_masterObjects.at(objectNum).objWidth + m_masterObjects.at(objectNum).objHeight) / 2;
+        destContainer->objectArray.at(objectNum).objArea = m_masterObjects.at(objectNum).objWidth * m_masterObjects.at(objectNum).objHeight;
         destContainer->objectArray.at(objectNum).objCenterX = m_masterObjects.at(objectNum).objCenterX;
         destContainer->objectArray.at(objectNum).objCenterY = m_masterObjects.at(objectNum).objCenterY;
         destContainer->objectArray.at(objectNum).discardObject = false;
@@ -359,26 +471,19 @@ namespace lib7842
       }
       else
       {
-        destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
-        destContainer->objectArray.at(objectNum).objX = 0;
-        destContainer->objectArray.at(objectNum).objY = 0;
-        destContainer->objectArray.at(objectNum).objWidth = 0;
-        destContainer->objectArray.at(objectNum).objHeight = 0;
-        destContainer->objectArray.at(objectNum).objSize = 0;
-        destContainer->objectArray.at(objectNum).objCenterX = 0;
-        destContainer->objectArray.at(objectNum).objCenterY = 0;
-        destContainer->objectArray.at(objectNum).discardObject = false;
+        // destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
+        // destContainer->objectArray.at(objectNum).objX = 0;
+        // destContainer->objectArray.at(objectNum).objY = 0;
+        // destContainer->objectArray.at(objectNum).objWidth = 0;
+        // destContainer->objectArray.at(objectNum).objHeight = 0;
+        // destContainer->objectArray.at(objectNum).objSize = 0;
+        // destContainer->objectArray.at(objectNum).objCenterX = 0;
+        // destContainer->objectArray.at(objectNum).objCenterY = 0;
+        // destContainer->objectArray.at(objectNum).discardObject = false;
       }
     }
     destContainer->currentCount = exportCount;
   }
 
 
-  void ObjectSmoothing::smoothObjects()
-  {
-    importSource();
-    mergeObjects();
-    sortMaster();
-    exportObjects(m_destContainer, m_lifeMax - m_lifeThreshold, m_lifeMax);
-  }
 }

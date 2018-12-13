@@ -1,4 +1,4 @@
-#include "lib7842/vision/objectDrawing.hpp"
+#include "objectDrawing.hpp"
 
 namespace lib7842
 {
@@ -42,7 +42,7 @@ namespace lib7842
   void ObjectDrawing::drawSimpleObjects(ObjectContainer& objectContainer)
   {
 
-    for (lv_obj_t* screenObject : objectContainer.screenArray) //Hide all objects
+    for (lv_obj_t* &screenObject : objectContainer.screenArray) //Hide all objects
     {
       lv_obj_set_hidden(screenObject, true);
     }
@@ -74,6 +74,17 @@ namespace lib7842
         lv_obj_set_hidden(objectContainer.screenArray.at(objectNum), true);
       }
     }
-
   }
+
+
+  void ObjectDrawing::clearSimpleObjects(ObjectContainer& objectContainer)
+  {
+    for (lv_obj_t* &screenObject : objectContainer.screenArray) //Hide all objects
+    {
+      lv_obj_set_hidden(screenObject, true);
+    }
+  }
+
+
+
 }
