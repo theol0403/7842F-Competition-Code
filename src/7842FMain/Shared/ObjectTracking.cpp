@@ -24,17 +24,18 @@ void ObjectTrackingTask(void*)
 
   lib7842::ObjectDrawing mainScreenDrawing(LV_HOR_RES, LV_VER_RES);
 
+  lib7842::ObjectReading mainObjectReading(mainVision);
   lib7842::ObjectContainer rawObjects(12, mainScreenDrawing);
-    rawObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_BLACK, LV_OPA_40);
-    rawObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_BLACK, LV_OPA_40);
-    rawObjects.setSigStyle(BLUESIG2, LV_COLOR_BLUE, LV_COLOR_WHITE, LV_OPA_40);
-    rawObjects.setSigStyle(REDSIG2, LV_COLOR_RED, LV_COLOR_WHITE, LV_OPA_40);
-    lib7842::ObjectReading mainObjectReading(mainVision, rawObjects);
+  rawObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_BLACK, LV_OPA_40);
+  rawObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_BLACK, LV_OPA_40);
+  rawObjects.setSigStyle(BLUESIG2, LV_COLOR_BLUE, LV_COLOR_WHITE, LV_OPA_40);
+  rawObjects.setSigStyle(REDSIG2, LV_COLOR_RED, LV_COLOR_WHITE, LV_OPA_40);
 
-    lib7842::ObjectContainer sortedObjects(20, mainScreenDrawing);
-    sortedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_YELLOW, LV_OPA_70);
-    sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_YELLOW, LV_OPA_70);
-    lib7842::ObjectSmoothing objectSmoothing(
+
+  lib7842::ObjectContainer sortedObjects(20, mainScreenDrawing);
+  sortedObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_YELLOW, LV_OPA_70);
+  sortedObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_YELLOW, LV_OPA_70);
+  lib7842::ObjectSmoothing objectSmoothing(
     rawObjects, sortedObjects, // Source, Dest
     {{BLUESIG2, BLUESIG}, {REDSIG2, REDSIG}}, // Sig merges
     40, 20, 3, // Maxlife, LifeZone, lifeIncrement
@@ -46,7 +47,7 @@ void ObjectTrackingTask(void*)
   while(true)
   {
 
-    mainObjectReading.getObjects();
+    mainObjectReading.getAllObjects(rawObjects);
     rawObjects.filterAreaRange(0, 400);
 
     mainScreenDrawing.drawSimpleObjects(rawObjects);
