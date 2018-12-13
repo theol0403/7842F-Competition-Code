@@ -36,4 +36,24 @@ namespace lib7842
     }
   }
 
+  //TODO: Clear vision count at beginning of loop
+  //So I can do getSig, getCode
+  //Getcode needs a code and a dest sig
+
+  void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<int> wantedSignatures)
+  {
+    for(int wantedSig : wantedSignatures)
+    {
+
+    }
+  }
+
+  void ObjectReading::getCodeObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<codeSig_t> wantedCodes)
+  {
+    for(codeSig_t wantedCode : wantedCodes)
+    {
+
+    }
+  }
+
 }
