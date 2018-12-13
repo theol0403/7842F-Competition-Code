@@ -66,7 +66,6 @@ namespace lib7842
     void swapObjects(std::vector<sortedObjects_t>&, int, int);
     void sortArrayY(std::vector<sortedObjects_t>&, int, int);
     void sortArrayLife(std::vector<sortedObjects_t>&, int, int);
-    void sortArraySig(std::vector<sortedObjects_t>&, int, int);
 
     void importSource();
 

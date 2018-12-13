@@ -139,28 +139,6 @@ namespace lib7842
   }
 
 
-  void ObjectSmoothing::sortArraySig(std::vector<sortedObjects_t>& sortArray, int firstIndex, int lastIndex)
-  {
-    // Loop through each object looking to swap the largest object to the right
-    // except the last one, which will already be sorted by the time we get there
-    for (int startIndex = firstIndex; startIndex < lastIndex; startIndex++)
-    {
-      int greatestIndex = startIndex; //Assume current posision to swap
-      bool swapNeeded = false;
-      // Loop between current and end looking for smallest object
-      for (int currentIndex = startIndex + 1; currentIndex <= lastIndex; currentIndex++)
-      {
-        //If current object is smaller than smallest object
-        if (sortArray.at(currentIndex).objSig > sortArray.at(greatestIndex).objSig)
-        {
-          greatestIndex = currentIndex;
-          swapNeeded = true;
-        }
-      }
-      if(swapNeeded) swapObjects(sortArray, startIndex, greatestIndex); //Swap with the smallest
-    }
-  }
-
 
   /*** Step 1:
   *     _____                           _
@@ -415,7 +393,7 @@ namespace lib7842
 
     if(m_debugMode > 0) std::cout << " | " << "R:" << purgeCount;
 
-    sortArrayLife(m_masterObjects, 0, m_masterCount); //Moves all 0 objects to the right
+    sortArrayLife(m_masterObjects, 0, m_masterCount-1); //Moves all 0 objects to the right
     m_masterCount = newMasterCount;
 
     int startIndex = 0;

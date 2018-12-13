@@ -53,30 +53,6 @@ namespace lib7842
   }
 
 
-
-  void ObjectContainer::sortBySize()
-  {
-    // Loop through each object looking to swap the largest object to the right
-    // except the last one, which will already be sorted by the time we get there
-    for (int startIndex = 0; startIndex < currentCount - 1; startIndex++)
-    {
-      int greatestIndex = startIndex; //Assume current posision to swap
-      bool swapNeeded = false;
-      // Loop between current and end looking for greatest object
-      for (int currentIndex = startIndex + 1; currentIndex < currentCount; currentIndex++)
-      {
-        //If current object is greater than greatest object
-        if (objectArray.at(currentIndex).objArea > objectArray.at(greatestIndex).objArea)
-        {
-          greatestIndex = currentIndex;
-          swapNeeded = true;
-        }
-      }
-      if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
-    }
-  }
-
-
   simpleObjects_t ObjectContainer::getObject(int sizeNum)
   {
     if(sizeNum < currentCount)
@@ -274,6 +250,91 @@ namespace lib7842
       }
     }
   }
+
+
+
+  void ObjectContainer::sortBy(sortModes_t sortMode, bool largeToSmall)
+  {
+    // Loop through each object looking to swap the largest object to the right
+    // except the last one, which will already be sorted by the time we get there
+    for (int startIndex = 0; startIndex < currentCount - 1; startIndex++)
+    {
+      int greatestIndex = startIndex; //Assume current posision to swap
+      bool swapNeeded = false;
+      // Loop between current and end looking for greatest object
+      for (int currentIndex = startIndex + 1; currentIndex < currentCount; currentIndex++)
+      {
+
+        int firstCompare = 0;
+        int secondCompare = 0;
+        switch (sortMode)
+        {
+          case sortModes_t::objSig:
+          firstCompare = objectArray.at(currentIndex).objSig;
+          secondCompare = objectArray.at(greatestIndex).objSig;
+          break;
+          case sortModes_t::objX:
+          firstCompare = objectArray.at(currentIndex).objX;
+          secondCompare = objectArray.at(greatestIndex).objX;
+          break;
+          case sortModes_t::objY:
+          firstCompare = objectArray.at(currentIndex).objY;
+          secondCompare = objectArray.at(greatestIndex).objY;
+          break;
+          case sortModes_t::objWidth:
+          firstCompare = objectArray.at(currentIndex).objWidth;
+          secondCompare = objectArray.at(greatestIndex).objWidth;
+          break;
+          case sortModes_t::objHeight:
+          firstCompare = objectArray.at(currentIndex).objHeight;
+          secondCompare = objectArray.at(greatestIndex).objHeight;
+          break;
+          case sortModes_t::objArea:
+          firstCompare = objectArray.at(currentIndex).objArea;
+          secondCompare = objectArray.at(greatestIndex).objArea;
+          break;
+          case sortModes_t::objCenterX:
+          firstCompare = objectArray.at(currentIndex).objCenterX;
+          secondCompare = objectArray.at(greatestIndex).objCenterX;
+          break;
+          case sortModes_t::objCenterY:
+          firstCompare = objectArray.at(currentIndex).objCenterY;
+          secondCompare = objectArray.at(greatestIndex).objCenterY;
+          break;
+        }
+
+        bool sortFound = false;
+        if(largeToSmall)
+        {
+          sortFound = firstCompare > secondCompare;
+        }
+        else
+        {
+          sortFound = firstCompare < secondCompare;
+        }
+
+        //If current object is greater than greatest object
+        if (sortFound)
+        {
+          greatestIndex = currentIndex;
+          swapNeeded = true;
+        }
+      }
+      if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
+    }
+  }
+
+
+void ObjectContainer::shrinkTo(int count)
+{
+  count = count > currentCount ? currentCount : count;
+  currentCount = count;
+}
+
+
+
+
+
 
 
 

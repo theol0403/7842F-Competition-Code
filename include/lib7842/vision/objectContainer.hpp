@@ -17,6 +17,18 @@ namespace lib7842
     bool discardObject = false;
   };
 
+  enum class sortModes_t
+  {
+    objSig,
+    objX,
+    objY,
+    objWidth,
+    objHeight,
+    objArea,
+    objCenterX,
+    objCenterY
+  };
+
 
   class ObjectContainer
   {
@@ -43,7 +55,6 @@ namespace lib7842
     void setContainerStyle(lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
     void setSigStyle(int, lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
 
-    void sortBySize();
     simpleObjects_t getObject(int);
     simpleObjects_t getObject(int, int);
 
@@ -54,6 +65,9 @@ namespace lib7842
 
     void debugObjects(int);
     void debugErrorSig();
+
+    void sortBy(sortModes_t, bool = true);
+    void shrinkTo(int);
 
     static void copyObjects(ObjectContainer&, ObjectContainer&, int = -1);
 
