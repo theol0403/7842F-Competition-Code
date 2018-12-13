@@ -49,9 +49,7 @@ void ObjectTrackingTask(void*)
 
     mainObjectReading.getAllObjects(rawObjects);
     rawObjects.filterAreaRange(0, 400);
-
     mainScreenDrawing.drawSimpleObjects(rawObjects);
-
 
     objectSmoothing.smoothObjects();
     mainScreenDrawing.drawSimpleObjects(sortedObjects);

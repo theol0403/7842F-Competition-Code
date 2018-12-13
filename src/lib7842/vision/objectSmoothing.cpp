@@ -27,7 +27,7 @@ namespace lib7842
 
   m_debugMode(debugMode),
 
-  m_masterLength(m_sourceContainer->arrayLength * lifeMax)
+  m_masterLength(m_sourceContainer->arrayLength * 8) //Should be enough
   {
     m_sourceObjects.resize(m_sourceContainer->arrayLength);
     clearArray(m_sourceObjects, 0, m_sourceContainer->arrayLength-1);
