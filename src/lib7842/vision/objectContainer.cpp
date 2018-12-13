@@ -275,4 +275,29 @@ namespace lib7842
     }
   }
 
+
+
+  void ObjectContainer::copyObjects(lib7842::ObjectContainer& sourceContainer, lib7842::ObjectContainer& destContainer, int copyNum)
+  {
+    int transferCount = 0;
+
+    if(copyNum < 0)
+    {
+      transferCount = sourceContainer.currentCount > destContainer.arrayLength ? destContainer.arrayLength : sourceContainer.currentCount;
+    }
+    else
+    {
+      transferCount = copyNum > destContainer.arrayLength ? destContainer.arrayLength : copyNum;
+    }
+
+    for(int objectNum = 0; objectNum < transferCount; objectNum++)
+    {
+      destContainer.objectArray.at(objectNum) = sourceContainer.objectArray.at(objectNum);
+    }
+    destContainer.currentCount = transferCount;
+  }
+
+
+
+
 }

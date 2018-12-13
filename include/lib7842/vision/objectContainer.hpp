@@ -55,6 +55,7 @@ namespace lib7842
     void debugObjects(int);
     void debugErrorSig();
 
+    static void copyObjects(ObjectContainer&, ObjectContainer&, int = -1);
 
   };
 }
