@@ -16,7 +16,7 @@ namespace pros {void delay(int);}
 #endif
 
 
-#define NUM_SIGNATURES 10
+#define NUM_SIGNATURES 20
 #include <vector>
 #include <array>
 

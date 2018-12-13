@@ -3,6 +3,7 @@
 namespace lib7842
 {
 
+
   ObjectReading::ObjectReading(pros::Vision& thisVision)
   :
   m_thisVision(&thisVision)
@@ -13,47 +14,95 @@ namespace lib7842
   {
   }
 
-
   // Looks at vision for color, counts objects, and fills them in to master array
   void ObjectReading::getAllObjects(lib7842::ObjectContainer &destContainer)
   {
     pros::vision_object* tempVisionArray = new pros::vision_object[destContainer.arrayLength];
 
-    destContainer.currentCount = m_thisVision->read_by_size(0, destContainer.arrayLength, tempVisionArray);
-    if(destContainer.currentCount > destContainer.arrayLength) destContainer.currentCount = 0; //If there are no objects pros returns a huge number
+    int objectCount = m_thisVision->read_by_size(0, destContainer.arrayLength, tempVisionArray);
+    if(objectCount > destContainer.arrayLength) objectCount = 0; //If there are no objects pros returns a huge number
 
-    for (int objectNum = 0; objectNum < destContainer.currentCount; objectNum++)
+    for (int objectNum = 0; objectNum < objectCount; objectNum++)
     {
-      destContainer.objectArray.at(objectNum).objSig = tempVisionArray[objectNum].signature;
-      destContainer.objectArray.at(objectNum).objX = tempVisionArray[objectNum].left_coord;
-      destContainer.objectArray.at(objectNum).objY = tempVisionArray[objectNum].top_coord;
-      destContainer.objectArray.at(objectNum).objWidth = tempVisionArray[objectNum].width;
-      destContainer.objectArray.at(objectNum).objHeight = tempVisionArray[objectNum].height;
-      destContainer.objectArray.at(objectNum).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
-      destContainer.objectArray.at(objectNum).objCenterX = tempVisionArray[objectNum].x_middle_coord;
-      destContainer.objectArray.at(objectNum).objCenterY = tempVisionArray[objectNum].y_middle_coord;
-      destContainer.objectArray.at(objectNum).discardObject = false;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = tempVisionArray[objectNum].width;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = tempVisionArray[objectNum].height;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = tempVisionArray[objectNum].x_middle_coord;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = tempVisionArray[objectNum].y_middle_coord;
+      destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
     }
+
+    destContainer.currentCount += objectCount;
+    delete[] tempVisionArray;
   }
 
   //TODO: Clear vision count at beginning of loop
   //So I can do getSig, getCode
   //Getcode needs a code and a dest sig
 
-  void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<int> wantedSignatures)
+  void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::vector<int> wantedSignatures)
   {
-    for(int wantedSig : wantedSignatures)
-    {
+    pros::vision_object* tempVisionArray = new pros::vision_object[destContainer.arrayLength];
 
+    for(int &wantedSig : wantedSignatures)
+    {
+      int objectCount = m_thisVision->read_by_sig(0, wantedSig, destContainer.arrayLength, tempVisionArray);
+      if(objectCount > destContainer.arrayLength) objectCount = 0; //If there are no objects pros returns a huge number
+
+      for (int objectNum = 0; objectNum < objectCount; objectNum++)
+      {
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = tempVisionArray[objectNum].width;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = tempVisionArray[objectNum].height;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = tempVisionArray[objectNum].x_middle_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = tempVisionArray[objectNum].y_middle_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+      }
+      destContainer.currentCount += objectCount;
     }
+    delete[] tempVisionArray;
   }
 
-  void ObjectReading::getCodeObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<codeSig_t> wantedCodes)
+  void ObjectReading::getCodeObjects(lib7842::ObjectContainer &destContainer, std::vector<codeSig_t> wantedCodes)
   {
-    for(codeSig_t wantedCode : wantedCodes)
-    {
+    pros::vision_object* tempVisionArray = new pros::vision_object[destContainer.arrayLength];
 
+    for(codeSig_t &wantedCode : wantedCodes)
+    {
+      int objectCount = m_thisVision->read_by_code(0, wantedCode.colorCode, destContainer.arrayLength, tempVisionArray);
+      if(objectCount > destContainer.arrayLength) objectCount = 0; //If there are no objects pros returns a huge number
+
+      for (int objectNum = 0; objectNum < objectCount; objectNum++)
+      {
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = wantedCode.destSig;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = tempVisionArray[objectNum].width;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = tempVisionArray[objectNum].height;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = tempVisionArray[objectNum].x_middle_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = tempVisionArray[objectNum].y_middle_coord;
+        destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+      }
+      destContainer.currentCount += objectCount;
     }
+    delete[] tempVisionArray;
   }
+
+
+  codeSig_t ObjectReading::createCodeSig(int sig_id1, int sig_id2, int sig_id3, int sig_id4, int sig_id5)
+  {
+    codeSig_t tempCode;
+    tempCode.destSig = sig_id1 + (NUM_SIGNATURES/2);
+    tempCode.colorCode = m_thisVision->create_color_code(sig_id1, sig_id2, sig_id3, sig_id4, sig_id5);
+    return tempCode;
+  }
+
 
 }
