@@ -40,18 +40,18 @@ namespace lib7842
   }
 
 
-  void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::vector<int> wantedSignatures)
+  void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<int> wantedSignatures)
   {
     pros::vision_object* tempVisionArray = new pros::vision_object[destContainer.arrayLength];
 
-    for(int &wantedSig : wantedSignatures)
+    for(const int wantedSig : wantedSignatures)
     {
       int objectCount = m_thisVision->read_by_sig(0, wantedSig, destContainer.arrayLength, tempVisionArray);
       if(objectCount > destContainer.arrayLength) objectCount = 0; //If there are no objects pros returns a huge number
 
       for (int objectNum = 0; objectNum < objectCount; objectNum++)
       {
-        if(tempVisionArray[objectNum].signature != wantedSig) std::cout << "REEEEEE";
+        if(tempVisionArray[objectNum].signature != wantedSig) std::cout << "SIG IS NOT WHAT I WANT";
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
         destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;

@@ -23,7 +23,7 @@ namespace lib7842
     ~ObjectReading();
 
     void getAllObjects(lib7842::ObjectContainer&);
-    void getSigObjects(lib7842::ObjectContainer&, std::vector<int>);
+    void getSigObjects(lib7842::ObjectContainer&, std::initializer_list<int>);
     void getCodeObjects(lib7842::ObjectContainer&, std::vector<codeSig_t>);
 
     codeSig_t createCodeSig(int, int, int = 0, int = 0, int = 0);

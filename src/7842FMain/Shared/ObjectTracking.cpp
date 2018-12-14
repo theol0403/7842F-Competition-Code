@@ -8,32 +8,41 @@ void ObjectTrackingTask(void*)
 
   const int BLUESIG = 1;
   const int REDSIG = 2;
-  const int BLUESIG2 = 3;
-  const int REDSIG2 = 4;
 
-  const int GREENSIG = 5;
+  const int GREENSIG = 3;
 
-  pros::Vision mainVision(11);
+  pros::Vision mainVision(20);
   pros::delay(1000);
-  // pros::vision_signature_s_t blueSig = mainVision.get_signature(1);
-  // mainVision.print_signature(blueSig);
-  //pros::vision_signature_s_t redSig = mainVision.get_signature(2);
-  //mainVision.print_signature(redSig);
-  pros::vision_signature_s_t SIG_1 = {1, {1, 0, 0}, 9.300000, -2979, -2215, -2597, 11377, 13517, 12447, 0, 0};
-  mainVision.set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 8.00000, 9227, 9651, 9439, -543, -227, -385, 0, 0};
-  mainVision.set_signature(2, &SIG_2);
+
+  // pros::vision_color_code_t blueCode = mainVision.create_color_code(1, 5);
+  // while(true)
+  // {
+  //   std::cout << mainVision.get_by_code(0, blueCode).top_coord << std::endl;
+  //   pros::delay(200);
+  // }
+
+
+
+
+
+
+//   pros::vision_signature_s_t sig_BLUEFLAG = {1, {1, 0, 0}, 2.9, -2891, -2101, -2496, 9503, 13653, 11578, 0, 1};
+//   mainVision.set_signature(1, &sig_BLUEFLAG);
+// pros::vision_signature_s_t sig_REDFLAG = {2, {1, 0, 0}, 3.2, 7903, 8235, 8069, -175, 167, -4, 0, 1};
+//   mainVision.set_signature(2, &sig_REDFLAG);
+//   pros::vision_signature_s_t sig_GREENFLAG = {5, {1, 0, 0}, 7.2, -2845, -2471, -2658, -4967, -4257, -4612, 0, 1};
+//   mainVision.set_signature(5, &sig_GREENFLAG);
+//   mainVision.set_exposure( (int) ( (30/150 * 100) + 50) / 255 );
 
 
   lib7842::ObjectReading mainObjectReading(mainVision);
-//  lib7842::codeSig_t BLUECODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
-//  lib7842::codeSig_t REDCODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
+  lib7842::codeSig_t BLUECODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
+  lib7842::codeSig_t REDCODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
 
-  lib7842::ObjectContainer rawObjects(12, mainScreenDrawing);
+  lib7842::ObjectContainer rawObjects(30, mainScreenDrawing);
   rawObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_BLACK, LV_OPA_40);
   rawObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_BLACK, LV_OPA_40);
-//  rawObjects.setSigStyle(BLUESIG2, LV_COLOR_BLUE, LV_COLOR_WHITE, LV_OPA_40);
-//  rawObjects.setSigStyle(REDSIG2, LV_COLOR_RED, LV_COLOR_WHITE, LV_OPA_40);
+  rawObjects.setSigStyle(REDSIG, LV_COLOR_GREEN, LV_COLOR_BLACK, LV_OPA_40);
 //  rawObjects.setSigStyle(BLUECODE.destSig, LV_COLOR_BLUE, LV_COLOR_LIME, LV_OPA_40);
 //  rawObjects.setSigStyle(REDCODE.destSig, LV_COLOR_RED, LV_COLOR_LIME, LV_OPA_40);
 
@@ -44,7 +53,7 @@ void ObjectTrackingTask(void*)
   lib7842::ObjectSmoothing objectSmoothing
   (
     rawObjects, smoothedObjects, // Source, Dest
-    {},//  {{BLUESIG2, BLUESIG},  {REDSIG2, REDSIG}},// {BLUECODE.destSig, BLUESIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
+  {},//  {{BLUECODE.destSig, BLUESIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
     20, 10, 3, // Maxlife, LifeZone, lifeIncrement
     0.5, 0.4, // PosEMA, VelEMA
     {{20, 15}, {15, 30}, {40, 10}, {50, 5}}, // PosThresh, DimThresh
@@ -54,12 +63,17 @@ void ObjectTrackingTask(void*)
   while(true)
   {
     rawObjects.shrinkTo(0);
-    mainObjectReading.getSigObjects(rawObjects, {BLUESIG, REDSIG});
-    rawObjects.removeRange(lib7842::objArea, 0, 400);
-   mainScreenDrawing.drawSimpleObjects(rawObjects);
+    rawObjects.currentCount = 0;
 
-   objectSmoothing.smoothObjects();
-   mainScreenDrawing.drawSimpleObjects(smoothedObjects);
+    mainObjectReading.getCodeObjects(rawObjects, {BLUECODE, REDCODE});
+    rawObjects.debugObjects(2);
+    pros::delay(200);
+    rawObjects.removeRange(lib7842::objArea, 0, 400);
+    std::cout << rawObjects.currentCount;
+    mainScreenDrawing.drawSimpleObjects(rawObjects);
+
+   //objectSmoothing.smoothObjects();
+//   mainScreenDrawing.drawSimpleObjects(smoothedObjects);
 
 
     pros::delay(100);
