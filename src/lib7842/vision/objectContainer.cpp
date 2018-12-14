@@ -248,10 +248,11 @@ namespace lib7842
   }
 
 
-  void ObjectContainer::shrinkTo(int count)
+  void ObjectContainer::shrinkTo(int newCount)
   {
-    count = count > currentCount ? currentCount : count;
-    currentCount = count;
+    // count = count > currentCount ? currentCount : count;
+    // currentCount = count;
+    currentCount = newCount;
   }
 
 
@@ -334,7 +335,7 @@ namespace lib7842
     debugErrorSig();
     if(objectCount > arrayLength) objectCount = arrayLength; //Bounds Checking
 
-    std::cout << "Length:" << arrayLength << " | " << "Count:" << currentCount << "\n";
+    std::cout << std::endl << "Length:" << arrayLength << " | " << "Count:" << currentCount << "\n";
     for(int objectNum = 0; objectNum < objectCount; objectNum++)
     {
       std::cout << "Object:" << objectNum << " | ";

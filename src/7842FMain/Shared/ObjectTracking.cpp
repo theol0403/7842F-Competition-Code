@@ -13,7 +13,7 @@ void ObjectTrackingTask(void*)
 
   const int GREENSIG = 5;
 
-  pros::Vision mainVision(20);
+  pros::Vision mainVision(11);
   pros::delay(1000);
   // pros::vision_signature_s_t blueSig = mainVision.get_signature(1);
   // mainVision.print_signature(blueSig);
@@ -26,16 +26,16 @@ void ObjectTrackingTask(void*)
 
 
   lib7842::ObjectReading mainObjectReading(mainVision);
-  lib7842::codeSig_t BLUECODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
-  lib7842::codeSig_t REDCODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
+//  lib7842::codeSig_t BLUECODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
+//  lib7842::codeSig_t REDCODE = mainObjectReading.createCodeSig(BLUESIG, GREENSIG);
 
   lib7842::ObjectContainer rawObjects(12, mainScreenDrawing);
   rawObjects.setSigStyle(BLUESIG, LV_COLOR_BLUE, LV_COLOR_BLACK, LV_OPA_40);
   rawObjects.setSigStyle(REDSIG, LV_COLOR_RED, LV_COLOR_BLACK, LV_OPA_40);
-  rawObjects.setSigStyle(BLUESIG2, LV_COLOR_BLUE, LV_COLOR_WHITE, LV_OPA_40);
-  rawObjects.setSigStyle(REDSIG2, LV_COLOR_RED, LV_COLOR_WHITE, LV_OPA_40);
-  rawObjects.setSigStyle(BLUECODE.destSig, LV_COLOR_BLUE, LV_COLOR_LIME, LV_OPA_40);
-  rawObjects.setSigStyle(REDCODE.destSig, LV_COLOR_RED, LV_COLOR_LIME, LV_OPA_40);
+//  rawObjects.setSigStyle(BLUESIG2, LV_COLOR_BLUE, LV_COLOR_WHITE, LV_OPA_40);
+//  rawObjects.setSigStyle(REDSIG2, LV_COLOR_RED, LV_COLOR_WHITE, LV_OPA_40);
+//  rawObjects.setSigStyle(BLUECODE.destSig, LV_COLOR_BLUE, LV_COLOR_LIME, LV_OPA_40);
+//  rawObjects.setSigStyle(REDCODE.destSig, LV_COLOR_RED, LV_COLOR_LIME, LV_OPA_40);
 
 
   lib7842::ObjectContainer smoothedObjects(20, mainScreenDrawing);
@@ -44,24 +44,24 @@ void ObjectTrackingTask(void*)
   lib7842::ObjectSmoothing objectSmoothing
   (
     rawObjects, smoothedObjects, // Source, Dest
-    {{BLUESIG2, BLUESIG}, {BLUECODE.destSig, BLUESIG}, {REDSIG2, REDSIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
-    40, 20, 3, // Maxlife, LifeZone, lifeIncrement
-    0.35, 0.3, // PosEMA, VelEMA
-    {{30, 15}}, // PosThresh, DimThresh
-    0 // DebugMode
+  {},//  {{BLUESIG2, BLUESIG},  {REDSIG2, REDSIG}},// {BLUECODE.destSig, BLUESIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
+    20, 10, 3, // Maxlife, LifeZone, lifeIncrement
+    0.5, 0.4, // PosEMA, VelEMA
+    {{20, 15}, {15, 30}, {40, 10}, {50, 5}}, // PosThresh, DimThresh
+    1 // DebugMode
   );
 
   while(true)
   {
     rawObjects.shrinkTo(0);
-    mainObjectReading.getSigObjects(rawObjects, {BLUESIG, REDSIG, BLUESIG2, REDSIG2});
-    mainObjectReading.getCodeObjects(rawObjects, {BLUECODE, REDCODE});
-    mainScreenDrawing.drawSimpleObjects(rawObjects);
+    mainObjectReading.getSigObjects(rawObjects, {BLUESIG, REDSIG});
+    rawObjects.removeRange(lib7842::objArea, 0, 400);
+   mainScreenDrawing.drawSimpleObjects(rawObjects);
 
-    objectSmoothing.smoothObjects();
-    mainScreenDrawing.drawSimpleObjects(smoothedObjects);
+   objectSmoothing.smoothObjects();
+   mainScreenDrawing.drawSimpleObjects(smoothedObjects);
 
 
-    pros::delay(50);
+    pros::delay(100);
   }
 }
