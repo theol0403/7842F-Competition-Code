@@ -61,8 +61,8 @@ void initializeBase()
 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
 	.withSensors(leftEncoder, rightEncoder)
 	.withMiddleEncoder(middleEncoder)
-	.withDimensions({{2.75_in * 1.6, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
-	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
+	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
+//	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 	.withOdometry()
 	.buildOdometry();
 

@@ -128,12 +128,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       while(true)
       {
         checkBaseStatus();
-    //    driverBaseControl();
+        driverBaseControl();
 
         driverIntakeControl();
         driverFlywheelControl();
 
-        pros::delay(20);
+        pros::delay(200);
       }
     }
 

@@ -19,6 +19,7 @@ void driverBaseControl()
   if(j_Main.getDigital(okapi::ControllerDigital::X))
   {
     robotChassis->setState({0_ft, 0_ft, 0_deg});
+    robotChassis->resetSensors();
   }
 
   if(b_odomMotionToggle.changedToPressed())

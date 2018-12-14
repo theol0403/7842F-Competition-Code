@@ -44,11 +44,11 @@ void ObjectTrackingTask(void*)
   lib7842::ObjectSmoothing objectSmoothing
   (
     rawObjects, smoothedObjects, // Source, Dest
-  {},//  {{BLUESIG2, BLUESIG},  {REDSIG2, REDSIG}},// {BLUECODE.destSig, BLUESIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
+    {},//  {{BLUESIG2, BLUESIG},  {REDSIG2, REDSIG}},// {BLUECODE.destSig, BLUESIG}, {REDCODE.destSig, REDSIG}}, // Sig merges
     20, 10, 3, // Maxlife, LifeZone, lifeIncrement
     0.5, 0.4, // PosEMA, VelEMA
     {{20, 15}, {15, 30}, {40, 10}, {50, 5}}, // PosThresh, DimThresh
-    1 // DebugMode
+    0 // DebugMode
   );
 
   while(true)
