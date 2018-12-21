@@ -6,7 +6,7 @@ void driverIntakeControl()
 
 	if(j_Main.getDigital(okapi::ControllerDigital::R1))
 	{
-		setIntakePower(90);
+		setIntakePower(127);
 	}
 	else if(j_Main.getDigital(okapi::ControllerDigital::R2))
 	{

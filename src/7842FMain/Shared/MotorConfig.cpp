@@ -4,15 +4,15 @@
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
-const int8_t e_m_Flywheel = 11;
-const int8_t e_m_Flywheel2 = -12;
-const int8_t e_m_Intake = 1;
-const int8_t e_m_Indexer = 2;
+const int8_t e_m_Flywheel = 1;
+const int8_t e_m_Flywheel2 = -16;
+const int8_t e_m_Intake = 4;
+const int8_t e_m_Indexer = 19;
 
-const int8_t e_m_RightFront = -5;
-const int8_t e_m_RightBack = -6;
-const int8_t e_m_LeftFront = 7;
-const int8_t e_m_LeftBack = 8;
+const int8_t e_m_RightFront = -7;
+const int8_t e_m_RightBack = -8;
+const int8_t e_m_LeftFront = 17;
+const int8_t e_m_LeftBack = 18;
 
 okapi::ADIEncoder leftEncoder(3, 4);
 okapi::ADIEncoder rightEncoder(5, 6);

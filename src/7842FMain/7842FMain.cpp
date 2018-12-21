@@ -45,7 +45,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       pros::delay(500);
 
       flywheelTask_t = new pros::Task(flywheelTask);
-      objectTask_t = new pros::Task(ObjectTrackingTask);
+    //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
 
       initializeBase();
@@ -128,12 +128,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       while(true)
       {
         checkBaseStatus();
-      //  driverBaseControl();
+        driverBaseControl();
 
         driverIntakeControl();
         driverFlywheelControl();
 
-        pros::delay(200);
+        pros::delay(20);
       }
     }
 
