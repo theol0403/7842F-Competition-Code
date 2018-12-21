@@ -2,6 +2,24 @@
 
 static okapi::ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
+void driverJoystick()
+{
+  double rightY = j_Main.getAnalog(okapi::ControllerAnalog::rightY);
+  double leftX = j_Main.getAnalog(okapi::ControllerAnalog::leftX);
+
+  //std::cout << "Old: " << leftX;
+
+  if(true)
+  {
+  //  rightY = lib7842::sgn(rightY) * pow(abs(rightY), 2);
+    leftX = lib7842::sgn(leftX) * pow(abs(leftX), 2);
+  }
+
+  //std::cout << " New: " << leftX << std::endl;
+
+  setBaseArcade(rightY, leftX);
+}
+
 void driverBaseControl()
 {
 
@@ -13,7 +31,7 @@ void driverBaseControl()
   }
   else
   {
-    setBaseArcade(j_Main.getAnalog(okapi::ControllerAnalog::rightY), j_Main.getAnalog(okapi::ControllerAnalog::leftX));
+    driverJoystick();
   }
 
   if(j_Main.getDigital(okapi::ControllerDigital::X))
