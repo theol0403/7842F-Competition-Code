@@ -6,7 +6,7 @@ okapi::Controller j_Main(okapi::ControllerId::master);
 
 const int8_t e_m_Flywheel = 1;
 const int8_t e_m_Flywheel2 = -16;
-const int8_t e_m_Intake = 4;
+const int8_t e_m_Intake = -4;
 const int8_t e_m_Indexer = -19;
 
 const int8_t e_m_RightFront = -7;

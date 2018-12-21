@@ -3,6 +3,14 @@
 
 void driverIntakeControl()
 {
+	if(j_Main.getDigital(okapi::ControllerDigital::R2))
+	{
+		runIntake = true;
+	}
+	else
+	{
+		runIntake = false;
+	}
 
 	// if(j_Main.getDigital(okapi::ControllerDigital::R1))
 	// {

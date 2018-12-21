@@ -2,6 +2,7 @@
 
 #include "Shared/MotorConfig.hpp"
 #include "Shared/FlywheelTask.hpp"
+#include "Shared/IntakeTask.hpp"
 
 #include "Shared/ObjectTracking.hpp"
 
@@ -24,8 +25,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     case TASK_STATE_RUNNING: taskPtr->resume(); break;
     default: {} } } }
 
+    pros::Task* intakeTask_t = nullptr;
     pros::Task* flywheelTask_t = nullptr;
     pros::Task* objectTask_t = nullptr;
+
 
 
     /***
@@ -43,12 +46,14 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       pros::delay(500);
-
-      flywheelTask_t = new pros::Task(flywheelTask);
-    //  objectTask_t = new pros::Task(ObjectTrackingTask);
-
       initializeDevices();
       initializeBase();
+      pros::delay(500);
+
+      flywheelTask_t = new pros::Task(flywheelTask);
+      intakeTask_t = new pros::Task(intakeControlTask);
+    //  objectTask_t = new pros::Task(ObjectTrackingTask);
+
 
       // while(true)
       // {
