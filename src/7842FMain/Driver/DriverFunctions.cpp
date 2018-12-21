@@ -3,7 +3,12 @@
 
 void driverIntakeControl()
 {
-	if(j_Main.getDigital(okapi::ControllerDigital::R2))
+	 if(j_Main.getDigital(okapi::ControllerDigital::R1))
+	{
+	intakeMode = intakeModes::shoot;
+	}
+
+	else if(j_Main.getDigital(okapi::ControllerDigital::R2))
 	{
 		runIntake = true;
 	}
@@ -12,10 +17,7 @@ void driverIntakeControl()
 		runIntake = false;
 	}
 
-	// if(j_Main.getDigital(okapi::ControllerDigital::R1))
-	// {
-	// 	setIntakePower(127);
-	// }
+
 	// else if(j_Main.getDigital(okapi::ControllerDigital::R2))
 	// {
 	// 	setIntakePower(-127);

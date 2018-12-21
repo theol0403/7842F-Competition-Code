@@ -1,21 +1,16 @@
 #include "IntakeTask.hpp"
 
 
-enum class intakeModes
-{
-  loading,
-  collecting,
-  off,
-  shoot
-};
+
 
 bool runIntake = false;
 bool currentIntake = runIntake;
 
+intakeModes intakeMode = intakeModes::loading;
+
 void intakeControlTask(void*)
 {
 
-  intakeModes intakeMode = intakeModes::loading;
 
   while(true)
   {
@@ -27,7 +22,7 @@ void intakeControlTask(void*)
       intakeMode = intakeModes::loading;
       currentIntake = true;
     }
-    else if(!runIntake)
+    else if(!runIntake && currentIntake)
     {
       intakeMode = intakeModes::off;
       currentIntake = false;
@@ -56,6 +51,14 @@ void intakeControlTask(void*)
       {
         //Run intake
         setIntakePower(100);
+        break;
+      }
+
+      case intakeModes::shoot:
+      {
+        setIndexerVelocity(200);
+        pros::delay(200);
+        intakeMode = intakeModes::loading;
         break;
       }
 
