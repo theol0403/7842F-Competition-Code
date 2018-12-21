@@ -46,23 +46,29 @@ namespace lib7842
 
     for(const int wantedSig : wantedSignatures)
     {
-      int objectCount = m_thisVision->read_by_sig(0, wantedSig, destContainer.arrayLength, tempVisionArray);
-      if(objectCount > destContainer.arrayLength) objectCount = 0; //If there are no objects pros returns a huge number
+      int readCount = m_thisVision->read_by_sig(0, wantedSig, destContainer.arrayLength, tempVisionArray);
+      if(readCount > destContainer.arrayLength) readCount = 0; //If there are no objects pros returns a huge number
 
-      for (int objectNum = 0; objectNum < objectCount; objectNum++)
+      int goodCount = 0;
+
+      for (int objectNum = 0; objectNum < readCount; objectNum++)
       {
-        if(tempVisionArray[objectNum].signature != wantedSig) std::cout << "SIG IS NOT WHAT I WANT";
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = tempVisionArray[objectNum].width;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = tempVisionArray[objectNum].height;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = tempVisionArray[objectNum].x_middle_coord;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = tempVisionArray[objectNum].y_middle_coord;
-        destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+        if(tempVisionArray[objectNum].signature != VISION_OBJECT_ERR_SIG)
+        {
+          if(tempVisionArray[objectNum].signature != wantedSig) { std::cout << "REEEE: " << tempVisionArray[objectNum].signature << "\n"; }
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = tempVisionArray[objectNum].signature;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = tempVisionArray[objectNum].left_coord;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = tempVisionArray[objectNum].top_coord;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = tempVisionArray[objectNum].width;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = tempVisionArray[objectNum].height;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = tempVisionArray[objectNum].height * tempVisionArray[objectNum].width;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = tempVisionArray[objectNum].x_middle_coord;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = tempVisionArray[objectNum].y_middle_coord;
+          destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+          goodCount++;
+        }
       }
-      destContainer.currentCount += objectCount;
+      destContainer.currentCount += goodCount;
     }
     delete[] tempVisionArray;
   }
