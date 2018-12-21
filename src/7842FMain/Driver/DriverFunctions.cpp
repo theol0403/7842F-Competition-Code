@@ -4,31 +4,31 @@
 void driverIntakeControl()
 {
 
-	if(j_Main.getDigital(okapi::ControllerDigital::R1))
-	{
-		setIntakePower(127);
-	}
-	else if(j_Main.getDigital(okapi::ControllerDigital::R2))
-	{
-		setIntakePower(-127);
-	}
-	else
-	{
-		setIntakePower(0);
-	}
-
-	if(j_Main.getDigital(okapi::ControllerDigital::L1))
-	{
-		setIndexerPower(127);
-	}
-	else if(j_Main.getDigital(okapi::ControllerDigital::L2))
-	{
-		setIndexerPower(-127);
-	}
-	else
-	{
-		setIndexerPower(0);
-	}
+	// if(j_Main.getDigital(okapi::ControllerDigital::R1))
+	// {
+	// 	setIntakePower(127);
+	// }
+	// else if(j_Main.getDigital(okapi::ControllerDigital::R2))
+	// {
+	// 	setIntakePower(-127);
+	// }
+	// else
+	// {
+	// 	setIntakePower(0);
+	// }
+	//
+	// if(j_Main.getDigital(okapi::ControllerDigital::L1))
+	// {
+	// 	setIndexerPower(127);
+	// }
+	// else if(j_Main.getDigital(okapi::ControllerDigital::L2))
+	// {
+	// 	setIndexerPower(-127);
+	// }
+	// else
+	// {
+	// 	setIndexerPower(0);
+	// }
 }
 
 

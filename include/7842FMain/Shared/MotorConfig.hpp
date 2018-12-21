@@ -3,7 +3,8 @@
 
 extern okapi::Controller j_Main;
 
-
+extern okapi::Motor m_Indexer;
+extern pros::ADILineSensor s_intakeSensor;
 
 void setFlywheelPower(double);
 double getFlywheelRPM();
