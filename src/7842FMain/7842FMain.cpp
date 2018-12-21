@@ -43,12 +43,11 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       pros::delay(500);
-      s_intakeSensor.calibrate();
 
       flywheelTask_t = new pros::Task(flywheelTask);
     //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
-
+      initializeDevices();
       initializeBase();
 
       // while(true)
@@ -126,18 +125,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       robotChassis->stop();
 
-      m_Indexer.setBrakeMode(AbstractMotor::brakeMode::hold);
-      pros::delay(500);
-      while(s_intakeSensor.get_value_calibrated() > -300)
-      {
-        m_Indexer.moveVelocity(100);
-      }
-      m_Indexer.moveVelocity(0);
-
-
       while(true)
       {
-        std::cout << s_intakeSensor.get_value_calibrated() << std::endl;
+        std::cout << getIndexerSensor() << std::endl;
         checkBaseStatus();
         driverBaseControl();
 

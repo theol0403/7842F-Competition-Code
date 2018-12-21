@@ -14,43 +14,45 @@ const int8_t e_m_RightBack = -8;
 const int8_t e_m_LeftFront = 17;
 const int8_t e_m_LeftBack = 18;
 
-pros::ADILineSensor s_intakeSensor('A');
+
+okapi::Motor* m_Flywheel = nullptr;
+okapi::Motor* m_Flywheel2 = nullptr;
+okapi::MotorGroup* m_FlywheelGroup = nullptr;
+
+okapi::Motor* m_Intake = nullptr;
+okapi::Motor* m_Indexer = nullptr;
+
+pros::ADILineSensor* s_indexerSensor = nullptr;
 
 okapi::ADIEncoder leftEncoder(3, 4);
 okapi::ADIEncoder rightEncoder(5, 6);
 okapi::ADIEncoder middleEncoder(7, 8);
 
 
-//Flywheel -----------------------
-okapi::Motor m_Flywheel(motorEnum(e_m_Flywheel), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
-okapi::Motor m_Flywheel2(motorEnum(e_m_Flywheel2), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
-okapi::MotorGroup m_FlywheelGroup({m_Flywheel, m_Flywheel2});
-
-void setFlywheelPower(double speed)
+void initializeDevices()
 {
-	m_FlywheelGroup.moveVoltage(speed/127.0*12000);
+	m_Flywheel = new okapi::Motor(motorEnum(e_m_Flywheel), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+	m_Flywheel2 = new okapi::Motor(motorEnum(e_m_Flywheel2), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+	m_FlywheelGroup = new okapi::MotorGroup({*m_Flywheel, *m_Flywheel2});
+
+	m_Intake = new okapi::Motor(motorEnum(e_m_Intake), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+	m_Indexer = new okapi::Motor(motorEnum(e_m_Indexer), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+	m_Indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
+
+	s_indexerSensor = new pros::ADILineSensor('A');
+	s_indexerSensor->calibrate();
+
 }
 
-double getFlywheelRPM()
-{
-	return m_FlywheelGroup.getActualVelocity() * 15; // 1:15 ratio from motor output to flywhel speed
-}
 
-//Intake -----------------------
-okapi::Motor m_Intake(motorEnum(e_m_Intake), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+void setFlywheelPower(double speed) {	m_FlywheelGroup->moveVoltage(speed/127.0*12000); }
+double getFlywheelRPM() { return m_FlywheelGroup->getActualVelocity() * 15; } // 1:15 ratio from motor output to flywhel speed
 
-void setIntakePower(double speed)
-{
-	m_Intake.moveVoltage(speed/127.0*12000);
-}
+void setIntakePower(double speed) { m_Intake->moveVoltage(speed/127.0*12000); }
+void setIndexerPower(double speed) { m_Indexer->moveVoltage(speed/127.0*12000); }
+void setIndexerVelocity(double speed) {	m_Indexer->moveVelocity(speed); }
 
-//Indexer -----------------------
-okapi::Motor m_Indexer(motorEnum(e_m_Indexer), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
-
-void setIndexerPower(double speed)
-{
-	m_Indexer.moveVoltage(speed/127.0*12000);
-}
+double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 
 
 //Base -----------------------
