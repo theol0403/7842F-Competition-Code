@@ -72,8 +72,8 @@ void ObjectTrackingTask(void*)
     std::cout << rawObjects.currentCount;
     mainScreenDrawing.drawSimpleObjects(rawObjects);
 
-   //objectSmoothing.smoothObjects();
-//   mainScreenDrawing.drawSimpleObjects(smoothedObjects);
+    objectSmoothing.smoothObjects();
+    mainScreenDrawing.drawSimpleObjects(smoothedObjects);
 
 
     pros::delay(100);

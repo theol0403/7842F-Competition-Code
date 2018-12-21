@@ -167,10 +167,10 @@ namespace lib7842
         m_sourceObjects.at(objectNum).matchFound = false;
         m_sourceObjects.at(objectNum).lifeCounter = 0;
       }
-      else std::cout << "Invalid Source: Err" << objectNum << "\n";
+      else std::cout << "ERR_SIG In Source: " << objectNum << "\n";
     }
     //Resets the remaining slots in the m_sourceObjects
-    clearArray(m_sourceObjects, m_sourceContainer->currentCount, m_sourceContainer->arrayLength-1);
+  //  clearArray(m_sourceObjects, m_sourceContainer->currentCount, m_sourceContainer->arrayLength-1);
     sortArrayY(m_sourceObjects, 0, m_sourceContainer->currentCount-1); //Sorts m_sourceObjects by Y
   }
 
@@ -211,32 +211,32 @@ namespace lib7842
     return (emaAlpha * newValue + (1.0 - emaAlpha) * lastValue);
   }
 
-  void ObjectSmoothing::mergeObject(sortedObjects_t &destObject, sortedObjects_t &newObject)
+  void ObjectSmoothing::mergeObject(sortedObjects_t &destObject, sortedObjects_t &sourceObject)
   {
-    destObject.objWidth = emaCalculate(destObject.objWidth, newObject.objWidth, m_emaAlpha);
-    destObject.objHeight = emaCalculate(destObject.objHeight, newObject.objHeight, m_emaAlpha);
+    destObject.objWidth = emaCalculate(destObject.objWidth, sourceObject.objWidth, m_emaAlpha);
+    destObject.objHeight = emaCalculate(destObject.objHeight, sourceObject.objHeight, m_emaAlpha);
 
-    destObject.objX = emaCalculate(destObject.objX, newObject.objX, m_emaAlpha) + destObject.objXVel;
-    destObject.objY = emaCalculate(destObject.objY, newObject.objY, m_emaAlpha) + destObject.objYVel;
-    destObject.objCenterX = emaCalculate(destObject.objCenterX, newObject.objCenterX, m_emaAlpha) + destObject.objXVel;
-    destObject.objCenterY = emaCalculate(destObject.objCenterY, newObject.objCenterY, m_emaAlpha) + destObject.objYVel;
+    destObject.objX = emaCalculate(destObject.objX, sourceObject.objX, m_emaAlpha) + destObject.objXVel;
+    destObject.objY = emaCalculate(destObject.objY, sourceObject.objY, m_emaAlpha) + destObject.objYVel;
+    destObject.objCenterX = emaCalculate(destObject.objCenterX, sourceObject.objCenterX, m_emaAlpha) + destObject.objXVel;
+    destObject.objCenterY = emaCalculate(destObject.objCenterY, sourceObject.objCenterY, m_emaAlpha) + destObject.objYVel;
 
-    destObject.objXVel = emaCalculate(destObject.objXVel, (newObject.objCenterX - destObject.objCenterX), m_emaAlphaVel);
-    destObject.objYVel = emaCalculate(destObject.objYVel, (newObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
+    destObject.objXVel = emaCalculate(destObject.objXVel, (sourceObject.objCenterX - destObject.objCenterX), m_emaAlphaVel);
+    destObject.objYVel = emaCalculate(destObject.objYVel, (sourceObject.objCenterY - destObject.objCenterY), m_emaAlphaVel);
 
     destObject.lifeCounter += m_lifeIncrement;
     if(destObject.lifeCounter > m_lifeMax) destObject.lifeCounter = m_lifeMax;
   }
 
-  void ObjectSmoothing::pushObject(int destSig, sortedObjects_t &destObject, sortedObjects_t &newObject)
+  void ObjectSmoothing::pushObject(int destSig, sortedObjects_t &destObject, sortedObjects_t &sourceObject)
   {
     destObject.objSig = destSig;
-    destObject.objX = newObject.objX;
-    destObject.objY = newObject.objY;
-    destObject.objWidth = newObject.objWidth;
-    destObject.objHeight = newObject.objHeight;
-    destObject.objCenterX = newObject.objCenterX;
-    destObject.objCenterY = newObject.objCenterY;
+    destObject.objX = sourceObject.objX;
+    destObject.objY = sourceObject.objY;
+    destObject.objWidth = sourceObject.objWidth;
+    destObject.objHeight = sourceObject.objHeight;
+    destObject.objCenterX = sourceObject.objCenterX;
+    destObject.objCenterY = sourceObject.objCenterY;
     destObject.objXVel = 0;
     destObject.objYVel = 0;
     destObject.lifeCounter = m_lifeIncrement;
@@ -364,7 +364,11 @@ namespace lib7842
     //Sort array by life
     //sort array by y
 
-    int simTrimCount = 0;
+    //Compares all master objects to each other and removes duplicates
+    //This solves the bug of two signature merges into two master objects in a cross formation
+    // Sig 1 would merge into sig 1 index 1, and sig 3 (linked to sig 1) would merge into sig 1 index 0
+    // This might not be neccecary, the bug could have been caused by invalid emulator information
+    int trimCount = 0;
     for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
     {
       for(int masterNum2 = masterNum+1; masterNum2 < m_masterCount; masterNum2++)
@@ -372,30 +376,31 @@ namespace lib7842
         //  std::cout << std::endl << "Comparing:" << masterNum2 << " with:" << masterNum;
         if(compareObjects(m_masterObjects.at(masterNum), m_masterObjects.at(masterNum2), m_masterObjects.at(masterNum).objSig))
         {
-          simTrimCount++;
+          trimCount++;
           trimObject(m_masterObjects.at(masterNum2));
         }
       }
     }
-    if(m_debugMode > 0) std::cout << " + " << simTrimCount;
+    if(m_debugMode > 0) std::cout << " + " << trimCount;
 
-    int purgeCount = 0;
 
+    int removeCount = 0;
     int newMasterCount = m_masterCount;
     for(int masterNum = 0; masterNum < m_masterCount; masterNum++)
     {
       if(m_masterObjects.at(masterNum).lifeCounter <= 0)
       {
-        purgeCount++;
+        removeCount++;
         newMasterCount--;
       }
     }
 
-    if(m_debugMode > 0) std::cout << " | " << "R:" << purgeCount;
+    if(m_debugMode > 0) std::cout << " | " << "R:" << removeCount;
 
     sortArrayLife(m_masterObjects, 0, m_masterCount-1); //Moves all 0 objects to the right
     m_masterCount = newMasterCount;
 
+    //This sorts the array by life, and then within the life sorts it by Y
     int startIndex = 0;
     for(int lifeCount = m_lifeMax; (lifeCount > m_lifeMax - m_lifeThreshold) && (startIndex < m_masterCount); lifeCount--)
     {
@@ -414,7 +419,7 @@ namespace lib7842
       startIndex = searchBoundary;
     }
 
-    clearArray(m_masterObjects, m_masterCount, m_masterLength-1);
+  //  clearArray(m_masterObjects, m_masterCount, m_masterLength-1);
   }
 
 
@@ -428,6 +433,7 @@ namespace lib7842
   *              | |
   *              |_|
   * Copy objects into destination container*/
+  // TODO: NEEDS WORK
   void ObjectSmoothing::exportObjects(lib7842::ObjectContainer* destContainer, int minLife, int maxLife)
   {
     int exportCount = 0;
@@ -449,7 +455,7 @@ namespace lib7842
       }
       else
       {
-        // destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
+        destContainer->objectArray.at(objectNum).objSig = VISION_OBJECT_ERR_SIG;
         // destContainer->objectArray.at(objectNum).objX = 0;
         // destContainer->objectArray.at(objectNum).objY = 0;
         // destContainer->objectArray.at(objectNum).objWidth = 0;
