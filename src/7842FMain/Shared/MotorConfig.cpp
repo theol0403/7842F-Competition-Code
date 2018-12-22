@@ -45,6 +45,11 @@ void initializeDevices()
 	s_leftEncoder = new okapi::ADIEncoder(3, 4);
 	s_rightEncoder = new okapi::ADIEncoder(5, 6);
 	s_middleEncoder = new okapi::ADIEncoder(7, 8);
+	
+	s_leftEncoder->reset();
+	s_rightEncoder->reset();
+	s_middleEncoder->reset();
+
 
 }
 
@@ -65,30 +70,32 @@ std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 void initializeBase()
 {
-// 	robotChassis = okapi::ChassisControllerBuilder()
-// 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-// 	.withSensors(*s_leftEncoder, *s_rightEncoder)
-// 	.withMiddleEncoder(*s_middleEncoder)
-// 	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
-// //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
-// 	.withOdometry()
-// 	.buildOdometry();
+	// 	robotChassis = okapi::ChassisControllerBuilder()
+	// 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
+	// 	.withSensors(*s_leftEncoder, *s_rightEncoder)
+	// 	.withMiddleEncoder(*s_middleEncoder)
+	// 	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
+	// //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
+	// 	.withOdometry()
+	// 	.buildOdometry();
 
 
-robotChassis = okapi::ChassisControllerBuilder()
-//.withMotors(std::make_shared<ADIMotor>('a'), std::make_shared<ADIMotor>('b'))
-.withSensors(*s_leftEncoder, *s_rightEncoder)
-.withMiddleEncoder(*s_middleEncoder)
-.withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4.125_in}, okapi::quadEncoderTPR})
-//	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
-.withOdometry()
-.buildOdometry();
+	robotChassis = okapi::ChassisControllerBuilder()
+	.withMotors(1, 2)
+	.withSensors(*s_leftEncoder, *s_rightEncoder)
+	.withMiddleEncoder(*s_middleEncoder)
+	.withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4.125_in}, okapi::quadEncoderTPR})
+	//	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
+	.withOdometry()
+	.buildOdometry();
 
 	robotProfile = okapi::AsyncMotionProfileControllerBuilder()
 	.withOutput(robotChassis)
 	.withLimits({1.0, 2.0, 10.0})
 	.buildMotionProfileController();
 
+	pros::delay(500);
+	robotChassis->setSensorVals(10, 10, 0);
 	robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
 }
 

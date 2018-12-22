@@ -45,28 +45,28 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      pros::delay(500);
+      pros::delay(1000);
       initializeDevices();
       initializeBase();
-      pros::delay(500);
 
-//      flywheelTask_t = new pros::Task(flywheelTask);
-//      intakeTask_t = new pros::Task(intakeControlTask);
-    //  objectTask_t = new pros::Task(ObjectTrackingTask);
+      //      flywheelTask_t = new pros::Task(flywheelTask);
+      //      intakeTask_t = new pros::Task(intakeControlTask);
+      //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
+robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
 
       while(true)
       {
-        OdomState odomState = robotChassis->getState();
-        printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-        odomState.x.convert(inch),
-        odomState.y.convert(inch),
-        odomState.theta.convert(degree));
+        auto state = robotChassis->getState();
+        printf("STATE | x: %1.2f, y: %1.2f, theta: %1.2f\n",
+        state.x.convert(inch),
+        state.y.convert(inch),
+        state.theta.convert(degree));
 
-        printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
-        s_leftEncoder->get(),
-        s_rightEncoder->get(),
-        s_middleEncoder->get());
+        printf("CHASSIS GET | left: %d, right: %d, middle: %d\n",
+        (int)robotChassis->getSensorVals()[0],
+        (int)robotChassis->getSensorVals()[1],
+        (int)robotChassis->getSensorVals()[2]);
 
         pros::delay(100);
       }
@@ -136,8 +136,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         checkBaseStatus();
         driverBaseControl();
 
-      //  driverIntakeControl();
-    //    driverFlywheelControl();
+        //  driverIntakeControl();
+        //    driverFlywheelControl();
 
         pros::delay(200);
       }
