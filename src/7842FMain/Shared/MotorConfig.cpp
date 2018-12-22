@@ -65,14 +65,24 @@ std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 void initializeBase()
 {
-	robotChassis = okapi::ChassisControllerBuilder()
-	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-	.withSensors(*s_leftEncoder, *s_rightEncoder)
-	.withMiddleEncoder(*s_middleEncoder)
-	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
+// 	robotChassis = okapi::ChassisControllerBuilder()
+// 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
+// 	.withSensors(*s_leftEncoder, *s_rightEncoder)
+// 	.withMiddleEncoder(*s_middleEncoder)
+// 	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
+// //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
+// 	.withOdometry()
+// 	.buildOdometry();
+
+
+robotChassis = okapi::ChassisControllerBuilder()
+//.withMotors(std::make_shared<ADIMotor>('a'), std::make_shared<ADIMotor>('b'))
+.withSensors(*s_leftEncoder, *s_rightEncoder)
+.withMiddleEncoder(*s_middleEncoder)
+.withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4.125_in}, okapi::quadEncoderTPR})
 //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
-	.withOdometry()
-	.buildOdometry();
+.withOdometry()
+.buildOdometry();
 
 	robotProfile = okapi::AsyncMotionProfileControllerBuilder()
 	.withOutput(robotChassis)

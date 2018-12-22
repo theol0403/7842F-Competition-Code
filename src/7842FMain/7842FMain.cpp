@@ -50,8 +50,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       initializeBase();
       pros::delay(500);
 
-      flywheelTask_t = new pros::Task(flywheelTask);
-      intakeTask_t = new pros::Task(intakeControlTask);
+//      flywheelTask_t = new pros::Task(flywheelTask);
+//      intakeTask_t = new pros::Task(intakeControlTask);
     //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
 
@@ -132,12 +132,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
       while(true)
       {
-        std::cout << getIndexerSensor() << std::endl;
+        //std::cout << getIndexerSensor() << std::endl;
         checkBaseStatus();
         driverBaseControl();
 
-        driverIntakeControl();
-        driverFlywheelControl();
+      //  driverIntakeControl();
+    //    driverFlywheelControl();
 
         pros::delay(200);
       }
