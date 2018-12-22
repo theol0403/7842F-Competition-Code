@@ -86,13 +86,14 @@ void initializeBase()
 	.withMiddleEncoder(*s_middleEncoder)
 	.withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4.125_in}, okapi::quadEncoderTPR})
 	.withGains({0.001, 0.00, 0}, {0.001, 0.0, 0}, {0.001, 0, 0})
+	.withMaxVelocity(60)
 	.withOdometry()
 	.buildOdometry();
-  
-	robotProfile = okapi::AsyncMotionProfileControllerBuilder()
-	.withOutput(robotChassis)
-	.withLimits({1.0, 2.0, 10.0})
-	.buildMotionProfileController();
+
+	// robotProfile = okapi::AsyncMotionProfileControllerBuilder()
+	// .withOutput(robotChassis)
+	// .withLimits({1.0, 2.0, 10.0})
+	// .buildMotionProfileController();
 
 	pros::delay(500);
 	robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
