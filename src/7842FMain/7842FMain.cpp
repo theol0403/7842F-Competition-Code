@@ -55,21 +55,21 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
 
-      // while(true)
-      // {
-      //   OdomState odomState = robotChassis->getState();
-      //   printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-      //   odomState.x.convert(inch),
-      //   odomState.y.convert(inch),
-      //   odomState.theta.convert(degree));
-      //
-      //   printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
-      //   leftEncoder.get(),
-      //   rightEncoder.get(),
-      //   middleEncoder.get());
-      //
-      //   pros::delay(100);
-      // }
+      while(true)
+      {
+        OdomState odomState = robotChassis->getState();
+        printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
+        odomState.x.convert(inch),
+        odomState.y.convert(inch),
+        odomState.theta.convert(degree));
+
+        printf("left: %1.2f, right: %1.2f, middle: %1.2f\n",
+        s_leftEncoder->get(),
+        s_rightEncoder->get(),
+        s_middleEncoder->get());
+
+        pros::delay(100);
+      }
     }
 
     /***

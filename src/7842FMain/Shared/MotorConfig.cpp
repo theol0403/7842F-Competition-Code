@@ -24,9 +24,9 @@ okapi::Motor* m_Indexer = nullptr;
 
 pros::ADILineSensor* s_indexerSensor = nullptr;
 
-okapi::ADIEncoder leftEncoder(3, 4);
-okapi::ADIEncoder rightEncoder(5, 6);
-okapi::ADIEncoder middleEncoder(7, 8);
+okapi::ADIEncoder* s_leftEncoder = nullptr;
+okapi::ADIEncoder* s_rightEncoder = nullptr;
+okapi::ADIEncoder* s_middleEncoder = nullptr;
 
 
 void initializeDevices()
@@ -41,6 +41,10 @@ void initializeDevices()
 
 	s_indexerSensor = new pros::ADILineSensor('A');
 	s_indexerSensor->calibrate();
+
+	s_leftEncoder = new okapi::ADIEncoder(3, 4);
+	s_rightEncoder = new okapi::ADIEncoder(5, 6);
+	s_middleEncoder = new okapi::ADIEncoder(7, 8);
 
 }
 
@@ -63,8 +67,8 @@ void initializeBase()
 {
 	robotChassis = okapi::ChassisControllerBuilder()
 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-	.withSensors(leftEncoder, rightEncoder)
-	.withMiddleEncoder(middleEncoder)
+	.withSensors(*s_leftEncoder, *s_rightEncoder)
+	.withMiddleEncoder(*s_middleEncoder)
 	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
 //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 	.withOdometry()
