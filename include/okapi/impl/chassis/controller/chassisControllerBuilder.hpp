@@ -176,13 +176,10 @@ class ChassisControllerBuilder {
    *
    * @param imoveThreshold The minimum length movement.
    * @param iturnThreshold The minimum angle turn.
-   * @param iwheelVelDelta The maximum delta between wheel velocities to consider the robot as
-   * driving straight.
    * @return An ongoing builder.
    */
   ChassisControllerBuilder &withOdometry(const QLength &imoveThreshold = 10_mm,
-                                         const QAngle &iturnThreshold = 1_deg,
-                                         const QSpeed &iwheelVelDelta = 0.0001_mps);
+                                         const QAngle &iturnThreshold = 1_deg);
 
   /**
    * Sets the odometry information, causing the builder to generate an Odometry variant.
@@ -309,7 +306,6 @@ class ChassisControllerBuilder {
 
   bool hasOdom{false}; // Whether odometry was passed
   std::unique_ptr<Odometry> odometry;
-  QSpeed wheelVelDelta;
   QLength moveThreshold;
   QAngle turnThreshold;
 

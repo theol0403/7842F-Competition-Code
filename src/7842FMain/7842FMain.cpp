@@ -46,7 +46,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       pros::delay(1000);
-      
+
       initializeDevices();
       initializeBase();
 
@@ -117,7 +117,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       checkBaseStatus();
       robotChassis->stop();
 
-      robotChassis->moveDistance(4_ft);
+    //  robotChassis->moveDistance(4_ft);
 
       while(true)
       {

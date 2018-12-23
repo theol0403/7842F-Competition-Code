@@ -45,10 +45,9 @@ void driverBaseControl()
     robotChassis->driveToPoint(0_ft, 0_ft);
   }
 
-  //
   printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-  odomState.x.convert(inch),
-  odomState.y.convert(inch),
+  odomState.x.convert(centimeter),
+  odomState.y.convert(centimeter),
   odomState.theta.convert(degree));
 
 

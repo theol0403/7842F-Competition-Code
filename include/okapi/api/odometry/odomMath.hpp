@@ -12,6 +12,11 @@
 #include <tuple>
 
 namespace okapi {
+struct DistanceAndAngle {
+  QLength length{0_m};
+  QAngle theta{0_deg};
+};
+
 class OdomMath {
   public:
   /**
@@ -42,7 +47,7 @@ class OdomMath {
    * @param istate odometry state
    * @return distance and angle to the point
    */
-  static std::tuple<QLength, QAngle>
+  static DistanceAndAngle
   computeDistanceAndAngleToPoint(QLength ix, QLength iy, const OdomState &istate);
 
   private:
