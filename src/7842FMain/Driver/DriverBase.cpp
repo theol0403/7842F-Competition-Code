@@ -1,11 +1,11 @@
 #include "DriverBase.hpp"
 
-static okapi::ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
+//static okapi::ControllerButton b_odomMotionToggle(ControllerId::master, ControllerDigital::A);
 
 void driverJoystick()
 {
-  double rightY = j_Main.getAnalog(okapi::ControllerAnalog::rightY);
-  double leftX = j_Main.getAnalog(okapi::ControllerAnalog::leftX);
+  double rightY = j_Analog(rightY);
+  double leftX = j_Analog(leftX);
 
   //std::cout << "Old: " << leftX;
 
@@ -25,14 +25,19 @@ void driverBaseControl()
 
   okapi::OdomState odomState = robotChassis->getState();
 
-  if(j_Main.getDigital(okapi::ControllerDigital::B))
-  {
-    robotChassis->turnToAngle(0_deg);
-  }
-  else
-  {
-    driverJoystick();
-  }
+  // if(j_Main.getDigital(okapi::ControllerDigital::B))
+  // {
+  //   robotChassis->turnToAngle(0_deg);
+  // }
+  // else
+  // {
+  //   driverJoystick();
+  // }
+
+  // if(b_odomMotionToggle.changedToPressed())
+  // {
+  //   robotChassis->driveToPoint(0_ft, 0_ft);
+  // }
 
   if(j_Main.getDigital(okapi::ControllerDigital::X))
   {
@@ -40,10 +45,6 @@ void driverBaseControl()
     robotChassis->resetSensors();
   }
 
-  if(b_odomMotionToggle.changedToPressed())
-  {
-    robotChassis->driveToPoint(0_ft, 0_ft);
-  }
 
   printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
   odomState.x.convert(centimeter),

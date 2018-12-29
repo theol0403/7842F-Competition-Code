@@ -1,44 +1,65 @@
 #include "DriverFunctions.hpp"
 
+enum dIntakeStates_t
+{
+	none,
+	both,
+	bottom,
+	top
+};
+
+static dIntakeStates_t dIntakeState = none;
+static dIntakeStates_t dLastIntakeState = none;
 
 void driverIntakeControl()
 {
-	 if(j_Main.getDigital(okapi::ControllerDigital::R1))
+	if(j_Digital(R1) && j_Digital(R2))
 	{
-	intakeMode = intakeModes::shoot;
+		dIntakeState = both;
 	}
-
-	else if(j_Main.getDigital(okapi::ControllerDigital::R2))
+	else if(j_Digital(R1))
 	{
-		runIntake = true;
+		dIntakeState = top;
+	}
+	else if(j_Digital(R2))
+	{
+		dIntakeState = bottom;
 	}
 	else
 	{
-		runIntake = false;
+		dIntakeState = none;
 	}
 
+	if(j_Digital(Y))
+	{
+		setIntakeMode(intakeModes::out);
+		dLastIntakeState = none;
+	}
+	else if(dIntakeState != dLastIntakeState)
+	{
+		switch (dIntakeState) {
+			case none: {
+				setIntakeMode(intakeModes::off);
+				break;
+			}
+			case both: {
+				setIntakeMode(intakeModes::shootBoth);
+				break;
+			}
+			case bottom: {
+				setIntakeMode(intakeModes::loading);
+				break;
+			}
+			case top: {
+				setIntakeMode(intakeModes::shootIndexer);
+				break;
+			}
 
-	// else if(j_Main.getDigital(okapi::ControllerDigital::R2))
-	// {
-	// 	setIntakePower(-127);
-	// }
-	// else
-	// {
-	// 	setIntakePower(0);
-	// }
-	//
-	// if(j_Main.getDigital(okapi::ControllerDigital::L1))
-	// {
-	// 	setIndexerPower(127);
-	// }
-	// else if(j_Main.getDigital(okapi::ControllerDigital::L2))
-	// {
-	// 	setIndexerPower(-127);
-	// }
-	// else
-	// {
-	// 	setIndexerPower(0);
-	// }
+		}
+
+		dLastIntakeState = dIntakeState;
+	}
+
 }
 
 

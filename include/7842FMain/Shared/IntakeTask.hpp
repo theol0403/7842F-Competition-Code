@@ -4,14 +4,14 @@
 
 enum class intakeModes
 {
-  loading,
-  collecting,
   off,
-  shoot
+  loading, //Ball into indexer
+  collecting, //Intake running
+  shootBoth,
+  shootIndexer,
+  out
 };
 
 void intakeControlTask(void*);
 
-extern bool runIntake;
-
-extern intakeModes intakeMode;
+void setIntakeMode(intakeModes);

@@ -37,6 +37,7 @@ void initializeDevices()
 
 	m_Intake = new okapi::Motor(motorEnum(e_m_Intake), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
 	m_Indexer = new okapi::Motor(motorEnum(e_m_Indexer), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
+	m_Intake->setBrakeMode(AbstractMotor::brakeMode::hold);
 	m_Indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
 
 	s_indexerSensor = new pros::ADILineSensor('A');
@@ -59,6 +60,7 @@ double getFlywheelRPM() { return m_FlywheelGroup->getActualVelocity() * 15; } //
 
 void setIntakePower(double speed) { m_Intake->moveVoltage(speed/127.0*12000); }
 void setIndexerPower(double speed) { m_Indexer->moveVoltage(speed/127.0*12000); }
+void setIntakeVelocity(double speed) { m_Intake->moveVelocity(speed); }
 void setIndexerVelocity(double speed) {	m_Indexer->moveVelocity(speed); }
 
 double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }

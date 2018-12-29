@@ -2,6 +2,8 @@
 #include "main.h"
 
 extern okapi::Controller j_Main;
+#define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
+#define j_Analog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
 
 void setFlywheelPower(double);
 double getFlywheelRPM();
@@ -9,6 +11,7 @@ double getFlywheelEncoder();
 
 void setIntakePower(double);
 void setIndexerPower(double);
+void setIntakeVelocity(double);
 void setIndexerVelocity(double);
 
 double getIndexerSensor();
