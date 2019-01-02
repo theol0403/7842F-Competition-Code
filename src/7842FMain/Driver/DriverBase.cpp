@@ -48,15 +48,15 @@ void driverBaseControl()
   }
 
 
-  // printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-  // odomState.x.convert(centimeter),
-  // odomState.y.convert(centimeter),
-  // odomState.theta.convert(degree));
-  //
-  //
-  // printf("left: %d, right: %d, middle: %d\n",
-  // robotChassis->getSensorVals()[0],
-  // robotChassis->getSensorVals()[1],
-  // robotChassis->getSensorVals()[2]);
+  printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
+  odomState.x.convert(centimeter),
+  odomState.y.convert(centimeter),
+  odomState.theta.convert(degree));
+
+
+  printf("left: %d, right: %d, middle: %d\n",
+  robotChassis->getSensorVals()[0],
+  robotChassis->getSensorVals()[1],
+  robotChassis->getSensorVals()[2]);
 
 }

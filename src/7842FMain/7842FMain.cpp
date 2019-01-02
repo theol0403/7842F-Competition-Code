@@ -128,7 +128,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         driverIntakeControl();
         driverFlywheelControl();
 
-        pros::delay(20);
+        pros::delay(100);
       }
     }
 
