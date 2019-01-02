@@ -5,7 +5,8 @@ enum dIntakeStates_t
 	none,
 	both,
 	bottom,
-	top
+	top,
+	outButton
 };
 
 static dIntakeStates_t dIntakeState = none;
@@ -32,10 +33,11 @@ void driverIntakeControl()
 
 	if(j_Digital(Y))
 	{
-		setIntakeMode(intakeModes::out);
-		dLastIntakeState = none;
+		dIntakeState = outButton;
 	}
-	else if(dIntakeState != dLastIntakeState)
+	
+
+	if(dIntakeState != dLastIntakeState)
 	{
 		switch (dIntakeState) {
 			case none: {
@@ -52,6 +54,10 @@ void driverIntakeControl()
 			}
 			case top: {
 				setIntakeMode(intakeModes::shootIndexer);
+				break;
+			}
+			case outButton: {
+				setIntakeMode(intakeModes::out);
 				break;
 			}
 

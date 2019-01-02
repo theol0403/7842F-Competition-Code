@@ -17,7 +17,6 @@ const int8_t e_m_LeftBack = 18;
 
 okapi::Motor* m_Flywheel = nullptr;
 okapi::Motor* m_Flywheel2 = nullptr;
-okapi::MotorGroup* m_FlywheelGroup = nullptr;
 
 okapi::Motor* m_Intake = nullptr;
 okapi::Motor* m_Indexer = nullptr;
@@ -33,7 +32,7 @@ void initializeDevices()
 {
 	m_Flywheel = new okapi::Motor(motorEnum(e_m_Flywheel), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
 	m_Flywheel2 = new okapi::Motor(motorEnum(e_m_Flywheel2), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
-	m_FlywheelGroup = new okapi::MotorGroup({*m_Flywheel, *m_Flywheel2});
+
 
 	m_Intake = new okapi::Motor(motorEnum(e_m_Intake), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
 	m_Indexer = new okapi::Motor(motorEnum(e_m_Indexer), okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::degrees);
@@ -51,12 +50,15 @@ void initializeDevices()
 	s_rightEncoder->reset();
 	s_middleEncoder->reset();
 
-
 }
 
 
-void setFlywheelPower(double speed) {	m_FlywheelGroup->moveVoltage(speed/127.0*12000); }
-double getFlywheelRPM() { return m_FlywheelGroup->getActualVelocity() * 15; } // 1:15 ratio from motor output to flywhel speed
+void setFlywheelPower(double speed)
+{
+	m_Flywheel->moveVoltage(speed/127.0*12000);
+	m_Flywheel2->moveVoltage(speed/127.0*12000);
+}
+double getFlywheelRPM() { return m_Flywheel->getActualVelocity() * 15; } // 1:15 ratio from motor output to flywhel speed
 
 void setIntakePower(double speed) { m_Intake->moveVoltage(speed/127.0*12000); }
 void setIndexerPower(double speed) { m_Indexer->moveVoltage(speed/127.0*12000); }
@@ -72,25 +74,25 @@ std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 void initializeBase()
 {
-	// 	robotChassis = okapi::ChassisControllerBuilder()
-	// 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-	// 	.withSensors(*s_leftEncoder, *s_rightEncoder)
-	// 	.withMiddleEncoder(*s_middleEncoder)
-	// 	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
-	// //	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
-	// 	.withOdometry()
-	// 	.buildOdometry();
-
-
 	robotChassis = okapi::ChassisControllerBuilder()
-	.withMotors(1, -2)
+	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
 	.withSensors(*s_leftEncoder, *s_rightEncoder)
 	.withMiddleEncoder(*s_middleEncoder)
-	.withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4_in}, okapi::quadEncoderTPR})
-	.withGains({0.003, 0.00, 0}, {0.003, 0.0, 0})
-	.withMaxVelocity(45)
+	.withDimensions(ChassisScales{{2.75_in, 12.9_in, 1_in, 2.75_in}, okapi::quadEncoderTPR})
+	//	.withGains({0.0022, 0.00, 0}, {0.002, 0.0, 0}, {0.0016, 0, 0})
 	.withOdometry()
 	.buildOdometry();
+
+
+	// robotChassis = okapi::ChassisControllerBuilder()
+	// .withMotors(1, -2)
+	// .withSensors(*s_leftEncoder, *s_rightEncoder)
+	// .withMiddleEncoder(*s_middleEncoder)
+	// .withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4_in}, okapi::quadEncoderTPR})
+	// .withGains({0.003, 0.00, 0}, {0.003, 0.0, 0})
+	// .withMaxVelocity(45)
+	// .withOdometry()
+	// .buildOdometry();
 
 	// robotProfile = okapi::AsyncMotionProfileControllerBuilder()
 	// .withOutput(robotChassis)

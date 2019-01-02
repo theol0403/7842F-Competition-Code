@@ -50,8 +50,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       initializeDevices();
       initializeBase();
 
-      //      flywheelTask_t = new pros::Task(flywheelTask);
-      //      intakeTask_t = new pros::Task(intakeControlTask);
+       flywheelTask_t = new pros::Task(flywheelTask);
+           intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
 
       robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
@@ -125,10 +125,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         checkBaseStatus();
         driverBaseControl();
 
-        //  driverIntakeControl();
-        //    driverFlywheelControl();
+        driverIntakeControl();
+        driverFlywheelControl();
 
-        pros::delay(100);
+        pros::delay(20);
       }
     }
 

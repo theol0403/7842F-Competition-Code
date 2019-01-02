@@ -12,6 +12,7 @@ void intakeControlTask(void*)
   {
     switch(intakeMode)
     {
+
       case intakeModes::off:
       {
         setIntakeVelocity(0);
@@ -26,7 +27,7 @@ void intakeControlTask(void*)
         //collecting
         setIntakeVelocity(200);
         setIndexerVelocity(100);
-        if(getIndexerSensor() < -300)
+        if(getIndexerSensor() < -500)
         {
           intakeMode = intakeModes::collecting;
         }
@@ -45,8 +46,8 @@ void intakeControlTask(void*)
       {
         setIntakeVelocity(200);
         setIndexerVelocity(200);
-        intakeMode = intakeModes::loading; // Allows mode to be set to off while waiting
-        pros::delay(400);
+        //intakeMode = intakeModes::loading; // Allows mode to be set to off while waiting
+        pros::delay(200);
         break;
       }
 
@@ -55,7 +56,7 @@ void intakeControlTask(void*)
         setIntakeVelocity(0);
         setIndexerVelocity(200);
         intakeMode = intakeModes::loading; // Allows mode to be set to off while waiting
-        pros::delay(400);
+        pros::delay(200);
         break;
       }
 
