@@ -25,14 +25,14 @@ void driverBaseControl()
 
   okapi::OdomState odomState = robotChassis->getState();
 
-  // if(j_Main.getDigital(okapi::ControllerDigital::B))
-  // {
-  //   robotChassis->turnToAngle(0_deg);
-  // }
-  // else
-  // {
-  //   driverJoystick();
-  // }
+  if(j_Digital(A))
+  {
+    robotChassis->turnToAngle(0_deg);
+  }
+  else
+  {
+    driverJoystick();
+  }
 
   driverJoystick();
 
