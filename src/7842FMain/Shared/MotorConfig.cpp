@@ -44,7 +44,7 @@ void initializeDevices()
 
 	s_leftEncoder = new okapi::ADIEncoder(3, 4);
 	s_rightEncoder = new okapi::ADIEncoder(5, 6);
-	s_middleEncoder = new okapi::ADIEncoder(7, 8);
+	s_middleEncoder = new okapi::ADIEncoder(8, 7);
 
 	s_leftEncoder->reset();
 	s_rightEncoder->reset();

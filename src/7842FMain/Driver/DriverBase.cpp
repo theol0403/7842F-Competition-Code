@@ -41,7 +41,7 @@ void driverBaseControl()
   //   robotChassis->driveToPoint(0_ft, 0_ft);
   // }
 
-  if(j_Main.getDigital(okapi::ControllerDigital::X))
+  if(j_Digital(B))
   {
     robotChassis->setState({0_ft, 0_ft, 0_deg});
     robotChassis->resetSensors();

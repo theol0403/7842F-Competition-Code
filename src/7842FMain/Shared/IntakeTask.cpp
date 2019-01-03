@@ -8,8 +8,13 @@ void setIntakeMode(intakeModes iIntakeMode)
 
 void intakeControlTask(void*)
 {
+  okapi::EmaFilter intakeFilter(0.5);
   while(true)
   {
+    double filteredSensor = intakeFilter.filter(getIndexerSensor());
+    std::cout << "Sensor:" << getIndexerSensor() << std::endl;
+    std::cout << "Filter:" << filteredSensor << std::endl;
+
     switch(intakeMode)
     {
 
@@ -27,7 +32,7 @@ void intakeControlTask(void*)
         //collecting
         setIntakeVelocity(200);
         setIndexerVelocity(100);
-        if(getIndexerSensor() < -500)
+        if(filteredSensor < -300)
         {
           intakeMode = intakeModes::collecting;
         }
