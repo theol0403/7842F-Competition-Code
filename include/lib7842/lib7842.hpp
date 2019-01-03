@@ -7,3 +7,5 @@
 #include "lib7842/other/timingSystem.hpp"
 
 #include "lib7842/pid/pidVelSystem.hpp"
+
+#include "lib7842/odometry/odometry.hpp"

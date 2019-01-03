@@ -23,16 +23,16 @@ void driverJoystick()
 void driverBaseControl()
 {
 
-  okapi::OdomState odomState = robotChassis->getState();
+  //okapi::OdomState odomState = robotChassis->getState();
 
-  if(j_Digital(A))
-  {
-    robotChassis->turnToAngle(0_deg);
-  }
-  else
-  {
-    driverJoystick();
-  }
+  // if(j_Digital(A))
+  // {
+  //   robotChassis->turnToAngle(0_deg);
+  // }
+  // else
+  // {
+  //   driverJoystick();
+  // }
 
   driverJoystick();
 
@@ -41,22 +41,22 @@ void driverBaseControl()
   //   robotChassis->driveToPoint(0_ft, 0_ft);
   // }
 
-  if(j_Digital(B))
-  {
-    robotChassis->setState({0_ft, 0_ft, 0_deg});
-    robotChassis->resetSensors();
-  }
+  // if(j_Digital(B))
+  // {
+  //   robotChassis->setState({0_ft, 0_ft, 0_deg});
+  //   robotChassis->resetSensors();
+  // }
 
 
-  printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-  odomState.x.convert(centimeter),
-  odomState.y.convert(centimeter),
-  odomState.theta.convert(degree));
-
-
-  printf("left: %d, right: %d, middle: %d\n",
-  robotChassis->getSensorVals()[0],
-  robotChassis->getSensorVals()[1],
-  robotChassis->getSensorVals()[2]);
+  // printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
+  // odomState.x.convert(centimeter),
+  // odomState.y.convert(centimeter),
+  // odomState.theta.convert(degree));
+  //
+  //
+  // printf("left: %d, right: %d, middle: %d\n",
+  // robotChassis->getSensorVals()[0],
+  // robotChassis->getSensorVals()[1],
+  // robotChassis->getSensorVals()[2]);
 
 }

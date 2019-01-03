@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "lib7842/odometry/odometry.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -18,8 +19,10 @@ double getIndexerSensor();
 
 void initializeDevices();
 
-extern std::shared_ptr<okapi::OdomChassisController> robotChassis;
+extern std::shared_ptr<okapi::ChassisController> robotChassis;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
+
+extern lib7842::Odometry* chassisOdom;
 
 void initializeBase();
 void checkBaseStatus();

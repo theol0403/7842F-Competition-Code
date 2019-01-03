@@ -69,38 +69,35 @@ double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 
 
 //Base -----------------------
-std::shared_ptr<okapi::OdomChassisController> robotChassis = nullptr;
+std::shared_ptr<okapi::ChassisController> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
+
+lib7842::Odometry* chassisOdom = nullptr;
 
 void initializeBase()
 {
 	robotChassis = okapi::ChassisControllerBuilder()
 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
 	.withSensors(*s_leftEncoder, *s_rightEncoder)
-	.withMiddleEncoder(*s_middleEncoder)
-	.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in, 3_in, 2.75_in}, okapi::quadEncoderTPR})
+	.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in}, okapi::quadEncoderTPR})
 	.withGains({0.00022, 0.00, 0}, {0.0002, 0.0, 0}, {0.00000005, 0, 0})
-	.withOdometry()
-	.buildOdometry();
+	.build();
 
-
-	// robotChassis = okapi::ChassisControllerBuilder()
-	// .withMotors(1, -2)
-	// .withSensors(*s_leftEncoder, *s_rightEncoder)
-	// .withMiddleEncoder(*s_middleEncoder)
-	// .withDimensions(ChassisScales{{4_in, 27_cm, 18_cm, 4_in}, okapi::quadEncoderTPR})
-	// .withGains({0.003, 0.00, 0}, {0.003, 0.0, 0})
-	// .withMaxVelocity(45)
-	// .withOdometry()
-	// .buildOdometry();
 
 	// robotProfile = okapi::AsyncMotionProfileControllerBuilder()
 	// .withOutput(robotChassis)
 	// .withLimits({1.0, 2.0, 10.0})
 	// .buildMotionProfileController();
 
-	pros::delay(500);
-	robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
+	chassisOdom = new lib7842::Odometry(
+		s_leftEncoder, s_rightEncoder, s_middleEncoder,
+		4.25, 4.25, 0.55,
+		2.75 * 1.6, 2.75
+	);
+
+	chassisOdom->setPos(0, 0, 0);
+	chassisOdom->resetSensors();
+
 }
 
 void checkBaseStatus()

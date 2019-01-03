@@ -3,6 +3,7 @@
 #include "MotorConfig.hpp"
 #include "Shared/FlywheelTask.hpp"
 #include "Shared/IntakeTask.hpp"
+#include "Shared/OdomTask.hpp"
 
 #include "Shared/ObjectTracking.hpp"
 
@@ -28,6 +29,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     pros::Task* intakeTask_t = nullptr;
     pros::Task* flywheelTask_t = nullptr;
     pros::Task* objectTask_t = nullptr;
+    pros::Task* odomTask_t = nullptr;
 
 
 
@@ -50,11 +52,13 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       initializeDevices();
       initializeBase();
 
-       flywheelTask_t = new pros::Task(flywheelTask);
-           intakeTask_t = new pros::Task(intakeControlTask);
+      flywheelTask_t = new pros::Task(flywheelTask);
+      intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
+      odomTask_t = new pros::Task(odomTask);
 
-      robotChassis->setState(okapi::OdomState{0_ft, 0_ft, 0_deg});
+      chassisOdom->setPos(0, 0, 0);
+      chassisOdom->resetSensors();
 
     }
 
@@ -117,7 +121,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       checkBaseStatus();
       robotChassis->stop();
 
-    //  robotChassis->moveDistance(4_ft);
+      //  robotChassis->moveDistance(4_ft);
 
       while(true)
       {
