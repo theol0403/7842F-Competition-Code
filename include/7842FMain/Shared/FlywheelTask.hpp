@@ -1,6 +1,6 @@
 #pragma once
 #include "main.h"
-#include "7842FMain/Shared/MotorConfig.hpp"
+#include "7842FMain/MotorConfig.hpp"
 #include "lib7842/pid/pidVelSystem.hpp"
 
 void flywheelTask(void*);

@@ -1,6 +1,6 @@
 #include "main.h"
 
-#include "Shared/MotorConfig.hpp"
+#include "MotorConfig.hpp"
 #include "Shared/FlywheelTask.hpp"
 #include "Shared/IntakeTask.hpp"
 

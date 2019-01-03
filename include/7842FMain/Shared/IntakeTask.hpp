@@ -1,6 +1,6 @@
 #pragma once
 #include "main.h"
-#include "7842FMain/Shared/MotorConfig.hpp"
+#include "7842FMain/MotorConfig.hpp"
 
 enum class intakeModes
 {
