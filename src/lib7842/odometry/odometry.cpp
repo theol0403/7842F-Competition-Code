@@ -18,8 +18,8 @@ namespace lib7842
     m_distanceRight(distanceRight),
     m_distanceMiddle(distanceMiddle),
 
-    m_mainWheelDiam(mainWheelDiam),
-    m_middleWheelDiam(middleWheelDiam)
+    m_straight(mainWheelDiam * PI),
+    m_middle(middleWheelDiam * PI)
     {
 
     };
@@ -38,9 +38,9 @@ namespace lib7842
       double newR = m_rEncoder->get();
       double newC = m_mEncoder->get();
 
-      double dL = (m_lLastVal - newL) / 41.69;
-      double dR = (m_rLastVal - newR) / 41.69;
-      double dC = (m_mLastVal - newC) / 41.69;
+      double dL = (m_lLastVal - newL) / m_straight;
+      double dR = (m_rLastVal - newR) / m_straight;
+      double dC = (m_mLastVal - newC) / m_middle;
 
       m_lLastVal = newL;
       m_rLastVal = newR;
@@ -54,8 +54,8 @@ namespace lib7842
       double localOffX, localOffY;
 
       if(dA != 0) {
-        localOffX = 2 * sin(dA / 2) * ((dC / dA) + SS);
-        localOffY = 2 * sin(dA / 2) * ((dR / dA) + SR);
+        localOffX = 2 * sin(dA / 2) * ((dC / dA) + m_distanceMiddle);
+        localOffY = 2 * sin(dA / 2) * ((dR / dA) + m_distanceRight);
       } else {
         localOffX = dC;
         localOffY = dR;

@@ -1,10 +1,6 @@
 #pragma once
 #include "main.h"
 
-#define WHEEL_D 41.69
-#define SL 4.25 // TODO: measure all of these
-#define SR 4.25
-#define SS 0.55
 
 namespace lib7842
 {
@@ -37,8 +33,8 @@ namespace lib7842
     const double m_distanceRight;
     const double m_distanceMiddle;
 
-    const double m_mainWheelDiam;
-    const double m_middleWheelDiam;
+    const double m_straight;
+    const double m_middle;
 
     double m_lLastVal = 0;
     double m_rLastVal = 0;
