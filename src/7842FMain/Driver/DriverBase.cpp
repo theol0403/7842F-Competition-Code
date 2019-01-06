@@ -30,8 +30,7 @@ void driverBaseControl()
     //    robotChassis->turnAngle(90_deg);
     //std::cout << lib7842::toDEG(chassisOdomTracker->aPos) << std::endl;
     //std::cout << (lib7842::toDEG(chassisOdomTracker->aPos) * degree).convert(degree) << std::endl;
-    robotChassis->turnAngle(0_deg - (lib7842::toDEG(chassisOdomTracker->aPos) * degree));
-    pros::delay(500);
+    chassisOdomController->driveToPointAndAngle(lib7842::OdomPoint{5, 15, 0});
   }
   else
   {

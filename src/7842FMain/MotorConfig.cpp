@@ -73,6 +73,7 @@ std::shared_ptr<okapi::ChassisControllerPID> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 lib7842::OdomTracker* chassisOdomTracker = nullptr;
+lib7842::OdomController* chassisOdomController = nullptr;
 
 void initializeBase()
 {
@@ -82,11 +83,11 @@ void initializeBase()
 	robotChassis = ChassisControllerFactory::createPtr(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.0022, 0.00, 0},
-		IterativePosPIDController::Gains{0.002, 0.0, 0},
-		IterativePosPIDController::Gains{0.0006, 0, 0},
+		IterativePosPIDController::Gains{0.001, 0.0001, 0},
+		IterativePosPIDController::Gains{0.0001, 0.0, 0},
+		IterativePosPIDController::Gains{0.0008, 0, 0},
 		AbstractMotor::gearset::green,
-		{2.75_in / 1.6, chassisWidth*2}
+		{2.75_in / 1.6, chassisWidth * 2}
 	);
 
 	chassisOdomTracker = new lib7842::OdomTracker
@@ -95,6 +96,12 @@ void initializeBase()
 		chassisWidth.convert(inch), 8,
 		360 * 1.6, 360,
 		2.75
+	);
+
+	chassisOdomController = new lib7842::OdomController
+	(
+		robotChassis,
+		chassisOdomTracker
 	);
 
 
@@ -107,7 +114,7 @@ void initializeBase()
 		pros::delay(500);
 
 		chassisOdomTracker->resetSensors();
-		chassisOdomTracker->setPos(0, 0, 0);
+		chassisOdomTracker->setPos(lib7842::OdomPoint{0, 0, 0});
 	}
 
 	void checkBaseStatus()

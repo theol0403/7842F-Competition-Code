@@ -22,8 +22,12 @@ namespace lib7842
 
 
     double computeDistanceToPoint(OdomPoint);
-
     double computeAngleToPoint(OdomPoint);
+
+    void turnToAngle(QAngle);
+    void turnToPoint(OdomPoint);
+    void driveToPoint(OdomPoint);
+    void driveToPointAndAngle(OdomPoint);
 
 
   };
