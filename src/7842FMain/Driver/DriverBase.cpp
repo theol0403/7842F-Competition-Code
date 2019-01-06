@@ -28,9 +28,9 @@ void driverBaseControl()
   if(j_Digital(A))
   {
     //    robotChassis->turnAngle(90_deg);
-    //std::cout << lib7842::toDEG(chassisOdom->aPos) << std::endl;
-    //std::cout << (lib7842::toDEG(chassisOdom->aPos) * degree).convert(degree) << std::endl;
-    robotChassis->turnAngle(0_deg - (lib7842::toDEG(chassisOdom->aPos) * degree));
+    //std::cout << lib7842::toDEG(chassisOdomTracker->aPos) << std::endl;
+    //std::cout << (lib7842::toDEG(chassisOdomTracker->aPos) * degree).convert(degree) << std::endl;
+    robotChassis->turnAngle(0_deg - (lib7842::toDEG(chassisOdomTracker->aPos) * degree));
     pros::delay(500);
   }
   else
@@ -47,8 +47,8 @@ void driverBaseControl()
 
   if(j_Digital(B))
   {
-    chassisOdom->setPos(0, 0, 0);
-    chassisOdom->resetSensors();
+    chassisOdomTracker->setPos(0, 0, 0);
+    chassisOdomTracker->resetSensors();
   }
 
 

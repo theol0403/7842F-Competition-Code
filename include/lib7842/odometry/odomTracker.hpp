@@ -15,9 +15,11 @@ namespace lib7842
     return (rad) * (180 / PI);
   }
 
-  struct odomPoint {
-    double x;
-    double y;
+  struct OdomPoint
+  {
+    double x = 0;
+    double y = 0;
+    double theta = 0;
   };
 
   class OdomTracker
@@ -50,14 +52,14 @@ namespace lib7842
     );
 
     // for ease of use we make the x, y, and a vars public
-    double xPos = 0;
-    double yPos = 0;
-    double aPos = 0;
+    OdomPoint trackingPoint {0, 0, 0};
 
     void debug();
     void step();
 
-    void setPos(double x, double y, double a);
+    void setPos(double, double, double);
+    void setPos(OdomPoint);
+
     void resetSensors();
 
     static void odometryTask(void*);

@@ -22,7 +22,7 @@ void initializeDevices();
 extern std::shared_ptr<okapi::ChassisControllerPID> robotChassis;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
 
-extern lib7842::OdomTracker* chassisOdom;
+extern lib7842::OdomTracker* chassisOdomTracker;
 
 void initializeBase();
 void checkBaseStatus();

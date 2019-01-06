@@ -29,9 +29,9 @@ namespace lib7842
   void OdomTracker::debug()
   {
     printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-    xPos,
-    yPos,
-    toDEG(aPos));
+    trackingPoint.x,
+    trackingPoint.y,
+    toDEG(trackingPoint.theta));
   }
 
   void OdomTracker::step()
@@ -50,7 +50,7 @@ namespace lib7842
     m_lastMiddleInch = newMiddleInch;
 
     double newAngle = (newLeftInch - newRightInch) / m_chassisWidth;
-    double dAngle = newAngle - aPos;
+    double dAngle = newAngle - trackingPoint.theta;
 
     // std::cout << "dA: " << dA << std::endl;
 
@@ -69,7 +69,7 @@ namespace lib7842
       localOffY = 2 * sin(dAngle / 2) * ((dAvgMainInch / dAngle) + (m_chassisWidth / 2));
     }
 
-    double avgAngle = aPos + (dAngle / 2);
+    double avgAngle = trackingPoint.theta + (dAngle / 2);
 
     double polarR = sqrt((localOffX * localOffX) + (localOffY * localOffY));
     double polarA = atan2(localOffY, localOffX) - avgAngle;
@@ -90,16 +90,24 @@ namespace lib7842
     }
 
 
-    xPos += dX;
-    yPos += dY;
-    aPos = newAngle;
+    trackingPoint.x += dX;
+    trackingPoint.y += dY;
+    trackingPoint.theta = newAngle;
 
   }
 
-  void OdomTracker::setPos(double x, double y, double a) {
-    xPos = x;
-    yPos = y;
-    aPos = a;
+  void OdomTracker::setPos(double x, double y, double a)
+  {
+    trackingPoint.x = x;
+    trackingPoint.y = y;
+    trackingPoint.theta = a;
+  }
+
+  void OdomTracker::setPos(OdomPoint point)
+  {
+    trackingPoint.x = point.x;
+    trackingPoint.y = point.y;
+    trackingPoint.theta = point.theta;
   }
 
   void OdomTracker::resetSensors()
