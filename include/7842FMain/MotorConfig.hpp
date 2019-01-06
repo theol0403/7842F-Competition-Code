@@ -19,7 +19,7 @@ double getIndexerSensor();
 
 void initializeDevices();
 
-extern std::shared_ptr<okapi::ChassisController> robotChassis;
+extern std::shared_ptr<okapi::ChassisControllerPID> robotChassis;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
 
 extern lib7842::Odometry* chassisOdom;

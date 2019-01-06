@@ -69,18 +69,31 @@ double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 
 
 //Base -----------------------
-std::shared_ptr<okapi::ChassisController> robotChassis = nullptr;
+std::shared_ptr<okapi::ChassisControllerPID> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 lib7842::Odometry* chassisOdom = nullptr;
 
 void initializeBase()
 {
-	robotChassis = okapi::ChassisControllerBuilder()
-	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-	.withDimensions(ChassisScales{{4.115_in, 12.9_in}, okapi::imev5GreenTPR})
-	.withGains({0.00022, 0.00, 0}, {0.0002, 0.0, 0}, {0.0006, 0, 0})
-	.build();
+
+	robotChassis = std::make_shared<ChassisControllerPID>
+	(
+		TimeUtilFactory::create(),
+		std::make_shared<SkidSteerModel>
+		(
+			std::make_shared<MotorGroup>(MotorGroup({e_m_LeftFront, e_m_LeftBack})),
+			std::make_shared<MotorGroup>(MotorGroup({e_m_RightFront, e_m_RightBack})),
+			std::make_shared<ADIEncoder>(*s_leftEncoder),
+			std::make_shared<ADIEncoder>(*s_rightEncoder),
+			200, 12000 //MaxVel, MaxVoltage
+		),
+		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
+		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
+		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
+		AbstractMotor::gearset::green,
+		ChassisScales({2.75_in / 1.6, 25.15_in})
+	);
 
 
 	// robotProfile = okapi::AsyncMotionProfileControllerBuilder()

@@ -13,7 +13,6 @@
 #include "okapi/api/util/mathUtil.hpp"
 #include "okapi/impl/device/motor/motor.hpp"
 #include "okapi/impl/device/motor/motorGroup.hpp"
-#include "okapi/impl/filter/velMathFactory.hpp"
 
 namespace okapi {
 class IterativeControllerFactory {
@@ -46,7 +45,7 @@ class IterativeControllerFactory {
          double ikD,
          double ikF = 0,
          double ikSF = 0,
-         std::unique_ptr<VelMath> ivelMath = VelMathFactory::createPtr(imev5RedTPR),
+         const VelMathArgs &iparams = VelMathArgs(imev5TPR),
          std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>());
 
   /**
@@ -57,7 +56,6 @@ class IterativeControllerFactory {
    * @param ikD derivative gain
    * @param ikF feed-forward gain
    * @param ikSF a feed-forward gain to counteract static friction
-   * @param ivelMath The VelMath.
    */
   static IterativeMotorVelocityController
   motorVelocity(Motor imotor,
@@ -65,7 +63,7 @@ class IterativeControllerFactory {
                 double ikD,
                 double ikF = 0,
                 double ikSF = 0,
-                std::unique_ptr<VelMath> ivelMath = VelMathFactory::createPtr(imev5RedTPR));
+                const VelMathArgs &iparams = VelMathArgs(imev5TPR));
 
   /**
    * Velocity PD controller that automatically writes to the motor.
@@ -75,7 +73,6 @@ class IterativeControllerFactory {
    * @param ikD derivative gain
    * @param ikF feed-forward gain
    * @param ikSF a feed-forward gain to counteract static friction
-   * @param ivelMath The VelMath.
    */
   static IterativeMotorVelocityController
   motorVelocity(MotorGroup imotor,
@@ -83,7 +80,7 @@ class IterativeControllerFactory {
                 double ikD,
                 double ikF = 0,
                 double ikSF = 0,
-                std::unique_ptr<VelMath> ivelMath = VelMathFactory::createPtr(imev5RedTPR));
+                const VelMathArgs &iparams = VelMathArgs(imev5TPR));
 
   /**
    * Velocity PD controller that automatically writes to the motor.
