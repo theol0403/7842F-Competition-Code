@@ -3,7 +3,8 @@
 namespace lib7842
 {
 
-  Odometry::Odometry (
+  Odometry::Odometry
+  (
     okapi::ADIEncoder *lEncoder,
     okapi::ADIEncoder *rEncoder,
     okapi::ADIEncoder *mEncoder,
@@ -108,5 +109,21 @@ namespace lib7842
     m_lastRightInch = 0;
     m_lastMiddleInch = 0;
   }
+
+
+
+  void Odometry::odometryTask(void*)
+  {
+    std::cout << "Begin Tracking" << std::endl;
+
+    while(true)
+    {
+      step();
+
+      //debug();
+      pros::delay(10);
+    }
+  }
+
 
 }

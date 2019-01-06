@@ -88,17 +88,22 @@ void initializeBase()
 	// .withLimits({1.0, 2.0, 10.0})
 	// .buildMotionProfileController();
 
-	chassisOdom = new lib7842::Odometry(
+
+	chassisOdom = new lib7842::Odometry
+	(
 		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		40, 8, 
-		2.75 * 1.6, 2.75
+		20, 8,
+		360 * 1.6, 360,
+		2.75
 	);
+
+	chassisOdom->setPos(0, 0, 0);
+	chassisOdom->resetSensors();
 
 	pros::delay(500);
 
 	chassisOdom->setPos(0, 0, 0);
 	chassisOdom->resetSensors();
-
 }
 
 void checkBaseStatus()

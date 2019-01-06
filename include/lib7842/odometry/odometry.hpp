@@ -60,8 +60,8 @@ namespace lib7842
     void setPos(double x, double y, double a);
     void resetSensors();
 
+    void odometryTask(void*);
+
   };
-
-
 
 }

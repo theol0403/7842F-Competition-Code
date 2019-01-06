@@ -9,11 +9,11 @@ void driverJoystick()
 
   //std::cout << "Old: " << leftX;
 
-  if(true)
-  {
-    //  rightY = lib7842::sgn(rightY) * pow(abs(rightY), 2);
-    leftX = lib7842::sgn(leftX) * pow(abs(leftX), 2);
-  }
+  // if(true)
+  // {
+  //   //  rightY = lib7842::sgn(rightY) * pow(abs(rightY), 2);
+  //   leftX = lib7842::sgn(leftX) * pow(abs(leftX), 2);
+  // }
 
   //std::cout << " New: " << leftX << std::endl;
 
@@ -30,7 +30,7 @@ void driverBaseControl()
     //    robotChassis->turnAngle(90_deg);
     //std::cout << lib7842::toDEG(chassisOdom->aPos) << std::endl;
     //std::cout << (lib7842::toDEG(chassisOdom->aPos) * degree).convert(degree) << std::endl;
-    robotChassis->turnAngle(0_deg - (lib7842::toDEG(chassisOdom->aPos) * degree));
+    robotChassis->turnAngle(0_deg - (chassisOdom->aPos * radian));
     pros::delay(500);
   }
   else
