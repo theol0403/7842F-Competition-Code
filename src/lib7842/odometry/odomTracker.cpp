@@ -1,9 +1,9 @@
-#include "odometry.hpp"
+#include "odomTracker.hpp"
 
 namespace lib7842
 {
 
-  Odometry::Odometry
+  OdomTracker::OdomTracker
   (
     okapi::ADIEncoder *lEncoder,
     okapi::ADIEncoder *rEncoder,
@@ -26,7 +26,7 @@ namespace lib7842
   };
 
 
-  void Odometry::debug()
+  void OdomTracker::debug()
   {
     printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
     xPos,
@@ -34,7 +34,7 @@ namespace lib7842
     toDEG(aPos));
   }
 
-  void Odometry::step()
+  void OdomTracker::step()
   {
 
     double newLeftInch = m_lEncoder->get() * m_mainDegToInch;
@@ -96,13 +96,13 @@ namespace lib7842
 
   }
 
-  void Odometry::setPos(double x, double y, double a) {
+  void OdomTracker::setPos(double x, double y, double a) {
     xPos = x;
     yPos = y;
     aPos = a;
   }
 
-  void Odometry::resetSensors()
+  void OdomTracker::resetSensors()
   {
     m_lEncoder->reset();
     m_rEncoder->reset();
@@ -114,20 +114,20 @@ namespace lib7842
 
 
 
-  void Odometry::odometryTask(void* odometryPtr)
+  void OdomTracker::odometryTask(void* odometryPtr)
   {
-    Odometry* thisOdometry = static_cast<Odometry*>(odometryPtr);
+    OdomTracker* thisOdomTracker = static_cast<OdomTracker*>(odometryPtr);
     std::cout << "Begin Tracking" << std::endl;
 
     int count = 0;
     while(true)
     {
-      thisOdometry->step();
+      thisOdomTracker->step();
 
       count++;
       if(count > 20)
       {
-        thisOdometry->debug();
+        thisOdomTracker->debug();
         count = 0;
       }
 

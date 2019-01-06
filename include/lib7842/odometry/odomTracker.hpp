@@ -20,7 +20,7 @@ namespace lib7842
     double y;
   };
 
-  class Odometry
+  class OdomTracker
   {
 
   private:
@@ -40,7 +40,7 @@ namespace lib7842
     double m_lastMiddleInch = 0;
 
   public:
-    Odometry(
+    OdomTracker(
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,

@@ -72,7 +72,7 @@ double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 std::shared_ptr<okapi::ChassisControllerPID> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
-lib7842::Odometry* chassisOdom = nullptr;
+lib7842::OdomTracker* chassisOdom = nullptr;
 
 void initializeBase()
 {
@@ -89,7 +89,7 @@ void initializeBase()
 		{2.75_in / 1.6, chassisWidth*2}
 	);
 
-	chassisOdom = new lib7842::Odometry
+	chassisOdom = new lib7842::OdomTracker
 	(
 		s_leftEncoder, s_rightEncoder, s_middleEncoder,
 		chassisWidth.convert(inch), 8,

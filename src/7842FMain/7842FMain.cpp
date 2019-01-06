@@ -47,7 +47,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      pros::delay(1000);
+      pros::delay(500);
 
       initializeDevices();
       initializeBase();
@@ -55,7 +55,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       flywheelTask_t = new pros::Task(flywheelTask);
       intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
-      odomTask_t = new pros::Task(lib7842::Odometry::odometryTask, chassisOdom);
+      odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdom);
 
       chassisOdom->setPos(0, 0, 0);
       chassisOdom->resetSensors();
