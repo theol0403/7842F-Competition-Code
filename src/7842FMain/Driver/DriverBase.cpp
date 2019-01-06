@@ -11,7 +11,7 @@ void driverJoystick()
 
   if(true)
   {
-  //  rightY = lib7842::sgn(rightY) * pow(abs(rightY), 2);
+    //  rightY = lib7842::sgn(rightY) * pow(abs(rightY), 2);
     leftX = lib7842::sgn(leftX) * pow(abs(leftX), 2);
   }
 
@@ -25,27 +25,31 @@ void driverBaseControl()
 
   //okapi::OdomState odomState = robotChassis->getState();
 
-  // if(j_Digital(A))
-  // {
-  //   robotChassis->turnToAngle(0_deg);
-  // }
-  // else
-  // {
-  //   driverJoystick();
-  // }
+  if(j_Digital(A))
+  {
+    //    robotChassis->turnAngle(90_deg);
+    //std::cout << lib7842::toDEG(chassisOdom->aPos) << std::endl;
+    //std::cout << (lib7842::toDEG(chassisOdom->aPos) * degree).convert(degree) << std::endl;
+    robotChassis->turnAngle(0_deg - (lib7842::toDEG(chassisOdom->aPos) * degree));
+    pros::delay(500);
+  }
+  else
+  {
+    driverJoystick();
+  }
 
-  driverJoystick();
+  //  driverJoystick();
 
   // if(b_odomMotionToggle.changedToPressed())
   // {
   //   robotChassis->driveToPoint(0_ft, 0_ft);
   // }
 
-  // if(j_Digital(B))
-  // {
-  //   robotChassis->setState({0_ft, 0_ft, 0_deg});
-  //   robotChassis->resetSensors();
-  // }
+  if(j_Digital(B))
+  {
+    chassisOdom->setPos(0, 0, 0);
+    chassisOdom->resetSensors();
+  }
 
 
   // printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",

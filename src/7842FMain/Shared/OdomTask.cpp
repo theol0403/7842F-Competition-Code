@@ -7,7 +7,7 @@ void odomTask(void*)
   while(true) {
     chassisOdom->step();
     chassisOdom->debug();
-    pros::delay(200);
+    pros::delay(100);
   }
 
 

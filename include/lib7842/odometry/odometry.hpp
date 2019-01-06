@@ -29,24 +29,24 @@ namespace lib7842
     okapi::ADIEncoder *m_rEncoder;
     okapi::ADIEncoder *m_mEncoder;
 
-    const double m_distanceLeft;
-    const double m_distanceRight;
+    const double m_chassisWidth;
     const double m_distanceMiddle;
 
-    const double m_straight;
-    const double m_middle;
+    const double m_mainDegToInch;
+    const double m_middleDegToInch;
 
-    double m_lLastVal = 0;
-    double m_rLastVal = 0;
-    double m_mLastVal = 0;
+    double m_lastLeftInch = 0;
+    double m_lastRightInch = 0;
+    double m_lastMiddleInch = 0;
 
   public:
     Odometry(
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,
-      double, double, double,
-      double, double
+      double, double,
+      double, double,
+      double
     );
 
     // for ease of use we make the x, y, and a vars public

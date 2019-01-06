@@ -78,9 +78,8 @@ void initializeBase()
 {
 	robotChassis = okapi::ChassisControllerBuilder()
 	.withMotors({e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack})
-	.withSensors(*s_leftEncoder, *s_rightEncoder)
-	.withDimensions(ChassisScales{{2.75_in * 1.6, 12.9_in}, okapi::quadEncoderTPR})
-	.withGains({0.00022, 0.00, 0}, {0.0002, 0.0, 0}, {0.00000005, 0, 0})
+	.withDimensions(ChassisScales{{4.115_in, 12.9_in}, okapi::imev5GreenTPR})
+	.withGains({0.00022, 0.00, 0}, {0.0002, 0.0, 0}, {0.0006, 0, 0})
 	.build();
 
 
@@ -91,9 +90,11 @@ void initializeBase()
 
 	chassisOdom = new lib7842::Odometry(
 		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		4.25, 4.25, 0.55,
+		40, 8, 
 		2.75 * 1.6, 2.75
 	);
+
+	pros::delay(500);
 
 	chassisOdom->setPos(0, 0, 0);
 	chassisOdom->resetSensors();
