@@ -3,6 +3,7 @@
 #include "MotorConfig.hpp"
 #include "Shared/FlywheelTask.hpp"
 #include "Shared/IntakeTask.hpp"
+#include "lib7842/lib7842.hpp"
 
 #include "Shared/ObjectTracking.hpp"
 
@@ -54,7 +55,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       flywheelTask_t = new pros::Task(flywheelTask);
       intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
-      odomTask_t = new pros::Task(chassisOdom->odometryTask);
+      odomTask_t = new pros::Task(lib7842::Odometry::odometryTask, chassisOdom);
 
       chassisOdom->setPos(0, 0, 0);
       chassisOdom->resetSensors();

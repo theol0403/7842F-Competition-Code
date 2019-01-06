@@ -112,13 +112,14 @@ namespace lib7842
 
 
 
-  void Odometry::odometryTask(void*)
+  void Odometry::odometryTask(void* odometryPtr)
   {
+    Odometry* thisOdometry = static_cast<Odometry*>(odometryPtr);
     std::cout << "Begin Tracking" << std::endl;
 
     while(true)
     {
-      step();
+      thisOdometry->step();
 
       //debug();
       pros::delay(10);
