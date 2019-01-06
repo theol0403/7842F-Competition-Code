@@ -58,13 +58,15 @@ namespace lib7842
 
     double localOffX = 0, localOffY = 0;
 
-    if(dAngle < 0.00001)
+    if(dAngle == 0.0)
+    {
+      localOffX = dMiddleInch;
+      localOffY = dAvgMainInch;
+    }
+    else
     {
       localOffX = 2 * sin(dAngle / 2) * ((dMiddleInch / dAngle) + m_distanceMiddle);
       localOffY = 2 * sin(dAngle / 2) * ((dAvgMainInch / dAngle) + (m_chassisWidth / 2));
-    } else {
-      localOffX = dMiddleInch;
-      localOffY = dAvgMainInch;
     }
 
     double avgAngle = aPos + (dAngle / 2);
@@ -117,11 +119,18 @@ namespace lib7842
     Odometry* thisOdometry = static_cast<Odometry*>(odometryPtr);
     std::cout << "Begin Tracking" << std::endl;
 
+    int count = 0;
     while(true)
     {
       thisOdometry->step();
 
-      //debug();
+      count++;
+      if(count > 20)
+      {
+        thisOdometry->debug();
+        count = 0;
+      }
+
       pros::delay(10);
     }
   }

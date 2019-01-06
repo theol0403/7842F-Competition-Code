@@ -76,67 +76,58 @@ lib7842::Odometry* chassisOdom = nullptr;
 
 void initializeBase()
 {
+	const QLength chassisWidth = 12.55_in;
 
-	robotChassis = std::make_shared<ChassisControllerPID>
-	(
-		TimeUtilFactory::create(),
-		std::make_shared<SkidSteerModel>
-		(
-			std::make_shared<MotorGroup>(MotorGroup({e_m_LeftFront, e_m_LeftBack})),
-			std::make_shared<MotorGroup>(MotorGroup({e_m_RightFront, e_m_RightBack})),
-			std::make_shared<ADIEncoder>(*s_leftEncoder),
-			std::make_shared<ADIEncoder>(*s_rightEncoder),
-			200, 12000 //MaxVel, MaxVoltage
-		),
-		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0022, 0.00, 0)),
-		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.002, 0.0, 0)),
-		std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0016, 0, 0)),
+	// Otherwise, you should specify the gearset and scales for your robot
+	robotChassis = ChassisControllerFactory::createPtr(
+		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
+		*s_leftEncoder, *s_rightEncoder,
+		IterativePosPIDController::Gains{0.0022, 0.00, 0},
+		IterativePosPIDController::Gains{0.002, 0.0, 0},
+		IterativePosPIDController::Gains{0.0006, 0, 0},
 		AbstractMotor::gearset::green,
-		ChassisScales({2.75_in / 1.6, 25.15_in})
+		{2.75_in / 1.6, chassisWidth*2}
 	);
-
-
-	// robotProfile = okapi::AsyncMotionProfileControllerBuilder()
-	// .withOutput(robotChassis)
-	// .withLimits({1.0, 2.0, 10.0})
-	// .buildMotionProfileController();
-
 
 	chassisOdom = new lib7842::Odometry
 	(
 		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		20, 8,
+		chassisWidth.convert(inch), 8,
 		360 * 1.6, 360,
 		2.75
 	);
 
-	chassisOdom->setPos(0, 0, 0);
-	chassisOdom->resetSensors();
 
-	pros::delay(500);
+	robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+		(
+			1.0, 2.0, 10.0,
+			*robotChassis
+		));
 
-	chassisOdom->setPos(0, 0, 0);
-	chassisOdom->resetSensors();
-}
-
-void checkBaseStatus()
-{
-	if(robotChassis == nullptr)
-	{
-		std::cout << "USING BASE BEFORE INIT\n";
 		pros::delay(500);
+
+		chassisOdom->resetSensors();
+		chassisOdom->setPos(0, 0, 0);
 	}
-}
+
+	void checkBaseStatus()
+	{
+		if(robotChassis == nullptr)
+		{
+			std::cout << "USING BASE BEFORE INIT\n";
+			pros::delay(500);
+		}
+	}
 
 
-void setBaseArcade(double yPower, double zPower)
-{
-	checkBaseStatus();
-	robotChassis->arcade(yPower, zPower, 0);
-}
+	void setBaseArcade(double yPower, double zPower)
+	{
+		checkBaseStatus();
+		robotChassis->arcade(yPower, zPower, 0);
+	}
 
-void setBasePower(double leftPower, double rightPower)
-{
-	checkBaseStatus();
-	robotChassis->tank(leftPower, rightPower, 0);
-}
+	void setBasePower(double leftPower, double rightPower)
+	{
+		checkBaseStatus();
+		robotChassis->tank(leftPower, rightPower, 0);
+	}
