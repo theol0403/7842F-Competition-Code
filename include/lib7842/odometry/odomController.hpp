@@ -17,13 +17,19 @@ namespace lib7842
 
   private:
 
-    std::shared_ptr<okapi::ChassisControllerPID> m_chassisController;
-    OdomTracker *m_odomTracker;
+    OdomTracker *m_odom;
+
+    std::unique_ptr<IterativePosPIDController> m_distancePid;
+    std::unique_ptr<IterativePosPIDController> m_turnPid;
+    std::unique_ptr<IterativePosPIDController> m_anglePid;
 
   public:
+
     OdomController(
-      std::shared_ptr<okapi::ChassisControllerPID>,
-      OdomTracker*
+      OdomTracker*,
+      std::unique_ptr<IterativePosPIDController>,
+      std::unique_ptr<IterativePosPIDController>,
+      std::unique_ptr<IterativePosPIDController>
     );
 
 

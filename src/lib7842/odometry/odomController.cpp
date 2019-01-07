@@ -3,51 +3,50 @@
 namespace lib7842
 {
 
-  OdomController::OdomController
-  (
-    std::shared_ptr<okapi::ChassisControllerPID> chassisController,
-    OdomTracker *odomTracker
-  ):
-  m_chassisController(chassisController),
-  m_odomTracker(odomTracker)
+  OdomController::OdomController(
+    OdomTracker *odom,
+    std::unique_ptr<IterativePosPIDController> idistanceController,
+    std::unique_ptr<IterativePosPIDController> iturnController,
+    std::unique_ptr<IterativePosPIDController> iangleController
+  )
+  :
+  m_odom(odom),
+  m_distancePid(std::move(idistanceController)),
+  m_turnPid(std::move(iturnController)),
+  m_anglePid(std::move(iangleController))
   {
   };
 
 
   void OdomController::turnToAngle(QAngle angle)
   {
-    IterativePosPIDController angleController ( 1, 0, 0, 0, TimeUtilFactory::create());
+    m_anglePid->setTarget(angle.convert(degree));
 
-    angleController.setTarget(angle.convert(degree));
-
-    while (!angleController.isSettled()) 
+    while (!m_anglePid->isSettled())
     {
-    double newOutput = angleController.step(m_odomTracker->state.theta.convert(degree));
-    exampleMotor.controllerSet(newOutput);
+      double newOutput = m_anglePid->step(m_odom->state.theta.convert(degree));
+      m_odom->chassis->rotate(newOutput);
 
-    pros::delay(10); // Run the control loop at 10ms intervals
-  }
-
-
-    m_chassisController->turnAngle(angle - m_odomTracker->state.theta);
+      pros::delay(10); // Run the control loop at 10ms intervals
+    }
   }
 
   QLength OdomController::computeDistanceToPoint(Point point)
   {
-    const QLength xDiff = point.x - m_odomTracker->state.x;
-    const QLength yDiff = point.y - m_odomTracker->state.y;
+    const QLength xDiff = point.x - m_odom->state.x;
+    const QLength yDiff = point.y - m_odom->state.y;
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
   }
 
   QAngle OdomController::computeAngleToPoint(Point point)
   {
-    return atan2(point.x.convert(inch) - m_odomTracker->state.x.convert(inch), point.y.convert(inch) - m_odomTracker->state.y.convert(inch)) * radian - m_odomTracker->state.theta;
+    return atan2(point.x.convert(inch) - m_odom->state.x.convert(inch), point.y.convert(inch) - m_odom->state.y.convert(inch)) * radian - m_odom->state.theta;
   }
 
 
   void OdomController::turnToAngle(QAngle angle)
   {
-    m_chassisController->turnAngle(angle - m_odomTracker->state.theta);
+    m_chassisController->turnAngle(angle - m_odom->state.theta);
   }
 
   void OdomController::turnToPoint(Point point)
