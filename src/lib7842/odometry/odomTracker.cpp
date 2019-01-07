@@ -5,16 +5,12 @@ namespace lib7842
 
   OdomTracker::OdomTracker
   (
-    okapi::ADIEncoder *lEncoder,
-    okapi::ADIEncoder *rEncoder,
-    okapi::ADIEncoder *mEncoder,
+    std::shared_ptr<ThreeEncoderSkidSteerModel> ichassis,
     QLength chassisWidth, QLength distanceMiddle,
     QLength wheelDiam,
     double mainTicksPerRev, double middleTicksPerRev
   ):
-  m_lEncoder(lEncoder),
-  m_rEncoder(rEncoder),
-  m_mEncoder(mEncoder),
+  chassis(ichassis),
 
   m_chassisWidth(chassisWidth),
   m_distanceMiddle(distanceMiddle),
@@ -38,10 +34,11 @@ namespace lib7842
 
   void OdomTracker::step()
   {
+    std::valarray<int> newTicks = chassis->getSensorVals();
 
-    QLength newLeftInch = (m_lEncoder->get() * m_mainDegToInch) * inch;
-    QLength newRightInch = (m_rEncoder->get() * m_mainDegToInch) * inch;
-    QLength newMiddleInch = (m_mEncoder->get() * m_middleDegToInch) * inch;
+    QLength newLeftInch = (newTicks[0] * m_mainDegToInch) * inch;
+    QLength newRightInch = (newTicks[1] * m_mainDegToInch) * inch;
+    QLength newMiddleInch = (newTicks[2] * m_middleDegToInch) * inch;
 
     QLength dLeftInch = newLeftInch - m_lastLeftInch;
     QLength dRightInch = newRightInch - m_lastRightInch;

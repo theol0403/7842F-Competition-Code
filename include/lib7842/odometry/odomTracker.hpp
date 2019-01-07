@@ -17,9 +17,6 @@ namespace lib7842
 
   private:
 
-    okapi::ADIEncoder *m_lEncoder;
-    okapi::ADIEncoder *m_rEncoder;
-    okapi::ADIEncoder *m_mEncoder;
 
     const QLength m_chassisWidth;
     const QLength m_distanceMiddle;
@@ -33,14 +30,13 @@ namespace lib7842
 
   public:
     OdomTracker(
-      okapi::ADIEncoder*,
-      okapi::ADIEncoder*,
-      okapi::ADIEncoder*,
+      std::shared_ptr<ThreeEncoderSkidSteerModel>,
       QLength, QLength,
       QLength,
       double, double
     );
 
+    std::shared_ptr<ThreeEncoderSkidSteerModel> chassis = nullptr;
     // for ease of use we make the x, y, and a vars public
     OdomState state {0_in, 0_in, 0_rad};
 

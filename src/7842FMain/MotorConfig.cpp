@@ -69,7 +69,7 @@ double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 
 
 //Base -----------------------
-std::shared_ptr<okapi::ChassisControllerPID> robotChassis = nullptr;
+std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 lib7842::OdomTracker* chassisOdomTracker = nullptr;
@@ -77,64 +77,68 @@ lib7842::OdomController* chassisOdomController = nullptr;
 
 void initializeBase()
 {
-	const QLength chassisWidth = 12.55_in;
 
-	// Otherwise, you should specify the gearset and scales for your robot
-	robotChassis = ChassisControllerFactory::createPtr(
+	robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ChassisModelFactory::create(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
-		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.001, 0.00, 0},
-		IterativePosPIDController::Gains{0.001, 0.00, 0},
-		IterativePosPIDController::Gains{0.0008, 0, 0},
-		AbstractMotor::gearset::green,
-		{2.75_in / 1.6, chassisWidth * 2}
-	);
+		*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
+		200,
+		12000
+	));
 
-	chassisOdomTracker = new lib7842::OdomTracker
-	(
-		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		chassisWidth, 8_in,
-		2.75_in,
-		360 * 1.6, 360
-	);
-
-	chassisOdomController = new lib7842::OdomController
-	(
-		robotChassis,
-		chassisOdomTracker
-	);
-
-
-	robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+		chassisOdomTracker = new lib7842::OdomTracker
 		(
-			1.0, 2.0, 10.0,
-			*robotChassis
-		));
+			robotChassis,
+			12.55_in, 8_in,
+			2.75_in,
+			360 * 1.6, 360
+		);
 
-		pros::delay(500);
+		chassisOdomController = new lib7842::OdomController
+		(
+			chassisOdomTracker
+		);
 
-		chassisOdomTracker->resetSensors();
-		chassisOdomTracker->resetState();
-	}
+		// robotChassis = ChassisControllerFactory::createPtr(
+		// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
+		// 	*s_leftEncoder, *s_rightEncoder,
+		// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
+		// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
+		// 	IterativePosPIDController::Gains{0.0008, 0, 0},
+		// 	AbstractMotor::gearset::green,
+		// 	{2.75_in / 1.6, chassisWidth * 2}
+		// );
 
-	void checkBaseStatus()
-	{
-		if(robotChassis == nullptr)
-		{
-			std::cout << "USING BASE BEFORE INIT\n";
+
+		robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+			(
+				1.0, 2.0, 10.0,
+				*robotChassis
+			));
+
 			pros::delay(500);
+
+			chassisOdomTracker->resetSensors();
+			chassisOdomTracker->resetState();
 		}
-	}
+
+		void checkBaseStatus()
+		{
+			if(robotChassis == nullptr)
+			{
+				std::cout << "USING BASE BEFORE INIT\n";
+				pros::delay(500);
+			}
+		}
 
 
-	void setBaseArcade(double yPower, double zPower)
-	{
-		checkBaseStatus();
-		robotChassis->arcade(yPower, zPower, 0);
-	}
+		void setBaseArcade(double yPower, double zPower)
+		{
+			checkBaseStatus();
+			robotChassis->arcade(yPower, zPower, 0);
+		}
 
-	void setBasePower(double leftPower, double rightPower)
-	{
-		checkBaseStatus();
-		robotChassis->tank(leftPower, rightPower, 0);
-	}
+		void setBasePower(double leftPower, double rightPower)
+		{
+			checkBaseStatus();
+			robotChassis->tank(leftPower, rightPower, 0);
+		}
