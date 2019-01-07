@@ -5,21 +5,11 @@
 namespace lib7842
 {
 
-  template <typename T> T toRAD(T deg)
+  struct OdomState
   {
-    return (deg) * (PI / 180);
-  }
-
-  template <typename T> T toDEG(T rad)
-  {
-    return (rad) * (180 / PI);
-  }
-
-  struct OdomPoint
-  {
-    double x = 0;
-    double y = 0;
-    double theta = 0;
+    QLength x {0_in};
+    QLength y {0_in};
+    QAngle theta {0_rad};
   };
 
   class OdomTracker
@@ -31,34 +21,35 @@ namespace lib7842
     okapi::ADIEncoder *m_rEncoder;
     okapi::ADIEncoder *m_mEncoder;
 
-    const double m_chassisWidth;
-    const double m_distanceMiddle;
+    const QLength m_chassisWidth;
+    const QLength m_distanceMiddle;
 
     const double m_mainDegToInch;
     const double m_middleDegToInch;
 
-    double m_lastLeftInch = 0;
-    double m_lastRightInch = 0;
-    double m_lastMiddleInch = 0;
+    QLength m_lastLeftInch {0_in};
+    QLength m_lastRightInch {0_in};
+    QLength m_lastMiddleInch {0_in};
 
   public:
     OdomTracker(
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,
       okapi::ADIEncoder*,
-      double, double,
-      double, double,
-      double
+      QLength, QLength,
+      QLength,
+      double, double
     );
 
     // for ease of use we make the x, y, and a vars public
-    OdomPoint trackingPoint {0, 0, 0};
+    OdomState state {0_in, 0_in, 0_rad};
 
     void debug();
     void step();
 
-    void setPos(double, double, double);
-    void setPos(OdomPoint);
+    void setState(QLength, QLength, QAngle);
+    void setState(OdomState);
+    void resetState();
 
     void resetSensors();
 

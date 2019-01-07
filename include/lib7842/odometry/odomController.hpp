@@ -2,9 +2,15 @@
 #include "main.h"
 #include "odomTracker.hpp"
 
-
 namespace lib7842
 {
+
+  struct Point
+  {
+    QLength x {0_in};
+    QLength y {0_in};
+    QAngle theta {0_rad};
+  };
 
   class OdomController
   {
@@ -21,13 +27,13 @@ namespace lib7842
     );
 
 
-    double computeDistanceToPoint(OdomPoint);
-    double computeAngleToPoint(OdomPoint);
+    double computeDistanceToPoint(Point);
+    double computeAngleToPoint(Point);
 
     void turnToAngle(QAngle);
-    void turnToPoint(OdomPoint);
-    void driveToPoint(OdomPoint);
-    void driveToPointAndAngle(OdomPoint);
+    void turnToPoint(Point);
+    void driveToPoint(Point);
+    void driveToPointAndAngle(Point);
 
 
   };

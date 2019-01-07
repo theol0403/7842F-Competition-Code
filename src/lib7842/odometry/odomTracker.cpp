@@ -8,9 +8,9 @@ namespace lib7842
     okapi::ADIEncoder *lEncoder,
     okapi::ADIEncoder *rEncoder,
     okapi::ADIEncoder *mEncoder,
-    double chassisWidth, double distanceMiddle,
-    double mainTicksPerRev, double middleTicksPerRev,
-    double wheelDiam
+    QLength chassisWidth, QLength distanceMiddle,
+    QLength wheelDiam,
+    double mainTicksPerRev, double middleTicksPerRev
   ):
   m_lEncoder(lEncoder),
   m_rEncoder(rEncoder),
@@ -19,8 +19,8 @@ namespace lib7842
   m_chassisWidth(chassisWidth),
   m_distanceMiddle(distanceMiddle),
 
-  m_mainDegToInch(wheelDiam * PI / mainTicksPerRev),
-  m_middleDegToInch(wheelDiam * PI / middleTicksPerRev)
+  m_mainDegToInch(wheelDiam.convert(inch) * 1_pi / mainTicksPerRev),
+  m_middleDegToInch(wheelDiam.convert(inch) * 1_pi / middleTicksPerRev)
   {
 
   };
@@ -28,35 +28,37 @@ namespace lib7842
 
   void OdomTracker::debug()
   {
-    printf("x: %1.2f, y: %1.2f, theta: %1.2f\n",
-    trackingPoint.x,
-    trackingPoint.y,
-    toDEG(trackingPoint.theta));
+    printf(
+      "x: %1.2f, y: %1.2f, theta: %1.2f\n",
+      state.x.convert(inch),
+      state.y.convert(inch),
+      state.theta.convert(degree)
+    );
   }
 
   void OdomTracker::step()
   {
 
-    double newLeftInch = m_lEncoder->get() * m_mainDegToInch;
-    double newRightInch = m_rEncoder->get() * m_mainDegToInch;
-    double newMiddleInch = m_mEncoder->get() * m_middleDegToInch;
+    QLength newLeftInch = (m_lEncoder->get() * m_mainDegToInch) * inch;
+    QLength newRightInch = (m_rEncoder->get() * m_mainDegToInch) * inch;
+    QLength newMiddleInch = (m_mEncoder->get() * m_middleDegToInch) * inch;
 
-    double dLeftInch = newLeftInch - m_lastLeftInch;
-    double dRightInch = newRightInch - m_lastRightInch;
-    double dMiddleInch = newMiddleInch - m_lastMiddleInch;
+    QLength dLeftInch = newLeftInch - m_lastLeftInch;
+    QLength dRightInch = newRightInch - m_lastRightInch;
+    QLength dMiddleInch = newMiddleInch - m_lastMiddleInch;
 
     m_lastLeftInch = newLeftInch;
     m_lastRightInch = newRightInch;
     m_lastMiddleInch = newMiddleInch;
 
-    double newAngle = (newLeftInch - newRightInch) / m_chassisWidth;
-    double dAngle = newAngle - trackingPoint.theta;
+    QAngle newAngle = ((newLeftInch - newRightInch) / m_chassisWidth) * radian;
+    QAngle dAngle = newAngle - state.theta;
 
     // std::cout << "dA: " << dA << std::endl;
 
-    double dAvgMainInch = (dLeftInch + dRightInch) / 2;
+    QLength dAvgMainInch = (dLeftInch + dRightInch) / 2;
 
-    double localOffX = 0, localOffY = 0;
+    QLength localOffX = 0_in, localOffY = 0_in;
 
     if(dAngle == 0.0)
     {
@@ -65,49 +67,44 @@ namespace lib7842
     }
     else
     {
-      localOffX = 2 * sin(dAngle / 2) * ((dMiddleInch / dAngle) + m_distanceMiddle);
-      localOffY = 2 * sin(dAngle / 2) * ((dAvgMainInch / dAngle) + (m_chassisWidth / 2));
+      localOffX = 2 * sin(dAngle.convert(radian) / 2) * ((dMiddleInch.convert(inch) / dAngle.convert(radian)) + m_distanceMiddle.convert(inch)) * inch;
+      localOffY = 2 * sin(dAngle.convert(radian) / 2) * ((dAvgMainInch.convert(inch) / dAngle.convert(radian)) + (m_chassisWidth.convert(inch) / 2)) * inch;
     }
 
-    double avgAngle = trackingPoint.theta + (dAngle / 2);
+    QAngle avgAngle = state.theta + (dAngle / 2);
 
-    double polarR = sqrt((localOffX * localOffX) + (localOffY * localOffY));
-    double polarA = atan2(localOffY, localOffX) - avgAngle;
+    QLength polarR = sqrt(std::pow(localOffX.convert(inch), 2) + std::pow(localOffY.convert(inch), 2)) * inch;
+    QAngle polarA = (atan2(localOffY.convert(inch), localOffX.convert(inch)) * radian) - avgAngle;
 
-    double dX = cos(polarA) * polarR;
-    double dY = sin(polarA) * polarR;
-
-    if(dX > 20) {
-      lv_obj_t *label = lv_label_create(lv_scr_act(), NULL);
-      lv_label_set_text(label, "stop everything has gone horribly wrong X");
-      lv_obj_align(label, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 5);
-    }
-
-    if(dY > 20) {
-      lv_obj_t *label = lv_label_create(lv_scr_act(), NULL);
-      lv_label_set_text(label, "stop everything has gone horribly wrong Y");
-      lv_obj_align(label, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 5);
-    }
+    QLength dX = cos(polarA.convert(radian)) * polarR;
+    QLength dY = sin(polarA.convert(radian)) * polarR;
 
 
-    trackingPoint.x += dX;
-    trackingPoint.y += dY;
-    trackingPoint.theta = newAngle;
+    state.x += dX;
+    state.y += dY;
+    state.theta = newAngle;
 
   }
 
-  void OdomTracker::setPos(double x, double y, double a)
+  void OdomTracker::setState(QLength x, QLength y, QAngle a)
   {
-    trackingPoint.x = x;
-    trackingPoint.y = y;
-    trackingPoint.theta = a;
+    state.x = x;
+    state.y = y;
+    state.theta = a;
   }
 
-  void OdomTracker::setPos(OdomPoint point)
+  void OdomTracker::setState(OdomState state)
   {
-    trackingPoint.x = point.x;
-    trackingPoint.y = point.y;
-    trackingPoint.theta = point.theta;
+    state.x = state.x;
+    state.y = state.y;
+    state.theta = state.theta;
+  }
+
+  void OdomTracker::resetState()
+  {
+    state.x = 0_in;
+    state.y = 0_in;
+    state.theta = 0_rad;
   }
 
   void OdomTracker::resetSensors()
