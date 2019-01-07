@@ -57,9 +57,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
 
-      chassisOdomTracker->setPos(0, 0, 0);
-      chassisOdomTracker->resetSensors();
-
     }
 
     /***

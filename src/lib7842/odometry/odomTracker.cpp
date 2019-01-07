@@ -60,7 +60,7 @@ namespace lib7842
 
     QLength localOffX = 0_in, localOffY = 0_in;
 
-    if(dAngle == 0.0)
+    if(dAngle == 0.0_rad)
     {
       localOffX = dMiddleInch;
       localOffY = dAvgMainInch;
@@ -112,9 +112,9 @@ namespace lib7842
     m_lEncoder->reset();
     m_rEncoder->reset();
     m_mEncoder->reset();
-    m_lastLeftInch = 0;
-    m_lastRightInch = 0;
-    m_lastMiddleInch = 0;
+    m_lastLeftInch = 0_in;
+    m_lastRightInch = 0_in;
+    m_lastMiddleInch = 0_in;
   }
 
 
