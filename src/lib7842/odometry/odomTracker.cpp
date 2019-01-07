@@ -10,7 +10,7 @@ namespace lib7842
     QLength wheelDiam,
     double mainTicksPerRev, double middleTicksPerRev
   ):
-  chassis(ichassis),
+  model(ichassis),
 
   m_chassisWidth(chassisWidth),
   m_distanceMiddle(distanceMiddle),
@@ -34,7 +34,7 @@ namespace lib7842
 
   void OdomTracker::step()
   {
-    std::valarray<int> newTicks = chassis->getSensorVals();
+    std::valarray<int> newTicks = model->getSensorVals();
 
     QLength newLeftInch = (newTicks[0] * m_mainDegToInch) * inch;
     QLength newRightInch = (newTicks[1] * m_mainDegToInch) * inch;
@@ -90,7 +90,7 @@ namespace lib7842
     state.theta = a;
   }
 
-  void OdomTracker::setState(OdomState state)
+  void OdomTracker::setState(Point state)
   {
     state.x = state.x;
     state.y = state.y;
@@ -106,9 +106,7 @@ namespace lib7842
 
   void OdomTracker::resetSensors()
   {
-    m_lEncoder->reset();
-    m_rEncoder->reset();
-    m_mEncoder->reset();
+    model->resetSensors();
     m_lastLeftInch = 0_in;
     m_lastRightInch = 0_in;
     m_lastMiddleInch = 0_in;

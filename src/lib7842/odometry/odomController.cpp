@@ -4,62 +4,77 @@ namespace lib7842
 {
 
   OdomController::OdomController(
-    OdomTracker *odom,
+    OdomTracker *chassis,
     std::unique_ptr<IterativePosPIDController> idistanceController,
-    std::unique_ptr<IterativePosPIDController> iturnController,
-    std::unique_ptr<IterativePosPIDController> iangleController
+    std::unique_ptr<IterativePosPIDController> iangleController,
+    std::unique_ptr<IterativePosPIDController> iturnController
+
   )
   :
-  m_odom(odom),
+  m_chassis(chassis),
   m_distancePid(std::move(idistanceController)),
-  m_turnPid(std::move(iturnController)),
-  m_anglePid(std::move(iangleController))
+  m_anglePid(std::move(iangleController)),
+  m_turnPid(std::move(iturnController))
   {
   };
 
+  QAngle OdomController::computeAngleOfPoint(Point point)
+  {
+    return atan2(point.x.convert(inch) - m_chassis->state.x.convert(inch), point.y.convert(inch) - m_chassis->state.y.convert(inch)) * radian;
+  }
+
+  void OdomController::turnAngle(QAngle angle)
+  {
+    turnToAngle(angle + m_chassis->state.theta);
+  }
 
   void OdomController::turnToAngle(QAngle angle)
   {
-    m_anglePid->setTarget(angle.convert(degree));
+    m_turnPid->setTarget(angle.convert(degree));
 
-    while (!m_anglePid->isSettled())
+    while(!m_turnPid->isSettled())
     {
-      double newOutput = m_anglePid->step(m_odom->state.theta.convert(degree));
-      m_odom->chassis->rotate(newOutput);
+      double newOutput = m_turnPid->step(m_chassis->state.theta.convert(degree));
+      m_chassis->model->rotate(newOutput);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
   }
 
+  void OdomController::turnToPoint(Point point)
+  {
+    turnToAngle(computeAngleOfPoint(point));
+  }
+
+
   QLength OdomController::computeDistanceToPoint(Point point)
   {
-    const QLength xDiff = point.x - m_odom->state.x;
-    const QLength yDiff = point.y - m_odom->state.y;
+    const QLength xDiff = point.x - m_chassis->state.x;
+    const QLength yDiff = point.y - m_chassis->state.y;
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
   }
 
-  QAngle OdomController::computeAngleToPoint(Point point)
+  QLength OdomController::computeDistanceOfPoint(Point point)
   {
-    return atan2(point.x.convert(inch) - m_odom->state.x.convert(inch), point.y.convert(inch) - m_odom->state.y.convert(inch)) * radian - m_odom->state.theta;
+    return std::sqrt(std::pow(point.x.convert(inch), 2) + std::pow(point.y.convert(inch), 2)) * inch;
   }
 
-
-  void OdomController::turnToAngle(QAngle angle)
-  {
-    m_chassisController->turnAngle(angle - m_odom->state.theta);
-  }
-
-  void OdomController::turnToPoint(Point point)
-  {
-    m_chassisController->turnAngle(computeAngleToPoint(point));
-  }
 
 
   void OdomController::driveToPoint(Point point)
   {
-    m_chassisController->turnAngle(computeAngleToPoint(point));
 
-    m_chassisController->moveDistance(computeDistanceToPoint(point));
+    m_distancePid->setTarget(computeDistanceOfPoint(point).convert(inch));
+    m_anglePid->setTarget(computeAngleOfPoint(point).convert(degree));
+
+    while(!m_distancePid->isSettled() || !m_anglePid->isSettled())
+    {
+      double newDistance = computeDistanceOfPoint(m_chassis->state).convert(inch);
+      double newAngle = m_chassis->state.theta.convert(degree);
+      m_chassis->model->driveVector(m_distancePid->step(newDistance), m_anglePid->step(newAngle));
+
+      pros::delay(10); // Run the control loop at 10ms intervals
+    }
   }
 
 

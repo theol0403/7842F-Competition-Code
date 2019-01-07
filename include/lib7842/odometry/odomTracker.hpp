@@ -5,7 +5,7 @@
 namespace lib7842
 {
 
-  struct OdomState
+  struct Point
   {
     QLength x {0_in};
     QLength y {0_in};
@@ -36,15 +36,15 @@ namespace lib7842
       double, double
     );
 
-    std::shared_ptr<ThreeEncoderSkidSteerModel> chassis = nullptr;
+    std::shared_ptr<ThreeEncoderSkidSteerModel> model = nullptr;
     // for ease of use we make the x, y, and a vars public
-    OdomState state {0_in, 0_in, 0_rad};
+    Point state {0_in, 0_in, 0_rad};
 
     void debug();
     void step();
 
     void setState(QLength, QLength, QAngle);
-    void setState(OdomState);
+    void setState(Point);
     void resetState();
 
     void resetSensors();

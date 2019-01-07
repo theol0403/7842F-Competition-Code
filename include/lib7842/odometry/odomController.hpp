@@ -5,23 +5,16 @@
 namespace lib7842
 {
 
-  struct Point
-  {
-    QLength x {0_in};
-    QLength y {0_in};
-    QAngle theta {0_rad};
-  };
-
   class OdomController
   {
 
   private:
 
-    OdomTracker *m_odom;
+    OdomTracker *m_chassis;
 
     std::unique_ptr<IterativePosPIDController> m_distancePid;
-    std::unique_ptr<IterativePosPIDController> m_turnPid;
     std::unique_ptr<IterativePosPIDController> m_anglePid;
+    std::unique_ptr<IterativePosPIDController> m_turnPid;
 
   public:
 
