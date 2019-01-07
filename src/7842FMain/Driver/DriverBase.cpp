@@ -26,7 +26,7 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    chassisOdomController->driveToPointAndAngle(lib7842::OdomPoint{0, 0, 0});
+    chassisOdomController->driveToPointAndAngle(lib7842::Point{0_in, 0_in, 0_deg});
   }
 
   driverJoystick();
@@ -38,7 +38,7 @@ void driverBaseControl()
 
   if(j_Digital(B))
   {
-    chassisOdomTracker->setPos(0, 0, 0);
+    chassisOdomTracker->resetState();
     chassisOdomTracker->resetSensors();
   }
 

@@ -27,8 +27,8 @@ namespace lib7842
     );
 
 
-    double computeDistanceToPoint(Point);
-    double computeAngleToPoint(Point);
+    QLength computeDistanceToPoint(Point);
+    QAngle computeAngleToPoint(Point);
 
     void turnToAngle(QAngle);
     void turnToPoint(Point);
