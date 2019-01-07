@@ -32,7 +32,7 @@ void intakeControlTask(void*)
         //collecting
         setIntakeVelocity(200);
         setIndexerVelocity(100);
-        if(filteredSensor < -360)
+        if(filteredSensor < -300)
         {
           intakeMode = intakeModes::collecting;
         }
