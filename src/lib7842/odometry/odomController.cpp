@@ -75,8 +75,8 @@ namespace lib7842
     m_angleUtil.reset();
     double distanceError = 0;
     double angleError = 0;
-    
-    while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError))
+
+    do
     {
       double forwardSpeed = m_distancePid->step(-computeDistanceToPoint(point).convert(inch));
       double angleSpeed = m_anglePid->step(-computeAngleToPoint(point).convert(degree));
@@ -84,6 +84,7 @@ namespace lib7842
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
+    while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError));
 
   }
 

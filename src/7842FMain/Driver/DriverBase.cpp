@@ -26,7 +26,7 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    chassisOdomController->turnToPoint(lib7842::Point{10_in, 0_in, 0_deg});
+    chassisOdomController->driveToPoint(lib7842::Point{10_in, 0_in, 0_deg});
   }
 
   driverJoystick();
