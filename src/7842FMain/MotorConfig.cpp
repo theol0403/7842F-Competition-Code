@@ -101,7 +101,7 @@ void initializeBase()
 			chassisOdomTracker,
 			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0012, 0.00, 0)),
 			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.0, 0)),
-			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.015, 0, 0.01))
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.011, 0, 1))
 		);
 
 		// robotChassis = ChassisControllerFactory::createPtr(
