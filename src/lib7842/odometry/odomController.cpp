@@ -82,7 +82,7 @@ namespace lib7842
 
     while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError))
     {
-      distanceError = computeDistanceToPoint(point).convert(centimeter);
+      distanceError = computeDistanceToPoint(point).convert(millimeter);
       angleError = computeAngleToPoint(point).convert(degree);
 
       // if(angleError < 0.1 * distanceError)
