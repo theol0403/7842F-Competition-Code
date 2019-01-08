@@ -31,9 +31,3 @@ void checkBaseStatus();
 
 void setBaseArcade(double, double);
 void setBasePower(double, double);
-
-
-
-extern okapi::ADIEncoder* s_leftEncoder;
-extern okapi::ADIEncoder* s_rightEncoder;
-extern okapi::ADIEncoder* s_middleEncoder;

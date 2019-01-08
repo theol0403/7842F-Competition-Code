@@ -78,44 +78,31 @@ lib7842::OdomController* chassisOdomController = nullptr;
 void initializeBase()
 {
 
-	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(std::move(ChassisModelFactory::create(
-	// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
-	// 	*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
-	// 	200,
-	// 	12000
-	// )));
-	//
-	std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> testChassis = std::make_shared<ThreeEncoderSkidSteerModel>(std::move(ChassisModelFactory::create(
-		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
-		*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
+	robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
+		std::make_shared<ADIEncoder>(*s_leftEncoder),
+		std::make_shared<ADIEncoder>(*s_middleEncoder),
+		std::make_shared<ADIEncoder>(*s_rightEncoder),
 		200,
-		12000
-	)));
+		12000);
 
-	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ThreeEncoderSkidSteerModel(
-	// 	std::make_shared<MotorGroup>(MotorGroup{e_m_LeftFront, e_m_LeftBack}),
-	// 	std::make_shared<MotorGroup>(MotorGroup{e_m_RightFront, e_m_RightBack}),
-	// 	std::make_shared<ADIEncoder>(*s_leftEncoder),
-	// 	std::make_shared<ADIEncoder>(*s_middleEncoder),
-	// 	std::make_shared<ADIEncoder>(*s_rightEncoder),
-	// 	200,
-	// 	12000));
 
-		// chassisOdomTracker = new lib7842::OdomTracker
-		// (
-		// 	robotChassis,
-		// 	12.55_in, 8_in,
-		// 	2.75_in,
-		// 	360 * 1.6, 360
-		// );
-		//
-		// chassisOdomController = new lib7842::OdomController
-		// (
-		// 	chassisOdomTracker,
-		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.00, 0)),
-		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.0, 0)),
-		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0008, 0, 0))
-		// );
+		chassisOdomTracker = new lib7842::OdomTracker
+		(
+			robotChassis,
+			12.55_in, 8_in,
+			2.75_in,
+			360 * 1.6, 360
+		);
+
+		chassisOdomController = new lib7842::OdomController
+		(
+			chassisOdomTracker,
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.00, 0)),
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.0, 0)),
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0008, 0, 0))
+		);
 
 		// robotChassis = ChassisControllerFactory::createPtr(
 		// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},

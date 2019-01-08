@@ -34,7 +34,7 @@ namespace lib7842
 
     do {
       double newOutput = m_turnPid->step(m_chassis->state.theta.convert(degree) - angle.convert(degree));
-      m_chassis->model.rotate(newOutput);
+      m_chassis->model->rotate(newOutput);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
@@ -72,7 +72,7 @@ namespace lib7842
     do {
       double forwardSpeed = m_distancePid->step(-computeDistanceToPoint(point).convert(inch));
       double angleSpeed = m_anglePid->step(-computeAngleToPoint(point).convert(degree));
-      m_chassis->model.driveVector(forwardSpeed, angleSpeed);
+      m_chassis->model->driveVector(forwardSpeed, angleSpeed);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }

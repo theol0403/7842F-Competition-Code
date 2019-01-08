@@ -5,7 +5,7 @@ namespace lib7842
 
   OdomTracker::OdomTracker
   (
-    ThreeEncoderSkidSteerModel &ichassis,
+    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> ichassis,
     QLength chassisWidth, QLength distanceMiddle,
     QLength wheelDiam,
     double mainTicksPerRev, double middleTicksPerRev
@@ -34,7 +34,7 @@ namespace lib7842
 
   void OdomTracker::step()
   {
-    std::valarray<int32_t> newTicks = model.getSensorVals();
+    std::valarray<int32_t> newTicks = model->getSensorVals();
 
     QLength newLeftInch = (newTicks[0] * m_mainDegToInch) * inch;
     QLength newRightInch = (newTicks[1] * m_mainDegToInch) * inch;
@@ -106,7 +106,7 @@ namespace lib7842
 
   void OdomTracker::resetSensors()
   {
-    model.resetSensors();
+    model->resetSensors();
     m_lastLeftInch = 0_in;
     m_lastRightInch = 0_in;
     m_lastMiddleInch = 0_in;
