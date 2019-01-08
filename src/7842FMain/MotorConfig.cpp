@@ -78,19 +78,19 @@ lib7842::OdomController* chassisOdomController = nullptr;
 void initializeBase()
 {
 
-	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ChassisModelFactory::create(
+	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(std::move(ChassisModelFactory::create(
 	// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 	// 	*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
 	// 	200,
 	// 	12000
-	// ));
-
-	ThreeEncoderSkidSteerModel testChassis = ChassisModelFactory::create(
+	// )));
+	//
+	std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> testChassis = std::make_shared<ThreeEncoderSkidSteerModel>(std::move(ChassisModelFactory::create(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
 		200,
 		12000
-	);
+	)));
 
 	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ThreeEncoderSkidSteerModel(
 	// 	std::make_shared<MotorGroup>(MotorGroup{e_m_LeftFront, e_m_LeftBack}),

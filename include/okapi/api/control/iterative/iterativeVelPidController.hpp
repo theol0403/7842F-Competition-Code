@@ -17,6 +17,13 @@
 namespace okapi {
 class IterativeVelPIDController : public IterativeVelocityController<double, double> {
   public:
+  struct Gains {
+    double kP{0};
+    double kD{0};
+    double kF{0};
+    double kSF{0};
+  };
+
   /**
    * Velocity PD controller.
    *
@@ -24,8 +31,10 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
    * @param ikD the derivative gain
    * @param ikF the feed-forward gain
    * @param ikSF a feed-forward gain to counteract static friction
+   * @param ivelMath The VelMath used for calculating velocity.
    * @param itimeUtil see TimeUtil docs
    * @param iderivativeFilter a filter for filtering the derivative term
+   * @param ilogger The logger this instance will log to.
    */
   IterativeVelPIDController(
     double ikP,
@@ -34,7 +43,8 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
     double ikSF,
     std::unique_ptr<VelMath> ivelMath,
     const TimeUtil &itimeUtil,
-    std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>());
+    std::unique_ptr<Filter> iderivativeFilter = std::make_unique<PassthroughFilter>(),
+    const std::shared_ptr<Logger> &ilogger = std::make_shared<Logger>());
 
   /**
    * Do one iteration of the controller. Returns the reading in the range [-1, 1] unless the
@@ -181,7 +191,7 @@ class IterativeVelPIDController : public IterativeVelocityController<double, dou
   virtual QAngularSpeed getVel() const;
 
   protected:
-  Logger *logger;
+  std::shared_ptr<Logger> logger;
   double kP, kD, kF, kSF;
   QTime sampleTime{10_ms};
   double error{0};
