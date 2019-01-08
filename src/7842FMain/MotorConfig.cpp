@@ -99,9 +99,9 @@ void initializeBase()
 		chassisOdomController = new lib7842::OdomController
 		(
 			chassisOdomTracker,
-			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.00, 0)),
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0012, 0.00, 0)),
 			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.0, 0)),
-			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0008, 0, 0))
+			std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.015, 0, 0.01))
 		);
 
 		// robotChassis = ChassisControllerFactory::createPtr(
