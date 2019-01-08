@@ -16,6 +16,10 @@ namespace lib7842
     std::unique_ptr<IterativePosPIDController> m_anglePid;
     std::unique_ptr<IterativePosPIDController> m_turnPid;
 
+    SettledUtil m_distanceUtil;
+    SettledUtil m_angleUtil;
+    SettledUtil m_turnUtil;
+
   public:
 
     OdomController(
