@@ -38,6 +38,8 @@ void driverBaseControl()
 
   if(j_Digital(B))
   {
+    chassisOdomTracker->resetSensors();
+    chassisOdomTracker->resetState();
     chassisOdomTracker->resetState();
     chassisOdomTracker->resetSensors();
   }

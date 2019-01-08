@@ -106,10 +106,10 @@ namespace lib7842
 
   void OdomTracker::resetSensors()
   {
-    model->resetSensors();
     m_lastLeftInch = 0_in;
     m_lastRightInch = 0_in;
     m_lastMiddleInch = 0_in;
+    model->resetSensors();
   }
 
 
