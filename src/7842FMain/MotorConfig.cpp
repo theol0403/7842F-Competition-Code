@@ -78,25 +78,44 @@ lib7842::OdomController* chassisOdomController = nullptr;
 void initializeBase()
 {
 
-	robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ChassisModelFactory::create(
+	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ChassisModelFactory::create(
+	// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
+	// 	*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
+	// 	200,
+	// 	12000
+	// ));
+
+	ThreeEncoderSkidSteerModel testChassis = ChassisModelFactory::create(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		*s_leftEncoder, *s_middleEncoder, *s_rightEncoder,
 		200,
 		12000
-	));
+	);
 
-		chassisOdomTracker = new lib7842::OdomTracker
-		(
-			robotChassis,
-			12.55_in, 8_in,
-			2.75_in,
-			360 * 1.6, 360
-		);
+	// robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(ThreeEncoderSkidSteerModel(
+	// 	std::make_shared<MotorGroup>(MotorGroup{e_m_LeftFront, e_m_LeftBack}),
+	// 	std::make_shared<MotorGroup>(MotorGroup{e_m_RightFront, e_m_RightBack}),
+	// 	std::make_shared<ADIEncoder>(*s_leftEncoder),
+	// 	std::make_shared<ADIEncoder>(*s_middleEncoder),
+	// 	std::make_shared<ADIEncoder>(*s_rightEncoder),
+	// 	200,
+	// 	12000));
 
-		chassisOdomController = new lib7842::OdomController
-		(
-			chassisOdomTracker
-		);
+		// chassisOdomTracker = new lib7842::OdomTracker
+		// (
+		// 	robotChassis,
+		// 	12.55_in, 8_in,
+		// 	2.75_in,
+		// 	360 * 1.6, 360
+		// );
+		//
+		// chassisOdomController = new lib7842::OdomController
+		// (
+		// 	chassisOdomTracker,
+		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.00, 0)),
+		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.001, 0.0, 0)),
+		// 	std::make_unique<IterativePosPIDController>(IterativeControllerFactory::posPID(0.0008, 0, 0))
+		// );
 
 		// robotChassis = ChassisControllerFactory::createPtr(
 		// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
@@ -109,36 +128,32 @@ void initializeBase()
 		// );
 
 
-		robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
-			(
-				1.0, 2.0, 10.0,
-				*robotChassis
-			));
 
+
+		pros::delay(500);
+
+		chassisOdomTracker->resetSensors();
+		chassisOdomTracker->resetState();
+	}
+
+	void checkBaseStatus()
+	{
+		if(robotChassis == nullptr)
+		{
+			std::cout << "USING BASE BEFORE INIT\n";
 			pros::delay(500);
-
-			chassisOdomTracker->resetSensors();
-			chassisOdomTracker->resetState();
 		}
-
-		void checkBaseStatus()
-		{
-			if(robotChassis == nullptr)
-			{
-				std::cout << "USING BASE BEFORE INIT\n";
-				pros::delay(500);
-			}
-		}
+	}
 
 
-		void setBaseArcade(double yPower, double zPower)
-		{
-			checkBaseStatus();
-			robotChassis->arcade(yPower, zPower, 0);
-		}
+	void setBaseArcade(double yPower, double zPower)
+	{
+		checkBaseStatus();
+		robotChassis->arcade(yPower, zPower, 0);
+	}
 
-		void setBasePower(double leftPower, double rightPower)
-		{
-			checkBaseStatus();
-			robotChassis->tank(leftPower, rightPower, 0);
-		}
+	void setBasePower(double leftPower, double rightPower)
+	{
+		checkBaseStatus();
+		robotChassis->tank(leftPower, rightPower, 0);
+	}

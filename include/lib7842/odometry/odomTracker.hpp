@@ -30,13 +30,13 @@ namespace lib7842
 
   public:
     OdomTracker(
-      std::shared_ptr<ThreeEncoderSkidSteerModel>,
+      ThreeEncoderSkidSteerModel &,
       QLength, QLength,
       QLength,
       double, double
     );
 
-    std::shared_ptr<ThreeEncoderSkidSteerModel> model = nullptr;
+    const ThreeEncoderSkidSteerModel model;
     // for ease of use we make the x, y, and a vars public
     Point state {0_in, 0_in, 0_rad};
 
