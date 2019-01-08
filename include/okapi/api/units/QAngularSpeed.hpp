@@ -14,7 +14,6 @@
 #pragma once
 
 #include "okapi/api/units/QAngle.hpp"
-#include "okapi/api/units/QFrequency.hpp"
 #include "okapi/api/units/QTime.hpp"
 #include "okapi/api/units/RQuantity.hpp"
 
@@ -23,10 +22,6 @@ QUANTITY_TYPE(0, 0, -1, 1, QAngularSpeed)
 
 constexpr QAngularSpeed radps = radian / second;
 constexpr QAngularSpeed rpm = (360 * degree) / minute;
-
-static QAngularSpeed convertHertzToRadPerSec(QFrequency in) {
-  return (in.convert(Hz) / 2_pi) * radps;
-}
 
 inline namespace literals {
 constexpr QAngularSpeed operator"" _rpm(long double x) {

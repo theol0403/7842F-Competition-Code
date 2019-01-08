@@ -58,8 +58,8 @@ class AbstractMotor : public ControllerOutput<double> {
 
     ~GearsetRatioPair() = default;
 
-    gearset internalGearset;
-    double ratio = 1;
+    const gearset internalGearset;
+    const double ratio = 1;
   };
 
   virtual ~AbstractMotor();

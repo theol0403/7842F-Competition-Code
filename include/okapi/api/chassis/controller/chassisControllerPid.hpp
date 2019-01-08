@@ -27,16 +27,14 @@ class ChassisControllerPID : public virtual ChassisController {
    * @param iangleController angle PID controller (keeps the robot straight)
    * @param igearset motor internal gearset and gear ratio
    * @param iscales see ChassisScales docs
-   * @param ilogger The logger this instance will log to.
    */
   ChassisControllerPID(const TimeUtil &itimeUtil,
                        const std::shared_ptr<ChassisModel> &imodel,
                        std::unique_ptr<IterativePosPIDController> idistanceController,
-                       std::unique_ptr<IterativePosPIDController> iturnController,
                        std::unique_ptr<IterativePosPIDController> iangleController,
+                       std::unique_ptr<IterativePosPIDController> iturnController,
                        AbstractMotor::GearsetRatioPair igearset = AbstractMotor::gearset::red,
-                       const ChassisScales &iscales = ChassisScales({1, 1}, imev5GreenTPR),
-                       const std::shared_ptr<Logger> &ilogger = std::make_shared<Logger>());
+                       const ChassisScales &iscales = ChassisScales({1, 1}));
 
   ChassisControllerPID(ChassisControllerPID &&other) noexcept;
 
@@ -104,7 +102,7 @@ class ChassisControllerPID : public virtual ChassisController {
   void waitUntilSettled() override;
 
   /**
-   * Stop the robot (set all the motors to 0 and stops the PID controllers).
+   * Stop the robot (set all the motors to 0).
    */
   void stop() override;
 
@@ -125,11 +123,11 @@ class ChassisControllerPID : public virtual ChassisController {
   AbstractMotor::GearsetRatioPair getGearsetRatioPair() const override;
 
   protected:
-  std::shared_ptr<Logger> logger;
+  Logger *logger;
   std::unique_ptr<AbstractRate> rate;
   std::unique_ptr<IterativePosPIDController> distancePid;
-  std::unique_ptr<IterativePosPIDController> turnPid;
   std::unique_ptr<IterativePosPIDController> anglePid;
+  std::unique_ptr<IterativePosPIDController> turnPid;
   ChassisScales scales;
   AbstractMotor::GearsetRatioPair gearsetRatioPair;
   std::atomic_bool doneLooping{true};

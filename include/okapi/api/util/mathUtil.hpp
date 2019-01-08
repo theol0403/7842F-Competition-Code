@@ -9,28 +9,23 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <math.h>
 #include <type_traits>
 
 namespace okapi {
-static constexpr std::int32_t analogInToV = 286;
+static constexpr double analogInToV = 286.0;
 static constexpr double inchToMM = 25.4;
 static constexpr double mmToInch = 0.0393700787;
-static constexpr double degreeToRadian = 0.01745329252;
+static constexpr double degreeToRadian = 0.01745;
 static constexpr double radianToDegree = 57.2957795;
 static constexpr double imeTorqueTPR = 627.2;
-static constexpr std::int32_t imeSpeedTPR = 392;
+static constexpr double imeSpeedTPR = 392.0;
 static constexpr double imeTurboTPR = 261.333;
 static constexpr double ime269TPR = 240.448;
-static constexpr std::int32_t imev5RedTPR = 1800;
-static constexpr std::int32_t imev5GreenTPR = 900;
-static constexpr std::int32_t imev5BlueTPR = 300;
-static constexpr std::int32_t quadEncoderTPR = 360;
+static constexpr double imev5TPR = 1800.0;
+static constexpr double quadEncoderTPR = 360.0;
 static constexpr double pi = 3.1415926535897932;
 static constexpr double pi2 = 1.5707963267948966;
 static constexpr double gravity = 9.80665;
-static constexpr auto OKAPI_PROS_ERR = INT32_MAX;
-static constexpr auto OKAPI_PROS_ERR_F = INFINITY;
 
 static constexpr std::int8_t motorUpdateRate = 10;
 static constexpr std::int8_t adiUpdateRate = 50;

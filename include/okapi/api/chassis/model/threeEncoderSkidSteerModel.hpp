@@ -18,19 +18,6 @@ class ThreeEncoderSkidSteerModel : public SkidSteerModel {
    *
    * @param ileftSideMotor left side motor
    * @param irightSideMotor right side motor
-   * @param imiddleEnc middle encoder (mounted perpendicular to the left and right side encoders)
-   */
-  ThreeEncoderSkidSteerModel(std::shared_ptr<AbstractMotor> ileftSideMotor,
-                             std::shared_ptr<AbstractMotor> irightSideMotor,
-                             std::shared_ptr<ContinuousRotarySensor> imiddleEnc,
-                             double imaxOutput = 127);
-
-  /**
-   * Model for a skid steer drive (wheels parallel with robot's direction of motion). When all
-   * motors are powered +127, the robot should move forward in a straight line.
-   *
-   * @param ileftSideMotor left side motor
-   * @param irightSideMotor right side motor
    * @param ileftEnc left side encoder
    * @param imiddleEnc middle encoder (mounted perpendicular to the left and right side encoders)
    * @param irightEnc right side encoder
@@ -51,13 +38,10 @@ class ThreeEncoderSkidSteerModel : public SkidSteerModel {
   std::valarray<std::int32_t> getSensorVals() const override;
 
 
-
 /**
  * Reset the sensors to their zero point.
  */
 void resetSensors() const override;
-
-
 
   protected:
   std::shared_ptr<ContinuousRotarySensor> middleSensor;

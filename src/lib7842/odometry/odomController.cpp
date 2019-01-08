@@ -17,7 +17,7 @@ namespace lib7842
   m_turnPid(std::move(iturnController)),
   m_distanceUtil(std::make_unique<Timer>(), 1, 1, 250_ms),
   m_angleUtil(std::make_unique<Timer>(), 1, 1, 250_ms),
-  m_turnUtil(std::make_unique<Timer>(), 1, 1, 250_ms)
+  m_turnUtil(std::make_unique<Timer>(), 3, 1, 250_ms)
   {
   };
 
@@ -69,22 +69,35 @@ namespace lib7842
 
   void OdomController::driveToPoint(Point point)
   {
+    turnToPoint(point);
+
     m_distancePid->setTarget(0);
     m_anglePid->setTarget(0);
+
     m_distanceUtil.reset();
     m_angleUtil.reset();
+
     double distanceError = 0;
     double angleError = 0;
 
-    do
+    while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError))
     {
-      double forwardSpeed = m_distancePid->step(-computeDistanceToPoint(point).convert(inch));
-      double angleSpeed = m_anglePid->step(-computeAngleToPoint(point).convert(degree));
-      m_chassis->model->driveVector(forwardSpeed, angleSpeed);
+      distanceError = computeDistanceToPoint(point).convert(centimeter);
+      angleError = computeAngleToPoint(point).convert(degree);
+
+      // if(angleError < 0.1 * distanceError)
+      // {
+      //
+      // }
+
+      double forwardSpeed = m_distancePid->step(-distanceError);
+      double angleSpeed = m_anglePid->step(-angleError);
+
+      m_chassis->model->driveVector(forwardSpeed, 0);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
-    while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError));
+
 
   }
 
