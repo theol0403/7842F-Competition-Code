@@ -115,6 +115,19 @@ void initializeBase()
 		// );
 
 
+// 		void ThreeEncoderSkidSteerModel::resetSensors() const {
+//   leftSensor->reset();
+//   rightSensor->reset();
+//   middleSensor->reset();
+// }
+//
+//
+// /**
+//  * Reset the sensors to their zero point.
+//  */
+// void resetSensors() const override;
+
+
 
 
 		pros::delay(500);
