@@ -18,9 +18,9 @@ namespace lib7842
   {
   };
 
-  QAngle OdomController::computeAngleOfPoint(Point point)
+  QAngle OdomController::computeAngleToPoint(Point point)
   {
-    return atan2(point.x.convert(inch) - m_chassis->state.x.convert(inch), point.y.convert(inch) - m_chassis->state.y.convert(inch)) * radian;
+    return atan2(point.x.convert(inch) - m_chassis->state.x.convert(inch), point.y.convert(inch) - m_chassis->state.y.convert(inch)) * radian - m_chassis->state.theta;
   }
 
   void OdomController::turnAngle(QAngle angle)
@@ -30,20 +30,21 @@ namespace lib7842
 
   void OdomController::turnToAngle(QAngle angle)
   {
-    m_turnPid->setTarget(angle.convert(degree));
+    m_turnPid->setTarget(0);
 
-    while(!m_turnPid->isSettled())
-    {
-      double newOutput = m_turnPid->step(m_chassis->state.theta.convert(degree));
+    do {
+      double newOutput = m_turnPid->step(m_chassis->state.theta.convert(degree) - angle.convert(degree));
       m_chassis->model->rotate(newOutput);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
+    while(!m_turnPid->isSettled());
+
   }
 
   void OdomController::turnToPoint(Point point)
   {
-    turnToAngle(computeAngleOfPoint(point));
+    turnToAngle(computeAngleToPoint(point) + m_chassis->state.theta);
   }
 
 
@@ -54,27 +55,29 @@ namespace lib7842
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
   }
 
-  QLength OdomController::computeDistanceOfPoint(Point point)
+  QLength OdomController::computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {
-    return std::sqrt(std::pow(point.x.convert(inch), 2) + std::pow(point.y.convert(inch), 2)) * inch;
+    const QLength xDiff = secondPoint.x - firstPoint.x;
+    const QLength yDiff = secondPoint.y - firstPoint.y;
+    return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
   }
-
 
 
   void OdomController::driveToPoint(Point point)
   {
 
-    m_distancePid->setTarget(computeDistanceOfPoint(point).convert(inch));
-    m_anglePid->setTarget(computeAngleOfPoint(point).convert(degree));
+    m_distancePid->setTarget(0);
+    m_anglePid->setTarget(0);
 
-    while(!m_distancePid->isSettled() || !m_anglePid->isSettled())
-    {
-      double newDistance = computeDistanceOfPoint(m_chassis->state).convert(inch);
-      double newAngle = m_chassis->state.theta.convert(degree);
-      m_chassis->model->driveVector(m_distancePid->step(newDistance), m_anglePid->step(newAngle));
+    do {
+      double forwardSpeed = m_distancePid->step(-computeDistanceToPoint(point).convert(inch));
+      double angleSpeed = m_anglePid->step(-computeAngleToPoint(point).convert(degree));
+      m_chassis->model->driveVector(forwardSpeed, angleSpeed);
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
+    while(!m_distancePid->isSettled() || !m_anglePid->isSettled());
+
   }
 
 
