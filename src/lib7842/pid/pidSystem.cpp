@@ -43,4 +43,13 @@ namespace lib7842
   }
 
 
+  void PID::reset()
+  {
+    m_Error = 0;
+    m_lastError = 0;
+    m_lastTime = m_timer.elapsed();
+    m_derivative = 0;
+  }
+
+
 }

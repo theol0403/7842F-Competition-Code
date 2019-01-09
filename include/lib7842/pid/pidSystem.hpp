@@ -23,12 +23,14 @@ namespace lib7842
 
   public:
 
-    velPID(double, double);
+    PID(double, double);
 
     double calculateErr(double);
     double calculate(double, double);
 
     double getError();
+
+    void reset();
 
   };
 }
