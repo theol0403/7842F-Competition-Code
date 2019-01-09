@@ -24,6 +24,8 @@ namespace lib7842
   public:
 
     velPID(double, double);
+
+    double calculateErr(double);
     double calculate(double, double);
 
     double getError();
