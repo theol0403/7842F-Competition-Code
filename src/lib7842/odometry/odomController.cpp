@@ -31,7 +31,6 @@ namespace lib7842
   {
     m_turnPid->reset();
 
-    double turnError = 0;
     while(!m_turnPid->isSettled())
     {
       double newOutput = m_turnPid->calculate(angle.convert(degree), m_chassis->state.theta.convert(degree));
@@ -59,6 +58,12 @@ namespace lib7842
     const QLength xDiff = secondPoint.x - firstPoint.x;
     const QLength yDiff = secondPoint.y - firstPoint.y;
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
+  }
+
+
+  void OdomController::driveDistanceToAngle(QLength distance, QAngle angle)
+  {
+
   }
 
 

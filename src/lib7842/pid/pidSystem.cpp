@@ -23,9 +23,9 @@ namespace lib7842
     m_lastError = m_Error;
 
     double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd);
-    if(fabs(finalPower) > 127)
+    if(fabs(finalPower) > 1.0)
     {
-      finalPower = sgn(finalPower) * 127;
+      finalPower = sgn(finalPower) * 1.0;
     }
 
     m_isSettled = m_settledUtil.isSettled(m_Error);
