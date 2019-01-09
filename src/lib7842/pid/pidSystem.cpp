@@ -3,10 +3,11 @@
 namespace lib7842
 {
 
-  PID::PID(double Kp, double Kd)
+  PID::PID(double Kp, double Kd, double settledError, double settledD, QTime settledTime)
   : m_timer(),
   m_Kp(Kp),
-  m_Kd(Kd)
+  m_Kd(Kd),
+  m_settledUtil(std::make_unique<okapi::Timer>(), settledError, settledD, settledTime)
   {
     m_lastTime = m_timer.elapsed();
   }
@@ -26,6 +27,8 @@ namespace lib7842
     {
       finalPower = sgn(finalPower) * 127;
     }
+
+    m_isSettled = m_settledUtil.isSettled(m_Error);
 
     return finalPower;
   }
@@ -49,6 +52,12 @@ namespace lib7842
     m_lastError = 0;
     m_lastTime = m_timer.elapsed();
     m_derivative = 0;
+    m_settledUtil.reset();
+  }
+
+  bool PID::isSettled()
+  {
+    return m_isSettled;
   }
 
 

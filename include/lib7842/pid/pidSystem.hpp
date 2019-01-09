@@ -20,10 +20,13 @@ namespace lib7842
 
     Timer m_timer;
 
+    SettledUtil m_settledUtil;
+    bool m_isSettled = false;
+
 
   public:
 
-    PID(double, double);
+    PID(double, double, double, double, QTime);
 
     double calculateErr(double);
     double calculate(double, double);
@@ -31,6 +34,8 @@ namespace lib7842
     double getError();
 
     void reset();
+
+    bool isSettled();
 
   };
 }
