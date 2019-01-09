@@ -81,6 +81,10 @@ namespace lib7842
     state.y += dY;
     state.theta = newAngle;
 
+    //Wrap theta
+    if(state.theta > 180_deg) { state.theta = state.theta - 360_deg; }
+    if(state.theta < -180_deg) { state.theta = state.theta + 360_deg; }
+
   }
 
   void OdomTracker::setState(QLength x, QLength y, QAngle a)

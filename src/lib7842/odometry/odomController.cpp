@@ -44,6 +44,8 @@ namespace lib7842
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
+
+    m_chassis->model->rotate(0);
   }
 
   void OdomController::turnToPoint(Point point)
@@ -78,26 +80,29 @@ namespace lib7842
     m_angleUtil.reset();
 
     double distanceError = 0;
-    double angleError = 0;
+      double angleError = 0;
 
     while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError))
     {
       distanceError = computeDistanceToPoint(point).convert(millimeter);
       angleError = computeAngleToPoint(point).convert(degree);
 
-      // if(angleError < 0.1 * distanceError)
-      // {
-      //
-      // }
+      if(abs(angleError) > 180)
+      {
+        distanceError = -distanceError;
+      }
 
-      double forwardSpeed = m_distancePid->step(-distanceError);
-      double angleSpeed = m_anglePid->step(-angleError);
+      if(distanceError < 500)
+      {
+        angleError = 0;
+      }
 
-      m_chassis->model->driveVector(forwardSpeed, 0);
+      m_chassis->model->driveVector(m_distancePid->step(-distanceError), m_anglePid->step(-angleError));
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
 
+    m_chassis->model->driveVector(0, 0);
 
   }
 
