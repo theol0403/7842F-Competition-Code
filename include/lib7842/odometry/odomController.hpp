@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "odomTracker.hpp"
+#include "lib7842/pid/pidSystem.hpp"
 
 namespace lib7842
 {
@@ -12,21 +13,17 @@ namespace lib7842
 
     OdomTracker *m_chassis;
 
-    std::unique_ptr<IterativePosPIDController> m_distancePid;
-    std::unique_ptr<IterativePosPIDController> m_anglePid;
-    std::unique_ptr<IterativePosPIDController> m_turnPid;
-
-    SettledUtil m_distanceUtil;
-    SettledUtil m_angleUtil;
-    SettledUtil m_turnUtil;
+    PID *m_distancePid;
+    PID *m_anglePid;
+    PID *m_turnPid;
 
   public:
 
     OdomController(
       OdomTracker*,
-      std::unique_ptr<IterativePosPIDController>,
-      std::unique_ptr<IterativePosPIDController>,
-      std::unique_ptr<IterativePosPIDController>
+      PID *,
+      PID *,
+      PID *
     );
 
 

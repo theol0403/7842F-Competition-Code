@@ -34,9 +34,9 @@ namespace lib7842
   }
 
 
-  double PID::calculate(double wantedRPM, double currentRPM)
+  double PID::calculate(double wantedPos, double currentPos)
   {
-    return calculateErr(wantedRPM - currentRPM);
+    return calculateErr(wantedPos - currentPos);
   }
 
 
@@ -53,6 +53,7 @@ namespace lib7842
     m_lastTime = m_timer.elapsed();
     m_derivative = 0;
     m_settledUtil.reset();
+    m_isSettled = false;
   }
 
   bool PID::isSettled()
