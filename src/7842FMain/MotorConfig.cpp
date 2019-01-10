@@ -69,7 +69,7 @@ double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
 
 
 //Base -----------------------
-std::shared_ptr<okapi::ChassisControllerPID> robotChassis = nullptr;
+std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 lib7842::OdomTracker* chassisOdomTracker = nullptr;
@@ -77,39 +77,58 @@ lib7842::OdomController* chassisOdomController = nullptr;
 
 void initializeBase()
 {
-	const QLength chassisWidth = 12.55_in;
 
-	// Otherwise, you should specify the gearset and scales for your robot
-	robotChassis = ChassisControllerFactory::createPtr(
-		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
-		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.001, 0.00, 0},
-		IterativePosPIDController::Gains{0.001, 0.00, 0},
-		IterativePosPIDController::Gains{0.0008, 0, 0},
-		AbstractMotor::gearset::green,
-		{2.75_in / 1.6, chassisWidth * 2}
-	);
-
-	chassisOdomTracker = new lib7842::OdomTracker
-	(
-		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		chassisWidth, 8_in,
-		2.75_in,
-		360 * 1.6, 360
-	);
-
-	chassisOdomController = new lib7842::OdomController
-	(
-		robotChassis,
-		chassisOdomTracker
-	);
+	robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
+		std::make_shared<ADIEncoder>(*s_leftEncoder),
+		std::make_shared<ADIEncoder>(*s_middleEncoder),
+		std::make_shared<ADIEncoder>(*s_rightEncoder),
+		200,
+		12000);
 
 
-	robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+		chassisOdomTracker = new lib7842::OdomTracker
 		(
-			1.0, 2.0, 10.0,
-			*robotChassis
-		));
+			robotChassis,
+			12.55_in, 8_in,
+			2.75_in,
+			360 * 1.6, 360
+		);
+
+		chassisOdomController = new lib7842::OdomController
+		(
+			chassisOdomTracker,
+			new lib7842::PID(0.01, 0.1, 50, 5, 250_ms),
+			new lib7842::PID(0.01, 0.1, 50, 5, 250_ms),
+			new lib7842::PID(0.01, 0.1, 50, 5, 250_ms) //Angle PID - To Degree
+		);
+
+		// robotChassis = ChassisControllerFactory::createPtr(
+		// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
+		// 	*s_leftEncoder, *s_rightEncoder,
+		// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
+		// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
+		// 	IterativePosPIDController::Gains{0.0008, 0, 0},
+		// 	AbstractMotor::gearset::green,
+		// 	{2.75_in / 1.6, chassisWidth * 2}
+		// );
+
+
+// 		void ThreeEncoderSkidSteerModel::resetSensors() const {
+//   leftSensor->reset();
+//   rightSensor->reset();
+//   middleSensor->reset();
+// }
+//
+//
+// /**
+//  * Reset the sensors to their zero point.
+//  */
+// void resetSensors() const override;
+
+
+
 
 		pros::delay(500);
 

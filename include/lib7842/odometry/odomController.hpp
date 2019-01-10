@@ -1,37 +1,40 @@
 #pragma once
 #include "main.h"
 #include "odomTracker.hpp"
+#include "lib7842/pid/pidSystem.hpp"
 
 namespace lib7842
 {
-
-  struct Point
-  {
-    QLength x {0_in};
-    QLength y {0_in};
-    QAngle theta {0_rad};
-  };
 
   class OdomController
   {
 
   private:
 
-    std::shared_ptr<okapi::ChassisControllerPID> m_chassisController;
-    OdomTracker *m_odomTracker;
+    OdomTracker *m_chassis;
+
+    PID *m_distancePid;
+    PID *m_anglePid;
+    PID *m_turnPid;
 
   public:
+
     OdomController(
-      std::shared_ptr<okapi::ChassisControllerPID>,
-      OdomTracker*
+      OdomTracker*,
+      PID *,
+      PID *,
+      PID *
     );
 
 
-    QLength computeDistanceToPoint(Point);
     QAngle computeAngleToPoint(Point);
-
+    void turnAngle(QAngle);
     void turnToAngle(QAngle);
     void turnToPoint(Point);
+
+    QLength computeDistanceToPoint(Point);
+    QLength computeDistanceBetweenPoints(Point, Point);
+
     void driveToPoint(Point);
     void driveToPointAndAngle(Point);
 

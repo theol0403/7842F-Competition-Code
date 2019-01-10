@@ -19,7 +19,7 @@ double getIndexerSensor();
 
 void initializeDevices();
 
-extern std::shared_ptr<okapi::ChassisControllerPID> robotChassis;
+extern std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> robotChassis;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
 
 extern lib7842::OdomTracker* chassisOdomTracker;
@@ -32,8 +32,4 @@ void checkBaseStatus();
 void setBaseArcade(double, double);
 void setBasePower(double, double);
 
-
-
-extern okapi::ADIEncoder* s_leftEncoder;
-extern okapi::ADIEncoder* s_rightEncoder;
-extern okapi::ADIEncoder* s_middleEncoder;
+extern okapi::ADIEncoder* s_middleEncoder; 
