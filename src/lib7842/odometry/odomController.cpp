@@ -22,19 +22,19 @@ namespace lib7842
     return atan2(point.x.convert(inch) - m_chassis->state.x.convert(inch), point.y.convert(inch) - m_chassis->state.y.convert(inch)) * radian - m_chassis->state.theta;
   }
 
-  void OdomController::turnAngle(QAngle angle)
+  void OdomController::turnAngle(QAngle wantedAngle)
   {
-    turnToAngle(angle + m_chassis->state.theta);
+    turnToAngle(wantedAngle + m_chassis->state.theta);
   }
 
-  void OdomController::turnToAngle(QAngle angle)
+  void OdomController::turnToAngle(QAngle wantedAngle)
   {
     m_turnPid->reset();
 
     while(!m_turnPid->isSettled())
     {
-      double newOutput = m_turnPid->calculate(angle.convert(degree), m_chassis->state.theta.convert(degree));
-      m_chassis->model->rotate(newOutput); //TODO Could be reversed
+      double turnVel = 200 * m_turnPid->calculate(wantedAngle.convert(degree), m_chassis->state.theta.convert(degree));
+      m_chassis->model->rotate(turnVel); //TODO Could be reversed
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
@@ -61,9 +61,32 @@ namespace lib7842
   }
 
 
-  void OdomController::driveDistanceToAngle(QLength distance, QAngle angle)
+  void OdomController::driveDistanceToAngle(QLength distance, QAngle wantedAngle)
   {
+    std::valarray<int32_t> lastTicks = m_chassis->model->getSensorVals();
 
+    m_distancePid->reset();
+    m_anglePid->reset();
+
+    while(!m_distancePid->isSettled())
+    {
+      std::valarray<int32_t> newTicks = m_chassis->model->getSensorVals();
+      QLength newDistance = ((newTicks[0] - lastTicks[0] + newTicks[1] - lastTicks[1]) / 2 * m_chassis->m_mainDegToInch) * inch;
+      QLength distanceErr = distance - newDistance;
+      double distanceVel = 200 * m_distancePid->calculateErr(distanceErr.convert(millimeter));
+
+      double turnVel = 0;
+      if(distanceErr > 5_in)
+      {
+        turnVel = 200 * m_anglePid->calculate(wantedAngle.convert(degree), m_chassis->state.theta.convert(degree));
+      }
+
+      m_chassis->model->driveVector(distanceVel, turnVel); //TODO Could be reversed
+
+      pros::delay(10); // Run the control loop at 10ms intervals
+    }
+
+    m_chassis->model->rotate(0);
   }
 
 
@@ -71,19 +94,25 @@ namespace lib7842
   {
     turnToPoint(point);
 
-    m_distancePid->setTarget(0);
-    m_anglePid->setTarget(0);
+    m_distancePid->reset();
+    m_anglePid->reset();
 
-    m_distanceUtil.reset();
-    m_angleUtil.reset();
+    QLength distanceErr = computeDistanceToPoint(point);
 
-    double distanceError = 0;
-      double angleError = 0;
-
-    while(!m_distanceUtil.isSettled(distanceError) || !m_angleUtil.isSettled(angleError))
+    while(distanceErr > 5_in)
     {
-      distanceError = computeDistanceToPoint(point).convert(millimeter);
-      angleError = computeAngleToPoint(point).convert(degree);
+      QAngle angleErr = computeAngleToPoint(point) - m_chassis->state.theta;
+      double turnVel = 200 * m_anglePid->calculateErr(angleErr.convert(degree));
+
+
+      distanceErr = computeDistanceToPoint(point);
+      double distanceVel;
+      if(angleErr.abs() < 30_deg)
+      {
+        distanceVel = 200 * m_distancePid->calculateErr(distanceErr.convert(millimeter));
+      }
+
+
 
       if(abs(angleError) > 180)
       {

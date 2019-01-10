@@ -81,9 +81,9 @@ namespace lib7842
     state.y += dY;
     state.theta = newAngle;
 
-    //Wrap theta
-    if(state.theta > 180_deg) { state.theta = state.theta - 360_deg; }
-    if(state.theta < -180_deg) { state.theta = state.theta + 360_deg; }
+    // //Wrap theta
+    // if(state.theta > 180_deg) { state.theta = state.theta - 360_deg; }
+    // if(state.theta < -180_deg) { state.theta = state.theta + 360_deg; }
 
   }
 
