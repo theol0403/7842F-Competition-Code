@@ -35,6 +35,9 @@ namespace lib7842
     QLength computeDistanceToPoint(Point);
     QLength computeDistanceBetweenPoints(Point, Point);
 
+    void driveDistance(QLength);
+    void driveDistanceToAngle(QLength, QAngle);
+
     void driveToPoint(Point);
     void driveToPointAndAngle(Point);
 
