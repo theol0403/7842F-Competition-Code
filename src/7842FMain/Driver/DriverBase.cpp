@@ -26,7 +26,7 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    chassisOdomController->turnToAngle(90_deg);
+    chassisOdomController->turnToAngle(0_deg);
   }
 
   driverJoystick();

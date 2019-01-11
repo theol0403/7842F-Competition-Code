@@ -3,39 +3,48 @@
 enum dIntakeStates_t
 {
 	none,
-	both,
-	bottom,
-	top,
-	outButton
+	shootBoth,
+	loading,
+	shootIndexer,
+	outIntake,
+	outBoth
 };
 
 static dIntakeStates_t dIntakeState = none;
 static dIntakeStates_t dLastIntakeState = none;
 
+// r2 && r2 shoot everything
+//r2 intake r1 just indake outtake
+//l2 shoot l1 everything outtake
+
+
 void driverIntakeControl()
 {
 	if(j_Digital(R1) && j_Digital(R2))
 	{
-		dIntakeState = both;
-	}
-	else if(j_Digital(R1))
-	{
-		dIntakeState = top;
+		dIntakeState = shootBoth;
 	}
 	else if(j_Digital(R2))
 	{
-		dIntakeState = bottom;
+		dIntakeState = loading;
+	}
+	else if(j_Digital(L2))
+	{
+		dIntakeState = shootIndexer;
+	}
+	else if(j_Digital(R1))
+	{
+		dIntakeState = outIntake;
+	}
+	else if(j_Digital(L1))
+	{
+		dIntakeState = outBoth;
 	}
 	else
 	{
 		dIntakeState = none;
 	}
 
-	if(j_Digital(Y))
-	{
-		dIntakeState = outButton;
-	}
-	
 
 	if(dIntakeState != dLastIntakeState)
 	{
@@ -44,20 +53,24 @@ void driverIntakeControl()
 				setIntakeMode(intakeModes::off);
 				break;
 			}
-			case both: {
+			case shootBoth: {
 				setIntakeMode(intakeModes::shootBoth);
 				break;
 			}
-			case bottom: {
+			case loading: {
 				setIntakeMode(intakeModes::loading);
 				break;
 			}
-			case top: {
+			case shootIndexer: {
 				setIntakeMode(intakeModes::shootIndexer);
 				break;
 			}
-			case outButton: {
-				setIntakeMode(intakeModes::out);
+			case outIntake: {
+				setIntakeMode(intakeModes::outIntake);
+				break;
+			}
+			case outBoth: {
+				setIntakeMode(intakeModes::outBoth);
 				break;
 			}
 

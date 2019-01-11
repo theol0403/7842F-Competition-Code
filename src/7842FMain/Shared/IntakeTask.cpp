@@ -47,16 +47,7 @@ void intakeControlTask(void*)
         break;
       }
 
-      case intakeModes::shootBoth:
-      {
-        setIntakeVelocity(200);
-        setIndexerVelocity(200);
-        //intakeMode = intakeModes::loading; // Allows mode to be set to off while waiting
-        pros::delay(200);
-        break;
-      }
-
-      case intakeModes::shootIndexer:
+    case intakeModes::shootIndexer:
       {
         setIntakeVelocity(0);
         setIndexerVelocity(200);
@@ -65,10 +56,26 @@ void intakeControlTask(void*)
         break;
       }
 
-      case intakeModes::out:
+        case intakeModes::shootBoth:
+      {
+        setIntakeVelocity(200);
+        setIndexerVelocity(200);
+        //intakeMode = intakeModes::loading; // Allows mode to be set to off while waiting
+        pros::delay(200);
+        break;
+      }
+
+      case intakeModes::outIntake:
       {
         setIntakeVelocity(-200);
         setIndexerVelocity(0);
+        break;
+      }
+
+      case intakeModes::outBoth:
+      {
+        setIntakeVelocity(-200);
+        setIndexerVelocity(-100);
         break;
       }
 
