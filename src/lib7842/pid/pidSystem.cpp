@@ -13,6 +13,7 @@ namespace lib7842
     m_lastTime = m_timer.elapsed();
   }
 
+int count = 0;
 
   double PID::calculateErr(double ierror)
   {
@@ -21,6 +22,13 @@ namespace lib7842
     m_lastTime = m_timer.elapsed();
 
     m_derivative = m_dEma.filter((m_Error - m_lastError) / deltaTime);
+    count++;
+    if(count > 20)
+    {
+      std::cout << m_derivative << std::endl;
+      count = 0;
+    }
+
     m_lastError = m_Error;
 
     double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd);

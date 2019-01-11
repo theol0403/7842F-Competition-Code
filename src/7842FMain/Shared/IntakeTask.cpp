@@ -8,7 +8,7 @@ void setIntakeMode(intakeModes iIntakeMode)
 
 void intakeControlTask(void*)
 {
-  okapi::EmaFilter intakeFilter(1);
+  okapi::EmaFilter intakeFilter(0.999);
   while(true)
   {
     double filteredSensor = intakeFilter.filter(getIndexerSensor());
@@ -30,7 +30,7 @@ void intakeControlTask(void*)
         //Intake and collect until ball is in sensor
         //once ball is in sensor index brake
         //collecting
-        if(filteredSensor < -300)
+        if(filteredSensor < -200)
         {
           intakeMode = intakeModes::collecting;
         }
