@@ -14,7 +14,7 @@ void driverIntakeControl()
 	{
 		dIntakeState = intakeModes::shootBoth;
 	}
-	if(j_Digital(R1) && j_Digital(L1))
+	else if(j_Digital(R1) && j_Digital(L1))
 	{
 		dIntakeState = intakeModes::outSlow;
 	}
@@ -26,11 +26,11 @@ void driverIntakeControl()
 	{
 		dIntakeState = intakeModes::shootIndexer;
 	}
-	else if(j_Digital(R1))
+	else if(j_Digital(L1))
 	{
 		dIntakeState = intakeModes::outIntake;
 	}
-	else if(j_Digital(L1))
+	else if(j_Digital(R1))
 	{
 		dIntakeState = intakeModes::outBoth;
 	}
