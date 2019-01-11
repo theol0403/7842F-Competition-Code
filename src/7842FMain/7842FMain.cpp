@@ -129,8 +129,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         checkBaseStatus();
         driverBaseControl();
 
+        #ifndef TEST_ROBOT
         driverIntakeControl();
         driverFlywheelControl();
+        #endif
 
         pros::delay(20);
       }
