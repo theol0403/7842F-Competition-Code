@@ -13,6 +13,8 @@ namespace lib7842
     double m_Kp = 0;
     double m_Kd = 0;
 
+    okapi::EmaFilter m_dEma;
+
     double m_Error = 0;
     double m_lastError = 0;
     double m_lastTime = 0;
@@ -26,7 +28,7 @@ namespace lib7842
 
   public:
 
-    PID(double, double, double, double, QTime);
+    PID(double, double, double, double, double, QTime);
 
     double calculateErr(double);
     double calculate(double, double);

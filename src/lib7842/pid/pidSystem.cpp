@@ -3,10 +3,11 @@
 namespace lib7842
 {
 
-  PID::PID(double Kp, double Kd, double settledError, double settledD, QTime settledTime)
+  PID::PID(double Kp, double Kd, double emaAlpha, double settledError, double settledD, QTime settledTime)
   : m_timer(),
   m_Kp(Kp),
   m_Kd(Kd),
+  m_dEma(emaAlpha),
   m_settledUtil(std::make_unique<okapi::Timer>(), settledError, settledD, settledTime)
   {
     m_lastTime = m_timer.elapsed();
@@ -19,7 +20,7 @@ namespace lib7842
     double deltaTime = m_timer.elapsed() - m_lastTime;
     m_lastTime = m_timer.elapsed();
 
-    m_derivative = (m_Error - m_lastError) / deltaTime;
+    m_derivative = m_dEma.filter((m_Error - m_lastError) / deltaTime);
     m_lastError = m_Error;
 
     double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd);
