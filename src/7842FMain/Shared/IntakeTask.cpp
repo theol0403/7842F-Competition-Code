@@ -79,6 +79,13 @@ void intakeControlTask(void*)
         break;
       }
 
+      case intakeModes::outSlow:
+      {
+        setIntakeVelocity(-50);
+        setIndexerVelocity(-50);
+        break;
+      }
+
     }
 
     pros::delay(20);

@@ -10,7 +10,8 @@ enum class intakeModes
   shootIndexer,
   shootBoth,
   outIntake,
-  outBoth
+  outBoth,
+  outSlow
 };
 
 void intakeControlTask(void*);

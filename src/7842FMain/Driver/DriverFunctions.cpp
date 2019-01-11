@@ -1,17 +1,7 @@
 #include "DriverFunctions.hpp"
 
-enum dIntakeStates_t
-{
-	none,
-	shootBoth,
-	loading,
-	shootIndexer,
-	outIntake,
-	outBoth
-};
-
-static dIntakeStates_t dIntakeState = none;
-static dIntakeStates_t dLastIntakeState = none;
+static intakeModes dIntakeState = intakeModes::off;
+static intakeModes dLastIntakeState = intakeModes::off;
 
 // r2 && r2 shoot everything
 //r2 intake r1 just indake outtake
@@ -20,57 +10,65 @@ static dIntakeStates_t dLastIntakeState = none;
 
 void driverIntakeControl()
 {
-	if(j_Digital(R1) && j_Digital(R2))
+	if(j_Digital(R2) && j_Digital(L2))
 	{
-		dIntakeState = shootBoth;
+		dIntakeState = intakeModes::shootBoth;
+	}
+	if(j_Digital(R1) && j_Digital(L1))
+	{
+		dIntakeState = intakeModes::outSlow;
 	}
 	else if(j_Digital(R2))
 	{
-		dIntakeState = loading;
+		dIntakeState = intakeModes::loading;
 	}
 	else if(j_Digital(L2))
 	{
-		dIntakeState = shootIndexer;
+		dIntakeState = intakeModes::shootIndexer;
 	}
 	else if(j_Digital(R1))
 	{
-		dIntakeState = outIntake;
+		dIntakeState = intakeModes::outIntake;
 	}
 	else if(j_Digital(L1))
 	{
-		dIntakeState = outBoth;
+		dIntakeState = intakeModes::outBoth;
 	}
 	else
 	{
-		dIntakeState = none;
+		dIntakeState = intakeModes::off;
 	}
 
 
 	if(dIntakeState != dLastIntakeState)
 	{
 		switch (dIntakeState) {
-			case none: {
+			case intakeModes::off: {
 				setIntakeMode(intakeModes::off);
 				break;
 			}
-			case shootBoth: {
+			case intakeModes::shootBoth: {
 				setIntakeMode(intakeModes::shootBoth);
 				break;
 			}
-			case loading: {
+			case intakeModes::loading: {
 				setIntakeMode(intakeModes::loading);
 				break;
 			}
-			case shootIndexer: {
+			case intakeModes::shootIndexer: {
 				setIntakeMode(intakeModes::shootIndexer);
 				break;
 			}
-			case outIntake: {
+			case intakeModes::outIntake: {
 				setIntakeMode(intakeModes::outIntake);
 				break;
 			}
-			case outBoth: {
+			case intakeModes::outBoth: {
 				setIntakeMode(intakeModes::outBoth);
+				break;
+			}
+			case intakeModes::outSlow: {
+				setIntakeMode(intakeModes::outSlow);
 				break;
 			}
 
