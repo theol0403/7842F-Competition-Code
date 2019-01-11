@@ -32,4 +32,6 @@ void checkBaseStatus();
 void setBaseArcade(double, double);
 void setBasePower(double, double);
 
-extern okapi::ADIEncoder* s_middleEncoder; 
+extern okapi::ADIEncoder* s_middleEncoder;
+
+#define TEST_ROBOT

@@ -52,10 +52,14 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       initializeDevices();
       initializeBase();
 
-      flywheelTask_t = new pros::Task(flywheelTask);
-      intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
+
+
+      #ifndef TEST_ROBOT
+      flywheelTask_t = new pros::Task(flywheelTask);
+      intakeTask_t = new pros::Task(intakeControlTask);
+      #endif
 
     }
 
