@@ -7,9 +7,11 @@ enum class intakeModes
   off,
   loading, //Ball into indexer
   collecting, //Intake running
-  shootBoth,
   shootIndexer,
-  out
+  shootBoth,
+  outIntake,
+  outBoth,
+  outSlow
 };
 
 void intakeControlTask(void*);

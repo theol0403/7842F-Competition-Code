@@ -5,13 +5,6 @@
 namespace lib7842
 {
 
-  struct Point
-  {
-    QLength x {0_in};
-    QLength y {0_in};
-    QAngle theta {0_rad};
-  };
-
   class OdomController
   {
 
