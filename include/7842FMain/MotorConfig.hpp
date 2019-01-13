@@ -34,4 +34,4 @@ void setBasePower(double, double);
 
 extern okapi::ADIEncoder* s_middleEncoder;
 
-#define TEST_ROBOT
+//#define TEST_ROBOT
