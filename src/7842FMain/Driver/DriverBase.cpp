@@ -26,7 +26,9 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    #include "7842FMain/Auto/AutoRedClose.hpp"
+    chassisOdomController->driveToPoint(lib7842::Point{0_in, 24_in});
+    chassisOdomController->driveToPoint(lib7842::Point{0_in, 0_in});
+    //#include "7842FMain/Auto/AutoRedClose.hpp"
     // chassisOdomController->driveToPointAndAngle(lib7842::Point{0_in, 10_in, 0_deg});
     // chassisOdomController->turnToAngle(90_deg);
   }

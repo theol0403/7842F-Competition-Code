@@ -7,7 +7,7 @@ okapi::Controller j_Main(okapi::ControllerId::master);
 const int8_t e_m_Flywheel = 1;
 const int8_t e_m_Flywheel2 = -16;
 const int8_t e_m_Intake = -4;
-const int8_t e_m_Indexer = -19;
+const int8_t e_m_Indexer = 19;
 
 const int8_t e_m_RightFront = -7;
 const int8_t e_m_RightBack = -8;
@@ -83,9 +83,9 @@ void initializeBase()
 	robotChassis = ChassisControllerFactory::createPtr(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.002, 0.00, 0},
-		IterativePosPIDController::Gains{0.002, 0.00, 0},
-		IterativePosPIDController::Gains{0.002, 0, 0},
+		IterativePosPIDController::Gains{0.001, 0.00, 0},
+		IterativePosPIDController::Gains{0.0007, 0.00, 0},
+		IterativePosPIDController::Gains{0.0007, 0, 0},
 		AbstractMotor::gearset::green,
 		{2.75_in / 1.6, chassisWidth * 2}
 	);

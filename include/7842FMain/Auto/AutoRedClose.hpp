@@ -14,8 +14,8 @@ setFlywheelRPM(2800);
 setIntakeMode(intakeModes::loading);
 
 chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
-chassisOdomController->driveToPoint(lib7842::Point{5_in, 7_in});
-chassisOdomTracker->driveToPointAndAngle(1_ft, 8_ft, 0_deg);
+chassisOdomController->driveToPoint(lib7842::Point{5_ft, 7_ft});
+chassisOdomController->driveToPointAndAngle(lib7842::Point{1_ft, 8_ft, 0_deg});
 
 
 // setIntakeMode(intakeCollect);

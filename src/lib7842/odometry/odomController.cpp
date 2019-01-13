@@ -22,7 +22,12 @@ namespace lib7842
 
   QAngle OdomController::computeAngleToPoint(Point point)
   {
-    return atan2(point.x.convert(inch) - m_odomTracker->state.x.convert(inch), point.y.convert(inch) - m_odomTracker->state.y.convert(inch)) * radian - m_odomTracker->state.theta;
+    QAngle wantedAngle = (atan2(point.x.convert(inch) - m_odomTracker->state.x.convert(inch), point.y.convert(inch) - m_odomTracker->state.y.convert(inch)) * radian) - m_odomTracker->state.theta;
+    if(wantedAngle.abs() > 180_deg)
+    {
+      wantedAngle -= 360_deg * sgn(wantedAngle.convert(degree));
+    }
+    return wantedAngle;
   }
 
 
@@ -39,9 +44,16 @@ namespace lib7842
 
   void OdomController::driveToPoint(Point point)
   {
-    m_chassisController->turnAngle(computeAngleToPoint(point));
+    int direction = 1;
+    QAngle wantedAngle = computeAngleToPoint(point);
+    if(wantedAngle.abs() > 90_deg)
+    {
+      wantedAngle -= 180_deg * sgn(wantedAngle.convert(degree));
+      direction = -1;
+    }
+    m_chassisController->turnAngle(wantedAngle);
 
-    m_chassisController->moveDistance(computeDistanceToPoint(point));
+    m_chassisController->moveDistance(computeDistanceToPoint(point) * direction);
   }
 
 
