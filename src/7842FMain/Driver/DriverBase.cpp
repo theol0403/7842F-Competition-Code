@@ -49,11 +49,26 @@ void driverBaseControl()
     setIntakeMode(intakeModes::shootIndexer);
     pros::delay(200);
 
-    chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 10_ft});
-    chassisOdomController->driveToPoint(lib7842::Point{1_ft, 9_ft});
+    chassisOdomController->m_odomTracker->state.theta += 3_deg;
+    chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 10.3_ft});
+    chassisOdomController->driveToPoint(lib7842::Point{0.4_ft, 8.2_ft});
 
     chassisOdomController->turnToAngle(-90_deg);
-    chassisOdomController->driveToPoint(lib7842::Point{3_ft, 9_ft});
+    chassisOdomTracker->setState(1_ft, 9_ft, -90_deg);
+    chassisOdomController->driveToPoint(lib7842::Point{3.4_ft, 9_ft});
+
+    chassisOdomController->driveToPoint(lib7842::Point{1.6_ft, 7_ft});
+
+    chassisOdomController->turnToAngle(0_deg);
+    chassisOdomController->m_odomTracker->state.x = 1_in;
+    chassisOdomController->m_odomTracker->state.y = 6.5_in;
+
+    chassisOdomController->driveToPointAndAngle(lib7842::Point{1_ft, 5_ft, -90_deg});
+
+    chassisOdomController->m_chassisController->stop();
+    chassisOdomController->m_chassisController->arcade(200, 0);
+    pros::delay(2000);
+    chassisOdomController->m_chassisController->stop();
 
 
 
