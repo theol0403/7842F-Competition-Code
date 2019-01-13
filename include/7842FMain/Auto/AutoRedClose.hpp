@@ -15,7 +15,11 @@ setIntakeMode(intakeModes::loading);
 
 chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
 chassisOdomController->driveToPoint(lib7842::Point{5_ft, 7_ft});
-chassisOdomController->driveToPointAndAngle(lib7842::Point{1_ft, 8_ft, 0_deg});
+chassisOdomController->driveToPoint(lib7842::Point{1_ft, 8_ft});
+
+chassisOdomController->turnToPoint(lib7842::Point{1.2_ft, 11.5_ft});
+
+setIntakeMode(intakeModes::shootIndexer);
 
 
 // setIntakeMode(intakeCollect);

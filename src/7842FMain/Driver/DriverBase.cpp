@@ -26,8 +26,45 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    chassisOdomController->driveToPoint(lib7842::Point{0_in, 24_in});
-    chassisOdomController->driveToPoint(lib7842::Point{0_in, 0_in});
+
+    lib7842::Point leftFlag{0.8_ft, 11.5_ft};
+
+    setFlywheelRPM(2800);
+    setIntakeMode(intakeModes::loading);
+
+    chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
+    chassisOdomController->driveToPoint(lib7842::Point{4.5_ft, 7_ft});
+    chassisOdomController->driveToPoint(lib7842::Point{1_ft, 6.5_ft});
+
+    chassisOdomController->turnToPoint(leftFlag);
+
+    setIntakeMode(intakeModes::shootIndexer);
+    pros::delay(200);
+
+    chassisOdomController->m_odomTracker->state.theta += 5_deg;
+    chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 8.2_ft});
+
+    chassisOdomController->turnToPoint(leftFlag);
+
+    setIntakeMode(intakeModes::shootIndexer);
+    pros::delay(200);
+
+    chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 10_ft});
+    chassisOdomController->driveToPoint(lib7842::Point{1_ft, 9_ft});
+
+    chassisOdomController->turnToAngle(-90_deg);
+    chassisOdomController->driveToPoint(lib7842::Point{3_ft, 9_ft});
+
+
+
+
+
+
+
+
+
+
+
     //#include "7842FMain/Auto/AutoRedClose.hpp"
     // chassisOdomController->driveToPointAndAngle(lib7842::Point{0_in, 10_in, 0_deg});
     // chassisOdomController->turnToAngle(90_deg);
