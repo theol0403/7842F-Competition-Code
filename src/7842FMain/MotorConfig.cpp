@@ -105,11 +105,11 @@ void initializeBase()
 	);
 
 
-	robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
-		(
-			1.0, 2.0, 10.0,
-			*robotChassis
-		));
+	// robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+	// 	(
+	// 		1.0, 2.0, 10.0,
+	// 		*robotChassis
+	// 	));
 
 		pros::delay(500);
 
