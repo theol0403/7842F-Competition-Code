@@ -51,7 +51,7 @@ namespace lib7842
     m_lastRightInch = newRightInch;
     m_lastMiddleInch = newMiddleInch;
 
-    QAngle newAngle = ((newLeftInch - newRightInch) / m_chassisWidth) * radian;
+    QAngle newAngle = state.theta + (((dLeftInch - dRightInch) / m_chassisWidth) * radian);
     QAngle dAngle = newAngle - state.theta;
 
     // std::cout << "dA: " << dA << std::endl;
@@ -93,11 +93,11 @@ namespace lib7842
     state.theta = a;
   }
 
-  void OdomTracker::setState(Point state)
+  void OdomTracker::setState(Point newState)
   {
-    state.x = state.x;
-    state.y = state.y;
-    state.theta = state.theta;
+    state.x = newState.x;
+    state.y = newState.y;
+    state.theta = newState.theta;
   }
 
   void OdomTracker::resetState()
