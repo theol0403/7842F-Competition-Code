@@ -1,63 +1,74 @@
 #include "DriverFunctions.hpp"
 
-enum dIntakeStates_t
-{
-	none,
-	both,
-	bottom,
-	top,
-	outButton
-};
+static intakeModes dIntakeState = intakeModes::off;
+static intakeModes dLastIntakeState = intakeModes::off;
 
-static dIntakeStates_t dIntakeState = none;
-static dIntakeStates_t dLastIntakeState = none;
+// r2 && r2 shoot everything
+//r2 intake r1 just indake outtake
+//l2 shoot l1 everything outtake
+
 
 void driverIntakeControl()
 {
-	if(j_Digital(R1) && j_Digital(R2))
+	if(j_Digital(R2) && j_Digital(L2))
 	{
-		dIntakeState = both;
+		dIntakeState = intakeModes::shootBoth;
 	}
-	else if(j_Digital(R1))
+	else if(j_Digital(R1) && j_Digital(L1))
 	{
-		dIntakeState = top;
+		dIntakeState = intakeModes::outSlow;
 	}
 	else if(j_Digital(R2))
 	{
-		dIntakeState = bottom;
+		dIntakeState = intakeModes::loading;
+	}
+	else if(j_Digital(L2))
+	{
+		dIntakeState = intakeModes::shootIndexer;
+	}
+	else if(j_Digital(L1))
+	{
+		dIntakeState = intakeModes::outIntake;
+	}
+	else if(j_Digital(R1))
+	{
+		dIntakeState = intakeModes::outBoth;
 	}
 	else
 	{
-		dIntakeState = none;
+		dIntakeState = intakeModes::off;
 	}
 
-	if(j_Digital(Y))
-	{
-		dIntakeState = outButton;
-	}
-	
 
 	if(dIntakeState != dLastIntakeState)
 	{
 		switch (dIntakeState) {
-			case none: {
+			case intakeModes::off: {
 				setIntakeMode(intakeModes::off);
 				break;
 			}
-			case both: {
+			case intakeModes::shootBoth: {
 				setIntakeMode(intakeModes::shootBoth);
 				break;
 			}
-			case bottom: {
+			case intakeModes::loading: {
 				setIntakeMode(intakeModes::loading);
 				break;
 			}
-			case top: {
+			case intakeModes::shootIndexer: {
 				setIntakeMode(intakeModes::shootIndexer);
 				break;
 			}
-			case outButton: {
-				setIntakeMode(intakeModes::out);
+			case intakeModes::outIntake: {
+				setIntakeMode(intakeModes::outIntake);
+				break;
+			}
+			case intakeModes::outBoth: {
+				setIntakeMode(intakeModes::outBoth);
+				break;
+			}
+			case intakeModes::outSlow: {
+				setIntakeMode(intakeModes::outSlow);
 				break;
 			}
 
