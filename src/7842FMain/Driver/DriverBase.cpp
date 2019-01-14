@@ -60,14 +60,15 @@ void driverBaseControl()
     chassisOdomController->driveToPoint(lib7842::Point{1.6_ft, 7_ft});
 
     chassisOdomController->turnToAngle(0_deg);
-    chassisOdomController->m_odomTracker->state.x = 1_in;
-    chassisOdomController->m_odomTracker->state.y = 6.5_in;
 
-    chassisOdomController->driveToPointAndAngle(lib7842::Point{1_ft, 5_ft, -90_deg});
+    chassisOdomController->m_chassisController->moveDistance(-2_ft);
+    chassisOdomController->m_chassisController->turnAngle(-96_deg);
 
-    chassisOdomController->m_chassisController->stop();
-    chassisOdomController->m_chassisController->arcade(200, 0);
-    pros::delay(2000);
+    lib7842::Timer platformTime;
+    while(platformTime.elapsed() < 2000)
+    {
+      chassisOdomController->m_chassisController->driveVector(-200, 0);
+    }
     chassisOdomController->m_chassisController->stop();
 
 
