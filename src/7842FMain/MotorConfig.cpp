@@ -4,15 +4,15 @@
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
-const int8_t e_m_Flywheel = 1;
-const int8_t e_m_Flywheel2 = -16;
-const int8_t e_m_Intake = -4;
-const int8_t e_m_Indexer = 19;
+const int8_t e_m_Flywheel = 11;
+const int8_t e_m_Flywheel2 = -12;
+const int8_t e_m_Intake = -7;
+const int8_t e_m_Indexer = 8;
 
-const int8_t e_m_RightFront = -7;
-const int8_t e_m_RightBack = -8;
-const int8_t e_m_LeftFront = 17;
-const int8_t e_m_LeftBack = 18;
+const int8_t e_m_RightFront = -9;
+const int8_t e_m_RightBack = -10;
+const int8_t e_m_LeftFront = 19;
+const int8_t e_m_LeftBack = 20;
 
 
 okapi::Motor* m_Flywheel = nullptr;

@@ -16,5 +16,9 @@ void AutoBlueFar();
 void AutoRedMiddle();
 void AutoBlueMiddle();
 
+#define FX 12- //Flips X
+#define FA - //Flips Angle
+
 
 extern lib7842::Point leftFlag;
+extern lib7842::Point rightFlag;
