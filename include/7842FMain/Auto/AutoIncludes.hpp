@@ -17,4 +17,4 @@ void AutoRedMiddle();
 void AutoBlueMiddle();
 
 
-lib7842::Point leftFlag{0.8_ft, 11.5_ft};
+extern lib7842::Point leftFlag;
