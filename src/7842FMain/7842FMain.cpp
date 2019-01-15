@@ -10,7 +10,7 @@
 #include "Driver/DriverFunctions.hpp"
 #include "Driver/DriverBase.hpp"
 
-#include "Auto/AutoConfig.hpp"
+#include "7842FMain/Auto/AutoIncludes.hpp"
 
 
 /***   _____         _
