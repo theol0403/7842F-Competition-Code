@@ -26,7 +26,7 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    AutoRedClose();
+    AutoBlueClose();
 
   }
 
