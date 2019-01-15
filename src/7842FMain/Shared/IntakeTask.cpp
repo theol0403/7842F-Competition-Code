@@ -50,7 +50,7 @@ void intakeControlTask(void*)
         break;
       }
 
-    case intakeModes::shootIndexer:
+      case intakeModes::shootIndexer:
       {
         setIntakeVelocity(0);
         setIndexerVelocity(200);
@@ -59,7 +59,7 @@ void intakeControlTask(void*)
         break;
       }
 
-        case intakeModes::shootBoth:
+      case intakeModes::shootBoth:
       {
         setIntakeVelocity(200);
         setIndexerVelocity(200);

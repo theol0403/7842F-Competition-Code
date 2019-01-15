@@ -16,7 +16,7 @@ void AutoBlueFar();
 void AutoRedMiddle();
 void AutoBlueMiddle();
 
-#define FX 12- //Flips X
+#define FX 12_ft- //Flips X
 #define FA - //Flips Angle
 
 
