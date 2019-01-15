@@ -154,6 +154,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-
+      AutoBlueClose();
       pros::delay(500000);
     }
