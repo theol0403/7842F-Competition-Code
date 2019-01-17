@@ -38,18 +38,29 @@ namespace lib7842
     lv_obj_set_size(buttonMatrix, LV_HOR_RES, LV_VER_RES / 2);
     lv_btnm_set_toggle(buttonMatrix, true, 0);
     lv_btnm_set_action(buttonMatrix, autonAction);
+    lv_obj_set_free_ptr(buttonMatrix, this);
 
   }
 
 
   /*Called when a button is released ot long pressed*/
-lv_res_t AutonSelector::autonAction(lv_obj_t* btnm, const char *txt)
-{
-  pros::delay(200);
-    printf("Button Number: %d released\n", lv_btnm_get_toggled(btnm));
+  lv_res_t AutonSelector::autonAction(lv_obj_t* buttonMatrix, const char *txt)
+  {
+    AutonSelector* thisSelector = static_cast<AutonSelector*>(lv_obj_get_free_ptr(buttonMatrix));
+
+
+    for(autonPair &pair : thisSelector->m_autonPairs)
+    {
+      if(strcmp(txt, &pair.autonName[0]) == 0)
+      {
+        std::cout << "Button: " << pair.autonName << std::endl;
+      }
+    }
+
+    //  printf("Button Number: %d released\n", lv_btnm_get_toggled(buttonMatrix));
 
     return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
-}
+  }
 
 
 
