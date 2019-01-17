@@ -77,50 +77,20 @@ namespace lib7842
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_INA, style_ina);
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_REL, style_ina);
 
-    // LV_BTNM_STYLE_BG Background style. Uses all style.body properties including padding Default: _lv_style_pretty_
-
-    // LV_BTNM_STYLE_BTN_TGL_REL style of the toggled released buttons. Default: _lv_style_btn_tgl_rel_
-    // LV_BTNM_STYLE_BTN_TGL_PR style of the toggled pressed buttons. Default: _lv_style_btn_tgl_pr_
-    // LV_BTNM_STYLE_BTN_INA style of the inactive buttons. Default: _lv_style_btn_ina_
-
-
-    // /*Create 2 button styles*/
-    // lv_style_t style_btn_rel;
-    // lv_style_t style_btn_pr;
-    // lv_style_copy(&style_btn_rel, &lv_style_btn_rel);
-    // style_btn_rel.body.main_color = LV_COLOR_MAKE(0x30, 0x30, 0x30);
-    // style_btn_rel.body.grad_color = LV_COLOR_BLACK;
-    // style_btn_rel.body.border.color = LV_COLOR_SILVER;
-    // style_btn_rel.body.border.width = 1;
-    // style_btn_rel.body.border.opa = LV_OPA_50;
-    // style_btn_rel.body.radius = 0;
-    //
-    // lv_style_copy(&style_btn_pr, &style_btn_rel);
-    // style_btn_pr.body.main_color = LV_COLOR_MAKE(0x55, 0x96, 0xd8);
-    // style_btn_pr.body.grad_color = LV_COLOR_MAKE(0x37, 0x62, 0x90);
-    // style_btn_pr.text.color = LV_COLOR_MAKE(0xbb, 0xd5, 0xf1);
-
-    /*Create a second button matrix with the new styles*/
-    // lv_obj_t * btnm2 = lv_btnm_create(lv_scr_act(), btnm1);
-    // lv_btnm_set_style(btnm2, LV_BTNM_STYLE_BG, &style_bg);
-    // lv_btnm_set_style(btnm2, LV_BTNM_STYLE_BTN_REL, &style_btn_rel);
-    // lv_btnm_set_style(btnm2, LV_BTNM_STYLE_BTN_PR, &style_btn_pr);
-    // lv_obj_align(btnm2, btnm1, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
   }
 
 
-  /*Called when a button is released ot long pressed*/
   lv_res_t AutonSelector::matrixAction(lv_obj_t* buttonMatrix, const char *txt)
   {
-    AutonSelector* thisSelector = static_cast<AutonSelector*>(lv_obj_get_free_ptr(buttonMatrix));
+    AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(buttonMatrix));
 
-    for(int autonNum = 0; autonNum < thisSelector->m_autonPairs.size(); autonNum++)
+    for(int autonNum = 0; autonNum < that->m_autonPairs.size(); autonNum++)
     {
-      if(strcmp(txt, &thisSelector->m_autonPairs[autonNum].autonName[0]) == 0)
+      if(strcmp(txt, &that->m_autonPairs[autonNum].autonName[0]) == 0)
       {
         std::cout << "Auton: " << autonNum << std::endl;
-        thisSelector->currentAutonIndex = autonNum;
+        that->currentAutonIndex = autonNum;
       }
     }
 
