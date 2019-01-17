@@ -57,6 +57,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
 
+      lib7842::AutonChooser autonChooser(lv_scr_act(), {{"Nothing", nothingAuto}, {"Front", frontAuto}, {"Middle", middleAuto}, {"Back", backAuto}});
+
     }
 
     /***
