@@ -29,12 +29,14 @@ namespace lib7842
     lv_obj_t *m_screenContainer = nullptr;
     lv_style_t m_screenStyle;
 
+    int currentAutonIndex = 0;
+
 
   public:
 
     AutonSelector(lv_obj_t*, std::initializer_list<autonPair>);
 
-    static lv_res_t autonAction(lv_obj_t*, const char*);
+    static lv_res_t matrixAction(lv_obj_t*, const char*);
 
   };
 

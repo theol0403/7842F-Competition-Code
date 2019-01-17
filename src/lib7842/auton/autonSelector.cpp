@@ -22,7 +22,6 @@ namespace lib7842
 
     int autonCount = m_autonPairs.size();
     const char** buttonNames = new const char* [autonCount + 1];
-    buttonNames[0] = &m_autonPairs[0].autonName[0];
 
     for(int autonNum = 0; autonNum < autonCount; autonNum++)
     {
@@ -36,31 +35,31 @@ namespace lib7842
     lv_obj_t* buttonMatrix = lv_btnm_create(m_screenContainer, NULL);
     lv_btnm_set_map(buttonMatrix, buttonNames);
     lv_obj_set_size(buttonMatrix, LV_HOR_RES, LV_VER_RES / 2);
-    lv_btnm_set_toggle(buttonMatrix, true, 0);
-    lv_btnm_set_action(buttonMatrix, autonAction);
+    lv_btnm_set_toggle(buttonMatrix, true, currentAutonIndex);
+    lv_btnm_set_action(buttonMatrix, matrixAction);
     lv_obj_set_free_ptr(buttonMatrix, this);
 
   }
 
 
   /*Called when a button is released ot long pressed*/
-  lv_res_t AutonSelector::autonAction(lv_obj_t* buttonMatrix, const char *txt)
+  lv_res_t AutonSelector::matrixAction(lv_obj_t* buttonMatrix, const char *txt)
   {
     AutonSelector* thisSelector = static_cast<AutonSelector*>(lv_obj_get_free_ptr(buttonMatrix));
 
-
-    for(autonPair &pair : thisSelector->m_autonPairs)
+    for(int autonNum = 0; autonNum < thisSelector->m_autonPairs.size(); autonNum++)
     {
-      if(strcmp(txt, &pair.autonName[0]) == 0)
+      if(strcmp(txt, &thisSelector->m_autonPairs[autonNum].autonName[0]) == 0)
       {
-        std::cout << "Button: " << pair.autonName << std::endl;
+        std::cout << "Auton: " << autonNum << std::endl;
+        thisSelector->currentAutonIndex = autonNum;
       }
     }
 
-    //  printf("Button Number: %d released\n", lv_btnm_get_toggled(buttonMatrix));
-
     return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
   }
+
+
 
 
 
