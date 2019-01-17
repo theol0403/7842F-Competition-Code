@@ -21,19 +21,35 @@ namespace lib7842
 
 
     int autonCount = m_autonPairs.size();
-    const char** btnm_map = new const char* [autonCount + 1];
-    btnm_map[0] = &m_autonPairs[0].autonName[0];
+    const char** buttonNames = new const char* [autonCount + 1];
+    buttonNames[0] = &m_autonPairs[0].autonName[0];
 
     for(int autonNum = 0; autonNum < autonCount; autonNum++)
     {
-      btnm_map[autonNum] = &m_autonPairs[autonNum].autonName[0];
+      buttonNames[autonNum] = &m_autonPairs[autonNum].autonName[0];
     }
 
-    btnm_map[autonCount] = "";
+    buttonNames[autonCount] = "";
 
 
+    /*Create a default button matrix*/
+    lv_obj_t* buttonMatrix = lv_btnm_create(m_screenContainer, NULL);
+    lv_btnm_set_map(buttonMatrix, buttonNames);
+    lv_obj_set_size(buttonMatrix, LV_HOR_RES, LV_VER_RES / 2);
+    lv_btnm_set_toggle(buttonMatrix, true, 0);
+    lv_btnm_set_action(buttonMatrix, autonAction);
 
   }
+
+
+  /*Called when a button is released ot long pressed*/
+lv_res_t AutonSelector::autonAction(lv_obj_t* btnm, const char *txt)
+{
+  pros::delay(200);
+    printf("Button Number: %d released\n", lv_btnm_get_toggled(btnm));
+
+    return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
+}
 
 
 

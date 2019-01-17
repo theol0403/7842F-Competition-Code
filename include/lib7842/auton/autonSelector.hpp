@@ -34,6 +34,8 @@ namespace lib7842
 
     AutonSelector(lv_obj_t*, std::initializer_list<autonPair>);
 
+    static lv_res_t autonAction(lv_obj_t*, const char*);
+
   };
 
 }
