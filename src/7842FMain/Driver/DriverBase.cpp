@@ -26,7 +26,7 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    AutoBlueClose();
+    AutoClose(lib7842::autonSides::blue);
     // robotChassis->stop();
     // chassisOdomController->m_chassisController->stop();
     // chassisOdomController->m_chassisController->moveDistance(1_cm);

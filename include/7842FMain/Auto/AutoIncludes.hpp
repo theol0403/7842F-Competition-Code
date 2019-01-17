@@ -8,6 +8,7 @@
 #include "7842FMain/Shared/IntakeTask.hpp"
 #include "7842FMain/Shared/FlywheelTask.hpp"
 
+void AutoNothing(lib7842::autonSides);
 void AutoClose(lib7842::autonSides);
 void AutoFar(lib7842::autonSides);
 void AutoMiddle(lib7842::autonSides);
