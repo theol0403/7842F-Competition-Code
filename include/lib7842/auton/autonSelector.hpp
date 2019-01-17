@@ -24,8 +24,11 @@ namespace lib7842
 
   private:
 
-    lv_obj_t *m_screenParent = nullptr;
     std::vector<autonPair> m_autonPairs;
+
+    lv_obj_t *m_screenContainer = nullptr;
+    lv_style_t m_screenStyle;
+
 
   public:
 

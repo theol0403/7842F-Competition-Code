@@ -31,7 +31,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     pros::Task* objectTask_t = nullptr;
     pros::Task* odomTask_t = nullptr;
 
-
+    lib7842::AutonSelector *autonSelector = nullptr;
 
     /***
     *     _____      _ _   _       _ _
@@ -57,7 +57,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
 
-      lib7842::AutonSelector autonChooser(lv_scr_act(), {{"Nothing", AutoNothing}, {"Front", AutoClose}, {"Middle", AutoFar}, {"Back", AutoMiddle}});
+      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Nothing", AutoNothing}, {"Front", AutoClose}, {"Middle", AutoFar}, {"Back", AutoMiddle}});
 
     }
 
