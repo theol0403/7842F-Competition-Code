@@ -14,7 +14,7 @@ namespace lib7842
 
   struct autonPair
   {
-    std::string autoName;
+    std::string autonName;
     std::function<void(lib7842::autonSides)> autoFunction;
   };
 
@@ -32,7 +32,7 @@ namespace lib7842
 
   public:
 
-    AutonSelector(lv_obj_t *screenParent, std::initializer_list<autonPair> autonPairs);
+    AutonSelector(lv_obj_t*, std::initializer_list<autonPair>);
 
   };
 

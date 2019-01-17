@@ -19,6 +19,20 @@ namespace lib7842
     m_screenStyle.body.grad_color = LV_COLOR_GRAY;
     lv_obj_set_style(m_screenContainer, &m_screenStyle);
 
+
+    int autonCount = m_autonPairs.size();
+    const char** btnm_map = new const char* [autonCount + 1];
+    btnm_map[0] = &m_autonPairs[0].autonName[0];
+
+    for(int autonNum = 0; autonNum < autonCount; autonNum++)
+    {
+      btnm_map[autonNum] = &m_autonPairs[autonNum].autonName[0];
+    }
+
+    btnm_map[autonCount] = "";
+
+
+
   }
 
 
