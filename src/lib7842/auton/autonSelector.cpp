@@ -13,11 +13,12 @@ namespace lib7842
     lv_obj_set_size(m_screenContainer, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent));
     lv_obj_align(m_screenContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
 
-    lv_style_copy(&m_screenStyle, &lv_style_plain_color);
+    lv_style_t* screenStyle = new lv_style_t;
+    lv_style_copy(screenStyle, &lv_style_plain_color);
     lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
-    m_screenStyle.body.main_color = mainColor;
-    m_screenStyle.body.grad_color = mainColor;
-    lv_obj_set_style(m_screenContainer, &m_screenStyle);
+    screenStyle->body.main_color = mainColor;
+    screenStyle->body.grad_color = mainColor;
+    lv_obj_set_style(m_screenContainer, screenStyle);
 
 
     int autonCount = m_autonPairs.size();
@@ -33,8 +34,8 @@ namespace lib7842
 
     lv_obj_t* buttonMatrix = lv_btnm_create(m_screenContainer, NULL);
     lv_btnm_set_map(buttonMatrix, buttonNames);
-    lv_obj_set_size(buttonMatrix, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent) / 3);
-    lv_btnm_set_toggle(buttonMatrix, true, currentAutonIndex);
+    lv_obj_set_size(buttonMatrix, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent) / 2);
+    lv_btnm_set_toggle(buttonMatrix, true, m_currentAutonIndex);
     lv_btnm_set_action(buttonMatrix, matrixAction);
     lv_obj_set_free_ptr(buttonMatrix, this);
 
@@ -77,6 +78,40 @@ namespace lib7842
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_INA, style_ina);
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_REL, style_ina);
 
+    //SWITCH
+
+    lv_obj_t *colorSwitch = lv_sw_create(m_screenContainer, NULL);
+    lv_obj_set_size(colorSwitch, lv_obj_get_width(screenParent)/2, lv_obj_get_height(screenParent)/4);
+    lv_obj_align(colorSwitch, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -lv_obj_get_height(screenParent)/8);
+    //  lv_sw_set_anim_time(colorSwitch, 200);
+    lv_sw_set_action(colorSwitch, sliderAction);
+    lv_obj_set_free_ptr(colorSwitch, this);
+
+    lv_sw_set_style(colorSwitch, LV_SW_STYLE_BG, style_bg);
+
+    lv_style_t* indic_style = new lv_style_t;
+    lv_style_copy(indic_style, &lv_style_pretty_color);
+    indic_style->body.empty = 1;
+    indic_style->body.border.width = 0;
+    lv_sw_set_style(colorSwitch, LV_SW_STYLE_INDIC, indic_style);
+
+    lv_style_t* knob_off_style = new lv_style_t;
+    lv_style_copy(knob_off_style, &lv_style_pretty);
+    knob_off_style->body.main_color = LV_COLOR_RED;
+    knob_off_style->body.grad_color = LV_COLOR_RED;
+    knob_off_style->body.opa = LV_OPA_100;
+    knob_off_style->body.radius = LV_RADIUS_CIRCLE;
+    knob_off_style->body.shadow.width = 0;
+    knob_off_style->body.border.width = 3;
+    knob_off_style->body.border.color = LV_COLOR_WHITE;
+    knob_off_style->body.border.opa = LV_OPA_100;
+    lv_sw_set_style(colorSwitch, LV_SW_STYLE_KNOB_OFF, knob_off_style);
+
+    lv_style_t* knob_on_style = new lv_style_t;
+    lv_style_copy(knob_on_style, knob_off_style);
+    knob_on_style->body.main_color = LV_COLOR_BLUE;
+    knob_on_style->body.grad_color = LV_COLOR_BLUE;
+    lv_sw_set_style(colorSwitch, LV_SW_STYLE_KNOB_ON, knob_on_style);
 
   }
 
@@ -90,7 +125,7 @@ namespace lib7842
       if(strcmp(txt, &that->m_autonPairs[autonNum].autonName[0]) == 0)
       {
         std::cout << "Auton: " << autonNum << std::endl;
-        that->currentAutonIndex = autonNum;
+        that->m_currentAutonIndex = autonNum;
       }
     }
 
@@ -98,9 +133,22 @@ namespace lib7842
   }
 
 
+  lv_res_t AutonSelector::sliderAction(lv_obj_t* slider)
+  {
+    AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(slider));
+
+    that->m_currentSide = lv_sw_get_state(slider) ? autonSides::blue : autonSides::red;
+
+    std::cout << "Switch: " << ((that->m_currentSide == autonSides::red) ? "Red" : "Blue") << std::endl;
+
+    return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
+  }
 
 
-
+  void AutonSelector::run()
+  {
+    m_autonPairs[m_currentAutonIndex].autoFunction(m_currentSide);
+  }
 
 
 }

@@ -27,9 +27,9 @@ namespace lib7842
     std::vector<autonPair> m_autonPairs;
 
     lv_obj_t *m_screenContainer = nullptr;
-    lv_style_t m_screenStyle;
 
-    int currentAutonIndex = 0;
+    int m_currentAutonIndex = 0;
+    autonSides m_currentSide = autonSides::red;
 
 
   public:
@@ -37,6 +37,9 @@ namespace lib7842
     AutonSelector(lv_obj_t*, std::initializer_list<autonPair>);
 
     static lv_res_t matrixAction(lv_obj_t*, const char*);
+    static lv_res_t sliderAction(lv_obj_t*);
+
+    void run();
 
   };
 
