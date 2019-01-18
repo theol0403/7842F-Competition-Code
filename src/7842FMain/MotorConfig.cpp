@@ -83,38 +83,55 @@ void initializeBase()
 	const QLength chassisWidth = 12.55_in;
 
 	// Otherwise, you should specify the gearset and scales for your robot
-	robotChassis = ChassisControllerFactory::createPtr(
-		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
-		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.001, 0.00, 0},
-		IterativePosPIDController::Gains{0.0006, 0.00, 0},
-		IterativePosPIDController::Gains{0.0006, 0, 0},
+	// robotChassis = ChassisControllerFactory::createPtr(
+	// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
+	// 	*s_leftEncoder, *s_rightEncoder,
+	// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
+	// 	IterativePosPIDController::Gains{0.0006, 0.00, 0},
+	// 	IterativePosPIDController::Gains{0.0006, 0, 0},
+	// 	AbstractMotor::gearset::green,
+	// 	{2.75_in / 1.6, chassisWidth * 2}
+	// );
+
+	std::shared_ptr<SkidSteerModel> robotModel = std::make_shared<SkidSteerModel>(
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
+		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
+		std::make_shared<ADIEncoder>(*s_leftEncoder), std::make_shared<ADIEncoder>(*s_rightEncoder),
+		200,
+		12000
+	);
+
+	robotChassis = std::make_shared<ChassisControllerPID>(
+		TimeUtilFactory::create(),
+		robotModel,
+		std::make_unique<IterativePosPIDController>(0.001, 0.00, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms)),
+		std::make_unique<IterativePosPIDController>(0.0006, 0.00, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms)),
+		std::make_unique<IterativePosPIDController>(0.0006, 0.00, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 5, 100_ms)),
 		AbstractMotor::gearset::green,
-		{2.75_in / 1.6, chassisWidth * 2}
-	);
+		ChassisScales({2.75_in / 1.6, chassisWidth * 2}));
 
-//	robotChassis->setMaxVelocity(180);
+		//	robotChassis->setMaxVelocity(180);
 
-	chassisOdomTracker = new lib7842::OdomTracker
-	(
-		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-		chassisWidth, 8_in,
-		2.75_in,
-		360 * 1.6, 360
-	);
+		chassisOdomTracker = new lib7842::OdomTracker
+		(
+			s_leftEncoder, s_rightEncoder, s_middleEncoder,
+			chassisWidth, 8_in,
+			2.75_in,
+			360 * 1.6, 360
+		);
 
-	chassisOdomController = new lib7842::OdomController
-	(
-		robotChassis,
-		chassisOdomTracker
-	);
+		chassisOdomController = new lib7842::OdomController
+		(
+			robotChassis,
+			chassisOdomTracker
+		);
 
 
-	// robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
-	// 	(
-	// 		1.0, 2.0, 10.0,
-	// 		*robotChassis
-	// 	));
+		// robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
+		// 	(
+		// 		1.0, 2.0, 10.0,
+		// 		*robotChassis
+		// 	));
 
 		pros::delay(500);
 
