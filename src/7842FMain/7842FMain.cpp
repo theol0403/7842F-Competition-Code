@@ -31,7 +31,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     pros::Task* objectTask_t = nullptr;
     pros::Task* odomTask_t = nullptr;
 
-    lib7842::AutonSelector *autonSelector = nullptr;
 
     /***
     *     _____      _ _   _       _ _
@@ -56,8 +55,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       intakeTask_t = new pros::Task(intakeControlTask);
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
-
-      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
 
     }
 
@@ -119,6 +116,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       setFlywheelRPM(0);
       checkBaseStatus();
+
+      chassisOdomController->m_chassisController->stop();
+      chassisOdomController->m_chassisController->moveDistance(0.1_cm);
       robotChassis->stop();
       chassisOdomController->m_chassisController->stop();
 
@@ -158,6 +158,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-      AutoClose(lib7842::autonSides::blue);
+      autonSelector->run();
       pros::delay(500000);
     }

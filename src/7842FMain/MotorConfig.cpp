@@ -27,6 +27,7 @@ okapi::ADIEncoder* s_leftEncoder = nullptr;
 okapi::ADIEncoder* s_rightEncoder = nullptr;
 okapi::ADIEncoder* s_middleEncoder = nullptr;
 
+lib7842::AutonSelector *autonSelector = nullptr;
 
 void initializeDevices()
 {
@@ -49,6 +50,8 @@ void initializeDevices()
 	s_leftEncoder->reset();
 	s_rightEncoder->reset();
 	s_middleEncoder->reset();
+
+	autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
 
 }
 

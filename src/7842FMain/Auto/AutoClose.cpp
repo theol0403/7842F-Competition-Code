@@ -35,7 +35,7 @@ void AutoClose(lib7842::autonSides side)
     chassisOdomController->driveToPoint(lib7842::Point{3.4_ft, 9_ft}); //Flip Cap
   }
 
-  else if(side == lib7842::autonSides::red)
+  else if(side == lib7842::autonSides::blue)
   {
     chassisOdomTracker->setState(FX 1_ft, 7_ft, FA 90_deg);
 
