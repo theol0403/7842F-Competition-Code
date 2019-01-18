@@ -189,11 +189,7 @@ void initializeBase()
 		360, 360
 	);
 
-	chassisOdomController = new lib7842::OdomController
-	(
-		robotChassis,
-		chassisOdomTracker
-	);
+	chassisOdomController = new lib7842::OdomController(robotChassis, chassisOdomTracker);
 
 	pros::delay(500);
 	chassisOdomTracker->resetSensors();

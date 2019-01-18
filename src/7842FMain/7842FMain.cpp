@@ -124,8 +124,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       setFlywheelRPM(0);
       checkBaseStatus();
 
+
       chassisOdomController->m_chassisController->stop();
-      //chassisOdomController->m_chassisController->moveDistance(1_cm);
+      autonSelector->unlockDriver(UnlockDriver);
       robotChassis->stop();
       chassisOdomController->m_chassisController->stop();
 

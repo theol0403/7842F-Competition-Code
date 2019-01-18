@@ -40,6 +40,7 @@ namespace lib7842
     static lv_res_t sliderAction(lv_obj_t*);
 
     void run();
+    void unlockDriver(std::function<void()>);
 
   };
 
