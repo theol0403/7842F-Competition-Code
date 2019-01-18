@@ -86,9 +86,9 @@ void initializeBase()
 	robotChassis = ChassisControllerFactory::createPtr(
 		{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		*s_leftEncoder, *s_rightEncoder,
-		IterativePosPIDController::Gains{0.0012, 0.00, 0},
-		IterativePosPIDController::Gains{0.0007, 0.00, 0},
-		IterativePosPIDController::Gains{0.0007, 0, 0},
+		IterativePosPIDController::Gains{0.001, 0.00, 0},
+		IterativePosPIDController::Gains{0.0006, 0.00, 0},
+		IterativePosPIDController::Gains{0.0006, 0, 0},
 		AbstractMotor::gearset::green,
 		{2.75_in / 1.6, chassisWidth * 2}
 	);

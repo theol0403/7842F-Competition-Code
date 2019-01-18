@@ -3,11 +3,11 @@
 
 void AutoClose(lib7842::autonSides side)
 {
-  setFlywheelRPM(2800);
   setIntakeMode(intakeModes::loading);
 
   if(side == lib7842::autonSides::red)
   {
+    setFlywheelRPM(2800);
     chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
 
 
@@ -37,6 +37,7 @@ void AutoClose(lib7842::autonSides side)
 
   else if(side == lib7842::autonSides::blue)
   {
+    setFlywheelRPM(2700);
     chassisOdomTracker->setState(FX 1_ft, 7_ft, FA 90_deg);
 
 
@@ -49,19 +50,28 @@ void AutoClose(lib7842::autonSides side)
     pros::delay(200);
 
     chassisOdomController->m_odomTracker->setX(FX 1_ft);
-    chassisOdomController->driveToPoint(lib7842::Point{FX 0.7_ft, 9_ft}); // Move forward to second shooting position
+    chassisOdomController->driveToPoint(lib7842::Point{FX 0.7_ft, 9.4_ft}); // Move forward to second shooting position
 
+    chassisOdomController->m_odomTracker->state.theta += 5_deg;
     chassisOdomController->turnToPoint(rightFlag); //Shoot second ball
     setIntakeMode(intakeModes::shootIndexer);
     pros::delay(200);
+    chassisOdomController->m_odomTracker->state.theta -= 3_deg;
 
-    chassisOdomController->driveToPoint(lib7842::Point{FX 0.6_ft, 11.1_ft}); //Push Bottom Flag
-    chassisOdomController->driveToPoint(lib7842::Point{FX 0.6_ft, 9.5_ft}); //Move back
+    chassisOdomController->driveToPoint(lib7842::Point{FX 0.6_ft, 11.2_ft}); //Push Bottom Flag
+    chassisOdomController->driveToPoint(lib7842::Point{FX 1_ft, 9.5_ft}); //Move back
 
     chassisOdomController->turnToAngle(FA -90_deg); //Turn to cap
     chassisOdomTracker->setState(FX 1_ft, 9_ft, FA -90_deg);
 
-    chassisOdomController->driveToPoint(lib7842::Point{FX 3.4_ft, 9_ft}); //Flip Cap
+    setFlywheelRPM(3000);
+    chassisOdomController->driveToPoint(lib7842::Point{FX 2.9_ft, 9_ft}); //Flip Cap
+
+    chassisOdomController->driveToPoint(lib7842::Point{FX 2_ft, 8_ft}); //Flip Cap
+    chassisOdomController->turnToAngle(FA 55_deg); //Turn to flag
+
+    setIntakeMode(intakeModes::shootIndexer);
+    pros::delay(200);
   }
 
 }

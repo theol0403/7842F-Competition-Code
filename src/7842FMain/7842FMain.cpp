@@ -91,6 +91,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       setFlywheelRPM(0);
       robotChassis->stop();
+      chassisOdomController->m_chassisController->stop();
+      robotChassis->stop();
+      chassisOdomController->m_chassisController->stop();
     }
 
     /***
@@ -118,7 +121,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       checkBaseStatus();
 
       chassisOdomController->m_chassisController->stop();
-      chassisOdomController->m_chassisController->moveDistance(0.1_cm);
+      //chassisOdomController->m_chassisController->moveDistance(1_cm);
       robotChassis->stop();
       chassisOdomController->m_chassisController->stop();
 
@@ -132,6 +135,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         driverIntakeControl();
         driverFlywheelControl();
 
+      //  lv_task_handler();
         pros::delay(20);
       }
     }
