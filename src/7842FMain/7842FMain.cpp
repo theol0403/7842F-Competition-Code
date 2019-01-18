@@ -32,6 +32,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     pros::Task* odomTask_t = nullptr;
 
 
+
     /***
     *     _____      _ _   _       _ _
     *    |_   _|    (_) | (_)     | (_)
@@ -46,13 +47,16 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      pros::delay(500);
+      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Test", AutoTest}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
 
+      pros::delay(500);
       initializeDevices();
       initializeBase();
 
+      #ifndef TEST_ROBOT
       flywheelTask_t = new pros::Task(flywheelTask);
       intakeTask_t = new pros::Task(intakeControlTask);
+      #endif
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
       odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
 
@@ -132,10 +136,12 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         checkBaseStatus();
         driverBaseControl();
 
+        #ifndef TEST_ROBOT
         driverIntakeControl();
         driverFlywheelControl();
+        #endif
 
-      //  lv_task_handler();
+        //  lv_task_handler();
         pros::delay(20);
       }
     }
