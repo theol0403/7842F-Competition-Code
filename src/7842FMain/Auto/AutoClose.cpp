@@ -42,7 +42,7 @@ void AutoClose(lib7842::autonSides side)
 
 
     chassisOdomController->driveToPoint(lib7842::Point{FX 4.5_ft, 7_ft}); //Move to ball under cap
-    chassisOdomController->driveToPoint(lib7842::Point{FX 1.1_ft, 7_ft}); //Move to shooting position
+    chassisOdomController->driveToPoint(lib7842::Point{FX 1.1_ft, 7.5_ft}); //Move to shooting position
 
     chassisOdomController->m_odomTracker->state.theta += 5_deg;
     chassisOdomController->turnToPoint(rightFlag); //Shoot first ball
@@ -50,7 +50,7 @@ void AutoClose(lib7842::autonSides side)
     pros::delay(200);
 
     chassisOdomController->m_odomTracker->setX(FX 1_ft);
-    chassisOdomController->driveToPoint(lib7842::Point{FX 0.7_ft, 9.5_ft}); // Move forward to second shooting position
+    chassisOdomController->driveToPoint(lib7842::Point{FX 0.7_ft, 10_ft}); // Move forward to second shooting position
 
     chassisOdomController->m_odomTracker->state.theta += 5_deg;
     chassisOdomController->turnToPoint(rightFlag); //Shoot second ball
@@ -61,6 +61,7 @@ void AutoClose(lib7842::autonSides side)
     chassisOdomController->driveToPoint(lib7842::Point{FX 0.6_ft, 11.2_ft}); //Push Bottom Flag
     chassisOdomController->driveToPoint(lib7842::Point{FX 1_ft, 9.5_ft}); //Move back
 
+    chassisOdomController->m_odomTracker->state.theta -= 5_deg;
     chassisOdomController->turnToAngle(FA -90_deg); //Turn to cap
     chassisOdomTracker->setState(FX 1_ft, 9_ft, FA -90_deg); //Set state before cap
 
