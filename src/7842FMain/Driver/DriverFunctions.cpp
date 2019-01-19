@@ -108,7 +108,7 @@ void driverFlywheelControl()
 	}
 	else if(j_Main.getDigital(okapi::ControllerDigital::up))
 	{
-		wantedFlywheelSpeed = flywheelManual ? 70 : 2450;
+		wantedFlywheelSpeed = flywheelManual ? 70 : 2350;
 		triggerUpdate = true;
 	}
 	else if(j_Main.getDigital(okapi::ControllerDigital::right))

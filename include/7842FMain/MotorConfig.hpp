@@ -39,4 +39,4 @@ extern okapi::ADIEncoder* s_middleEncoder;
 
 extern lib7842::AutonSelector *autonSelector;
 
-#define TEST_ROBOT
+//#define TEST_ROBOT
