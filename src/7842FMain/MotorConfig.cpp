@@ -4,7 +4,7 @@
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
-
+//Pointers to all devices
 okapi::Motor* m_Flywheel = nullptr;
 okapi::Motor* m_Flywheel2 = nullptr;
 

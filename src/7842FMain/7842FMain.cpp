@@ -19,13 +19,17 @@
 *      | |/ _` / __| |/ / __|
 *      | | (_| \__ \   <\__ \
 *      \_/\__,_|___/_|\_\___/
-*/
+ * Checks current task state and changes it if the state does not match the wanted state
+ * @param taskPtr  pointer to the task
+ * @param taskMode one of two options, TASK_STATE_SUSPENDED or TASK_STATE_RUNNING
+ */
 void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
   if(taskPtr != nullptr && taskPtr->get_state() != taskMode) { switch(taskMode) {
     case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
     case TASK_STATE_RUNNING: taskPtr->resume(); break;
     default: {} } } }
 
+    //Global task pointers
     pros::Task* intakeTask_t = nullptr;
     pros::Task* flywheelTask_t = nullptr;
     pros::Task* objectTask_t = nullptr;
@@ -47,9 +51,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
+      //Initializes autonomous selector with list of autonomous programs
       autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Test", AutoTest}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
 
-      pros::delay(500);
+      pros::delay(500); //Give the legacy ports time to start up
       initializeDevices();
       initializeBase();
 
@@ -93,6 +98,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void disabled()
     {
+      //Tries to turn everything off
       setFlywheelRPM(0);
       robotChassis->stop();
       chassisOdomController->m_chassisController->stop();
@@ -124,13 +130,13 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       setFlywheelRPM(0);
       checkBaseStatus();
 
-
+      //Tries to turn off okapi controller in background
       chassisOdomController->m_chassisController->stop();
-      autonSelector->unlockDriver(UnlockDriver);
+      //Sometimes getting it to move a bit turns it off
+      autonSelector->unlockDriver([&]() { chassisOdomController->m_chassisController->moveDistance(1_cm); });
       robotChassis->stop();
       chassisOdomController->m_chassisController->stop();
 
-      //  robotChassis->moveDistance(4_ft);
 
       while(true)
       {

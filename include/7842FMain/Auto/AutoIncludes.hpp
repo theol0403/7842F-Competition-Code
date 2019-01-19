@@ -14,7 +14,6 @@ void AutoClose(lib7842::autonSides);
 void AutoFar(lib7842::autonSides);
 void AutoMiddle(lib7842::autonSides);
 
-void UnlockDriver();
 
 #define FX 12_ft- //Flips X
 #define FA - //Flips Angle
