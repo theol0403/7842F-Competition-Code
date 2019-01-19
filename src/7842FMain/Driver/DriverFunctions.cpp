@@ -89,26 +89,26 @@ static bool togglePressed = false; // Used to compare button state to last to se
 
 void driverFlywheelControl()
 {
-
-	if(j_Main.getDigital(okapi::ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
-	{
-		togglePressed = true;
-		flywheelManual = flywheelManual ? false : true; //Switch flywheel mode
-	}
-	else if(!j_Main.getDigital(okapi::ControllerDigital::Y) && togglePressed) // Is button not pressed but it was before?
-	{
-		togglePressed = false;
-	}
+	// 
+	// if(j_Main.getDigital(okapi::ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
+	// {
+	// 	togglePressed = true;
+	// 	flywheelManual = flywheelManual ? false : true; //Switch flywheel mode
+	// }
+	// else if(!j_Main.getDigital(okapi::ControllerDigital::Y) && togglePressed) // Is button not pressed but it was before?
+	// {
+	// 	togglePressed = false;
+	// }
 
 
 	if(j_Main.getDigital(okapi::ControllerDigital::left))
 	{
-		wantedFlywheelSpeed = flywheelManual ? 50 : 2300;
+		wantedFlywheelSpeed = flywheelManual ? 50 : 2350;
 		triggerUpdate = true;
 	}
 	else if(j_Main.getDigital(okapi::ControllerDigital::up))
 	{
-		wantedFlywheelSpeed = flywheelManual ? 70 : 2350;
+		wantedFlywheelSpeed = flywheelManual ? 70 : 2500;
 		triggerUpdate = true;
 	}
 	else if(j_Main.getDigital(okapi::ControllerDigital::right))

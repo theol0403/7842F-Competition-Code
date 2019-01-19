@@ -7,12 +7,12 @@ void AutoClose(lib7842::autonSides side)
 
   if(side == lib7842::autonSides::red)
   {
-    setFlywheelRPM(2800);
+    setFlywheelRPM(2700);
     chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
 
 
     chassisOdomController->driveToPoint(lib7842::Point{4.5_ft, 7_ft}); //Move to ball under cap
-    chassisOdomController->driveToPoint(lib7842::Point{1_ft, 6.5_ft}); //Move to shooting position
+    chassisOdomController->driveToPoint(lib7842::Point{1_ft, 7.5_ft}); //Move to shooting position
 
     chassisOdomController->turnToPoint(leftFlag); //Shoot
     setIntakeMode(intakeModes::shootIndexer);
