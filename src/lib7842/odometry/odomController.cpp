@@ -21,7 +21,7 @@ namespace lib7842
 
   QAngle OdomController::computeAngleToPoint(Point point)
   {
-    QAngle wantedAngle = (atan2(point.x.convert(inch) - odomTracker->state.x.convert(inch), point.y.convert(inch) - odomTracker->state.y.convert(inch)) * radian) - odomTracker->state.theta;
+    QAngle wantedAngle = (atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian) - chassis->state.theta;
     if(wantedAngle.abs() > 180_deg)
     {
       wantedAngle -= 360_deg * sgn(wantedAngle.convert(degree));

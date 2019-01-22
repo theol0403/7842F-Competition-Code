@@ -1,7 +1,7 @@
 #pragma once
 #include "main.h"
 #include "odomTracker.hpp"
-#include "lib7842/other/miscUtils.hpp"
+#include "lib7842/pid/pidSystem.hpp"
 
 namespace lib7842
 {
@@ -11,24 +11,33 @@ namespace lib7842
 
   private:
 
+    OdomTracker *chassis;
+
+    PID *distancePid;
+    PID *anglePid;
+    PID *turnPid;
 
   public:
 
-    std::shared_ptr<okapi::ChassisControllerPID> m_chassisController;
-    OdomTracker *m_odomTracker;
-
-    
     OdomController(
-      std::shared_ptr<okapi::ChassisControllerPID>,
-      OdomTracker*
+      OdomTracker*,
+      PID *,
+      PID *,
+      PID *
     );
 
 
-    QLength computeDistanceToPoint(Point);
     QAngle computeAngleToPoint(Point);
-
+    void turnAngle(QAngle);
     void turnToAngle(QAngle);
     void turnToPoint(Point);
+
+    QLength computeDistanceBetweenPoints(Point, Point);
+    QLength computeDistanceToPoint(Point);
+
+    void driveDistance(QLength);
+    void driveDistanceToAngle(QLength, QAngle);
+
     void driveToPoint(Point);
     void driveToPointAndAngle(Point);
 
