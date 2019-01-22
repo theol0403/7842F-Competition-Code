@@ -13,8 +13,6 @@ namespace lib7842
     m_lastTime = m_timer.millis().convert(millisecond);
   }
 
-  int count = 0;
-
   double PID::calculateErr(double ierror)
   {
     m_Error = ierror;
@@ -22,12 +20,6 @@ namespace lib7842
     m_lastTime = m_timer.millis().convert(millisecond);
 
     m_derivative = m_dEma.filter((m_Error - m_lastError)) / deltaTime;
-    count++;
-    if(count > 20)
-    {
-      std::cout << m_derivative << std::endl;
-      count = 0;
-    }
 
     m_lastError = m_Error;
 

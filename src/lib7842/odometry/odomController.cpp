@@ -40,7 +40,7 @@ namespace lib7842
 
     while(!turnPid->isSettled())
     {
-      double turnVel = turnPid->calculate(wantedAngle.convert(degree), chassis->state.theta.convert(degree));
+      double turnVel = 200 * turnPid->calculate(wantedAngle.convert(degree), chassis->state.theta.convert(degree));
       chassis->model->rotate(turnVel); //TODO Could be reversed
 
       pros::delay(10); // Run the control loop at 10ms intervals
