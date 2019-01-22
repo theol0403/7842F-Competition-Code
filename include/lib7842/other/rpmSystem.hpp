@@ -1,6 +1,5 @@
 #pragma once
 #include "main.h"
-#include "lib7842/other/timingSystem.hpp"
 
 
  namespace lib7842
@@ -9,7 +8,7 @@
    {
    private:
 
-    lib7842::Timer m_timer;
+    okapi::Timer m_timer;
     pros::ADIEncoder m_encoder;
 
     const double m_ticksPerRev = 360;

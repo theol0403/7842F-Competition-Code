@@ -7,14 +7,14 @@ namespace lib7842
   : m_timer(), m_encoder(topEncoderPort, topEncoderPort+1, reverseEncoder),
   m_ticksPerRev(ticksPerRev), m_flywheelEncoderRatio(flywheelEncoderRatio), m_minRefresh(20)
   {
-    m_lastTime = m_timer.elapsed();
+    m_lastTime = m_timer.millis().convert(millisecond);
     m_lastEncoder = m_encoder.get_value();
   }
 
   int rpmMeasure::calculate()
   {
     //Calculate the amount of ms since the last time this function was run
-    m_deltaTime = m_timer.elapsed() - m_lastTime;
+    m_deltaTime = m_timer.millis().convert(millisecond) - m_lastTime;
     //If it was ran very recently just return the last RPM
     if(m_deltaTime < m_minRefresh) {return m_RPM;}
 
