@@ -100,8 +100,8 @@ void initializeBase()
 		chassisOdomController = new lib7842::OdomController
 		(
 			chassisOdomTracker,
-			new lib7842::PID(0.01, 0.1, 1, 50, 5, 250_ms), //Distance PID - To mm
-			new lib7842::PID(0.01, 0.1, 1, 50, 5, 250_ms), //Angle PID - To Degree
+			new lib7842::PID(0.1, 0.1, 1, 50, 5, 250_ms), //Distance PID - To mm
+			new lib7842::PID(0.007, 0.1, 1, 50, 5, 250_ms), //Angle PID - To Degree
 			new lib7842::PID(0.0001, 1, 1, 5, 1, 250_ms) //Turn PID - To Degree
 		);
 

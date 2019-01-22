@@ -16,7 +16,7 @@
 
    	double Timer::elapsed()
    	{
-   		return std::chrono::duration_cast<second_t>(clock_t::now() - m_startTime).count();
+   		return std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(clock_t::now() - m_startTime).count();
    	}
 
  }
