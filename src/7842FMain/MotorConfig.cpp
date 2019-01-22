@@ -90,7 +90,7 @@ void initializeBase()
 
 		chassisOdomTracker = new lib7842::OdomTracker
 		(
-			s_leftEncoder, s_rightEncoder, s_middleEncoder,
+			robotChassis,
 			chassisWidth, 8_in,
 			2.75_in,
 			360 * 1.6, 360

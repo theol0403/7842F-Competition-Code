@@ -5,16 +5,12 @@ namespace lib7842
 
   OdomTracker::OdomTracker
   (
-    okapi::ADIEncoder *lEncoder,
-    okapi::ADIEncoder *rEncoder,
-    okapi::ADIEncoder *mEncoder,
+    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> ichassis,
     QLength chassisWidth, QLength distanceMiddle,
     QLength wheelDiam,
     double mainTicksPerRev, double middleTicksPerRev
   ):
-  m_lEncoder(lEncoder),
-  m_rEncoder(rEncoder),
-  m_mEncoder(mEncoder),
+  model(ichassis),
 
   m_chassisWidth(chassisWidth),
   m_distanceMiddle(distanceMiddle),
@@ -38,10 +34,11 @@ namespace lib7842
 
   void OdomTracker::step()
   {
+    std::valarray<int32_t> newTicks = model->getSensorVals();
 
-    QLength newLeftInch = (m_lEncoder->get() * m_mainDegToInch) * inch;
-    QLength newRightInch = (m_rEncoder->get() * m_mainDegToInch) * inch;
-    QLength newMiddleInch = (m_mEncoder->get() * m_middleDegToInch) * inch;
+    QLength newLeftInch = (newTicks[0] * m_mainDegToInch) * inch;
+    QLength newRightInch = (newTicks[1] * m_mainDegToInch) * inch;
+    QLength newMiddleInch = (newTicks[2] * m_middleDegToInch) * inch;
 
     QLength dLeftInch = newLeftInch - m_lastLeftInch;
     QLength dRightInch = newRightInch - m_lastRightInch;
@@ -51,7 +48,7 @@ namespace lib7842
     m_lastRightInch = newRightInch;
     m_lastMiddleInch = newMiddleInch;
 
-    QAngle newAngle = state.theta + (((dLeftInch - dRightInch) / m_chassisWidth) * radian);
+    QAngle newAngle = ((newLeftInch - newRightInch) / m_chassisWidth) * radian;
     QAngle dAngle = newAngle - state.theta;
 
     // std::cout << "dA: " << dA << std::endl;
@@ -83,6 +80,10 @@ namespace lib7842
     state.x += dX;
     state.y += dY;
     state.theta = newAngle;
+
+    // //Wrap theta
+    // if(state.theta > 180_deg) { state.theta = state.theta - 360_deg; }
+    // if(state.theta < -180_deg) { state.theta = state.theta + 360_deg; }
 
   }
 
@@ -124,12 +125,10 @@ namespace lib7842
 
   void OdomTracker::resetSensors()
   {
-    m_lEncoder->reset();
-    m_rEncoder->reset();
-    m_mEncoder->reset();
     m_lastLeftInch = 0_in;
     m_lastRightInch = 0_in;
     m_lastMiddleInch = 0_in;
+    model->resetSensors();
   }
 
 

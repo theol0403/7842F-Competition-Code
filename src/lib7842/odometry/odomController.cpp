@@ -81,7 +81,7 @@ namespace lib7842
     while(!distancePid->isSettled())
     {
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
-      QLength newDistance = ((newTicks[0] - lastTicks[0] + newTicks[1] - lastTicks[1]) / 2 * chassis->mainDegToInch) * inch;
+      QLength newDistance = ((newTicks[0] - lastTicks[0] + newTicks[1] - lastTicks[1]) / 2 * chassis->m_mainDegToInch) * inch;
 
       QLength distanceErr = wantedDistance - newDistance;
       double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
@@ -146,13 +146,15 @@ namespace lib7842
       pros::delay(10); // Run the control loop at 10ms intervals
     }
 
-
-
-    void OdomController::driveToPointAndAngle(Point point)
-    {
-      driveToPoint(point);
-      turnToAngle(point.theta);
-    }
-
-
   }
+
+
+
+  void OdomController::driveToPointAndAngle(Point point)
+  {
+    driveToPoint(point);
+    turnToAngle(point.theta);
+  }
+
+
+}
