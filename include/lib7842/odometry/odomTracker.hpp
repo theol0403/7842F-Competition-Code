@@ -17,14 +17,14 @@ namespace lib7842
 
   private:
 
-    const QLength m_chassisWidth;
-    const QLength m_distanceMiddle;
-
     QLength m_lastLeftInch {0_in};
     QLength m_lastRightInch {0_in};
     QLength m_lastMiddleInch {0_in};
 
   public:
+
+    const QLength m_chassisWidth;
+    const QLength m_distanceMiddle;
 
     const double m_mainDegToInch;
     const double m_middleDegToInch;

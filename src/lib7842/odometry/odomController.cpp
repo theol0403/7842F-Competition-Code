@@ -18,7 +18,6 @@ namespace lib7842
   };
 
 
-
   QAngle OdomController::computeAngleToPoint(Point point)
   {
     QAngle wantedAngle = (atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian) - chassis->state.theta;
@@ -51,7 +50,17 @@ namespace lib7842
 
   void OdomController::turnToPoint(Point point)
   {
-    turnToAngle(computeAngleToPoint(point) + chassis->state.theta);
+    turnPid->reset();
+
+    while(!turnPid->isSettled())
+    {
+      double turnVel = 200 * turnPid->calculate((computeAngleToPoint(point) + chassis->state.theta).convert(degree), chassis->state.theta.convert(degree));
+      chassis->model->rotate(turnVel); //TODO Could be reversed
+
+      pros::delay(10); // Run the control loop at 10ms intervals
+    }
+
+    chassis->model->rotate(0);
   }
 
   QLength OdomController::computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
@@ -78,18 +87,25 @@ namespace lib7842
     distancePid->reset();
     anglePid->reset();
 
-    while(!distancePid->isSettled())
+    while(!distancePid->isSettled() || !anglePid->isSettled())
     {
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
-      QLength newDistance = ((newTicks[0] - lastTicks[0] + newTicks[1] - lastTicks[1]) / 2 * chassis->m_mainDegToInch) * inch;
+      QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
+      QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
+      QAngle sensorAngle = ((leftDistance - rightDistance) / chassis->m_chassisWidth) * radian;
 
-      QLength distanceErr = wantedDistance - newDistance;
+      QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
       double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
 
+      QAngle angleErr = (wantedAngle - chassis->state.theta) / 2;
       double angleVel = 0;
       if(distanceErr > 5_in)
       {
-        angleVel = 200 * anglePid->calculate(wantedAngle.convert(degree), chassis->state.theta.convert(degree));
+        angleVel = 200 * anglePid->calculateErr(((sensorAngle - angleErr)/2).convert(degree));
+      }
+      else
+      {
+        angleVel = 200 * anglePid->calculateErr(sensorAngle.convert(degree));
       }
 
       chassis->model->driveVector(distanceVel, angleVel);
@@ -117,7 +133,7 @@ namespace lib7842
 
     QLength distanceErr = computeDistanceToPoint(point) * direction;
 
-    while(distanceErr.abs() > 5_in)
+    while(distanceErr.abs() > 1_in)
     {
       QAngle angleErr = computeAngleToPoint(point);
       if(angleErr.abs() > 90_deg)
@@ -134,7 +150,7 @@ namespace lib7842
 
 
       distanceErr = computeDistanceToPoint(point) * direction;
-      double distanceVel;
+      double distanceVel = 0;
       if(angleErr.abs() < 30_deg)
       {
         distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
@@ -145,6 +161,8 @@ namespace lib7842
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
+    driveDistanceToAngle(computeDistanceToPoint(point) * direction, wantedAngle);
+    chassis->model->driveVector(0, 0);
 
   }
 
