@@ -10,7 +10,7 @@ namespace lib7842
   m_dEma(emaAlpha),
   m_settledUtil(std::make_unique<okapi::Timer>(), settledError, settledD, settledTime)
   {
-    m_lastTime = m_timer.elapsed();
+    m_lastTime = m_timer.millis().convert(millisecond);
   }
 
 int count = 0;
@@ -18,8 +18,9 @@ int count = 0;
   double PID::calculateErr(double ierror)
   {
     m_Error = ierror;
-    double deltaTime = m_timer.elapsed() - m_lastTime;
-    m_lastTime = m_timer.elapsed();
+    double deltaTime = m_timer.millis().convert(millisecond) - m_lastTime;
+    m_lastTime = m_timer.millis().convert(millisecond);
+    std::cout << "Time:" << m_timer.millis().convert(millisecond) << std::endl;
 
     m_derivative = m_dEma.filter((m_Error - m_lastError) / deltaTime);
     count++;
@@ -59,7 +60,7 @@ int count = 0;
   {
     m_Error = 0;
     m_lastError = 0;
-    m_lastTime = m_timer.elapsed();
+    m_lastTime = m_timer.millis().convert(millisecond);
     m_derivative = 0;
     m_settledUtil.reset();
     m_isSettled = false;

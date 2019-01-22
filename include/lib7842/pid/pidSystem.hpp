@@ -1,6 +1,5 @@
 #pragma once
 #include "main.h"
-#include "lib7842/other/timingSystem.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
 
@@ -20,7 +19,7 @@ namespace lib7842
     double m_lastTime = 0;
     double m_derivative = 0;
 
-    Timer m_timer;
+    okapi::Timer m_timer;
 
     SettledUtil m_settledUtil;
     bool m_isSettled = false;
