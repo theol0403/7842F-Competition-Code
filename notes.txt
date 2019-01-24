@@ -1,0 +1,250 @@
+// vector stuffs
+const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
+const mult = (a, b) => ({ x: a.x * b.x, y: a.y * b.y });
+const div = (a, b) => ({ x: a.x / b.x, y: a.y / b.y });
+const mag = a => Math.sqrt(a.x * a.x + a.y * a.y);
+const normalize = a => ({ x: a.x / mag(a), y: a.y / mag(a) });
+
+const multScalar = (a, b) => ({ x: a.x * b, y: a.y * b });
+
+const dot = (a, b) => a.x * b.x + a.y * b.y;
+const dist = (a, b) =>
+  Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+
+//util stuff
+const sgn = v => (v > 0 ? 1 : v < 0 ? -1 : 0);
+const rad = deg => deg * (Math.PI / 180);
+const remap = (value, from1, to1, from2, to2) =>
+  (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+
+const PI = Math.PI;
+const TAU = Math.PI * 2;
+
+const closest = (current, head, target) => {
+  const n = normalize(head);
+  const v = sub(target, current);
+  const d = dot(v, n);
+  return add(current, multScalar(n, d));
+};
+
+function angleDiff(angle1, angle2) {
+  const diff = (angle2 - angle1 + PI) % TAU - PI;
+  return diff < -PI ? diff + TAU : diff;
+}
+
+function computeAngleToPoint(wantedPoint, currentPoint) {
+  return (
+    Math.atan2(wantedPoint.y - currentPoint.y, wantedPoint.x - currentPoint.x) -
+    currentPoint.a //Reverse from c++
+  );
+}
+
+
+
+// begin program
+
+const canvas = document.getElementById("c");
+const c = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const SPEED_LIM = 0.4;
+
+let pos = {
+  x: 0,
+  y: 0
+};
+
+document.addEventListener("mousemove", e => {
+  pos = {
+    x: e.clientX,
+    y: e.clientY
+  };
+});
+
+class Bot {
+  constructor(x, y, a) {
+    this.pos = {
+      x: x || canvas.width / 2,
+      y: y || canvas.height / 2,
+      a: a || PI * Math.random() * 2 - PI
+    };
+    this.vel = {
+      x: 0,
+      y: 0
+    };
+    this.acc = {
+      x: 0,
+      y: 0
+    };
+    this.spd = {
+      l: 0,
+      r: 0
+    };
+  }
+
+  seek(target) {
+    let tA = Math.atan2(target.y - this.pos.y, target.x - this.pos.x);
+    // tA = Math.abs(tA) > (4 * PI) ? tA - PI * sgn(tA) : tA
+    // console.log(tA)
+
+    const close = closest(
+      this.pos,
+      { x: Math.cos(this.pos.a), y: Math.sin(this.pos.a) },
+      pos
+    );
+
+    let V = dist(close, this.pos) * 0.01; //* (mag(close) > mag(this.pos) ? -1 : 1)
+    V = isNaN(V) ? 0 : V
+    V = Math.abs(V) > 1 ? sgn(V) : V;
+  
+    let aP = computeAngleToPoint(close, this.pos)
+    aP = (aP % (2 * PI)) * sgn(aP)
+    if (Math.abs(aP) > PI/2) {
+      V = V * -1;
+      tA -= PI * sgn(aP)
+    }
+    //console.log(V)
+    // tA = Math.abs(V) >= 0.9999999999999999 ? tA : 0
+      
+
+    c.strokeStyle = "#00f";
+    c.beginPath();
+    c.moveTo(this.pos.x, this.pos.y);
+    c.lineTo(close.x, close.y);
+    c.closePath();
+    c.stroke();
+
+    c.strokeStyle = "g00";
+    c.beginPath();
+    c.moveTo(close.x, close.y);
+    c.lineTo(target.x, target.y);
+    c.closePath();
+    c.stroke();
+
+    let W = angleDiff(tA, this.pos.a);
+    //console.log(V)
+    W = Math.abs(V) < 0.007 ? 0 : W
+    //let W = dist(close, target) * (mag(close) > mag(target) ? 1 : -1) / 300
+    let Vr = V + W;
+    let Vl = V - W;
+
+    const maxMag = Math.max(Math.abs(Vr), Math.abs(Vl));
+
+    this.spd = {
+      l: (Vl /= maxMag),
+      r: (Vr /= maxMag)
+    };
+    //console.log(W)
+  }
+
+  update() {
+    this.seek(pos);
+    // this.face(pos)
+
+    let dA = (this.spd.r - this.spd.l) * SPEED_LIM / PI;
+
+    this.pos.a -= dA;
+
+    this.vel.x = Math.cos(this.pos.a) * (this.spd.r + this.spd.l) * SPEED_LIM;
+    this.vel.y = Math.sin(this.pos.a) * (this.spd.r + this.spd.l) * SPEED_LIM;
+
+    this.pos.x += this.vel.x;
+    this.pos.y += this.vel.y;
+
+    //console.log(this.vel.x)
+
+    // draw debug stuff
+
+    c.strokeStyle = "#f00";
+    c.beginPath();
+    c.moveTo(pos.x, pos.y);
+    c.lineTo(this.pos.x, this.pos.y);
+    c.closePath();
+    c.stroke();
+  }
+
+  draw() {
+    c.fillStyle = "#000";
+    c.beginPath();
+    c.arc(this.pos.x, this.pos.y, 4, 0, Math.PI * 2);
+    c.closePath();
+    c.fill();
+
+    c.strokeStyle = "#000";
+    c.beginPath();
+    c.moveTo(this.pos.x, this.pos.y);
+    c.lineTo(
+      this.pos.x + Math.cos(this.pos.a) * 10,
+      this.pos.y + Math.sin(this.pos.a) * 10
+    );
+    c.closePath();
+    c.stroke();
+
+    c.strokeStyle = "#0F0";
+    c.beginPath();
+    c.moveTo(
+      this.pos.x + Math.cos(this.pos.a + Math.PI / 2) * 10,
+      this.pos.y + Math.sin(this.pos.a + Math.PI / 2) * 10
+    );
+    c.lineTo(
+      this.pos.x +
+        Math.cos(this.pos.a + Math.PI / 2) * 10 +
+        this.spd.r * 20 * Math.cos(this.pos.a),
+      this.pos.y +
+        Math.sin(this.pos.a + Math.PI / 2) * 10 +
+        this.spd.r * 20 * Math.sin(this.pos.a)
+    );
+    c.closePath();
+    c.stroke();
+
+    c.strokeStyle = "#0F0";
+    c.beginPath();
+    c.moveTo(
+      this.pos.x + Math.cos(this.pos.a - Math.PI / 2) * 10,
+      this.pos.y + Math.sin(this.pos.a - Math.PI / 2) * 10
+    );
+    c.lineTo(
+      this.pos.x +
+        Math.cos(this.pos.a - Math.PI / 2) * 10 +
+        this.spd.l * 20 * Math.cos(this.pos.a),
+      this.pos.y +
+        Math.sin(this.pos.a - Math.PI / 2) * 10 +
+        this.spd.l * 20 * Math.sin(this.pos.a)
+    );
+    c.closePath();
+    c.stroke();
+  }
+}
+
+const bots = [new Bot()];
+
+document.addEventListener("mousedown", e => {
+  bots.push(new Bot(e.clientX, e.clientY));
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  c.clearRect(0, 0, canvas.width, canvas.height);
+
+  c.fillStyle = "#000";
+  c.beginPath();
+  c.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
+  c.closePath();
+  c.fill();
+
+  bots.forEach(bot => {
+    bot.draw();
+    bot.update();
+  });
+}
+
+animate();
+
+
+
+
+

@@ -17,15 +17,20 @@ namespace lib7842
   {
   };
 
+  QAngle OdomController::rollAngle(QAngle angle)
+  {
+    return std::remainder(angle.convert(degree), 360) * degree; //uhhh
+    // if(wantedAngle.abs() > 180_deg)
+    // {
+    //   wantedAngle -= 360_deg * sgn(wantedAngle.convert(degree));
+    // }
+  }
+
 
   QAngle OdomController::computeAngleToPoint(Point point)
   {
     QAngle wantedAngle = (atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian) - chassis->state.theta;
-    if(wantedAngle.abs() > 180_deg)
-    {
-      wantedAngle -= 360_deg * sgn(wantedAngle.convert(degree));
-    }
-    return wantedAngle;
+    return rollAngle(wantedAngle);
   }
 
   void OdomController::turnAngle(QAngle wantedAngle)
@@ -35,33 +40,31 @@ namespace lib7842
 
   void OdomController::turnToAngle(QAngle wantedAngle)
   {
+    wantedAngle = rollAngle(wantedAngle);
     turnPid->reset();
-
     while(!turnPid->isSettled())
     {
-      double turnVel = 200 * turnPid->calculate(wantedAngle.convert(degree), chassis->state.theta.convert(degree));
+      QAngle angleErr = rollAngle(wantedAngle - chassis->state.theta);
+      double turnVel = 200 * turnPid->calculateErr(angleErr.convert(degree));
       chassis->model->rotate(turnVel); //TODO Could be reversed
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
-
     chassis->model->rotate(0);
   }
 
   void OdomController::turnToPoint(Point point)
   {
     turnPid->reset();
-
     while(!turnPid->isSettled())
     {
-      double turnVel = 200 * turnPid->calculate((computeAngleToPoint(point) + chassis->state.theta).convert(degree), chassis->state.theta.convert(degree));
+      double turnVel = 200 * turnPid->calculateErr(computeAngleToPoint(point).convert(degree));
       chassis->model->rotate(turnVel); //TODO Could be reversed
-
       pros::delay(10); // Run the control loop at 10ms intervals
     }
-
     chassis->model->rotate(0);
   }
+
 
   QLength OdomController::computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {
@@ -74,6 +77,7 @@ namespace lib7842
   {
     return computeDistanceBetweenPoints(chassis->state, point);
   }
+
 
   void OdomController::driveDistance(QLength wantedDistance)
   {
@@ -92,29 +96,28 @@ namespace lib7842
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
-      QAngle sensorAngle = ((leftDistance - rightDistance) / chassis->m_chassisWidth) * radian;
+      QAngle sensorErr = ((leftDistance - rightDistance) / chassis->m_chassisWidth) * radian;
 
       QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
       double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
 
-      QAngle angleErr = (wantedAngle - chassis->state.theta) / 2;
+      QAngle angleErr = rollAngle(wantedAngle - chassis->state.theta);
       double angleVel = 0;
       if(distanceErr > 5_in)
       {
-        angleVel = 200 * anglePid->calculateErr(((sensorAngle - angleErr)/2).convert(degree));
+        angleVel = 200 * anglePid->calculateErr(((sensorErr - angleErr)/2).convert(degree));
       }
       else
       {
-        angleVel = 200 * anglePid->calculateErr(sensorAngle.convert(degree));
+        angleVel = 200 * anglePid->calculateErr(sensorErr.convert(degree));
       }
 
       chassis->model->driveVector(distanceVel, angleVel);
-
       pros::delay(10); // Run the control loop at 10ms intervals
     }
-
     chassis->model->driveVector(0, 0);
   }
+
 
   void OdomController::driveToPoint(Point point)
   {
@@ -133,7 +136,7 @@ namespace lib7842
 
     QLength distanceErr = computeDistanceToPoint(point) * direction;
 
-    while(distanceErr.abs() > 1_in)
+    while(distanceErr.abs() > 4_in)
     {
       QAngle angleErr = computeAngleToPoint(point);
       if(angleErr.abs() > 90_deg)
@@ -147,7 +150,6 @@ namespace lib7842
       }
 
       double angleVel = 200 * anglePid->calculateErr(angleErr.convert(degree));
-
 
       distanceErr = computeDistanceToPoint(point) * direction;
       double distanceVel = 0;
