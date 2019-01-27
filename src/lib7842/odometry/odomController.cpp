@@ -86,14 +86,14 @@ namespace lib7842
   {
     angle = rollAngle180(angle);
     turnPid->reset();
-    while(!settleFunction(this))
-    {
+    do {
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
       double turnVel = 200 * turnPid->calculateErr(angleErr.convert(degree));
       chassis->model->rotate(turnVel);
 
       pros::delay(10);
-    }
+    } while(!settleFunction(this));
+
     chassis->model->rotate(0);
   }
 
@@ -109,15 +109,15 @@ namespace lib7842
   void OdomController::turnToPoint(Point point, std::function<bool(OdomController*)> settleFunction)
   {
     turnPid->reset();
-    while(!settleFunction(this))
+    do
     {
       double turnVel = 200 * turnPid->calculateErr(rollAngle180(computeAngleToPoint(point)).convert(degree));
       chassis->model->rotate(turnVel);
       pros::delay(10);
-    }
+    } while(!settleFunction(this));
     chassis->model->rotate(0);
   }
-
+  
   void OdomController::turnToPoint(Point point, bool settle)
   {
     if(settle) {
