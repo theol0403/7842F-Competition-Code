@@ -149,14 +149,13 @@ namespace lib7842
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
-      QAngle sensorAngleErr = ((leftDistance - rightDistance) / chassis->m_chassisWidth) * radian;
 
       QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
       double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
 
-      QAngle odomAngleErr = rollAngle180(wantedAngle - chassis->state.theta);
+      QAngle angleErr = rollAngle180(wantedAngle - chassis->state.theta);
 
-      double angleVel = 200 * anglePid->calculateErr(((sensorAngleErr + odomAngleErr) / 2).convert(degree));
+      double angleVel = 200 * anglePid->calculateErr(angleErr.convert(degree));
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
@@ -183,7 +182,7 @@ namespace lib7842
     }
   }
 
-  
+
 
 
 
