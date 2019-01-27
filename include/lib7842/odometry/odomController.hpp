@@ -26,17 +26,24 @@ namespace lib7842
       PID *
     );
 
+    QAngle rollAngle360(QAngle);
+    QAngle rollAngle180(QAngle);
 
+    QAngle computeAngleOfPoint(Point);
     QAngle computeAngleToPoint(Point);
-    void turnAngle(QAngle);
+
     void turnToAngle(QAngle);
     void turnToPoint(Point);
+    void turnAngle(QAngle);
 
     QLength computeDistanceBetweenPoints(Point, Point);
     QLength computeDistanceToPoint(Point);
 
-    void driveDistance(QLength);
     void driveDistanceToAngle(QLength, QAngle);
+    void driveDistanceToAngle(QLength, QAngle, std::function<bool(OdomController*)>);
+
+
+    void driveDistance(QLength, bool = true);
 
     void driveToPoint(Point);
     void driveToPointAndAngle(Point);

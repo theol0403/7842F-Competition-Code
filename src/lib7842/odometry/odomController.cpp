@@ -127,7 +127,7 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveDistance(QLength wantedDistance, bool settle) //default should be true
+  void OdomController::driveDistance(QLength wantedDistance, bool settle)
   {
     if(settle)
     {
