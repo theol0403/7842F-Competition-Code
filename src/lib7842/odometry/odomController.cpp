@@ -138,15 +138,15 @@ namespace lib7842
 
 
 
-  void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle angle)
+  void OdomController::driveDistanceAtAngle(QLength wantedDistance, QAngle angle)
   {
-    driveDistanceToAngle(wantedDistance, angle, [](OdomController* that) {
+    driveDistanceAtAngle(wantedDistance, angle, [](OdomController* that) {
       return that->distancePid->isSettled() && that->anglePid->isSettled();
     });
   }
 
 
-  void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle wantedAngle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveDistanceAtAngle(QLength wantedDistance, QAngle wantedAngle, std::function<bool(OdomController*)> settleFunction)
   {
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
 
@@ -185,13 +185,13 @@ namespace lib7842
   {
     if(settle)
     {
-      driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
+      driveDistanceAtAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
         return that->distancePid->isSettled() && that->anglePid->isSettled();
       });
     }
     else
     {
-      driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
+      driveDistanceAtAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
         return that->distancePid->getError() < 100;
       });
     }
@@ -251,7 +251,7 @@ namespace lib7842
 
       pros::delay(10); // Run the control loop at 10ms intervals
     }
-    driveDistanceToAngle(computeDistanceToPoint(point) * direction, angle);
+    driveDistanceAtAngle(computeDistanceToPoint(point) * direction, angle);
     chassis->model->driveVector(0, 0);
 
   }
