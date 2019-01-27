@@ -78,7 +78,7 @@ namespace lib7842
 
   bool OdomController::driveNoSettle(OdomController* that)
   {
-    return that->distancePid->getError() < 200;
+    return that->distancePid->getError() < chassis->model->maxVelocity;
   }
 
 
@@ -88,7 +88,7 @@ namespace lib7842
     turnPid->reset();
     do {
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
-      double turnVel = 200 * turnPid->calculateErr(angleErr.convert(degree));
+      double turnVel = chassis->model->maxVelocity * turnPid->calculateErr(angleErr.convert(degree));
       chassis->model->rotate(turnVel);
       pros::delay(10);
     }
@@ -111,7 +111,7 @@ namespace lib7842
     turnPid->reset();
     do
     {
-      double turnVel = 200 * turnPid->calculateErr(rollAngle180(computeAngleToPoint(point)).convert(degree));
+      double turnVel = chassis->model->maxVelocity * turnPid->calculateErr(rollAngle180(computeAngleToPoint(point)).convert(degree));
       chassis->model->rotate(turnVel);
       pros::delay(10);
     }
@@ -151,11 +151,11 @@ namespace lib7842
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
 
       QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
-      double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       QAngle angleErr = rollAngle180(wantedAngle - chassis->state.theta);
 
-      double angleVel = 200 * anglePid->calculateErr(angleErr.convert(degree));
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
@@ -222,13 +222,13 @@ namespace lib7842
         direction = 1;
       }
 
-      double angleVel = 200 * anglePid->calculateErr(angleErr.convert(degree));
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
 
       distanceErr = computeDistanceToPoint(point) * direction;
       double distanceVel = 0;
       if(angleErr.abs() < 30_deg)
       {
-        distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
+        distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
       }
 
 
