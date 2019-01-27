@@ -9,6 +9,8 @@ namespace lib7842
   {
   private:
 
+    okapi::Timer m_timer;
+
     double m_Kp = 0;
     double m_Kd = 0;
 
@@ -18,8 +20,6 @@ namespace lib7842
     double m_lastError = 0;
     double m_lastTime = 0;
     double m_derivative = 0;
-
-    okapi::Timer m_timer;
 
     SettledUtil m_settledUtil;
     bool m_isSettled = false;

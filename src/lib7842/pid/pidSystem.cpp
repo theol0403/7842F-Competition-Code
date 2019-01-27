@@ -3,8 +3,7 @@
 namespace lib7842
 {
 
-  PID::PID(double Kp, double Kd, double emaAlpha, double settledError, double settledD, QTime settledTime)
-  : m_timer(),
+  PID::PID(double Kp, double Kd, double emaAlpha, double settledError, double settledD, QTime settledTime) :
   m_Kp(Kp),
   m_Kd(Kd),
   m_dEma(emaAlpha),
