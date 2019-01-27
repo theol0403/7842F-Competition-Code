@@ -115,9 +115,10 @@ namespace lib7842
       chassis->model->rotate(turnVel);
       pros::delay(10);
     } while(!settleFunction(this));
+    
     chassis->model->rotate(0);
   }
-  
+
   void OdomController::turnToPoint(Point point, bool settle)
   {
     if(settle) {
