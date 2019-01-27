@@ -8,34 +8,34 @@ void AutoClose(lib7842::autonSides side)
   // if(side == lib7842::autonSides::red)
   // {
   //   setFlywheelRPM(2800);
-  //   chassisOdomTracker->setState(1_ft, 7_ft, 90_deg);
+  //   tracker->setState(1_ft, 7_ft, 90_deg);
   //
   //
-  //   chassisOdomController->driveToPoint(lib7842::Point{4.5_ft, 7_ft}); //Move to ball under cap
-  //   chassisOdomController->driveToPoint(lib7842::Point{1_ft, 7_ft}); //Move to shooting position
+  //   chassis->driveToPoint(lib7842::Point{4.5_ft, 7_ft}); //Move to ball under cap
+  //   chassis->driveToPoint(lib7842::Point{1_ft, 7_ft}); //Move to shooting position
   //
-  //   chassisOdomController->turnToPoint(leftFlag); //Shoot
+  //   chassis->turnToPoint(leftFlag); //Shoot
   //   setIntakeMode(intakeModes::shootIndexer);
   //   pros::delay(200);
   //
-  //   chassisOdomController->m_odomTracker->state.theta += 5_deg;
-  //   chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 8.8_ft}); // Move forward to second shooting position
+  //   chassis->m_odomTracker->state.theta += 5_deg;
+  //   chassis->driveToPoint(lib7842::Point{0.5_ft, 8.8_ft}); // Move forward to second shooting position
   //
-  //   chassisOdomController->turnToPoint(leftFlag); //Shoot
+  //   chassis->turnToPoint(leftFlag); //Shoot
   //   setIntakeMode(intakeModes::shootIndexer);
   //   pros::delay(200);
   //
-  //   chassisOdomController->m_odomTracker->state.theta += 3_deg;
-  //   chassisOdomController->driveToPoint(lib7842::Point{0.5_ft, 10.5_ft}); //Push Bottom Flag
-  //   chassisOdomController->driveToPoint(lib7842::Point{0.4_ft, 8.6_ft}); //Move back
+  //   chassis->m_odomTracker->state.theta += 3_deg;
+  //   chassis->driveToPoint(lib7842::Point{0.5_ft, 10.5_ft}); //Push Bottom Flag
+  //   chassis->driveToPoint(lib7842::Point{0.4_ft, 8.6_ft}); //Move back
   //
-  //   chassisOdomController->turnToAngle(-90_deg); //Turn to cap
-  //   chassisOdomTracker->setState(1_ft, 9_ft, -90_deg);
+  //   chassis->turnToAngle(-90_deg); //Turn to cap
+  //   tracker->setState(1_ft, 9_ft, -90_deg);
   //
   //   //setFlywheelRPM(3000);
-  //   chassisOdomController->driveToPoint(lib7842::Point{3.9_ft, 9_ft}); //Flip Cap
+  //   chassis->driveToPoint(lib7842::Point{3.9_ft, 9_ft}); //Flip Cap
   //
-  //   // chassisOdomController->turnToAngle(45_deg); //Turn to flag
+  //   // chassis->turnToAngle(45_deg); //Turn to flag
   //   // setIntakeMode(intakeModes::shootIndexer);
   //   // pros::delay(200);
   // }
@@ -43,37 +43,37 @@ void AutoClose(lib7842::autonSides side)
   // else if(side == lib7842::autonSides::blue)
   // {
   //   setFlywheelRPM(2800);
-  //   chassisOdomTracker->setState(FX 1_ft, 7_ft, FA 90_deg);
+  //   tracker->setState(FX 1_ft, 7_ft, FA 90_deg);
   //
   //
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 4.5_ft, 7_ft}); //Move to ball under cap
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 1.1_ft, 7_ft}); //Move to shooting position
+  //   chassis->driveToPoint(lib7842::Point{FX 4.5_ft, 7_ft}); //Move to ball under cap
+  //   chassis->driveToPoint(lib7842::Point{FX 1.1_ft, 7_ft}); //Move to shooting position
   //
-  //   chassisOdomController->m_odomTracker->state.theta += 5_deg;
-  //   chassisOdomController->turnToPoint(rightFlag); //Shoot first ball
+  //   chassis->m_odomTracker->state.theta += 5_deg;
+  //   chassis->turnToPoint(rightFlag); //Shoot first ball
   //   setIntakeMode(intakeModes::shootIndexer);
   //   pros::delay(200);
   //
-  //   chassisOdomController->m_odomTracker->setX(FX 1_ft);
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 0.7_ft, 10_ft}); // Move forward to second shooting position
+  //   chassis->m_odomTracker->setX(FX 1_ft);
+  //   chassis->driveToPoint(lib7842::Point{FX 0.7_ft, 10_ft}); // Move forward to second shooting position
   //
-  //   chassisOdomController->m_odomTracker->state.theta += 5_deg;
-  //   chassisOdomController->turnToPoint(rightFlag); //Shoot second ball
+  //   chassis->m_odomTracker->state.theta += 5_deg;
+  //   chassis->turnToPoint(rightFlag); //Shoot second ball
   //   setIntakeMode(intakeModes::shootIndexer);
   //   pros::delay(200);
-  //   chassisOdomController->m_odomTracker->state.theta -= 3_deg;
+  //   chassis->m_odomTracker->state.theta -= 3_deg;
   //
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 0.6_ft, 11.5_ft}); //Push Bottom Flag
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 1_ft, 9.5_ft}); //Move back
+  //   chassis->driveToPoint(lib7842::Point{FX 0.6_ft, 11.5_ft}); //Push Bottom Flag
+  //   chassis->driveToPoint(lib7842::Point{FX 1_ft, 9.5_ft}); //Move back
   //
-  //   chassisOdomController->m_odomTracker->state.theta -= 5_deg;
-  //   chassisOdomController->turnToAngle(FA -90_deg); //Turn to cap
-  //   chassisOdomTracker->setState(FX 1_ft, 9_ft, FA -90_deg); //Set state before cap
+  //   chassis->m_odomTracker->state.theta -= 5_deg;
+  //   chassis->turnToAngle(FA -90_deg); //Turn to cap
+  //   tracker->setState(FX 1_ft, 9_ft, FA -90_deg); //Set state before cap
   //
   //   setFlywheelRPM(3000);
-  //   chassisOdomController->driveToPoint(lib7842::Point{FX 3.9_ft, 9_ft}); //Flip Cap
+  //   chassis->driveToPoint(lib7842::Point{FX 3.9_ft, 9_ft}); //Flip Cap
   //
-  //   chassisOdomController->turnToAngle(FA 45_deg); //Turn to flag
+  //   chassis->turnToAngle(FA 45_deg); //Turn to flag
   //
   //   setIntakeMode(intakeModes::shootIndexer);
   //   pros::delay(200);

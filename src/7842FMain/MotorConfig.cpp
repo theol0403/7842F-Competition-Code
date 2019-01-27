@@ -20,8 +20,8 @@ okapi::ADIEncoder* s_middleEncoder = nullptr;
 std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> robotChassis = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
-lib7842::OdomTracker* chassisOdomTracker = nullptr;
-lib7842::OdomController* chassisOdomController = nullptr;
+lib7842::OdomTracker* tracker = nullptr;
+lib7842::OdomController* chassis = nullptr;
 
 lib7842::AutonSelector *autonSelector = nullptr;
 
@@ -88,7 +88,7 @@ void initializeBase()
 		12000);
 
 
-		chassisOdomTracker = new lib7842::OdomTracker
+		tracker = new lib7842::OdomTracker
 		(
 			robotChassis,
 			chassisWidth, 8_in,
@@ -97,9 +97,9 @@ void initializeBase()
 		);
 
 
-		chassisOdomController = new lib7842::OdomController
+		chassis = new lib7842::OdomController
 		(
-			chassisOdomTracker,
+			tracker,
 			new lib7842::PID(0.00001, 0, 1, 50, 5, 250_ms), //Distance PID - To mm
 			new lib7842::PID(0.00003, 0, 1, 50, 5, 250_ms), //Angle PID - To Degree
 			new lib7842::PID(0.00005, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
@@ -126,8 +126,8 @@ void initializeBase()
 
 		pros::delay(200);
 
-		chassisOdomTracker->resetSensors();
-		chassisOdomTracker->resetState();
+		tracker->resetSensors();
+		tracker->resetState();
 	}
 
 
@@ -177,7 +177,7 @@ void initializeBase()
 		);
 
 
-		chassisOdomTracker = new lib7842::OdomTracker
+		tracker = new lib7842::OdomTracker
 		(
 			s_leftEncoder, s_rightEncoder, s_middleEncoder,
 			chassisWidth, 18_cm,
@@ -185,11 +185,11 @@ void initializeBase()
 			360, 360
 		);
 
-		chassisOdomController = new lib7842::OdomController(robotChassis, chassisOdomTracker);
+		chassis = new lib7842::OdomController(robotChassis, tracker);
 
 		pros::delay(500);
-		chassisOdomTracker->resetSensors();
-		chassisOdomTracker->resetState();
+		tracker->resetSensors();
+		tracker->resetState();
 	}
 
 

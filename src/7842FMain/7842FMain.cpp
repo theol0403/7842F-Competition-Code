@@ -64,7 +64,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       intakeTask_t = new pros::Task(intakeControlTask);
       #endif
       //  objectTask_t = new pros::Task(ObjectTrackingTask);
-      odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, chassisOdomTracker);
+      odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, tracker);
 
     }
 
@@ -102,9 +102,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //Tries to turn everything off
       setFlywheelRPM(0);
       robotChassis->stop();
-      //chassisOdomController->m_chassisController->stop();
+      //chassis->m_chassisController->stop();
       robotChassis->stop();
-      //chassisOdomController->m_chassisController->stop();
+      //chassis->m_chassisController->stop();
     }
 
     /***
@@ -132,11 +132,11 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       checkBaseStatus();
 
       //Tries to turn off okapi controller in background
-      //chassisOdomController->m_chassisController->stop();
+      //chassis->m_chassisController->stop();
       //Sometimes getting it to move a bit turns it off
-      //autonSelector->unlockDriver([&]() { //chassisOdomController->m_chassisController->moveDistance(1_cm); });
+      //autonSelector->unlockDriver([&]() { //chassis->m_chassisController->moveDistance(1_cm); });
       robotChassis->stop();
-      //chassisOdomController->m_chassisController->stop();
+      //chassis->m_chassisController->stop();
 
 
       while(true)

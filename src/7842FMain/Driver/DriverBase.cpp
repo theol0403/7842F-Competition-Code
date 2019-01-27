@@ -28,10 +28,10 @@ void driverBaseControl()
   {
     autonSelector->run();
     // robotChassis->stop();
-    // chassisOdomController->m_chassisController->stop();
-    // chassisOdomController->m_chassisController->moveDistance(1_cm);
+    // chassis->m_chassisController->stop();
+    // chassis->m_chassisController->moveDistance(1_cm);
     // robotChassis->stop();
-    // chassisOdomController->m_chassisController->stop();
+    // chassis->m_chassisController->stop();
 
   }
 
@@ -44,8 +44,8 @@ void driverBaseControl()
 
   if(j_Digital(B))
   {
-    chassisOdomTracker->resetState();
-    chassisOdomTracker->resetSensors();
+    tracker->resetState();
+    tracker->resetSensors();
   }
 
 }
