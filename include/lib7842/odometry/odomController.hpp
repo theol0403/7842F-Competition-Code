@@ -35,11 +35,11 @@ namespace lib7842
 
     QLength computeDistanceBetweenPoints(Point, Point);
     QLength computeDistanceToPoint(Point);
-    
-    static bool turnSettle(OdomController*);
-    static bool turnNoSettle(OdomController*);
-    static bool driveSettle(OdomController*);
-    static bool driveNoSettle(OdomController*);
+
+    static std::function<bool(OdomController*)> turnSettle;
+    static std::function<bool(OdomController*)> turnNoSettle;
+    static std::function<bool(OdomController*)> driveSettle;
+    static std::function<bool(OdomController*)> driveNoSettle;
 
     void turnToAngle(QAngle, std::function<bool(OdomController*)>);
     void turnToAngle(QAngle, bool = true);
