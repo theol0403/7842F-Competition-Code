@@ -88,7 +88,7 @@ namespace lib7842
   void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle wantedAngle)
   {
     driveDistanceToAngle(wantedDistance, wantedAngle, [](OdomController* that) {
-      return !that->distancePid->isSettled() || !that->anglePid->isSettled();
+      return that->distancePid->isSettled() && that->anglePid->isSettled();
     });
   }
 
@@ -100,7 +100,7 @@ namespace lib7842
     distancePid->reset();
     anglePid->reset();
 
-    while(settleFunction(this))
+    while(!settleFunction(this))
     {
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
@@ -127,21 +127,31 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
+
   void OdomController::driveDistance(QLength wantedDistance, bool settle)
   {
     if(settle)
     {
       driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
-        return !that->distancePid->isSettled() || !that->anglePid->isSettled();
+        return that->distancePid->isSettled() && that->anglePid->isSettled();
       });
     }
     else
     {
       driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
-        return that->distancePid->getError() > 100;
+        return that->distancePid->getError() < 100;
       });
     }
   }
+
+
+
+
+
+
+
+
+
 
 
   void OdomController::driveToPoint(Point point)
