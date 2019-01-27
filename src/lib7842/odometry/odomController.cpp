@@ -101,7 +101,7 @@ namespace lib7842
     if(settle) {
       turnToAngle(angle, static_cast<std::function<bool(OdomController*)>>(turnSettle));
     } else {
-      turnToAngle(angle, turnNoSettle);
+      turnToAngle(angle, static_cast<std::function<bool(OdomController*)>>(turnNoSettle));
     }
   }
 
@@ -122,18 +122,18 @@ namespace lib7842
   void OdomController::turnToPoint(Point point, bool settle)
   {
     if(settle) {
-      turnToPoint(point, turnSettle);
+      turnToPoint(point, static_cast<std::function<bool(OdomController*)>>(turnSettle));
     } else {
-      turnToPoint(point, turnNoSettle);
+      turnToPoint(point, static_cast<std::function<bool(OdomController*)>>(turnNoSettle));
     }
   }
 
   void OdomController::turnAngle(QAngle angle, bool settle)
   {
     if(settle) {
-      turnToAngle(angle + chassis->state.theta, turnSettle);
+      turnToAngle(angle + chassis->state.theta, static_cast<std::function<bool(OdomController*)>>(turnSettle));
     } else {
-      turnToAngle(angle + chassis->state.theta, turnNoSettle);
+      turnToAngle(angle + chassis->state.theta, static_cast<std::function<bool(OdomController*)>>(turnNoSettle));
     }
   }
 
@@ -167,18 +167,18 @@ namespace lib7842
   void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(distance, angle, driveSettle);
+      driveDistanceAtAngle(distance, angle, static_cast<std::function<bool(OdomController*)>>(driveSettle));
     } else {
-      driveDistanceAtAngle(distance, angle, driveNoSettle);
+      driveDistanceAtAngle(distance, angle, static_cast<std::function<bool(OdomController*)>>(driveNoSettle));
     }
   }
 
   void OdomController::driveDistance(QLength distance, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(distance, chassis->state.theta, driveSettle);
+      driveDistanceAtAngle(distance, chassis->state.theta, static_cast<std::function<bool(OdomController*)>>(driveSettle));
     } else {
-      driveDistanceAtAngle(distance, chassis->state.theta, driveNoSettle);
+      driveDistanceAtAngle(distance, chassis->state.theta, static_cast<std::function<bool(OdomController*)>>(driveNoSettle));
     }
   }
 
