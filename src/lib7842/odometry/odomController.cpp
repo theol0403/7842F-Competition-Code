@@ -8,8 +8,7 @@ namespace lib7842
     PID *idistancePid,
     PID *ianglePid,
     PID *iturnPid
-  )
-  :
+  ) :
   chassis(ichassis),
   distancePid(idistancePid),
   anglePid(ianglePid),
@@ -28,7 +27,7 @@ namespace lib7842
     return angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
   }
 
-  bool OdomController::shouldGoBackwards(QAngle angle)
+  bool OdomController::shouldDriveBackwards(QAngle angle)
   {
     if(rollAngle180(angle).abs() > 90_deg) { return true; }
     else { return false; }
@@ -61,7 +60,7 @@ namespace lib7842
   }
 
 
-  bool OdomController::turnSettle(OdomController* that) //static
+  bool OdomController::turnSettle(OdomController* that)
   {
     return that->turnPid->isSettled();
   }
@@ -139,8 +138,9 @@ namespace lib7842
   }
 
 
-  void OdomController::driveDistanceAtAngle(QLength wantedDistance, QAngle wantedAngle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
+    angle = rollAngle180(angle);
     distancePid->reset();
     anglePid->reset();
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
@@ -150,10 +150,10 @@ namespace lib7842
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
 
-      QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
+      QLength distanceErr = distance - (leftDistance + rightDistance) / 2;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
-      QAngle angleErr = rollAngle180(wantedAngle - chassis->state.theta);
+      QAngle angleErr = rollAngle180(angle - chassis->state.theta);
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
       chassis->model->driveVector(distanceVel, angleVel);
@@ -164,21 +164,21 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveDistanceAtAngle(QLength wantedDistance, QAngle wantedAngle, bool settle)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(wantedDistance, wantedAngle, driveSettle);
+      driveDistanceAtAngle(distance, angle, driveSettle);
     } else {
-      driveDistanceAtAngle(wantedDistance, wantedAngle, driveNoSettle);
+      driveDistanceAtAngle(distance, angle, driveNoSettle);
     }
   }
 
-  void OdomController::driveDistance(QLength wantedDistance, bool settle)
+  void OdomController::driveDistance(QLength distance, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(wantedDistance, chassis->state.theta, driveSettle);
+      driveDistanceAtAngle(distance, chassis->state.theta, driveSettle);
     } else {
-      driveDistanceAtAngle(wantedDistance, chassis->state.theta, driveNoSettle);
+      driveDistanceAtAngle(distance, chassis->state.theta, driveNoSettle);
     }
   }
 
