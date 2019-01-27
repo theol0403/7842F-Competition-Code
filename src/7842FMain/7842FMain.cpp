@@ -101,9 +101,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       //Tries to turn everything off
       setFlywheelRPM(0);
-      robotChassis->stop();
+      model->stop();
       //chassis->m_chassisController->stop();
-      robotChassis->stop();
+      model->stop();
       //chassis->m_chassisController->stop();
     }
 
@@ -135,7 +135,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //chassis->m_chassisController->stop();
       //Sometimes getting it to move a bit turns it off
       //autonSelector->unlockDriver([&]() { //chassis->m_chassisController->moveDistance(1_cm); });
-      robotChassis->stop();
+      model->stop();
       //chassis->m_chassisController->stop();
 
 

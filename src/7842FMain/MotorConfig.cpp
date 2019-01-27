@@ -17,7 +17,7 @@ okapi::ADIEncoder* s_leftEncoder = nullptr;
 okapi::ADIEncoder* s_rightEncoder = nullptr;
 okapi::ADIEncoder* s_middleEncoder = nullptr;
 
-std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> robotChassis = nullptr;
+std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model = nullptr;
 std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
 
 lib7842::OdomTracker* tracker = nullptr;
@@ -75,10 +75,7 @@ void initializeDevices()
 void initializeBase()
 {
 
-	const QLength chassisWidth = 12.55_in;
-
-
-	robotChassis = std::make_shared<ThreeEncoderSkidSteerModel>(
+	model = std::make_shared<ThreeEncoderSkidSteerModel>(
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
 		std::make_shared<ADIEncoder>(*s_leftEncoder),
@@ -90,8 +87,8 @@ void initializeBase()
 
 		tracker = new lib7842::OdomTracker
 		(
-			robotChassis,
-			chassisWidth, 8_in,
+			model,
+			12.55_in, 8_in,
 			2.75_in,
 			360 * 1.6, 360
 		);
@@ -107,7 +104,7 @@ void initializeBase()
 
 
 		// // Otherwise, you should specify the gearset and scales for your robot
-		// robotChassis = ChassisControllerFactory::createPtr(
+		// model = ChassisControllerFactory::createPtr(
 		// 	{e_m_LeftFront, e_m_LeftBack}, {e_m_RightFront, e_m_RightBack},
 		// 	*s_leftEncoder, *s_rightEncoder,
 		// 	IterativePosPIDController::Gains{0.001, 0.00, 0},
@@ -121,7 +118,7 @@ void initializeBase()
 		// robotProfile = std::make_shared<AsyncMotionProfileController>(AsyncControllerFactory::motionProfile
 		// 	(
 		// 		1.0, 2.0, 10.0,
-		// 		*robotChassis
+		// 		*model
 		// 	));
 
 		pros::delay(200);
@@ -166,7 +163,7 @@ void initializeBase()
 		const QLength chassisWidth = 27_cm;
 
 		// Otherwise, you should specify the gearset and scales for your robot
-		robotChassis = ChassisControllerFactory::createPtr(
+		model = ChassisControllerFactory::createPtr(
 			left_mPort, right_mPort,
 			*s_leftEncoder, *s_rightEncoder,
 			IterativePosPIDController::Gains{0.001, 0.00, 0},
@@ -185,7 +182,7 @@ void initializeBase()
 			360, 360
 		);
 
-		chassis = new lib7842::OdomController(robotChassis, tracker);
+		chassis = new lib7842::OdomController(model, tracker);
 
 		pros::delay(500);
 		tracker->resetSensors();
@@ -216,7 +213,7 @@ void initializeBase()
 
 	void checkBaseStatus()
 	{
-		if(robotChassis == nullptr)
+		if(model == nullptr)
 		{
 			std::cout << "USING BASE BEFORE INIT\n";
 			pros::delay(500);
@@ -226,11 +223,11 @@ void initializeBase()
 	void setBaseArcade(double yPower, double zPower)
 	{
 		checkBaseStatus();
-		robotChassis->arcade(yPower, zPower, 0);
+		model->arcade(yPower, zPower, 0);
 	}
 
 	void setBasePower(double leftPower, double rightPower)
 	{
 		checkBaseStatus();
-		robotChassis->tank(leftPower, rightPower, 0);
+		model->tank(leftPower, rightPower, 0);
 	}

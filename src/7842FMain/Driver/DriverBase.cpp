@@ -27,10 +27,10 @@ void driverBaseControl()
   if(j_Digital(A))
   {
     autonSelector->run();
-    // robotChassis->stop();
+    // model->stop();
     // chassis->m_chassisController->stop();
     // chassis->m_chassisController->moveDistance(1_cm);
-    // robotChassis->stop();
+    // model->stop();
     // chassis->m_chassisController->stop();
 
   }
@@ -39,7 +39,7 @@ void driverBaseControl()
 
   // if(b_odomMotionToggle.changedToPressed())
   // {
-  //   robotChassis->driveToPoint(0_ft, 0_ft);
+  //   model->driveToPoint(0_ft, 0_ft);
   // }
 
   if(j_Digital(B))
