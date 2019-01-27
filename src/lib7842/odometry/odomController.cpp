@@ -77,7 +77,7 @@ namespace lib7842
 
   bool OdomController::driveNoSettle(OdomController* that)
   {
-    return that->distancePid->getError() < chassis->model->maxVelocity;
+    return that->distancePid->getError() < 200;
   }
 
 
