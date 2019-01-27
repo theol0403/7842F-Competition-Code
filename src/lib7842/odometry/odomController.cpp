@@ -17,38 +17,41 @@ namespace lib7842
   {
   };
 
-  QAngle OdomController::rollAngle(QAngle angle)
+  QAngle OdomController::rollAngle360(QAngle angle)
   {
-    return std::remainder(angle.convert(degree), 360) * degree; //uhhh
-    // if(wantedAngle.abs() > 180_deg)
-    // {
-    //   wantedAngle -= 360_deg * sgn(wantedAngle.convert(degree));
-    // }
+    return angle - 360.0_deg * std::floor(angle.convert(degree) * (1.0 / 360.0));
+  }
+
+  QAngle OdomController::rollAngle180(QAngle angle)
+  {
+    return angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
+  }
+
+  QAngle OdomController::computeAngleOfPoint(Point point)
+  {
+    QAngle wantedAngle = atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian;
+    return rollAngle180(wantedAngle);
   }
 
 
   QAngle OdomController::computeAngleToPoint(Point point)
   {
-    QAngle wantedAngle = (atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian) - chassis->state.theta;
-    return rollAngle(wantedAngle);
+    QAngle wantedAngle = computeAngleOfPoint(point) - chassis->state.theta;
+    return rollAngle180(wantedAngle);
   }
 
-  void OdomController::turnAngle(QAngle wantedAngle)
-  {
-    turnToAngle(wantedAngle + chassis->state.theta);
-  }
 
   void OdomController::turnToAngle(QAngle wantedAngle)
   {
-    wantedAngle = rollAngle(wantedAngle);
+    wantedAngle = rollAngle180(wantedAngle);
     turnPid->reset();
     while(!turnPid->isSettled())
     {
-      QAngle angleErr = rollAngle(wantedAngle - chassis->state.theta);
+      QAngle angleErr = rollAngle180(wantedAngle - chassis->state.theta);
       double turnVel = 200 * turnPid->calculateErr(angleErr.convert(degree));
-      chassis->model->rotate(turnVel); //TODO Could be reversed
+      chassis->model->rotate(turnVel);
 
-      pros::delay(10); // Run the control loop at 10ms intervals
+      pros::delay(10);
     }
     chassis->model->rotate(0);
   }
@@ -58,13 +61,17 @@ namespace lib7842
     turnPid->reset();
     while(!turnPid->isSettled())
     {
-      double turnVel = 200 * turnPid->calculateErr(computeAngleToPoint(point).convert(degree));
-      chassis->model->rotate(turnVel); //TODO Could be reversed
-      pros::delay(10); // Run the control loop at 10ms intervals
+      double turnVel = 200 * turnPid->calculateErr(rollAngle180(computeAngleToPoint(point)).convert(degree));
+      chassis->model->rotate(turnVel);
+      pros::delay(10);
     }
     chassis->model->rotate(0);
   }
 
+  void OdomController::turnAngle(QAngle wantedAngle)
+  {
+    turnToAngle(wantedAngle + chassis->state.theta);
+  }
 
   QLength OdomController::computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {
@@ -78,20 +85,22 @@ namespace lib7842
     return computeDistanceBetweenPoints(chassis->state, point);
   }
 
-
-  void OdomController::driveDistance(QLength wantedDistance)
+  void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle wantedAngle)
   {
-    driveDistanceToAngle(wantedDistance, chassis->state.theta);
+    driveDistanceToAngle(wantedDistance, wantedAngle, [](OdomController* that) {
+      return !that->distancePid->isSettled() || !that->anglePid->isSettled();
+    });
   }
 
-  void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle wantedAngle)
+
+  void OdomController::driveDistanceToAngle(QLength wantedDistance, QAngle wantedAngle, std::function<bool(OdomController*)> settleFunction)
   {
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
 
     distancePid->reset();
     anglePid->reset();
 
-    while(!distancePid->isSettled() || !anglePid->isSettled())
+    while(settleFunction(this))
     {
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
@@ -101,7 +110,7 @@ namespace lib7842
       QLength distanceErr = wantedDistance - (leftDistance + rightDistance) / 2;
       double distanceVel = 200 * distancePid->calculateErr(distanceErr.convert(millimeter));
 
-      QAngle angleErr = rollAngle(wantedAngle - chassis->state.theta);
+      QAngle angleErr = rollAngle180(wantedAngle - chassis->state.theta);
       double angleVel = 0;
       if(distanceErr > 5_in)
       {
@@ -116,6 +125,22 @@ namespace lib7842
       pros::delay(10); // Run the control loop at 10ms intervals
     }
     chassis->model->driveVector(0, 0);
+  }
+
+  void OdomController::driveDistance(QLength wantedDistance, bool settle) //default should be true
+  {
+    if(settle)
+    {
+      driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
+        return !that->distancePid->isSettled() || !that->anglePid->isSettled();
+      });
+    }
+    else
+    {
+      driveDistanceToAngle(wantedDistance, chassis->state.theta, [](OdomController* that) {
+        return that->distancePid->getError() > 100;
+      });
+    }
   }
 
 
