@@ -99,7 +99,7 @@ namespace lib7842
   void OdomController::turnToAngle(QAngle angle, bool settle)
   {
     if(settle) {
-      turnToAngle(angle, turnSettle);
+      turnToAngle(angle, static_cast<std::function<bool(OdomController*)>>(turnSettle));
     } else {
       turnToAngle(angle, turnNoSettle);
     }
