@@ -182,65 +182,32 @@ namespace lib7842
     }
   }
 
+  struct dPoint
+  {
+    double x;
+    double y;
+  };
 
-    Point normalize(Point a)
-    {
-      double mag = sqrt(std::pow(a.x.convert(inch), 2) + std::pow(a.y.convert(inch), 2));
-      a.x = a.x / mag;
-      a.y = a.y / mag;
-       return a;
-    }
+  dPoint toDPoint(Point point) { return {point.x.convert(inch), point.y.convert(inch)}; }
+  Point toPoint(dPoint point) { return {point.x * inch, point.y * inch}; }
 
-    Point sub(Point a, Point b) { return { a.x - b.x, a.y - b.y }; }
-    QLength dot(Point a, Point b) { return (a.x.convert(inch) * b.x.convert(inch) + a.y.convert(inch) * b.y.convert(inch)) * inch; }
-    Point multScalar(Point a, QLength b) { return { a.x.convert(inch) * b.convert(inch) * inch, a.y.convert(inch) * b.convert(inch) * inch }; }
-    const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+  dPoint add(dPoint a, dPoint b) { return {a.x + b.x, a.y + b.y}; }
+  dPoint sub(dPoint a, dPoint b) { return {a.x - b.x, a.y - b.y}; }
+  dPoint mult(dPoint a, dPoint b) { return {a.x * b.x, a.y * b.y}; }
+  dPoint div(dPoint a, dPoint b) { return {a.x / b.x, a.y / b.y}; }
+  double mag(dPoint a) { return sqrt(a.x * a.x + a.y * a.y); }
+  dPoint normalize(dPoint a) { return {a.x / mag(a), a.y / mag(a)}; }
+  dPoint multScalar(dPoint a, double b) { return {a.x * b, a.y * b}; }
+  double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
 
   Point OdomController::calculateClosestPoint(Point target, QAngle angle)
   {
-    Point n = normalize({cos(chassis->state.theta.convert(radian)) * inch, sin(chassis->state.theta.convert(radian)) * inch});
-    Point v = sub(target, chassis->state);
-    QLength d = dot(v, n);
-      return add(current, multScalar(n, d));
-    };
+    double a = chassis->state.theta.convert(radian);
+    dPoint n = normalize({cos(a), sin(a)});
+    dPoint v = sub(toDPoint(target), toDPoint(chassis->state));
+    double d = dot(v, n);
+    return toPoint(add(toDPoint(chassis->state), multScalar(n, d)));
   }
-
-  const closest = (current, head, target) => {
-    const n = normalize(head);
-    const v = sub(target, current);
-    const d = dot(v, n);
-    return add(current, multScalar(n, d));
-  };
-
-  const close = closest(
-    this.pos,
-    { x: Math.cos(this.pos.a), y: Math.sin(this.pos.a) },
-    pos
-  );
-
-  // vector stuffs
-  const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
-  const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
-  const mult = (a, b) => ({ x: a.x * b.x, y: a.y * b.y });
-  const div = (a, b) => ({ x: a.x / b.x, y: a.y / b.y });
-  const mag = a => Math.sqrt(a.x * a.x + a.y * a.y);
-  const normalize = a => ({ x: a.x / mag(a), y: a.y / mag(a) });
-
-  const multScalar = (a, b) => ({ x: a.x * b, y: a.y * b });
-
-  const dot = (a, b) => a.x * b.x + a.y * b.y;
-  const dist = (a, b) =>
-    Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-
-  //util stuff
-  const sgn = v => (v > 0 ? 1 : v < 0 ? -1 : 0);
-  const rad = deg => deg * (Math.PI / 180);
-  const remap = (value, from1, to1, from2, to2) =>
-    (value - from1) / (to1 - from1) * (to2 - from2) + from2;
-
-  const PI = Math.PI;
-  const TAU = Math.PI * 2;
-
 
 
   void OdomController::driveToPoint(Point point)
