@@ -1,6 +1,6 @@
 #include "odomMath.hpp"
 
-namespace lib7842
+namespace lib7842::OdomMath
 {
 
   dPoint toDPoint(Point point) { return {point.x.convert(inch), point.y.convert(inch)}; }
@@ -16,24 +16,24 @@ namespace lib7842
   double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
 
 
-  QAngle OdomMath::rollAngle360(QAngle angle)
+  QAngle rollAngle360(QAngle angle)
   {
     return angle - 360.0_deg * std::floor(angle.convert(degree) * (1.0 / 360.0));
   }
 
-  QAngle OdomMath::rollAngle180(QAngle angle)
+  QAngle rollAngle180(QAngle angle)
   {
     return angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
   }
 
-  bool OdomMath::shouldDriveBackwards(QAngle angle)
+  bool shouldDriveBackwards(QAngle angle)
   {
     if(rollAngle180(angle).abs() > 90_deg) { return true; }
     else { return false; }
   }
 
 
-  QLength OdomMath::computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
+  QLength computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {
     const QLength xDiff = secondPoint.x - firstPoint.x;
     const QLength yDiff = secondPoint.y - firstPoint.y;
@@ -41,7 +41,7 @@ namespace lib7842
   }
 
 
-  Point OdomMath::calculateClosestPoint(Point current, Point target)
+  Point calculateClosestPoint(Point current, Point target)
   {
     double a = current.theta.convert(radian);
     dPoint n = normalize({cos(a), sin(a)});

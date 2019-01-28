@@ -4,17 +4,16 @@
 #include "odomMath.hpp"
 #include "lib7842/pid/pidSystem.hpp"
 
-
 namespace lib7842
 {
 
-  using lib7842::OdomMath;
+  using namespace OdomMath;
 
   class OdomController
   {
 
   private:
-
+    
     OdomTracker *chassis;
 
     PID *distancePid;
