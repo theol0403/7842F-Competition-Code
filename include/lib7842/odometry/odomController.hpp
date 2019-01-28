@@ -1,7 +1,10 @@
 #pragma once
 #include "main.h"
 #include "odomTracker.hpp"
+#include "odomMath.hpp"
 #include "lib7842/pid/pidSystem.hpp"
+
+using namespace OdomMath;
 
 namespace lib7842
 {
@@ -26,14 +29,8 @@ namespace lib7842
       PID *
     );
 
-    QAngle rollAngle360(QAngle);
-    QAngle rollAngle180(QAngle);
-    bool shouldDriveBackwards(QAngle);
 
-    QAngle computeAngleOfPoint(Point);
     QAngle computeAngleToPoint(Point);
-
-    QLength computeDistanceBetweenPoints(Point, Point);
     QLength computeDistanceToPoint(Point);
 
     static std::function<bool(OdomController*)> turnSettle;
