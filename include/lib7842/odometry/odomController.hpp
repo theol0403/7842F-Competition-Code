@@ -4,7 +4,7 @@
 #include "odomMath.hpp"
 #include "lib7842/pid/pidSystem.hpp"
 
-using namespace OdomMath;
+using namespace lib7842::OdomMath;
 
 namespace lib7842
 {

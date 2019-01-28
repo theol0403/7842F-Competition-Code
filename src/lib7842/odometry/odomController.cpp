@@ -20,7 +20,7 @@ namespace lib7842
   QAngle OdomController::computeAngleToPoint(Point point)
   {
     QAngle angle = computeAngleOfPoint(point) - chassis->state.theta;
-    return rollAngle180(angle);
+    return OdomMath::rollAngle180(angle);
   }
 
   QLength OdomController::computeDistanceToPoint(Point point)
