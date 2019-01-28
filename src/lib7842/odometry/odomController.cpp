@@ -17,10 +17,16 @@ namespace lib7842
   };
 
 
+  QAngle OdomMath::computeAngleOfPoint(Point point)
+  {
+    QAngle angle = atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian;
+    return rollAngle180(angle);
+  }
+
   QAngle OdomController::computeAngleToPoint(Point point)
   {
     QAngle angle = computeAngleOfPoint(point) - chassis->state.theta;
-    return OdomMath::rollAngle180(angle);
+    return rollAngle180(angle);
   }
 
   QLength OdomController::computeDistanceToPoint(Point point)

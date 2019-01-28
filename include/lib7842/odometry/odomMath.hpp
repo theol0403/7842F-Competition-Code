@@ -33,7 +33,6 @@ namespace lib7842
     static QAngle rollAngle180(QAngle);
     static bool shouldDriveBackwards(QAngle);
 
-    static QAngle computeAngleOfPoint(Point);
     static QLength computeDistanceBetweenPoints(Point, Point);
 
     static Point calculateClosestPoint(Point, Point);

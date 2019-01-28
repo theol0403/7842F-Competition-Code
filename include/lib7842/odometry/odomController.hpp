@@ -4,10 +4,11 @@
 #include "odomMath.hpp"
 #include "lib7842/pid/pidSystem.hpp"
 
-using namespace lib7842::OdomMath;
 
 namespace lib7842
 {
+
+  using lib7842::OdomMath;
 
   class OdomController
   {
@@ -29,7 +30,7 @@ namespace lib7842
       PID *
     );
 
-
+    QAngle computeAngleOfPoint(Point);
     QAngle computeAngleToPoint(Point);
     QLength computeDistanceToPoint(Point);
 
