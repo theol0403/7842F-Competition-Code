@@ -182,32 +182,25 @@ namespace lib7842
     }
   }
 
-  struct weirdPoint
-  {
-    double x;
-    double y;
-  };
 
-  double mag(weirdPoint a)
-  {
-    return sqrt(a.x * a.x + a.y * a.y);
-  }
-
-    weirdPoint normalize(weirdPoint a)
+    Point normalize(Point a)
     {
-      a.x = a.x / mag(a);
-      a.y = a.y / mag(a);
+      double mag = sqrt(std::pow(a.x.convert(inch), 2) + std::pow(a.y.convert(inch), 2));
+      a.x = a.x / mag;
+      a.y = a.y / mag;
        return a;
     }
 
+    Point sub(Point a, Point b) { return { a.x - b.x, a.y - b.y }; }
+    QLength dot(Point a, Point b) { return (a.x.convert(inch) * b.x.convert(inch) + a.y.convert(inch) * b.y.convert(inch)) * inch; }
+    Point multScalar(Point a, QLength b) { return { a.x.convert(inch) * b.convert(inch) * inch, a.y.convert(inch) * b.convert(inch) * inch }; }
+    const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+
   Point OdomController::calculateClosestPoint(Point target, QAngle angle)
   {
-      double headX = cos(chassis->state.theta.convert(radian));
-      double headY = sin(chassis->state.theta.convert(radian));
-
-      const n = normalize(head);
-      const v = sub(target, current);
-      const d = dot(v, n);
+    Point n = normalize({cos(chassis->state.theta.convert(radian)) * inch, sin(chassis->state.theta.convert(radian)) * inch});
+    Point v = sub(target, chassis->state);
+    QLength d = dot(v, n);
       return add(current, multScalar(n, d));
     };
   }
