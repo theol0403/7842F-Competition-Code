@@ -182,13 +182,71 @@ namespace lib7842
     }
   }
 
+  struct weirdPoint
+  {
+    double x;
+    double y;
+  };
 
+  double mag(weirdPoint a)
+  {
+    return sqrt(a.x * a.x + a.y * a.y);
+  }
 
+    weirdPoint normalize(weirdPoint a)
+    {
+      a.x = a.x / mag(a);
+      a.y = a.y / mag(a);
+       return a;
+    }
 
+  Point OdomController::calculateClosestPoint(Point target, QAngle angle)
+  {
+      double headX = cos(chassis->state.theta.convert(radian));
+      double headY = sin(chassis->state.theta.convert(radian));
 
+      const n = normalize(head);
+      const v = sub(target, current);
+      const d = dot(v, n);
+      return add(current, multScalar(n, d));
+    };
+  }
 
+  const closest = (current, head, target) => {
+    const n = normalize(head);
+    const v = sub(target, current);
+    const d = dot(v, n);
+    return add(current, multScalar(n, d));
+  };
 
+  const close = closest(
+    this.pos,
+    { x: Math.cos(this.pos.a), y: Math.sin(this.pos.a) },
+    pos
+  );
 
+  // vector stuffs
+  const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+  const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
+  const mult = (a, b) => ({ x: a.x * b.x, y: a.y * b.y });
+  const div = (a, b) => ({ x: a.x / b.x, y: a.y / b.y });
+  const mag = a => Math.sqrt(a.x * a.x + a.y * a.y);
+  const normalize = a => ({ x: a.x / mag(a), y: a.y / mag(a) });
+
+  const multScalar = (a, b) => ({ x: a.x * b, y: a.y * b });
+
+  const dot = (a, b) => a.x * b.x + a.y * b.y;
+  const dist = (a, b) =>
+    Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+
+  //util stuff
+  const sgn = v => (v > 0 ? 1 : v < 0 ? -1 : 0);
+  const rad = deg => deg * (Math.PI / 180);
+  const remap = (value, from1, to1, from2, to2) =>
+    (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+
+  const PI = Math.PI;
+  const TAU = Math.PI * 2;
 
 
 
