@@ -179,9 +179,14 @@ namespace lib7842
         angleErr = rollAngle180(angleErr + 180_deg);
       }
 
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+      double distanceVel = 0;
+      if(distanceErr.abs() > 1_cm)
+      {
+        distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+      }
+
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
-      chassis->model->driveVector(distanceVel, 0);
+      chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
     while(!settleFunction(this));

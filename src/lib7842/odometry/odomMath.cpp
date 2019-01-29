@@ -8,8 +8,8 @@ namespace lib7842::OdomMath
 
   double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
   double dot(double x1, double y1, double x2, double y2) {
-  return (x1 * x2) + (y1 * y2);
-}
+    return (x1 * x2) + (y1 * y2);
+  }
 
   dPoint add(dPoint a, dPoint b) {
     return { a.x + b.x, a.y + b.y };
@@ -45,7 +45,7 @@ namespace lib7842::OdomMath
   }
 
   Point closest(Point current, Point target) {
-    return toPoint(closest(toDPoint(current), dPoint{cos(current.theta.convert(radian)), sin(current.theta.convert(radian))}, toDPoint(target)));
+    return toPoint(closest(toDPoint(current), dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, toDPoint(target)));
   }
 
 
