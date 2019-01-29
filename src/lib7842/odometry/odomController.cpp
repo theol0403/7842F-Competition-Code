@@ -20,7 +20,7 @@ namespace lib7842
   QAngle OdomController::computeAngleOfPoint(Point point)
   {
     QAngle angle = atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian;
-    return rollAngle360(angle);
+    return rollAngle180(angle);
   }
 
   QAngle OdomController::computeAngleToPoint(Point point)
@@ -167,6 +167,7 @@ namespace lib7842
     {
       Point closestPoint = closest(chassis->state, targetPoint);
       QLength distanceErr = computeDistanceToPoint(closestPoint);
+
       QAngle angleErr = computeAngleToPoint(targetPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
@@ -174,21 +175,16 @@ namespace lib7842
       {
         distanceErr = -distanceErr;
         angleErr = angleErr - 180_deg;
-        angleErr = -rollAngle180(angleErr);
+        //angleErr = -rollAngle180(angleErr) * sgn(angleErr.convert(degree));
       }
 
-
-
-      double angleVel = 0;
-      if(distanceErr.abs() > 1_in)
+      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
+      if(distanceToTarget.abs() < 1_in)
       {
-        angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree)/4)*4;
-      }
-      else
-      {
-        angleVel = chassis->model->maxVelocity * anglePid->calculateErr(0);
+        angleErr = 0_deg;
       }
 
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree)/4)*4;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       chassis->model->driveVector(distanceVel, angleVel);

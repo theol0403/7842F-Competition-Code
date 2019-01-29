@@ -188,7 +188,7 @@ void initializeBase()
 			tracker = new lib7842::OdomTracker
 			(
 				model,
-				10_in, 8_in,
+				9.8_in, 0_in,
 				4.125_in,
 				360, 360
 			);
