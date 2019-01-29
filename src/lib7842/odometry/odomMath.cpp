@@ -58,13 +58,7 @@ namespace lib7842::OdomMath
   {
     return angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
   }
-
-  bool shouldDriveBackwards(QAngle angle)
-  {
-    if(rollAngle180(angle).abs() > 90_deg) { return true; }
-    else { return false; }
-  }
-
+  
 
   QLength computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {
