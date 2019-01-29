@@ -45,6 +45,7 @@ namespace lib7842::OdomMath
   }
 
   Point closest(Point current, Point target) {
+    //current.theta = rollAngle180(current.theta);
     return toPoint(closest(toDPoint(current), dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, toDPoint(target)));
   }
 
@@ -56,9 +57,10 @@ namespace lib7842::OdomMath
 
   QAngle rollAngle180(QAngle angle)
   {
-    return angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
+    QAngle newAngle = angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
+    return newAngle;
   }
-  
+
 
   QLength computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
   {

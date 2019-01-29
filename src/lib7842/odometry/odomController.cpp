@@ -167,16 +167,20 @@ namespace lib7842
     {
       Point closestPoint = closest(chassis->state, targetPoint);
       QLength distanceErr = computeDistanceToPoint(closestPoint);
-      QAngle angleToClose = computeAngleToPoint(closestPoint);
-      // if(rollAngle180(angleToClose).abs() > 90_deg)
-      // {
-      //   distanceErr = -distanceErr;
-      //   angleErr = rollAngle180(angleErr.abs() - 180_deg * sgn(angleErr.convert(degree)));
-      // }
-
       QAngle angleErr = computeAngleToPoint(targetPoint);
+
+      QAngle angleToClose = computeAngleToPoint(closestPoint);
+      if(angleToClose.abs() > 90_deg)
+      {
+        distanceErr = -distanceErr;
+        angleErr = angleErr - 180_deg;
+        angleErr = -rollAngle180(angleErr);
+      }
+
+
+
       double angleVel = 0;
-      if(distanceErr.abs() > 2_in)
+      if(distanceErr.abs() > 1_in)
       {
         angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree)/4)*4;
       }
