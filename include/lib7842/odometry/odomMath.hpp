@@ -31,7 +31,7 @@ namespace lib7842::OdomMath
 
   QLength computeDistanceBetweenPoints(Point, Point);
 
-  Point calculateClosestPoint(Point, Point);
+  Point computeClosestPoint(Point, Point);
 
 
 }

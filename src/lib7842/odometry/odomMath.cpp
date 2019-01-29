@@ -41,7 +41,7 @@ namespace lib7842::OdomMath
   }
 
 
-  Point calculateClosestPoint(Point current, Point target)
+  Point computeClosestPoint(Point current, Point target)
   {
     double a = current.theta.convert(radian);
     dPoint n = normalize({cos(a), sin(a)});

@@ -15,7 +15,7 @@ namespace lib7842
   turnPid(iturnPid)
   {
   };
-  
+
 
   QAngle OdomController::computeAngleOfPoint(Point point)
   {
@@ -158,55 +158,43 @@ namespace lib7842
   }
 
 
-  void OdomController::driveToPoint(Point point)
+  void OdomController::driveToPoint(Point targetPoint, std::function<bool(OdomController*)> settleFunction)
   {
-    int direction = 1;
-    QAngle angle = computeAngleToPoint(point);
-    if(angle.abs() > 90_deg)
-    {
-      angle -= 180_deg * sgn(angle.convert(degree));
-      direction = -1;
-    }
-
-    turnToAngle(angle);
-
     distancePid->reset();
     anglePid->reset();
 
-    QLength distanceErr = computeDistanceToPoint(point) * direction;
-
-    while(distanceErr.abs() > 4_in)
+    do
     {
-      QAngle angleErr = computeAngleToPoint(point);
-      if(angleErr.abs() > 90_deg)
+      QAngle angleErr = computeAngleToPoint(targetPoint);
+
+      Point closestPoint = computeClosestPoint(chassis->state, targetPoint);
+      QLength distanceErr = computeDistanceToPoint(closestPoint);
+
+      QAngle angleToClose = computeAngleToPoint(closestPoint);
+      if(shouldDriveBackwards(angleToClose))
       {
-        angleErr -= 180_deg * sgn(angleErr.convert(degree));
-        direction = -1;
-      }
-      else
-      {
-        direction = 1;
+        distanceErr = -distanceErr;
+        angleErr = rollAngle180(angleErr + 180_deg);
       }
 
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
-
-      distanceErr = computeDistanceToPoint(point) * direction;
-      double distanceVel = 0;
-      if(angleErr.abs() < 30_deg)
-      {
-        distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
-      }
-
-
       chassis->model->driveVector(distanceVel, angleVel);
-
-      pros::delay(10); // Run the control loop at 10ms intervals
+      pros::delay(10);
     }
-    driveDistanceAtAngle(computeDistanceToPoint(point) * direction, angle);
-    chassis->model->driveVector(0, 0);
+    while(!settleFunction(this));
 
+    chassis->model->driveVector(0, 0);
   }
 
+  void OdomController::driveToPoint(Point targetPoint, bool settle)
+  {
+    if(settle) {
+      driveToPoint(targetPoint, driveSettle);
+    } else {
+      driveToPoint(targetPoint, driveNoSettle);
+    }
+  }
 
 
   void OdomController::driveToPointAndAngle(Point point)

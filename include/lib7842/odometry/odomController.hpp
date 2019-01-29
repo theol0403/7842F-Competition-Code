@@ -13,7 +13,7 @@ namespace lib7842
   {
 
   private:
-    
+
     OdomTracker *chassis;
 
     PID *distancePid;
@@ -48,7 +48,8 @@ namespace lib7842
     void driveDistanceAtAngle(QLength, QAngle, bool = true);
     void driveDistance(QLength, bool = true);
 
-    void driveToPoint(Point);
+    void driveToPoint(Point, std::function<bool(OdomController*)>);
+    void driveToPoint(Point, bool = true);
     void driveToPointAndAngle(Point);
 
   };
