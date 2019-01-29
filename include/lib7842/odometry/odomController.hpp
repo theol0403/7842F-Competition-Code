@@ -27,26 +27,26 @@ namespace lib7842
       PID *
     );
 
+    static bool turnSettle(OdomController*);
+    static bool turnNoSettle(OdomController*);
+    static bool driveSettle(OdomController*);
+    static bool driveNoSettle(OdomController*);
+
     QAngle computeAngleOfPoint(Point);
     QAngle computeAngleToPoint(Point);
     QLength computeDistanceToPoint(Point);
 
-    static std::function<bool(OdomController*)> turnSettle;
-    static std::function<bool(OdomController*)> turnNoSettle;
-    static std::function<bool(OdomController*)> driveSettle;
-    static std::function<bool(OdomController*)> driveNoSettle;
-
-    void turnToAngle(QAngle, std::function<bool(OdomController*)>);
+    void turnToAngleSettle(QAngle, std::function<bool(OdomController*)> = turnSettle);
     void turnToAngle(QAngle, bool = true);
-    void turnToPoint(Point, std::function<bool(OdomController*)>);
+    void turnToPointSettle(Point, std::function<bool(OdomController*)> = turnSettle);
     void turnToPoint(Point, bool = true);
     void turnAngle(QAngle, bool = true);
 
-    void driveDistanceAtAngle(QLength, QAngle, std::function<bool(OdomController*)>);
+    void driveDistanceAtAngleSettle(QLength, QAngle, std::function<bool(OdomController*)> = driveSettle);
     void driveDistanceAtAngle(QLength, QAngle, bool = true);
     void driveDistance(QLength, bool = true);
 
-    void driveToPoint(Point, std::function<bool(OdomController*)>);
+    void driveToPointSettle(Point, std::function<bool(OdomController*)> = driveSettle);
     void driveToPoint(Point, bool = true);
     void driveToPointAndAngle(Point);
 

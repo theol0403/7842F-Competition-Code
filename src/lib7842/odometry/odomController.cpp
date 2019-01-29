@@ -17,6 +17,28 @@ namespace lib7842
   };
 
 
+  bool OdomController::turnSettle(OdomController* that)
+  {
+    return that->turnPid->isSettled();
+  }
+
+  bool OdomController::turnNoSettle(OdomController* that)
+  {
+    return abs(that->turnPid->getError()) < 10;
+  }
+
+  bool OdomController::driveSettle(OdomController* that)
+  {
+    return that->distancePid->isSettled() && that->anglePid->isSettled();
+  }
+
+  bool OdomController::driveNoSettle(OdomController* that)
+  {
+    return abs(that->distancePid->getError()) < 100; //mm
+  }
+
+
+
   QAngle OdomController::computeAngleOfPoint(Point point)
   {
     QAngle angle = atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian;
@@ -35,28 +57,7 @@ namespace lib7842
   }
 
 
-  std::function<bool(OdomController*)> OdomController::turnSettle ([](OdomController* that)
-  {
-    return that->turnPid->isSettled();
-  });
-
-  std::function<bool(OdomController*)> OdomController::turnNoSettle ([](OdomController* that)
-  {
-    return abs(that->turnPid->getError()) < 10;
-  });
-
-  std::function<bool(OdomController*)> OdomController::driveSettle ([](OdomController* that)
-  {
-    return that->distancePid->isSettled() && that->anglePid->isSettled();
-  });
-
-  std::function<bool(OdomController*)> OdomController::driveNoSettle ([](OdomController* that)
-  {
-    return abs(that->distancePid->getError()) < 100; //mm
-  });
-
-
-  void OdomController::turnToAngle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::turnToAngleSettle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
     angle = rollAngle180(angle);
     turnPid->reset();
@@ -74,13 +75,13 @@ namespace lib7842
   void OdomController::turnToAngle(QAngle angle, bool settle)
   {
     if(settle) {
-      turnToAngle(angle, turnSettle);
+      turnToAngleSettle(angle, turnSettle);
     } else {
-      turnToAngle(angle, turnNoSettle);
+      turnToAngleSettle(angle, turnNoSettle);
     }
   }
 
-  void OdomController::turnToPoint(Point point, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::turnToPointSettle(Point point, std::function<bool(OdomController*)> settleFunction)
   {
     turnPid->reset();
     do
@@ -97,23 +98,23 @@ namespace lib7842
   void OdomController::turnToPoint(Point point, bool settle)
   {
     if(settle) {
-      turnToPoint(point, turnSettle);
+      turnToPointSettle(point, turnSettle);
     } else {
-      turnToPoint(point, turnNoSettle);
+      turnToPointSettle(point, turnNoSettle);
     }
   }
 
   void OdomController::turnAngle(QAngle angle, bool settle)
   {
     if(settle) {
-      turnToAngle(angle + chassis->state.theta, turnSettle);
+      turnToAngleSettle(angle + chassis->state.theta, turnSettle);
     } else {
-      turnToAngle(angle + chassis->state.theta, turnNoSettle);
+      turnToAngleSettle(angle + chassis->state.theta, turnNoSettle);
     }
   }
 
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
     angle = rollAngle180(angle);
     distancePid->reset();
@@ -142,23 +143,23 @@ namespace lib7842
   void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(distance, angle, driveSettle);
+      driveDistanceAtAngleSettle(distance, angle, driveSettle);
     } else {
-      driveDistanceAtAngle(distance, angle, driveNoSettle);
+      driveDistanceAtAngleSettle(distance, angle, driveNoSettle);
     }
   }
 
   void OdomController::driveDistance(QLength distance, bool settle)
   {
     if(settle) {
-      driveDistanceAtAngle(distance, chassis->state.theta, driveSettle);
+      driveDistanceAtAngleSettle(distance, chassis->state.theta, driveSettle);
     } else {
-      driveDistanceAtAngle(distance, chassis->state.theta, driveNoSettle);
+      driveDistanceAtAngleSettle(distance, chassis->state.theta, driveNoSettle);
     }
   }
 
 
-  void OdomController::driveToPoint(Point targetPoint, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSettle(Point targetPoint, std::function<bool(OdomController*)> settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -198,9 +199,9 @@ namespace lib7842
   void OdomController::driveToPoint(Point targetPoint, bool settle)
   {
     if(settle) {
-      driveToPoint(targetPoint, driveSettle);
+      driveToPointSettle(targetPoint, driveSettle);
     } else {
-      driveToPoint(targetPoint, driveNoSettle);
+      driveToPointSettle(targetPoint, driveNoSettle);
     }
   }
 
