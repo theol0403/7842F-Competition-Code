@@ -12,15 +12,13 @@ namespace lib7842
   class OdomController
   {
 
-  private:
+  public:
 
     OdomTracker *chassis;
 
     PID *distancePid;
     PID *anglePid;
     PID *turnPid;
-
-  public:
 
     OdomController(
       OdomTracker*,

@@ -179,7 +179,7 @@ namespace lib7842
 
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
-      chassis->model->driveVector(distanceVel, angleVel);
+      chassis->model->driveVector(distanceVel, 0);
       pros::delay(10);
     }
     while(!settleFunction(this));
