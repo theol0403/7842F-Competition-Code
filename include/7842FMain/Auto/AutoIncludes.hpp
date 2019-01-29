@@ -8,16 +8,16 @@
 #include "7842FMain/Shared/IntakeTask.hpp"
 #include "7842FMain/Shared/FlywheelTask.hpp"
 
-void AutoNothing(lib7842::autonSides);
-void AutoTest(lib7842::autonSides);
-void AutoClose(lib7842::autonSides);
-void AutoFar(lib7842::autonSides);
-void AutoMiddle(lib7842::autonSides);
+void AutoNothing(autonSides);
+void AutoTest(autonSides);
+void AutoClose(autonSides);
+void AutoFar(autonSides);
+void AutoMiddle(autonSides);
 
 
 #define FX 12_ft- //Flips X
 #define FA - //Flips Angle
 
 
-extern lib7842::Point leftFlag;
-extern lib7842::Point rightFlag;
+extern Point leftFlag;
+extern Point rightFlag;

@@ -11,3 +11,5 @@
 #include "lib7842/odometry/odomController.hpp"
 
 #include "lib7842/auton/autonSelector.hpp"
+
+using namespace lib7842;
