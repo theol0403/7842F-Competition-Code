@@ -53,7 +53,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       //Initializes autonomous selector with list of autonomous programs
       // autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Test", AutoTest}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
-      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Test", AutoTest}, {"Close", AutoClose}});
+      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutoTest}, {"Close", AutoClose}});
 
       pros::delay(500); //Give the legacy ports time to start up
       initializeDevices();

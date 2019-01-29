@@ -42,7 +42,7 @@ namespace lib7842
 
   std::function<bool(OdomController*)> OdomController::turnNoSettle ([](OdomController* that)
   {
-    return that->turnPid->getError() < 10;
+    return abs(that->turnPid->getError()) < 10;
   });
 
   std::function<bool(OdomController*)> OdomController::driveSettle ([](OdomController* that)
@@ -52,7 +52,7 @@ namespace lib7842
 
   std::function<bool(OdomController*)> OdomController::driveNoSettle ([](OdomController* that)
   {
-    return that->distancePid->getError() < 200;
+    return abs(that->distancePid->getError()) < 100; //mm
   });
 
 
