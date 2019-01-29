@@ -218,4 +218,24 @@ namespace lib7842
   }
 
 
+  void OdomController::driveForTime(double vel, int time)
+  {
+    chassis->model->driveVector(vel, 0);
+    pros::delay(time);
+    chassis->model->driveVector(0, 0);
+  }
+
+  void OdomController::driveForTimeAtAngle(double vel, QAngle angle, int time)
+  {
+    while(time > 0) {
+      QAngle angleErr = rollAngle180(angle - chassis->state.theta);
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
+      chassis->model->driveVector(vel, angleVel);
+      time -= 10;
+      pros::delay(10);
+    }
+    chassis->model->driveVector(0, 0);
+  }
+
+
 }

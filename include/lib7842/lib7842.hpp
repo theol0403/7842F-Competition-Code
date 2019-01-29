@@ -7,6 +7,7 @@
 
 #include "lib7842/pid/pidVelSystem.hpp"
 
+#include "lib7842/odometry/odomMath.hpp"
 #include "lib7842/odometry/odomTracker.hpp"
 #include "lib7842/odometry/odomController.hpp"
 

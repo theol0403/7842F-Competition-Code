@@ -53,6 +53,9 @@ namespace lib7842
     void driveToPoint(Point, bool = true);
     void driveToPointAndAngle(Point);
 
+    void driveForTime(double, int);
+    void driveForTimeAtAngle(double, QAngle, int);
+
   };
 
 }
