@@ -17,26 +17,31 @@ namespace lib7842
   };
 
 
-  bool OdomController::turnSettle(OdomController* that)
-  {
+  bool OdomController::turnSettle(OdomController* that) {
     return that->turnPid->isSettled();
   }
 
-  bool OdomController::turnNoSettle(OdomController* that)
-  {
+  bool OdomController::turnNoSettle(OdomController* that) {
     return abs(that->turnPid->getError()) < 10;
   }
 
-  bool OdomController::driveSettle(OdomController* that)
-  {
+  bool OdomController::driveSettle(OdomController* that) {
     return that->distancePid->isSettled() && that->anglePid->isSettled();
   }
 
-  bool OdomController::driveNoSettle(OdomController* that)
-  {
+  bool OdomController::driveNoSettle(OdomController* that) {
     return abs(that->distancePid->getError()) < 100; //mm
   }
 
+  std::function<bool(OdomController*)> OdomController::createTurnSettle(double errThreshold)
+  {
+    return [=](OdomController* that){ return abs(that->turnPid->getError()) < errThreshold; };
+  }
+
+  std::function<bool(OdomController*)> OdomController::createDriveSettle(double errThreshold)
+  {
+    return [=](OdomController* that){ return abs(that->distancePid->getError()) < errThreshold; };
+  }
 
 
   QAngle OdomController::computeAngleOfPoint(Point point)
