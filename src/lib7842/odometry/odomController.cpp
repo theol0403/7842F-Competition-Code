@@ -179,7 +179,7 @@ namespace lib7842
       }
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 1_in)
+      if(distanceToTarget.abs() < 3_in)
       {
         angleErr = 0_deg;
       }
