@@ -179,8 +179,8 @@ void initializeBase()
 			std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
 			std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
 			std::make_shared<IntegratedEncoder>(okapi::Motor(e_m_LeftFront)),
+			std::make_shared<ADIEncoder>(*s_middleEncoder),
 			std::make_shared<IntegratedEncoder>(okapi::Motor(e_m_RightFront)),
-			std::make_shared<ADIEncoder>(*s_rightEncoder),
 			200,
 			12000);
 
