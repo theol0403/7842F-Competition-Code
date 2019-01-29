@@ -167,7 +167,9 @@ namespace lib7842
     {
       QAngle angleErr = computeAngleToPoint(targetPoint);
 
-      Point closestPoint = computeClosestPoint(chassis->state, targetPoint);
+      Point closestPoint = closest(chassis->state, targetPoint);
+
+      //Point closestPoint = computeClosestPoint(chassis->state, targetPoint);
       QLength distanceErr = computeDistanceToPoint(closestPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);

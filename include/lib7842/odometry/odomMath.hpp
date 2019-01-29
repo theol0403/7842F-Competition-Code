@@ -14,7 +14,7 @@ namespace lib7842::OdomMath
 
   dPoint toDPoint(Point);
   Point toPoint(dPoint);
-  
+
   dPoint add(dPoint, dPoint);
   dPoint sub(dPoint, dPoint);
   dPoint mult(dPoint, dPoint);
@@ -24,14 +24,15 @@ namespace lib7842::OdomMath
   dPoint multScalar(dPoint, double);
   double dot(dPoint, dPoint);
 
+  dPoint closest(dPoint, dPoint, dPoint);
+  Point closest(Point, Point);
+
 
   QAngle rollAngle360(QAngle);
   QAngle rollAngle180(QAngle);
   bool shouldDriveBackwards(QAngle);
 
   QLength computeDistanceBetweenPoints(Point, Point);
-
-  Point computeClosestPoint(Point, Point);
 
 
 }
