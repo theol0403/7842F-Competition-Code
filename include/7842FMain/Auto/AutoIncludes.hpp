@@ -19,5 +19,5 @@ void AutoMiddle(autonSides);
 #define FA - //Flips Angle
 
 
-extern Point leftFlag;
-extern Point rightFlag;
+extern qPoint leftFlag;
+extern qPoint rightFlag;

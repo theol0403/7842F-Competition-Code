@@ -1,16 +1,9 @@
 #pragma once
 #include "main.h"
-
+#include "OdomMath.hpp"
 
 namespace lib7842
 {
-
-  struct Point
-  {
-    QLength x {0_in};
-    QLength y {0_in};
-    QAngle theta {0_rad};
-  };
 
   class OdomTracker
   {
@@ -31,7 +24,7 @@ namespace lib7842
 
     std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 
-    Point state {0_in, 0_in, 0_rad};
+    qPoint state {0_in, 0_in, 0_rad};
 
     OdomTracker(
       std::shared_ptr<okapi::ThreeEncoderSkidSteerModel>,
@@ -45,7 +38,7 @@ namespace lib7842
     void step();
 
     void setState(QLength, QLength, QAngle);
-    void setState(Point);
+    void setState(qPoint);
     void setX(QLength);
     void setY(QLength);
     void setTheta(QAngle);

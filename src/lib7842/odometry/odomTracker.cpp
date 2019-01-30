@@ -94,7 +94,7 @@ namespace lib7842
     state.theta = a;
   }
 
-  void OdomTracker::setState(Point newState)
+  void OdomTracker::setState(qPoint newState)
   {
     state.x = newState.x;
     state.y = newState.y;

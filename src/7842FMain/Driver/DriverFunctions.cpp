@@ -85,11 +85,11 @@ static int wantedFlywheelSpeed = 0; // Contains wanted RPM or Power Depending on
 static bool triggerUpdate = true; // Tells code to send new speed to the flywheel
 
 static bool flywheelManual = false; // Toggle whether RPM control is used or manual Power
-static bool togglePressed = false; // Used to compare button state to last to see if it has been pressed
+//static bool togglePressed = false; // Used to compare button state to last to see if it has been pressed
 
 void driverFlywheelControl()
 {
-	// 
+	//
 	// if(j_Main.getDigital(okapi::ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
 	// {
 	// 	togglePressed = true;

@@ -3,8 +3,8 @@
 namespace lib7842::OdomMath
 {
 
-  dPoint toDPoint(Point point) { return {point.x.convert(inch), point.y.convert(inch)}; }
-  Point toPoint(dPoint point) { return {point.x * inch, point.y * inch}; }
+  dPoint toDPoint(qPoint point) { return {point.x.convert(inch), point.y.convert(inch)}; }
+  qPoint toPoint(dPoint point) { return {point.x * inch, point.y * inch}; }
 
   double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
   double dot(double x1, double y1, double x2, double y2) {
@@ -44,7 +44,7 @@ namespace lib7842::OdomMath
     return add(current, multScalar(n, d));
   }
 
-  Point closest(Point current, Point target) {
+  qPoint closest(qPoint current, qPoint target) {
     //current.theta = rollAngle180(current.theta);
     return toPoint(closest(toDPoint(current), dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, toDPoint(target)));
   }
@@ -62,7 +62,7 @@ namespace lib7842::OdomMath
   }
 
 
-  QLength computeDistanceBetweenPoints(Point firstPoint, Point secondPoint)
+  QLength computeDistanceBetweenPoints(qPoint firstPoint, qPoint secondPoint)
   {
     const QLength xDiff = secondPoint.x - firstPoint.x;
     const QLength yDiff = secondPoint.y - firstPoint.y;
