@@ -5,12 +5,12 @@ namespace lib7842
 
   OdomTracker::OdomTracker
   (
-    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> ichassis,
+    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> imodel,
     QLength chassisWidth, QLength distanceMiddle,
     QLength wheelDiam,
     double mainTicksPerRev, double middleTicksPerRev
   ):
-  model(ichassis),
+  model(imodel),
 
   m_chassisWidth(chassisWidth),
   m_distanceMiddle(distanceMiddle),

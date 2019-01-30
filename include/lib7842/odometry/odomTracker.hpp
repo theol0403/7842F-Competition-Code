@@ -16,13 +16,13 @@ namespace lib7842
 
   public:
 
+    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
+
     const QLength m_chassisWidth;
     const QLength m_distanceMiddle;
 
     const double m_mainDegToInch;
     const double m_middleDegToInch;
-
-    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 
     qPoint state {0_in, 0_in, 0_rad};
 
