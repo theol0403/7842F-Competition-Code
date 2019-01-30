@@ -34,14 +34,14 @@ namespace lib7842
     return abs(that->distancePid->getError()) < 100; //mm
   }
 
-  std::function<bool(OdomController*)> OdomController::createTurnSettle(double errThreshold)
+  std::function<bool(OdomController*)> OdomController::createTurnSettle(QAngle threshold)
   {
-    return [=](OdomController* that){ return abs(that->turnPid->getError()) < errThreshold; };
+    return [=](OdomController* that){ return abs(that->turnPid->getError()) < threshold.convert(degree); };
   }
 
-  std::function<bool(OdomController*)> OdomController::createDriveSettle(double errThreshold)
+  std::function<bool(OdomController*)> OdomController::createDriveSettle(QLength threshold)
   {
-    return [=](OdomController* that){ return abs(that->distancePid->getError()) < errThreshold; };
+    return [=](OdomController* that){ return abs(that->distancePid->getError()) < threshold.convert(millimeter); };
   }
 
 

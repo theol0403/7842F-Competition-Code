@@ -30,8 +30,8 @@ namespace lib7842
     static bool driveSettle(OdomController*);
     static bool driveNoSettle(OdomController*);
 
-    static std::function<bool(OdomController*)> createTurnSettle(double);
-    static std::function<bool(OdomController*)> createDriveSettle(double);
+    static std::function<bool(OdomController*)> createTurnSettle(QAngle);
+    static std::function<bool(OdomController*)> createDriveSettle(QLength);
 
     QAngle computeAngleOfPoint(qPoint);
     QAngle computeAngleToPoint(qPoint);
