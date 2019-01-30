@@ -29,35 +29,22 @@ namespace lib7842::OdomMath
 {
 
   double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
-  double dot(double x1, double y1, double x2, double y2) {
-    return (x1 * x2) + (y1 * y2);
-  }
+  double dot(double x1, double y1, double x2, double y2) { return (x1 * x2) + (y1 * y2); }
 
-  dPoint add(dPoint a, dPoint b) {
-    return { a.x + b.x, a.y + b.y };
-  }
-  dPoint sub(dPoint a, dPoint b) {
-    return { a.x - b.x, a.y - b.y };
-  }
-  dPoint mult(dPoint a, dPoint b) {
-    return { a.x * b.x, a.y * b.y };
-  }
-  dPoint div(dPoint a, dPoint b) {
-    return { a.x / b.x, a.y / b.y };
-  }
+  dPoint add(dPoint a, dPoint b) { return { a.x + b.x, a.y + b.y }; }
+  dPoint sub(dPoint a, dPoint b) { return { a.x - b.x, a.y - b.y }; }
+  dPoint mult(dPoint a, dPoint b) { return { a.x * b.x, a.y * b.y }; }
+  dPoint div(dPoint a, dPoint b) { return { a.x / b.x, a.y / b.y }; }
 
-  double mag(dPoint a) {
-    return sqrt((a.x * a.x) + (a.y * a.y));
-  }
+  double mag(dPoint a) { return sqrt((a.x * a.x) + (a.y * a.y)); }
 
   dPoint normalize(dPoint a) {
-    if(mag(a) == 0) return a;
-    return { a.x / mag(a), a.y / mag(a) };
+    double imag = mag(a);
+    if(imag == 0) return a;
+    return { a.x / imag, a.y / imag };
   }
 
-  dPoint multScalar(dPoint a, double b) {
-    return { a.x * b, a.y * b };
-  }
+  dPoint multScalar(dPoint a, double b) { return { a.x * b, a.y * b }; }
 
   dPoint closest(dPoint current, dPoint head, dPoint target) {
     dPoint n = normalize(head);
@@ -67,18 +54,15 @@ namespace lib7842::OdomMath
   }
 
   qPoint closest(qPoint current, qPoint target) {
-    //current.theta = rollAngle180(current.theta);
     return closest(current, dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, target);
   }
 
 
-  QAngle rollAngle360(QAngle angle)
-  {
+  QAngle rollAngle360(QAngle angle) {
     return angle - 360.0_deg * std::floor(angle.convert(degree) * (1.0 / 360.0));
   }
 
-  QAngle rollAngle180(QAngle angle)
-  {
+  QAngle rollAngle180(QAngle angle) {
     QAngle newAngle = angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
     return newAngle;
   }
