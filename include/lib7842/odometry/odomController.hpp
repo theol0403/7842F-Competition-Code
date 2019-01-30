@@ -7,8 +7,6 @@
 namespace lib7842
 {
 
-  using namespace OdomMath;
-
   class OdomController
   {
 

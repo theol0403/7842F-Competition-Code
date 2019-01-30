@@ -2,6 +2,7 @@
 
 namespace lib7842
 {
+  using namespace OdomMath;
 
   OdomController::OdomController(
     OdomTracker *ichassis,

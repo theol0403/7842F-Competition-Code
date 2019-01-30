@@ -1,6 +1,6 @@
 #pragma once
 #include "main.h"
-#include "OdomMath.hpp"
+#include "odomMath.hpp"
 
 namespace lib7842
 {
