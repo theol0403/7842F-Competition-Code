@@ -28,7 +28,7 @@ namespace lib7842
     double x {0};
     double y {0};
     double theta {0};
-
+    
     dPoint(dPoint&); //Needs to be by reference to avoid enless loop
 
     dPoint(double, double, double);
