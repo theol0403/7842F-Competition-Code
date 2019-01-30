@@ -19,6 +19,9 @@ namespace lib7842
   dPoint::dPoint(double ix, double iy, double itheta) : x(ix), y(iy), theta(itheta) {}
   dPoint::dPoint(double ix, double iy) : x(ix), y(iy), theta(0) {}
 
+  dPoint::dPoint(dPoint ipoint, double ix, double iy) : x(ix), y(iy), theta(ipoint.theta) {}
+  dPoint::dPoint(dPoint ipoint, double itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
+
   dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
 }
 
