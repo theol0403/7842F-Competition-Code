@@ -3,26 +3,43 @@
 
 namespace lib7842
 {
+  struct dPoint; //Forward declare
+
   struct qPoint
   {
     QLength x {0_in};
     QLength y {0_in};
     QAngle theta {0_rad};
+
+    qPoint(qPoint&); //Needs to be by reference to avoid enless loop
+
+    qPoint(QLength, QLength, QAngle);
+    qPoint(QLength, QLength);
+    qPoint(QAngle);
+
+    qPoint(qPoint, QLength, QLength);
+    qPoint(qPoint, QAngle);
+
+    qPoint(dPoint);
   };
 
   struct dPoint
   {
-    double x = 0;
-    double y = 0;
-    double theta = 0;
+    double x {0};
+    double y {0};
+    double theta {0};
+
+    dPoint(dPoint&); //Needs to be by reference to avoid enless loop
+
+    dPoint(double, double, double);
+    dPoint(double, double);
+
+    dPoint(qPoint);
   };
 }
 
 namespace lib7842::OdomMath
 {
-  dPoint toDPoint(qPoint);
-  qPoint toQPoint(dPoint);
-
   dPoint add(dPoint, dPoint);
   dPoint sub(dPoint, dPoint);
   dPoint mult(dPoint, dPoint);

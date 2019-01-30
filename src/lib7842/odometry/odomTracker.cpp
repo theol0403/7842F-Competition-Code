@@ -17,9 +17,7 @@ namespace lib7842
 
   m_mainDegToInch(wheelDiam.convert(inch) * 1_pi / mainTicksPerRev),
   m_middleDegToInch(wheelDiam.convert(inch) * 1_pi / middleTicksPerRev)
-  {
-
-  };
+  {};
 
 
   void OdomTracker::debug()

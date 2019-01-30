@@ -1,10 +1,29 @@
 #include "odomMath.hpp"
 
+namespace lib7842
+{
+  qPoint::qPoint(qPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
+
+  qPoint::qPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
+  qPoint::qPoint(QLength ix, QLength iy) : x(ix), y(iy), theta(0_rad) {}
+  qPoint::qPoint(QAngle itheta) : x(0_in), y(0_in), theta(itheta) {}
+
+  qPoint::qPoint(qPoint ipoint, QLength ix, QLength iy) : x(ix), y(iy), theta(ipoint.theta) {}
+  qPoint::qPoint(qPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
+
+  qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
+
+
+  dPoint::dPoint(dPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
+
+  dPoint::dPoint(double ix, double iy, double itheta) : x(ix), y(iy), theta(itheta) {}
+  dPoint::dPoint(double ix, double iy) : x(ix), y(iy), theta(0) {}
+
+  dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
+}
+
 namespace lib7842::OdomMath
 {
-
-  dPoint toDPoint(qPoint point) { return {point.x.convert(inch), point.y.convert(inch)}; }
-  qPoint toPoint(dPoint point) { return {point.x * inch, point.y * inch}; }
 
   double dot(dPoint a, dPoint b) { return a.x * b.x + a.y * b.y; }
   double dot(double x1, double y1, double x2, double y2) {
@@ -46,7 +65,7 @@ namespace lib7842::OdomMath
 
   qPoint closest(qPoint current, qPoint target) {
     //current.theta = rollAngle180(current.theta);
-    return toPoint(closest(toDPoint(current), dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, toDPoint(target)));
+    return closest(current, dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, target);
   }
 
 
@@ -68,7 +87,6 @@ namespace lib7842::OdomMath
     const QLength yDiff = secondPoint.y - firstPoint.y;
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
   }
-
 
 
 }
