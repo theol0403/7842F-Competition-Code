@@ -46,7 +46,7 @@ namespace lib7842
 
   QAngle OdomController::computeAngleOfPoint(qPoint point)
   {
-    QAngle angle = atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian;
+    QAngle angle = atan2(point.x.convert(millimeter) - chassis->state.x.convert(millimeter), point.y.convert(millimeter) - chassis->state.y.convert(millimeter)) * radian;
     return rollAngle180(angle);
   }
 
@@ -185,6 +185,7 @@ namespace lib7842
         angleErr = computeAngleToPoint(targetPoint);
       }
 
+      std::cout << "Distance To Close: " << distanceErr.convert(inch) << std::endl;
       std::cout << "Angle To Target: " << angleErr.convert(degree) << std::endl;
 
       if(angleErr.abs() > 90_deg)
@@ -196,6 +197,11 @@ namespace lib7842
       std::cout << "Rolled To Target: " << angleErr.convert(degree) << std::endl;
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
+      if(angleToClose.abs() < 1_deg || std::isnan(angleToClose.convert(degree)))
+      {
+        angleToClose = 0_deg;
+      }
+      std::cout << "Angle to Close: " << angleToClose.convert(degree) << std::endl;
       if(angleToClose.abs() > 90_deg)
       {
         distanceErr = -distanceErr;

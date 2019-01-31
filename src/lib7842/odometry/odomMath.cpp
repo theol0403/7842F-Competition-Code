@@ -66,6 +66,7 @@ namespace lib7842::OdomMath
 
   QAngle rollAngle180(QAngle angle) {
     QAngle newAngle = angle - 360.0_deg * std::floor((angle.convert(degree) + 180.0) * (1.0 / 360.0));
+    //if(newAngle == -180_deg) newAngle = 180_deg;
     return newAngle;
   }
 

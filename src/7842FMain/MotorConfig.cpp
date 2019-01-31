@@ -185,7 +185,7 @@ void initializeBase()
 			std::make_shared<ADIEncoder>(*s_leftEncoder),
 			std::make_shared<ADIEncoder>(*s_middleEncoder),
 			std::make_shared<ADIEncoder>(*s_rightEncoder),
-			70,
+			150,
 			12000);
 
 
