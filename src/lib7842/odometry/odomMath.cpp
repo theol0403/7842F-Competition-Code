@@ -74,7 +74,7 @@ namespace lib7842::OdomMath
   {
     const QLength xDiff = secondPoint.x - firstPoint.x;
     const QLength yDiff = secondPoint.y - firstPoint.y;
-    return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
+    return std::sqrt(std::pow(xDiff.convert(millimeter), 2) + std::pow(yDiff.convert(millimeter), 2)) * millimeter;
   }
 
 

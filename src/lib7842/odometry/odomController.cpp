@@ -199,6 +199,7 @@ namespace lib7842
       if(angleToClose.abs() > 90_deg)
       {
         distanceErr = -distanceErr;
+        std::cout << "Backwards" << std::endl;
       }
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;

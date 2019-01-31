@@ -144,7 +144,7 @@ namespace lib7842
       count++;
       if(count > 50)
       {
-        thisOdomTracker->debug();
+        //thisOdomTracker->debug();
         count = 0;
       }
 
