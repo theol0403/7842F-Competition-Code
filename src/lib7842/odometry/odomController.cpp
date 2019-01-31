@@ -171,38 +171,35 @@ namespace lib7842
 
     do
     {
-      qPoint closestPoint = closest(chassis->state, targetPoint);
-      QLength distanceErr = computeDistanceToPoint(closestPoint);
 
-      QAngle angleErr = 0_deg;
+      QAngle angleErr = computeAngleToPoint(targetPoint);
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
       if(distanceToTarget.abs() < 4_in)
       {
         angleErr = 0_deg;
       }
-      else
-      {
-        angleErr = computeAngleToPoint(targetPoint);
-      }
-
-      std::cout << "Distance To Close: " << distanceErr.convert(inch) << std::endl;
       std::cout << "Angle To Target: " << angleErr.convert(degree) << std::endl;
 
       if(angleErr.abs() > 90_deg)
       {
-        angleErr = angleErr - 180_deg * sgn(angleErr.convert(degree));
+        angleErr = angleErr - 180_deg;
         angleErr = rollAngle180(angleErr);
       }
+      std::cout << "Angle Err : " << angleErr.convert(degree) << std::endl;
 
-      std::cout << "Rolled To Target: " << angleErr.convert(degree) << std::endl;
+      qPoint closestPoint = closest(chassis->state, targetPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
-      if(angleToClose.abs() < 1_deg || std::isnan(angleToClose.convert(degree)))
+      if(angleToClose.abs() < 0.5_deg || std::isnan(angleToClose.convert(degree)))
       {
         angleToClose = 0_deg;
       }
       std::cout << "Angle to Close: " << angleToClose.convert(degree) << std::endl;
-      if(angleToClose.abs() > 90_deg)
+
+      QLength distanceErr = computeDistanceToPoint(closestPoint);
+      std::cout << "Distance To Close: " << distanceErr.convert(inch) << std::endl;
+
+      if(angleToClose.abs() == 180_deg)
       {
         distanceErr = -distanceErr;
         std::cout << "Backwards" << std::endl;
