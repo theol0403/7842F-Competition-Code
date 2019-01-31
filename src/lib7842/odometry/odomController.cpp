@@ -182,8 +182,10 @@ namespace lib7842
       }
       else
       {
-        angleErr = computeAngleToPoint(targetPoint);
+        angleErr = -computeAngleToPoint(targetPoint);
       }
+
+      std::cout << "Angle To Target: " << angleErr.convert(degree) << std::endl;
 
       if(angleErr.abs() > 90_deg)
       {
@@ -201,7 +203,7 @@ namespace lib7842
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(10);
+      pros::delay(100);
     }
     while(!settleFunction(this));
 
