@@ -39,20 +39,20 @@ namespace lib7842
 
     void turnToAngleSettle(QAngle, std::function<bool(OdomController*)> = turnSettle);
     void turnToAngle(QAngle, bool = true);
+    void turnAngle(QAngle, bool = true);
     void turnToPointSettle(qPoint, std::function<bool(OdomController*)> = turnSettle);
     void turnToPoint(qPoint, bool = true);
-    void turnAngle(QAngle, bool = true);
 
-    void driveDistanceAtAngleSettle(QLength, QAngle, std::function<bool(OdomController*)> = driveSettle);
-    void driveDistanceAtAngle(QLength, QAngle, bool = true);
+    void driveDistanceAtAngleSettle(QLength, QAngle, std::function<bool(OdomController*)> = driveSettle, double = 1);
+    void driveDistanceAtAngle(QLength, QAngle, bool = true, double = 1);
     void driveDistance(QLength, bool = true);
 
-    void driveToPointSettle(qPoint, std::function<bool(OdomController*)> = driveSettle);
-    void driveToPoint(qPoint, bool = true);
+    void driveToPointSettle(qPoint, std::function<bool(OdomController*)> = driveSettle, double = 4);
+    void driveToPoint(qPoint, bool = true, double = 4);
     void driveToPointAndAngle(qPoint);
 
     void driveForTime(double, int);
-    void driveForTimeAtAngle(double, QAngle, int);
+    void driveForTimeAtAngle(double, QAngle, int, double = 1);
 
   };
 

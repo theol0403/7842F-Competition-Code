@@ -14,8 +14,7 @@ namespace lib7842
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid)
-  {
-  };
+  {};
 
 
   bool OdomController::turnSettle(OdomController* that) {
@@ -87,6 +86,15 @@ namespace lib7842
     }
   }
 
+  void OdomController::turnAngle(QAngle angle, bool settle)
+  {
+    if(settle) {
+      turnToAngleSettle(angle + chassis->state.theta, turnSettle);
+    } else {
+      turnToAngleSettle(angle + chassis->state.theta, turnNoSettle);
+    }
+  }
+
   void OdomController::turnToPointSettle(qPoint point, std::function<bool(OdomController*)> settleFunction)
   {
     turnPid->reset();
@@ -110,17 +118,8 @@ namespace lib7842
     }
   }
 
-  void OdomController::turnAngle(QAngle angle, bool settle)
-  {
-    if(settle) {
-      turnToAngleSettle(angle + chassis->state.theta, turnSettle);
-    } else {
-      turnToAngleSettle(angle + chassis->state.theta, turnNoSettle);
-    }
-  }
 
-
-  void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction, double turnScale)
   {
     angle = rollAngle180(angle);
     distancePid->reset();
@@ -136,8 +135,8 @@ namespace lib7842
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
@@ -146,12 +145,12 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, bool settle)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, bool settle, double turnScale)
   {
     if(settle) {
-      driveDistanceAtAngleSettle(distance, angle, driveSettle);
+      driveDistanceAtAngleSettle(distance, angle, driveSettle, turnScale);
     } else {
-      driveDistanceAtAngleSettle(distance, angle, driveNoSettle);
+      driveDistanceAtAngleSettle(distance, angle, driveNoSettle, turnScale);
     }
   }
 
@@ -165,7 +164,7 @@ namespace lib7842
   }
 
 
-  void OdomController::driveToPointSettle(qPoint targetPoint, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSettle(qPoint targetPoint, std::function<bool(OdomController*)> settleFunction, double turnScale)
   {
     distancePid->reset();
     anglePid->reset();
@@ -191,7 +190,7 @@ namespace lib7842
         angleErr = 0_deg;
       }
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree)/4)*4;
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       chassis->model->driveVector(distanceVel, angleVel);
@@ -202,12 +201,12 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveToPoint(qPoint targetPoint, bool settle)
+  void OdomController::driveToPoint(qPoint targetPoint, bool settle, double turnScale)
   {
     if(settle) {
-      driveToPointSettle(targetPoint, driveSettle);
+      driveToPointSettle(targetPoint, driveSettle, turnScale);
     } else {
-      driveToPointSettle(targetPoint, driveNoSettle);
+      driveToPointSettle(targetPoint, driveNoSettle, turnScale);
     }
   }
 
@@ -226,11 +225,11 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveForTimeAtAngle(double vel, QAngle angle, int time)
+  void OdomController::driveForTimeAtAngle(double vel, QAngle angle, int time, double turnScale)
   {
     while(time > 0) {
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree));
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
       chassis->model->driveVector(vel, angleVel);
       time -= 10;
       pros::delay(10);
