@@ -160,27 +160,31 @@ void initializeBase()
 	*/
 	#else //TEST_ROBOT
 
-	const int8_t e_m_RightFront = -10;
-	const int8_t e_m_RightBack = -2;
-	const int8_t e_m_LeftFront = 9;
-	const int8_t e_m_LeftBack = 1;
+	const int8_t left_mPort = 1;
+	const int8_t right_mPort = -2;
+
 
 	void initializeDevices()
 	{
+		s_leftEncoder = new okapi::ADIEncoder(3, 4);
+		s_rightEncoder = new okapi::ADIEncoder(5, 6);
 		s_middleEncoder = new okapi::ADIEncoder(8, 7);
 
+		s_leftEncoder->reset();
+		s_rightEncoder->reset();
 		s_middleEncoder->reset();
 	}
 
 	void initializeBase()
 	{
 
+
 		model = std::make_shared<ThreeEncoderSkidSteerModel>(
-			std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
-			std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
-			std::make_shared<IntegratedEncoder>(okapi::Motor(e_m_LeftFront)),
+			std::make_shared<Motor>(left_mPort),
+			std::make_shared<Motor>(right_mPort),
+			std::make_shared<ADIEncoder>(*s_leftEncoder),
 			std::make_shared<ADIEncoder>(*s_middleEncoder),
-			std::make_shared<IntegratedEncoder>(okapi::Motor(e_m_RightFront)),
+			std::make_shared<ADIEncoder>(*s_rightEncoder),
 			200,
 			12000);
 
@@ -188,8 +192,8 @@ void initializeBase()
 			tracker = new lib7842::OdomTracker
 			(
 				model,
-				9.8_in, 0_in,
-				4.125_in,
+				27_cm, 18_cm,
+				4_in,
 				360, 360
 			);
 
@@ -210,52 +214,4 @@ void initializeBase()
 
 
 
-	// const int8_t left_mPort = 1;
-	// const int8_t right_mPort = -2;
-	//
-	//
-	// void initializeDevices()
-	// {
-	// 	s_leftEncoder = new okapi::ADIEncoder(3, 4);
-	// 	s_rightEncoder = new okapi::ADIEncoder(5, 6);
-	// 	s_middleEncoder = new okapi::ADIEncoder(8, 7);
-	//
-	// 	s_leftEncoder->reset();
-	// 	s_rightEncoder->reset();
-	// 	s_middleEncoder->reset();
-	// }
-	//
-	// void initializeBase()
-	// {
-	//
-	// 	const QLength chassisWidth = 27_cm;
-	//
-	// 	// Otherwise, you should specify the gearset and scales for your robot
-	// 	model = ChassisControllerFactory::createPtr(
-	// 		left_mPort, right_mPort,
-	// 		*s_leftEncoder, *s_rightEncoder,
-	// 		IterativePosPIDController::Gains{0.001, 0.00, 0},
-	// 		IterativePosPIDController::Gains{0.0006, 0.00, 0},
-	// 		IterativePosPIDController::Gains{0.0006, 0, 0},
-	// 		AbstractMotor::gearset::green,
-	// 		{4_in, chassisWidth * 2}
-	// 	);
-	//
-	//
-	// 	tracker = new lib7842::OdomTracker
-	// 	(
-	// 		s_leftEncoder, s_rightEncoder, s_middleEncoder,
-	// 		chassisWidth, 18_cm,
-	// 		4_in,
-	// 		360, 360
-	// 	);
-	//
-	// 	chassis = new lib7842::OdomController(model, tracker);
-	//
-	// 	pros::delay(500);
-	// 	tracker->resetSensors();
-	// 	tracker->resetState();
-	// }
-
-
-	#endif //COMPETITION_ROBOT
+		#endif //COMPETITION_ROBOT
