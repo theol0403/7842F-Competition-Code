@@ -16,6 +16,7 @@ namespace lib7842
     qPoint(QLength, QLength, QAngle);
     qPoint(QLength, QLength);
     qPoint(QAngle);
+    qPoint();
 
     qPoint(qPoint, QLength, QLength);
     qPoint(qPoint, QAngle);
@@ -33,6 +34,7 @@ namespace lib7842
 
     dPoint(double, double, double);
     dPoint(double, double);
+    dPoint();
 
     dPoint(dPoint, double, double);
     dPoint(dPoint, double);

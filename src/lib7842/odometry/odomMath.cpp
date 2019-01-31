@@ -7,6 +7,7 @@ namespace lib7842
   qPoint::qPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
   qPoint::qPoint(QLength ix, QLength iy) : x(ix), y(iy), theta(0_rad) {}
   qPoint::qPoint(QAngle itheta) : x(0_in), y(0_in), theta(itheta) {}
+  qPoint::qPoint() : x(0_in), y(0_in), theta(0_deg) {}
 
   qPoint::qPoint(qPoint ipoint, QLength ix, QLength iy) : x(ix), y(iy), theta(ipoint.theta) {}
   qPoint::qPoint(qPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
@@ -18,6 +19,7 @@ namespace lib7842
 
   dPoint::dPoint(double ix, double iy, double itheta) : x(ix), y(iy), theta(itheta) {}
   dPoint::dPoint(double ix, double iy) : x(ix), y(iy), theta(0) {}
+  dPoint::dPoint() : x(0), y(0), theta(0) {}
 
   dPoint::dPoint(dPoint ipoint, double ix, double iy) : x(ix), y(iy), theta(ipoint.theta) {}
   dPoint::dPoint(dPoint ipoint, double itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
