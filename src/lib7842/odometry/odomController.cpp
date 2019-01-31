@@ -176,22 +176,24 @@ namespace lib7842
 
       QAngle angleErr = 0_deg;
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 3_in)
+      if(distanceToTarget.abs() < 4_in)
       {
         angleErr = 0_deg;
       }
       else
       {
-        angleErr = -computeAngleToPoint(targetPoint);
+        angleErr = computeAngleToPoint(targetPoint);
       }
 
       std::cout << "Angle To Target: " << angleErr.convert(degree) << std::endl;
 
       if(angleErr.abs() > 90_deg)
       {
-        angleErr = angleErr - 180_deg;
+        angleErr = angleErr - 180_deg * sgn(angleErr.convert(degree));
         angleErr = rollAngle180(angleErr);
       }
+
+      std::cout << "Rolled To Target: " << angleErr.convert(degree) << std::endl;
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
       if(angleToClose.abs() > 90_deg)
@@ -201,6 +203,12 @@ namespace lib7842
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+
+      double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
+      if(maxMag > chassis->model->maxVelocity) {
+        maxMag = (maxMag / maxMag) * chassis->model->maxVelocity * sgn(maxMag);
+        distanceVel = (distanceVel / maxMag) * chassis->model->maxVelocity * sgn(distanceVel);
+      }
 
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(100);
