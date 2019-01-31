@@ -174,20 +174,27 @@ namespace lib7842
       qPoint closestPoint = closest(chassis->state, targetPoint);
       QLength distanceErr = computeDistanceToPoint(closestPoint);
 
-      QAngle angleErr = computeAngleToPoint(targetPoint);
+      QAngle angleErr = 0_deg;
+      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
+      if(distanceToTarget.abs() < 3_in)
+      {
+        angleErr = 0_deg;
+      }
+      else
+      {
+        angleErr = computeAngleToPoint(targetPoint);
+      }
+
+      if(angleErr.abs() > 90_deg)
+      {
+        angleErr = angleErr - 180_deg;
+        angleErr = rollAngle180(angleErr);
+      }
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
       if(angleToClose.abs() > 90_deg)
       {
         distanceErr = -distanceErr;
-        angleErr = angleErr - 180_deg;
-        //angleErr = -rollAngle180(angleErr) * sgn(angleErr.convert(degree));
-      }
-
-      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 3_in)
-      {
-        angleErr = 0_deg;
       }
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;

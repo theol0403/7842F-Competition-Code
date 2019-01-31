@@ -7,7 +7,5 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-  tracker->setState({});
-  chassis->driveToPointSettle(leftFlag, OdomController::createDriveSettle(1_in));
-  chassis->turnToPoint(leftFlag);
+  chassis->driveToPointSettle({0_in, 5_in});
 }
