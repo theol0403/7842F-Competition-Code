@@ -16,6 +16,13 @@ namespace lib7842
 
   public:
 
+    OdomTracker(
+      std::shared_ptr<okapi::ThreeEncoderSkidSteerModel>,
+      QLength, QLength,
+      QLength,
+      double, double
+    );
+
     std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 
     const QLength m_chassisWidth;
@@ -26,19 +33,12 @@ namespace lib7842
 
     qPoint state {0_in, 0_in, 0_rad};
 
-    OdomTracker(
-      std::shared_ptr<okapi::ThreeEncoderSkidSteerModel>,
-      QLength, QLength,
-      QLength,
-      double, double
-    );
-
-
     void debug();
     void step();
 
     void setState(QLength, QLength, QAngle);
     void setState(qPoint);
+    qPoint& getState();
 
     void setX(QLength);
     void setY(QLength);
@@ -49,7 +49,6 @@ namespace lib7842
     QAngle& getTheta();
 
     void resetState();
-
     void resetSensors();
 
     static void odometryTask(void*);
