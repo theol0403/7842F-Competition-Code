@@ -7,5 +7,5 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-  chassis->driveToPoint1({0_in, 1_ft}, true, 5);
+  chassis->driveToPoint1({0_in, 0_ft}, true, 1);
 }

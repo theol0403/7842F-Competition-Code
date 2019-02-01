@@ -146,7 +146,6 @@ namespace lib7842
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
     do
     {
-      //std::cout << "DistanceAtAngle" << std::endl;
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
@@ -201,7 +200,7 @@ namespace lib7842
 
       QAngle angleErr = computeAngleToPoint(targetPoint);
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 4_in)
+      if(distanceToTarget.abs() < 3_in)
       {
         angleErr = 0_deg;
       }
@@ -250,10 +249,8 @@ namespace lib7842
   {
     distancePid->reset();
     anglePid->reset();
-
     QAngle angleErr;
     QLength distanceErr;
-
     do
     {
       angleErr = computeAngleToPoint(targetPoint);
@@ -288,11 +285,6 @@ namespace lib7842
       driveToPoint2Settle(targetPoint, driveNoSettle, turnScale);
     }
   }
-
-
-
-
-
 
 
 
