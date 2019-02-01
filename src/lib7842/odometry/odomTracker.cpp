@@ -142,9 +142,9 @@ namespace lib7842
       thisOdomTracker->step();
 
       count++;
-      if(count > 50)
+      if(count >= 10)
       {
-        //thisOdomTracker->debug();
+      //  thisOdomTracker->debug();
         count = 0;
       }
 
