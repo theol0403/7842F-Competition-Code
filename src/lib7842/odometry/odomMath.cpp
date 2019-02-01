@@ -2,6 +2,9 @@
 
 namespace lib7842
 {
+  /**
+  * qPoint
+  */
   qPoint::qPoint(qPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
 
   qPoint::qPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
@@ -14,7 +17,9 @@ namespace lib7842
 
   qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
 
-
+  /**
+  * dPoint
+  */
   dPoint::dPoint(dPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
 
   dPoint::dPoint(double ix, double iy, double itheta) : x(ix), y(iy), theta(itheta) {}
@@ -26,18 +31,14 @@ namespace lib7842
 
   dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
 
-
+  /**
+  * Path
+  */
   Path::Path(qPoint point) : wayPoints {point} {}
   Path::Path(std::initializer_list<qPoint> points) : wayPoints {points} {}
 
   void Path::add(qPoint point) { wayPoints.push_back(point); }
-  void Path::add(std::initializer_list<qPoint> points) {
-    for(const qPoint &point : points)
-    {
-      wayPoints.push_back(point);
-    }
-
-  }
+  void Path::add(std::initializer_list<qPoint> points) { for(const qPoint &point : points) { wayPoints.push_back(point); } }
 
 }
 
