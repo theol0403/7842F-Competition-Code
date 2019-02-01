@@ -25,6 +25,20 @@ namespace lib7842
   dPoint::dPoint(dPoint ipoint, double itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
   dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
+
+
+  Path::Path(qPoint point) : wayPoints {point} {}
+  Path::Path(std::initializer_list<qPoint> points) : wayPoints {points} {}
+
+  void Path::add(qPoint point) { wayPoints.push_back(point); }
+  void Path::add(std::initializer_list<qPoint> points) {
+    for(const qPoint &point : points)
+    {
+      wayPoints.push_back(point);
+    }
+
+  }
+
 }
 
 namespace lib7842::OdomMath

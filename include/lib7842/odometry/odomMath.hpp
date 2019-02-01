@@ -41,6 +41,18 @@ namespace lib7842
 
     dPoint(qPoint);
   };
+
+  struct Path
+  {
+    std::vector<qPoint> wayPoints {};
+
+    Path(qPoint);
+    Path(std::initializer_list<qPoint>);
+
+    void add(qPoint);
+    void add(std::initializer_list<qPoint>);
+  };
+
 }
 
 namespace lib7842::OdomMath
