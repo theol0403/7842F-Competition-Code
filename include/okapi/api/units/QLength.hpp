@@ -28,6 +28,8 @@ constexpr QLength foot = 12 * inch;
 constexpr QLength yard = 3 * foot;
 constexpr QLength mile = 5280 * foot;
 
+constexpr QLength tile = 2 * foot;
+
 inline namespace literals {
 constexpr QLength operator"" _mm(long double x) {
   return static_cast<double>(x) * millimeter;
@@ -53,6 +55,9 @@ constexpr QLength operator"" _ft(long double x) {
 constexpr QLength operator"" _in(long double x) {
   return static_cast<double>(x) * inch;
 }
+constexpr QLength operator"" _tl(long double x) {
+  return static_cast<double>(x) * tile;
+}
 constexpr QLength operator"" _mm(unsigned long long int x) {
   return static_cast<double>(x) * millimeter;
 }
@@ -77,5 +82,9 @@ constexpr QLength operator"" _ft(unsigned long long int x) {
 constexpr QLength operator"" _in(unsigned long long int x) {
   return static_cast<double>(x) * inch;
 }
+constexpr QLength operator"" _tl(unsigned long long int x) {
+  return static_cast<double>(x) * tile;
+}
+
 } // namespace literals
 } // namespace okapi
