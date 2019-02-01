@@ -11,7 +11,7 @@ void AutoTest(lib7842::autonSides side)
   tracker->getY() += 5_in;
   tracker->setState({tracker->getState(), 5_deg});
 
-  // Path myPath ({{0_in, 0_in}, {0_in, 0_in}});
-  // myPath.add({0_in, 0_in});
-  // myPath.add({{0_in, 0_in}, {0_in, 0_in}});
+  Path myPath ({{{{0,0}},0_in, 0_in}, {0_in, 0_in}});
+  myPath.add({0_in, 0_in});
+  myPath.add({{0_in, 0_in}, {0_in, 0_in}});
 }

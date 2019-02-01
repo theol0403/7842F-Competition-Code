@@ -46,9 +46,9 @@ namespace lib7842
   {
     std::vector<qPoint> wayPoints;
     Path(qPoint);
-    // Path(std::initializer_list<qPoint>);
-    // void add(qPoint);
-    // void add(std::initializer_list<qPoint>);
+    Path(std::initializer_list<qPoint>);
+    void add(qPoint);
+    void add(std::initializer_list<qPoint>);
   };
 
 }
