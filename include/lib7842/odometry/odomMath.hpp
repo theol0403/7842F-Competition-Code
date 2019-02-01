@@ -11,7 +11,7 @@ namespace lib7842
     QLength y {0_in};
     QAngle theta {0_rad};
 
-    qPoint(qPoint&); //Needs to be by reference to avoid enless loop
+    qPoint(const qPoint&); //Needs to be by reference to avoid enless loop
 
     qPoint(QLength, QLength, QAngle);
     qPoint(QLength, QLength);
@@ -30,7 +30,7 @@ namespace lib7842
     double y {0};
     double theta {0};
 
-    dPoint(dPoint&); //Needs to be by reference to avoid enless loop
+    dPoint(const dPoint&); //Needs to be by reference to avoid enless loop
 
     dPoint(double, double, double);
     dPoint(double, double);
@@ -42,14 +42,14 @@ namespace lib7842
     dPoint(qPoint);
   };
 
-  // struct Path
-  // {
-  //   std::vector<qPoint> wayPoints {};
-  //   Path(qPoint);
-  //   Path(std::initializer_list<qPoint>);
-  //   void add(qPoint);
-  //   void add(std::initializer_list<qPoint>);
-  // };
+  struct Path
+  {
+    std::vector<qPoint> wayPoints;
+    Path(qPoint);
+    // Path(std::initializer_list<qPoint>);
+    // void add(qPoint);
+    // void add(std::initializer_list<qPoint>);
+  };
 
 }
 
