@@ -54,8 +54,8 @@ namespace lib7842
   QAngle OdomController::computeAngleToPoint(qPoint point)
   {
     QAngle angle = computeAngleOfPoint(point) - chassis->state.theta;
-    //return rollAngle180(angle);
-    return angle;
+    return rollAngle180(angle);
+    //return angle;
   }
 
   QLength OdomController::computeDistanceToPoint(qPoint point)
@@ -273,27 +273,39 @@ namespace lib7842
     do
     {
       angleErr = computeAngleToPoint(targetPoint);
-      angleErr = rollAngle180(angleErr);
       std::cout << "Angle Error: " << angleErr.convert(degree) << std::endl;
+
       distanceErr = computeDistanceToPoint(targetPoint);
-      std::cout << "Distance To Point: " << distanceErr.convert(inch) << std::endl;
-      if(angleErr.abs() > 90_deg)
+
+      if(angleErr > 90_deg)
       {
-        angleErr = rollAngle180(angleErr + 180_deg * sgn(angleErr.convert(degree))); // );
+        angleErr -= 180_deg;
         //angleOfPoint = rollAngle360(angleOfPoint);
         distanceErr = -distanceErr;
       }
+      else if(angleErr < -90_deg)
+      {
+        angleErr += 180_deg;
+        //angleOfPoint = rollAngle360(angleOfPoint);
+        distanceErr = -distanceErr;
+      }
+
+      // if(angleErr.abs() > 90_deg)
+      // {
+      //   angleErr = rollAngle180(angleErr - 180_deg) * sgn(angleErr.convert(degree));
+      //   //angleOfPoint = rollAngle360(angleOfPoint);
+      //   distanceErr = -distanceErr;
+      // }
       std::cout << "Rolled Angle Error: " << angleErr.convert(degree) << std::endl;
 
-      //std::cout << "Rolled Error: " << angleErr.convert(degree) << std::endl;
-
+      std::cout << "Distance To Point: " << distanceErr.convert(inch) << std::endl;
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = 0;//chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       normalizeDrive(distanceVel, angleVel);
-      std::cout << "Angle Vel: " << angleVel << std::endl;
-      chassis->model->driveVector(distanceVel, 0);
+      //std::cout << "Angle Vel: " << angleVel << std::endl;
+      chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(100);
     }
     while(distanceErr.abs() > 1_in);
