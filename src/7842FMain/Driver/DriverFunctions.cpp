@@ -42,38 +42,7 @@ void driverIntakeControl()
 
 	if(dIntakeState != dLastIntakeState)
 	{
-		switch (dIntakeState) {
-			case intakeModes::off: {
-				setIntakeMode(intakeModes::off);
-				break;
-			}
-			case intakeModes::shootBoth: {
-				setIntakeMode(intakeModes::shootBoth);
-				break;
-			}
-			case intakeModes::loading: {
-				setIntakeMode(intakeModes::loading);
-				break;
-			}
-			case intakeModes::shootIndexer: {
-				setIntakeMode(intakeModes::shootIndexer);
-				break;
-			}
-			case intakeModes::outIntake: {
-				setIntakeMode(intakeModes::outIntake);
-				break;
-			}
-			case intakeModes::outBoth: {
-				setIntakeMode(intakeModes::outBoth);
-				break;
-			}
-			case intakeModes::outSlow: {
-				setIntakeMode(intakeModes::outSlow);
-				break;
-			}
-
-		}
-
+		setIntakeMode(dIntakeState);
 		dLastIntakeState = dIntakeState;
 	}
 
