@@ -33,7 +33,6 @@ namespace lib7842
     static std::function<bool(OdomController*)> createTurnSettle(QAngle);
     static std::function<bool(OdomController*)> createDriveSettle(QLength);
 
-    QAngle computeAngleOfPoint(qPoint);
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
