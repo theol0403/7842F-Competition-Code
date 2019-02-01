@@ -10,9 +10,9 @@ namespace lib7842
 
     do
     {
-      m_m_angleErr = computeAngleToPoint(targetPoint);
-      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 3_in) { m_angleErr = 0_deg; }
+      m_angleErr = computeAngleToPoint(targetPoint);
+      m_distanceErr = computeDistanceToPoint(targetPoint);
+      if(m_distanceErr.abs() < 3_in) { m_angleErr = 0_deg; }
 
       if(m_angleErr.abs() > 90_deg)
       {
@@ -25,15 +25,11 @@ namespace lib7842
       QAngle angleToClose = computeAngleToPoint(closestPoint);
       if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg; //check
 
-      m_distanceErr = computeDistanceToPoint(closestPoint);
-
-      if(angleToClose.abs() >= 90_deg)
-      {
-        m_distanceErr = -m_distanceErr;
-      }
+      QLength m_distanceToClose = computeDistanceToPoint(closestPoint);
+      if(angleToClose.abs() >= 90_deg) m_distanceToClose = -m_distanceToClose;
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceToClose.convert(millimeter));
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
@@ -53,7 +49,6 @@ namespace lib7842
       driveToPointSettle(targetPoint, turnScale, driveNoSettle);
     }
   }
-
 
 
 
@@ -97,8 +92,11 @@ namespace lib7842
     }
   }
 
+
+
+
   bool OdomController::pathSettle(OdomController* that) {
-    return that->distancePid->isSettled() && that->anglePid->isSettled();
+    return that->distanceErr.abs() < 4_in;
   }
 
   void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
