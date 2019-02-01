@@ -37,6 +37,8 @@ namespace lib7842
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
+    void normalizeDrive(double &, double &);
+
     void turnToAngleSettle(QAngle, std::function<bool(OdomController*)> = turnSettle);
     void turnToAngle(QAngle, bool = true);
     void turnAngle(QAngle, bool = true);
@@ -47,9 +49,11 @@ namespace lib7842
     void driveDistanceAtAngle(QLength, QAngle, bool = true, double = 1);
     void driveDistance(QLength, bool = true);
 
-    void driveToPointSettle(qPoint, std::function<bool(OdomController*)> = driveSettle, double = 4);
-    void driveToPoint(qPoint, bool = true, double = 4);
-    void driveToPointAndAngle(qPoint);
+    void driveToPoint1Settle(qPoint, std::function<bool(OdomController*)> = driveSettle, double = 4);
+    void driveToPoint1(qPoint, bool = true, double = 4);
+
+    void driveToPoint2Settle(qPoint, std::function<bool(OdomController*)> = driveSettle, double = 4);
+    void driveToPoint2(qPoint, bool = true, double = 4);
 
     void driveForTime(double, int);
     void driveForTimeAtAngle(double, QAngle, int, double = 1);

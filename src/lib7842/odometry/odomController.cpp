@@ -61,6 +61,20 @@ namespace lib7842
     return computeDistanceBetweenPoints(chassis->state, point);
   }
 
+  void OdomController::normalizeDrive(double &distanceVel, double &angleVel)
+  {
+    double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
+    if(maxMag > chassis->model->maxVelocity) {
+      distanceVel = (distanceVel / maxMag) * chassis->model->maxVelocity;
+      angleVel = (angleVel / maxMag) * chassis->model->maxVelocity;
+    }
+  }
+
+
+
+
+
+
 
   void OdomController::turnToAngleSettle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
@@ -119,6 +133,11 @@ namespace lib7842
   }
 
 
+
+
+
+
+
   void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction, double turnScale)
   {
     angle = rollAngle180(angle);
@@ -137,6 +156,7 @@ namespace lib7842
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
 
+      normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
@@ -164,7 +184,13 @@ namespace lib7842
   }
 
 
-  void OdomController::driveToPointSettle(qPoint targetPoint, std::function<bool(OdomController*)> settleFunction, double turnScale)
+
+
+
+
+
+
+  void OdomController::driveToPoint1Settle(qPoint targetPoint, std::function<bool(OdomController*)> settleFunction, double turnScale)
   {
     distancePid->reset();
     anglePid->reset();
@@ -208,35 +234,73 @@ namespace lib7842
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
-      double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
-      if(maxMag > chassis->model->maxVelocity) {
-        maxMag = (maxMag / maxMag) * chassis->model->maxVelocity * sgn(maxMag);
-        distanceVel = (distanceVel / maxMag) * chassis->model->maxVelocity * sgn(distanceVel);
-      }
-
+      normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(100);
+      pros::delay(100); //dont forget
     }
     while(!settleFunction(this));
 
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveToPoint(qPoint targetPoint, bool settle, double turnScale)
+  void OdomController::driveToPoint1(qPoint targetPoint, bool settle, double turnScale)
   {
     if(settle) {
-      driveToPointSettle(targetPoint, driveSettle, turnScale);
+      driveToPoint1Settle(targetPoint, driveSettle, turnScale);
     } else {
-      driveToPointSettle(targetPoint, driveNoSettle, turnScale);
+      driveToPoint1Settle(targetPoint, driveNoSettle, turnScale);
     }
   }
 
 
-  void OdomController::driveToPointAndAngle(qPoint point)
+  void OdomController::driveToPoint2Settle(qPoint targetPoint, std::function<bool(OdomController*)> settleFunction, double turnScale)
   {
-    driveToPoint(point);
-    turnToAngle(point.theta);
+    distancePid->reset();
+    anglePid->reset();
+
+    QAngle angleErr;
+    QLength distanceErr;
+
+    do
+    {
+      angleErr = computeAngleToPoint(targetPoint);
+      distanceErr = computeDistanceToPoint(targetPoint);
+
+      if(angleErr.abs() > 90_deg)
+      {
+        angleErr = angleErr - 180_deg;
+        angleErr = rollAngle180(angleErr);
+        distanceErr = -distanceErr;
+      }
+
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+
+      normalizeDrive(distanceVel, angleVel);
+      chassis->model->driveVector(distanceVel, angleVel);
+      pros::delay(10);
+    }
+    while(distanceErr.abs() > 5_in);
+
+    driveDistanceAtAngleSettle(distanceErr, angleErr + chassis->state.theta, settleFunction);
+
+    chassis->model->driveVector(0, 0);
   }
+
+  void OdomController::driveToPoint2(qPoint targetPoint, bool settle, double turnScale)
+  {
+    if(settle) {
+      driveToPoint2Settle(targetPoint, driveSettle, turnScale);
+    } else {
+      driveToPoint2Settle(targetPoint, driveNoSettle, turnScale);
+    }
+  }
+
+
+
+
+
+  
 
 
   void OdomController::driveForTime(double vel, int time)
