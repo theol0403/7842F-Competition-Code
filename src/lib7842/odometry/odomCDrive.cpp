@@ -21,11 +21,11 @@ namespace lib7842
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
 
-      QLength distanceErr = distance - ((leftDistance + rightDistance) / 2);
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+      m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
-      QAngle angleErr = rollAngle180(angle - chassis->state.theta);
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
+      m_angleErr = rollAngle180(angle - chassis->state.theta);
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
@@ -68,8 +68,8 @@ namespace lib7842
   void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale)
   {
     while(time > 0) {
-      QAngle angleErr = rollAngle180(angle - chassis->state.theta);
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
+      m_angleErr = rollAngle180(angle - chassis->state.theta);
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       chassis->model->driveVector(vel, angleVel);
       time -= 10;
       pros::delay(10);

@@ -13,11 +13,14 @@ namespace lib7842
 
   public:
 
-    OdomTracker *chassis;
+    OdomTracker *chassis = nullptr;
 
-    PID *distancePid;
-    PID *anglePid;
-    PID *turnPid;
+    PID *distancePid = nullptr;
+    PID *anglePid = nullptr;
+    PID *turnPid = nullptr;
+
+    QAngle m_angleErr = 0_deg;
+    QLength m_distanceErr = 0_in;
 
     OdomController(
       OdomTracker*,

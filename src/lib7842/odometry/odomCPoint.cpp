@@ -10,14 +10,14 @@ namespace lib7842
 
     do
     {
-      QAngle angleErr = computeAngleToPoint(targetPoint);
+      m_m_angleErr = computeAngleToPoint(targetPoint);
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      if(distanceToTarget.abs() < 3_in) { angleErr = 0_deg; }
+      if(distanceToTarget.abs() < 3_in) { m_angleErr = 0_deg; }
 
-      if(angleErr.abs() > 90_deg)
+      if(m_angleErr.abs() > 90_deg)
       {
-        angleErr -= 180_deg;
-        angleErr = rollAngle180(angleErr) * sgn(angleErr.convert(degree));
+        m_angleErr -= 180_deg;
+        m_angleErr = rollAngle180(m_angleErr) * sgn(m_angleErr.convert(degree));
       }
 
       qPoint closestPoint = closest(chassis->state, targetPoint);
@@ -25,15 +25,15 @@ namespace lib7842
       QAngle angleToClose = computeAngleToPoint(closestPoint);
       if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg; //check
 
-      QLength distanceErr = computeDistanceToPoint(closestPoint);
+      m_distanceErr = computeDistanceToPoint(closestPoint);
 
       if(angleToClose.abs() >= 90_deg)
       {
-        distanceErr = -distanceErr;
+        m_distanceErr = -m_distanceErr;
       }
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
@@ -61,30 +61,28 @@ namespace lib7842
   {
     distancePid->reset();
     anglePid->reset();
-    QAngle angleErr;
-    QLength distanceErr;
     do
     {
-      angleErr = computeAngleToPoint(targetPoint);
-      distanceErr = computeDistanceToPoint(targetPoint);
+      m_angleErr = computeAngleToPoint(targetPoint);
+      m_distanceErr = computeDistanceToPoint(targetPoint);
 
-      if(angleErr.abs() > 90_deg)
+      if(m_angleErr.abs() > 90_deg)
       {
-        angleErr -= 180_deg;
-        angleErr = rollAngle180(angleErr) * sgn(angleErr.convert(degree));
-        distanceErr = -distanceErr;
+        m_angleErr -= 180_deg;
+        m_angleErr = rollAngle180(m_angleErr) * sgn(m_angleErr.convert(degree));
+        m_distanceErr = -m_distanceErr;
       }
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
+      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(100);
     }
-    while(distanceErr.abs() > 4_in);
+    while(m_distanceErr.abs() > 4_in);
 
-    driveDistanceAtAngleSettle(distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
+    driveDistanceAtAngleSettle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
 
     chassis->model->driveVector(0, 0);
   }
@@ -99,6 +97,9 @@ namespace lib7842
     }
   }
 
+  bool OdomController::pathSettle(OdomController* that) {
+    return that->distancePid->isSettled() && that->anglePid->isSettled();
+  }
 
   void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
