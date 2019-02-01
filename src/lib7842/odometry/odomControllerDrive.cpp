@@ -2,21 +2,19 @@
 
 namespace lib7842
 {
-  using namespace OdomMath;
-
 
   void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, double turnScale, std::function<bool(OdomController*)> settleFunction, bool reset)
   {
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
 
-    if(reset)
-    {
+    if(reset) {
       distancePid->reset();
       anglePid->reset();
     }
 
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
+
     do
     {
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
@@ -37,6 +35,7 @@ namespace lib7842
 
     chassis->model->driveVector(0, 0);
   }
+
 
   void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, bool settle)
   {
@@ -64,6 +63,7 @@ namespace lib7842
     pros::delay(time);
     chassis->model->driveVector(0, 0);
   }
+
 
   void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale)
   {

@@ -2,10 +2,8 @@
 
 namespace lib7842
 {
-  using namespace OdomMath;
 
-
-  void OdomController::driveToPoint1Settle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSettle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -46,21 +44,20 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveToPoint1(qPoint targetPoint, double turnScale, bool settle)
+
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, bool settle)
   {
     if(settle) {
-      driveToPoint1Settle(targetPoint, turnScale, driveSettle);
+      driveToPointSettle(targetPoint, turnScale, driveSettle);
     } else {
-      driveToPoint1Settle(targetPoint, turnScale, driveNoSettle);
+      driveToPointSettle(targetPoint, turnScale, driveNoSettle);
     }
   }
 
 
 
 
-
-
-  void OdomController::driveToPoint2Settle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSimpleSettle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -92,14 +89,16 @@ namespace lib7842
     chassis->model->driveVector(0, 0);
   }
 
-  void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, bool settle)
+
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, bool settle)
   {
     if(settle) {
-      driveToPoint2Settle(targetPoint, turnScale, driveSettle);
+      driveToPointSimpleSettle(targetPoint, turnScale, driveSettle);
     } else {
-      driveToPoint2Settle(targetPoint, turnScale, driveNoSettle);
+      driveToPointSimpleSettle(targetPoint, turnScale, driveNoSettle);
     }
   }
+
 
 
 }

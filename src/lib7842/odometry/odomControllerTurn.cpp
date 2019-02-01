@@ -2,8 +2,6 @@
 
 namespace lib7842
 {
-  using namespace OdomMath;
-
 
   void OdomController::turnToAngleSettle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
@@ -37,7 +35,7 @@ namespace lib7842
       turnToAngleSettle(angle + chassis->state.theta, turnNoSettle);
     }
   }
-
+  
 
   void OdomController::turnToPointSettle(qPoint point, std::function<bool(OdomController*)> settleFunction)
   {
@@ -61,5 +59,6 @@ namespace lib7842
       turnToPointSettle(point, turnNoSettle);
     }
   }
+
 
 }

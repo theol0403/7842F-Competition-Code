@@ -6,6 +6,7 @@
 
 namespace lib7842
 {
+  using namespace OdomMath;
 
   class OdomController
   {
@@ -48,14 +49,14 @@ namespace lib7842
     void driveDistanceAtAngle(QLength, QAngle, double = 1, bool = true);
     void driveDistance(QLength, bool = true);
 
-    void driveToPoint1Settle(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
-    void driveToPoint1(qPoint, double = 4, bool = true);
-
-    void driveToPoint2Settle(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
-    void driveToPoint2(qPoint, double = 4, bool = true);
-
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);
+
+    void driveToPointSettle(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
+    void driveToPoint(qPoint, double = 4, bool = true);
+
+    void driveToPointSimpleSettle(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
+    void driveToPointSimple(qPoint, double = 4, bool = true);
 
   };
 
