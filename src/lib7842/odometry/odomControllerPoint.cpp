@@ -23,7 +23,7 @@ namespace lib7842
       qPoint closestPoint = closest(chassis->state, targetPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
-      /* if(angleToClose.abs() < 0.5_deg || std::isnan(angleToClose.convert(degree))) { angleToClose = 0_deg; } */
+      if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg; //check
 
       QLength distanceErr = computeDistanceToPoint(closestPoint);
 
@@ -84,7 +84,7 @@ namespace lib7842
     }
     while(distanceErr.abs() > 4_in);
 
-    driveDistanceAtAngleSettle(distanceErr/2, chassis->state.theta, turnScale, settleFunction, false);
+    driveDistanceAtAngleSettle(distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
 
     chassis->model->driveVector(0, 0);
   }
@@ -96,6 +96,15 @@ namespace lib7842
       driveToPointSimpleSettle(targetPoint, turnScale, driveSettle);
     } else {
       driveToPointSimpleSettle(targetPoint, turnScale, driveNoSettle);
+    }
+  }
+
+
+  void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  {
+    for(Point &point : path.wayPoints)
+    {
+      driveToPointSettle(point, turnScale, settleFunction);
     }
   }
 
