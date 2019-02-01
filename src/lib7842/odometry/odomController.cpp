@@ -205,31 +205,23 @@ namespace lib7842
       {
         angleErr = 0_deg;
       }
-      std::cout << "Angle To Target: " << angleErr.convert(degree) << std::endl;
 
       if(angleErr.abs() > 90_deg)
       {
-        angleErr = angleErr - 180_deg;
-        angleErr = rollAngle180(angleErr);
+        angleErr -= 180_deg;
+        angleErr = rollAngle180(angleErr) * sgn(angleErr.convert(degree));
       }
-      std::cout << "Angle Err : " << angleErr.convert(degree) << std::endl;
 
       qPoint closestPoint = closest(chassis->state, targetPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
-      if(angleToClose.abs() < 0.5_deg || std::isnan(angleToClose.convert(degree)))
-      {
-        angleToClose = 0_deg;
-      }
-      std::cout << "Angle to Close: " << angleToClose.convert(degree) << std::endl;
+      //if(angleToClose.abs() < 0.5_deg || std::isnan(angleToClose.convert(degree))) { angleToClose = 0_deg; }
 
       QLength distanceErr = computeDistanceToPoint(closestPoint);
-      std::cout << "Distance To Close: " << distanceErr.convert(inch) << std::endl;
 
-      if(angleToClose.abs() == 180_deg)
+      if(angleToClose.abs() >= 90_deg)
       {
         distanceErr = -distanceErr;
-        std::cout << "Backwards" << std::endl;
       }
 
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(angleErr.convert(degree) / turnScale) * turnScale;
@@ -237,7 +229,7 @@ namespace lib7842
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(10); //dont forget
+      pros::delay(10);
     }
     while(!settleFunction(this));
 
@@ -283,7 +275,7 @@ namespace lib7842
     }
     while(distanceErr.abs() > 4_in);
 
-    driveDistanceAtAngleSettle(distanceErr, chassis->state.theta, settleFunction, turnScale, false);
+    driveDistanceAtAngleSettle(distanceErr/2, chassis->state.theta, settleFunction, turnScale, false);
 
     chassis->model->driveVector(0, 0);
   }
