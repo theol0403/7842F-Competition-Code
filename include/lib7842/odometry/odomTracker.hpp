@@ -39,9 +39,14 @@ namespace lib7842
 
     void setState(QLength, QLength, QAngle);
     void setState(qPoint);
+
     void setX(QLength);
     void setY(QLength);
     void setTheta(QAngle);
+
+    QLength& getX();
+    QLength& getY();
+    QAngle& getTheta();
 
     void resetState();
 

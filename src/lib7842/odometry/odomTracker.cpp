@@ -85,6 +85,7 @@ namespace lib7842
 
   }
 
+
   void OdomTracker::setState(QLength x, QLength y, QAngle a)
   {
     state.x = x;
@@ -99,20 +100,15 @@ namespace lib7842
     state.theta = newState.theta;
   }
 
-  void OdomTracker::setX(QLength newX)
-  {
-    state.x = newX;
-  }
 
-  void OdomTracker::setY(QLength newY)
-  {
-    state.y = newY;
-  }
+  void OdomTracker::setX(QLength newX) { state.x = newX; }
+  void OdomTracker::setY(QLength newY) { state.y = newY; }
+  void OdomTracker::setTheta(QAngle newTheta) { state.theta = newTheta; }
 
-  void OdomTracker::setTheta(QAngle newTheta)
-  {
-    state.theta = newTheta;
-  }
+  QLength& OdomTracker::getX() { return state.x; }
+  QLength& OdomTracker::getY() { return state.y; }
+  QAngle& OdomTracker::getTheta() { return state.theta; }
+
 
   void OdomTracker::resetState()
   {
@@ -130,7 +126,6 @@ namespace lib7842
   }
 
 
-
   void OdomTracker::odometryTask(void* odometryPtr)
   {
     OdomTracker* thisOdomTracker = static_cast<OdomTracker*>(odometryPtr);
@@ -142,9 +137,9 @@ namespace lib7842
       thisOdomTracker->step();
 
       count++;
-      if(count >= 10)
+      if(count >= 40)
       {
-      //  thisOdomTracker->debug();
+        thisOdomTracker->debug();
         count = 0;
       }
 
