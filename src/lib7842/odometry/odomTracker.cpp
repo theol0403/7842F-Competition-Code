@@ -82,7 +82,7 @@ namespace lib7842
     // //Wrap theta
     // if(state.theta > 180_deg) { state.theta = state.theta - 360_deg; }
     // if(state.theta < -180_deg) { state.theta = state.theta + 360_deg; }
-
+    state.theta = OdomMath::rollAngle180(state.theta);
   }
 
 
