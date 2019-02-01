@@ -30,7 +30,7 @@ namespace lib7842
   }
 
   bool OdomController::driveNoSettle(OdomController* that) {
-    return abs(that->distancePid->getError()) < 100; //mm
+    return abs(that->distancePid->getError()) < 10; //mm
   }
 
   std::function<bool(OdomController*)> OdomController::createTurnSettle(QAngle threshold)
@@ -142,6 +142,7 @@ namespace lib7842
 
   void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, std::function<bool(OdomController*)> settleFunction, double turnScale, bool reset)
   {
+    //distance = distance/2; //Idk
     angle = rollAngle180(angle);
 
     if(reset)
@@ -153,11 +154,12 @@ namespace lib7842
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
     do
     {
+      //std::cout << "DistanceAtAngle" << std::endl;
       std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
 
-      QLength distanceErr = distance - (leftDistance + rightDistance) / 2;
+      QLength distanceErr = distance - ((leftDistance + rightDistance) / 2);
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(distanceErr.convert(millimeter));
 
       QAngle angleErr = rollAngle180(angle - chassis->state.theta);
@@ -243,7 +245,7 @@ namespace lib7842
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(100); //dont forget
+      pros::delay(10); //dont forget
     }
     while(!settleFunction(this));
 
@@ -290,11 +292,11 @@ namespace lib7842
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(100);
+      pros::delay(10);
     }
-    while(distanceErr.abs() > 3_in);
+    while(distanceErr.abs() > 1_in);
 
-    driveDistanceAtAngleSettle(distanceErr, chassis->state.theta, settleFunction, turnScale, false);
+    //driveDistanceAtAngleSettle(distanceErr, chassis->state.theta, settleFunction, turnScale, false);
 
     chassis->model->driveVector(0, 0);
   }
