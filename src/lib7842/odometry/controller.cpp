@@ -24,15 +24,15 @@ namespace lib7842
     return that->distancePid->isSettled() && that->anglePid->isSettled();
   }
 
-  settleFunction_t OdomController::createSettle(QAngle threshold) {
+  settleFunction_t OdomController::makeSettle(QAngle threshold) {
     return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
   }
 
-  settleFunction_t OdomController::createSettle(QLength threshold) {
+  settleFunction_t OdomController::makeSettle(QLength threshold) {
     return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
   }
 
-  settleFunction_t OdomController::createSettle(QLength distanceThreshold, QAngle angleThreshold){
+  settleFunction_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
     return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
   }
 

@@ -8,12 +8,13 @@ namespace lib7842
 {
   using namespace OdomMath;
 
+  class OdomController;
+  typedef std::function<bool(OdomController*)> settleFunction_t;
+
   class OdomController
   {
-
+    
   public:
-
-    using settleFunction_t = std::function<bool(OdomController*)>;
 
     OdomTracker *chassis = nullptr;
 
