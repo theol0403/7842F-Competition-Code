@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::turnToAngleSettle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::turnToAngle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
     angle = rollAngle180(angle);
     turnPid->reset();
@@ -14,30 +14,16 @@ namespace lib7842
       pros::delay(10);
     }
     while(!settleFunction(this));
-
     chassis->model->rotate(0);
   }
 
-  void OdomController::turnToAngle(QAngle angle, bool settle)
+  void OdomController::turnAngle(QAngle angle, std::function<bool(OdomController*)> settleFunction)
   {
-    if(settle) {
-      turnToAngleSettle(angle, turnSettle);
-    } else {
-      turnToAngleSettle(angle, turnNoSettle);
-    }
-  }
-
-  void OdomController::turnAngle(QAngle angle, bool settle)
-  {
-    if(settle) {
-      turnToAngleSettle(angle + chassis->state.theta, turnSettle);
-    } else {
-      turnToAngleSettle(angle + chassis->state.theta, turnNoSettle);
-    }
+      turnToAngle(angle + chassis->state.theta, settleFunction);
   }
 
 
-  void OdomController::turnToPointSettle(qPoint point, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::turnToPoint(qPoint point, std::function<bool(OdomController*)> settleFunction)
   {
     turnPid->reset();
     do
@@ -48,17 +34,7 @@ namespace lib7842
       pros::delay(10);
     }
     while(!settleFunction(this));
-
     chassis->model->rotate(0);
-  }
-
-  void OdomController::turnToPoint(qPoint point, bool settle)
-  {
-    if(settle) {
-      turnToPointSettle(point, turnSettle);
-    } else {
-      turnToPointSettle(point, turnNoSettle);
-    }
   }
 
 

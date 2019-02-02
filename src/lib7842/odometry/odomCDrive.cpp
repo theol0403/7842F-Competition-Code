@@ -3,12 +3,12 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngleSettle(QLength distance, QAngle angle, double turnScale, std::function<bool(OdomController*)> settleFunction, bool reset)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, std::function<bool(OdomController*)> settleFunction, bool reset)
   {
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
 
-    if(reset) {
+    if(reset) { // Used for smoothing into this drive
       distancePid->reset();
       anglePid->reset();
     }
@@ -22,9 +22,9 @@ namespace lib7842
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
 
       m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
-
       m_angleErr = rollAngle180(angle - chassis->state.theta);
+
+      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
 
       normalizeDrive(distanceVel, angleVel);
@@ -35,26 +35,12 @@ namespace lib7842
 
     chassis->model->driveVector(0, 0);
   }
+  
 
-
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, bool settle)
+  void OdomController::driveDistance(QLength distance, std::function<bool(OdomController*)> settleFunction)
   {
-    if(settle) {
-      driveDistanceAtAngleSettle(distance, angle, turnScale, driveSettle);
-    } else {
-      driveDistanceAtAngleSettle(distance, angle, turnScale, driveNoSettle);
-    }
+    driveDistanceAtAngle(distance, chassis->state.theta, 1, settleFunction);
   }
-
-  void OdomController::driveDistance(QLength distance, bool settle)
-  {
-    if(settle) {
-      driveDistanceAtAngleSettle(distance, chassis->state.theta, 1, driveSettle);
-    } else {
-      driveDistanceAtAngleSettle(distance, chassis->state.theta, 1, driveNoSettle);
-    }
-  }
-
 
 
   void OdomController::driveForTime(int time, double vel)

@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPointSettle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -41,18 +41,8 @@ namespace lib7842
   }
 
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, bool settle)
-  {
-    if(settle) {
-      driveToPointSettle(targetPoint, turnScale, driveSettle);
-    } else {
-      driveToPointSettle(targetPoint, turnScale, driveNoSettle);
-    }
-  }
 
-
-
-  void OdomController::driveToPointSimpleSettle(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -73,39 +63,27 @@ namespace lib7842
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
-      pros::delay(100);
+      pros::delay(10);
     }
     while(m_distanceErr.abs() > 4_in);
 
-    driveDistanceAtAngleSettle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
+    driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
 
     chassis->model->driveVector(0, 0);
   }
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, bool settle)
-  {
-    if(settle) {
-      driveToPointSimpleSettle(targetPoint, turnScale, driveSettle);
-    } else {
-      driveToPointSimpleSettle(targetPoint, turnScale, driveNoSettle);
-    }
-  }
+  // bool OdomController::pathSettle(OdomController* that) {
+  //   return that->distanceErr.abs() < 4_in;
+  // }
 
-
-
-
-  bool OdomController::pathSettle(OdomController* that) {
-    return that->distanceErr.abs() < 4_in;
-  }
-
-  void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
-  {
-    for(Point &point : path.wayPoints)
-    {
-      driveToPointSettle(point, turnScale, settleFunction);
-    }
-  }
+  // void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  // {
+  //   for(Point &point : path.wayPoints)
+  //   {
+  //     driveToPointSettle(point, turnScale, settleFunction);
+  //   }
+  // }
 
 
 
