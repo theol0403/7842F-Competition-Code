@@ -44,7 +44,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
-    settleFunc_t exitFunction = createSettle(4_in);
+    settleFunc_t exitFunction = makeSettle(4_in);
     distancePid->reset();
     anglePid->reset();
     do

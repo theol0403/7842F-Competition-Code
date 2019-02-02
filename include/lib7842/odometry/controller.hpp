@@ -14,9 +14,9 @@ namespace lib7842
   class OdomController;
   typedef std::function<bool(OdomController*)> settleFunc_t;
 
-  settleFunc_t createSettle(QAngle);
-  settleFunc_t createSettle(QLength);
-  settleFunc_t createSettle(QLength, QAngle);
+  settleFunc_t makeSettle(QAngle);
+  settleFunc_t makeSettle(QLength);
+  settleFunc_t makeSettle(QLength, QAngle);
 
   class OdomController
   {
@@ -61,7 +61,7 @@ namespace lib7842
     void driveToPoint(qPoint, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle);
     void driveToPointSimple(qPoint, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle);
 
-    void drivePath(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = createSettle(DEFAULT_PATH_SETTLE), settleFunc_t = driveSettle);
+    void drivePath(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = makeSettle(DEFAULT_PATH_SETTLE), settleFunc_t = driveSettle);
 
   };
 

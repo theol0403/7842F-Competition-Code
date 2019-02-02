@@ -3,15 +3,15 @@
 namespace lib7842
 {
 
-  settleFunc_t createSettle(QAngle threshold) {
+  settleFunc_t makeSettle(QAngle threshold) {
     return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
   }
 
-  settleFunc_t createSettle(QLength threshold) {
+  settleFunc_t makeSettle(QLength threshold) {
     return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
   }
 
-  settleFunc_t createSettle(QLength distanceThreshold, QAngle angleThreshold){
+  settleFunc_t makeSettle(QLength distanceThreshold, QAngle angleThreshold){
     return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
   }
 
