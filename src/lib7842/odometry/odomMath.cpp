@@ -37,7 +37,7 @@ namespace lib7842
   Path::Path(qPoint point) : wayPoints {point} {}
   Path::Path(std::initializer_list<qPoint> points) : wayPoints {points} {}
   void Path::add(qPoint point) { wayPoints.push_back(point); }
-  void Path::add(std::initializer_list<qPoint> points) { for(const qPoint &point : points) { wayPoints.push_back(point); } }
+  void Path::add(Path path) { for(const qPoint &point : path.wayPoints) { wayPoints.push_back(point); } }
 
 }
 

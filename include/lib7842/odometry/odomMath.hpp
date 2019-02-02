@@ -48,7 +48,7 @@ namespace lib7842
     Path(qPoint);
     Path(std::initializer_list<qPoint>);
     void add(qPoint);
-    void add(std::initializer_list<qPoint>);
+    void add(Path);
   };
 
 }
