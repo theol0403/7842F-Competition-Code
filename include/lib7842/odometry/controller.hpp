@@ -13,6 +13,8 @@ namespace lib7842
 
   public:
 
+    using settleFunction_t = std::function<bool(OdomController*)>;
+
     OdomTracker *chassis = nullptr;
 
     PID *distancePid = nullptr;
@@ -32,27 +34,27 @@ namespace lib7842
     static bool turnSettle(OdomController*);
     static bool driveSettle(OdomController*);
 
-    static std::function<bool(OdomController*)> makeSettle(QAngle);
-    static std::function<bool(OdomController*)> makeSettle(QLength);
-    static std::function<bool(OdomController*)> makeSettle(QLength, QAngle);
+    static settleFunction_t makeSettle(QAngle);
+    static settleFunction_t makeSettle(QLength);
+    static settleFunction_t makeSettle(QLength, QAngle);
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
     void normalizeDrive(double &, double &);
 
-    void turnToAngle(QAngle, std::function<bool(OdomController*)> = turnSettle);
-    void turnAngle(QAngle, std::function<bool(OdomController*)> = turnSettle);
-    void turnToPoint(qPoint, std::function<bool(OdomController*)> = turnSettle);
+    void turnToAngle(QAngle, settleFunction_t = turnSettle);
+    void turnAngle(QAngle, settleFunction_t = turnSettle);
+    void turnToPoint(qPoint, settleFunction_t = turnSettle);
 
-    void driveDistanceAtAngle(QLength, QAngle, double = 1, std::function<bool(OdomController*)> = driveSettle, bool = true);
-    void driveDistance(QLength, std::function<bool(OdomController*)> = driveSettle);
+    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunction_t = driveSettle, bool = true);
+    void driveDistance(QLength, settleFunction_t = driveSettle);
 
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);
 
-    void driveToPoint(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
-    void driveToPointSimple(qPoint, double = 4, std::function<bool(OdomController*)> = driveSettle);
+    void driveToPoint(qPoint, double = 4, settleFunction_t = driveSettle);
+    void driveToPointSimple(qPoint, double = 4, settleFunction_t = driveSettle);
 
   };
 

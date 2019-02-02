@@ -44,6 +44,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
   {
+    std::function<bool(OdomController*)> exitFunction = makeSettle(4_in);
     distancePid->reset();
     anglePid->reset();
     do
@@ -65,7 +66,7 @@ namespace lib7842
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
-    while(m_distanceErr.abs() > 4_in);
+    while(!exitFunction(this));
 
     driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
 

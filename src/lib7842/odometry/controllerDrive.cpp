@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, std::function<bool(OdomController*)> settleFunction, bool reset)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunction_t settleFunction, bool reset)
   {
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
@@ -37,7 +37,7 @@ namespace lib7842
   }
 
 
-  void OdomController::driveDistance(QLength distance, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveDistance(QLength distance, settleFunction_t settleFunction)
   {
     driveDistanceAtAngle(distance, chassis->state.theta, 1, settleFunction);
   }
