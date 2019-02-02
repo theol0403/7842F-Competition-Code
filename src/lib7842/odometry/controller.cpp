@@ -20,26 +20,20 @@ namespace lib7842
     return that->turnPid->isSettled();
   }
 
-  bool OdomController::turnNoSettle(OdomController* that) {
-    return abs(that->turnPid->getError()) < 10;
-  }
-
   bool OdomController::driveSettle(OdomController* that) {
     return that->distancePid->isSettled() && that->anglePid->isSettled();
   }
 
-  bool OdomController::driveNoSettle(OdomController* that) {
-    return abs(that->distancePid->getError()) < 10; //mm
+  std::function<bool(OdomController*)> OdomController::createSettle(QAngle threshold) {
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
   }
 
-  std::function<bool(OdomController*)> OdomController::createTurnSettle(QAngle threshold)
-  {
-    return [=](OdomController* that){ return abs(that->turnPid->getError()) < threshold.convert(degree); };
+  std::function<bool(OdomController*)> OdomController::createSettle(QLength threshold) {
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
   }
 
-  std::function<bool(OdomController*)> OdomController::createDriveSettle(QLength threshold)
-  {
-    return [=](OdomController* that){ return abs(that->distancePid->getError()) < threshold.convert(millimeter); };
+  std::function<bool(OdomController*)> OdomController::createSettle(QLength distanceThreshold, QAngle angleThreshold){
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
   }
 
 
@@ -55,8 +49,7 @@ namespace lib7842
   }
 
 
-  void OdomController::normalizeDrive(double &distanceVel, double &angleVel)
-  {
+  void OdomController::normalizeDrive(double &distanceVel, double &angleVel) {
     double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
     if(maxMag > chassis->model->maxVelocity) {
       distanceVel = (distanceVel / maxMag) * chassis->model->maxVelocity;
