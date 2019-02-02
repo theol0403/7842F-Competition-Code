@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
     distancePid->reset();
     anglePid->reset();
@@ -42,9 +42,9 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, std::function<bool(OdomController*)> settleFunction)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
-    std::function<bool(OdomController*)> exitFunction = makeSettle(4_in);
+    settleFunc_t exitFunction = createSettle(4_in);
     distancePid->reset();
     anglePid->reset();
     do
@@ -74,17 +74,14 @@ namespace lib7842
   }
 
 
-  // bool OdomController::pathSettle(OdomController* that) {
-  //   return that->distanceErr.abs() < 4_in;
-  // }
 
-  // void OdomController::drivePath(Path path, double turnScale, std::function<bool(OdomController*)> settleFunction)
-  // {
-  //   for(Point &point : path.wayPoints)
-  //   {
-  //     driveToPointSettle(point, turnScale, settleFunction);
-  //   }
-  // }
+  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle)
+  {
+    for(Point &point : path.wayPoints)
+    {
+      driveToPointSettle(point, turnScale, settleFunction);
+    }
+  }
 
 
 
