@@ -9,11 +9,11 @@ namespace lib7842
   using namespace OdomMath;
 
   class OdomController;
-  typedef std::function<bool(OdomController*)> settleFunction_t;
+  typedef std::function<bool(OdomController*)> settleFunc_t;
 
   class OdomController
   {
-    
+
   public:
 
     OdomTracker *chassis = nullptr;
@@ -35,27 +35,27 @@ namespace lib7842
     static bool turnSettle(OdomController*);
     static bool driveSettle(OdomController*);
 
-    static settleFunction_t makeSettle(QAngle);
-    static settleFunction_t makeSettle(QLength);
-    static settleFunction_t makeSettle(QLength, QAngle);
+    static settleFunc_t makeSettle(QAngle);
+    static settleFunc_t makeSettle(QLength);
+    static settleFunc_t makeSettle(QLength, QAngle);
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
     void normalizeDrive(double &, double &);
 
-    void turnToAngle(QAngle, settleFunction_t = turnSettle);
-    void turnAngle(QAngle, settleFunction_t = turnSettle);
-    void turnToPoint(qPoint, settleFunction_t = turnSettle);
+    void turnToAngle(QAngle, settleFunc_t = turnSettle);
+    void turnAngle(QAngle, settleFunc_t = turnSettle);
+    void turnToPoint(qPoint, settleFunc_t = turnSettle);
 
-    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunction_t = driveSettle, bool = true);
-    void driveDistance(QLength, settleFunction_t = driveSettle);
+    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle, bool = true);
+    void driveDistance(QLength, settleFunc_t = driveSettle);
 
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);
 
-    void driveToPoint(qPoint, double = 4, settleFunction_t = driveSettle);
-    void driveToPointSimple(qPoint, double = 4, settleFunction_t = driveSettle);
+    void driveToPoint(qPoint, double = 4, settleFunc_t = driveSettle);
+    void driveToPointSimple(qPoint, double = 4, settleFunc_t = driveSettle);
 
   };
 
