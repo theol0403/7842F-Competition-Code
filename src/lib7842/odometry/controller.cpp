@@ -3,6 +3,19 @@
 namespace lib7842
 {
 
+  settleFunc_t createSettle(QAngle threshold) {
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
+  }
+
+  settleFunc_t createSettle(QLength threshold) {
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
+  }
+
+  settleFunc_t createSettle(QLength distanceThreshold, QAngle angleThreshold){
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
+  }
+
+
   OdomController::OdomController(
     OdomTracker *ichassis,
     PID *idistancePid,
@@ -22,18 +35,6 @@ namespace lib7842
 
   bool OdomController::driveSettle(OdomController* that) {
     return that->distancePid->isSettled() && that->anglePid->isSettled();
-  }
-
-  settleFunc_t OdomController::makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
-  }
-
-  settleFunc_t OdomController::makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
-  }
-
-  settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
   }
 
 

@@ -11,10 +11,21 @@ namespace lib7842
   class OdomController;
   typedef std::function<bool(OdomController*)> settleFunc_t;
 
+  settleFunc_t createSettle(QAngle);
+  settleFunc_t createSettle(QLength);
+  settleFunc_t createSettle(QLength, QAngle);
+
   class OdomController
   {
 
   public:
+
+    OdomController(
+      OdomTracker*,
+      PID *,
+      PID *,
+      PID *
+    );
 
     OdomTracker *chassis = nullptr;
 
@@ -25,19 +36,9 @@ namespace lib7842
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
-    OdomController(
-      OdomTracker*,
-      PID *,
-      PID *,
-      PID *
-    );
 
     static bool turnSettle(OdomController*);
     static bool driveSettle(OdomController*);
-
-    static settleFunc_t makeSettle(QAngle);
-    static settleFunc_t makeSettle(QLength);
-    static settleFunc_t makeSettle(QLength, QAngle);
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
