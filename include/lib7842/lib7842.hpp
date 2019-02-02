@@ -8,8 +8,8 @@
 #include "lib7842/pid/pidVelSystem.hpp"
 
 #include "lib7842/odometry/odomMath.hpp"
-#include "lib7842/odometry/odomTracker.hpp"
-#include "lib7842/odometry/odomController.hpp"
+#include "lib7842/odometry/tracker.hpp"
+#include "lib7842/odometry/controller.hpp"
 
 #include "lib7842/auton/autonSelector.hpp"
 

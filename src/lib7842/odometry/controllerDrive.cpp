@@ -1,4 +1,4 @@
-#include "odomController.hpp"
+#include "controller.hpp"
 
 namespace lib7842
 {
@@ -35,7 +35,7 @@ namespace lib7842
 
     chassis->model->driveVector(0, 0);
   }
-  
+
 
   void OdomController::driveDistance(QLength distance, std::function<bool(OdomController*)> settleFunction)
   {
