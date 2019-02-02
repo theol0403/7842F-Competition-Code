@@ -77,10 +77,11 @@ namespace lib7842
 
   void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle)
   {
-    for(Point &point : path.wayPoints)
+    for(qPoint &point : path.wayPoints)
     {
-      driveToPointSettle(point, turnScale, settleFunction);
+      driveToPoint(point, turnScale, moveOnSettle);
     }
+    driveToPoint(path.wayPoints.back(), turnScale, finalSettle);
   }
 
 
