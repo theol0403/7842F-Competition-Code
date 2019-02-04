@@ -168,7 +168,8 @@ void initializeBase()
 	{
 		s_leftEncoder = new okapi::ADIEncoder(3, 4);
 		s_rightEncoder = new okapi::ADIEncoder(5, 6);
-		s_middleEncoder = new okapi::ADIEncoder(8, 7);
+		// s_middleEncoder = new okapi::ADIEncoder(8, 7);
+		s_middleEncoder = new okapi::ADIEncoder(1, 2);
 
 		s_leftEncoder->reset();
 		s_rightEncoder->reset();
@@ -192,7 +193,7 @@ void initializeBase()
 			tracker = new lib7842::OdomTracker
 			(
 				model,
-				27_cm, -18_cm,
+				27_cm, 0_cm,
 				4_in,
 				360, 360
 			);

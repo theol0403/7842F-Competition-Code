@@ -12,7 +12,7 @@ namespace lib7842
     {
       m_angleErr = computeAngleToPoint(targetPoint);
       m_distanceErr = computeDistanceToPoint(targetPoint);
-      if(m_distanceErr.abs() < 3_in) { m_angleErr = 0_deg; }
+      if(m_distanceErr.abs() < 4_in) { m_angleErr = 0_deg; }
 
       if(m_angleErr.abs() > 90_deg)
       {
@@ -79,9 +79,9 @@ namespace lib7842
   {
     for(qPoint &point : path.wayPoints)
     {
-      driveToPoint(point, turnScale, moveOnSettle);
+      driveToPointSimple(point, turnScale, moveOnSettle);
     }
-    driveToPoint(path.wayPoints.back(), turnScale, finalSettle);
+    //driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle);
   }
 
 
