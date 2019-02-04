@@ -185,14 +185,14 @@ void initializeBase()
 			std::make_shared<ADIEncoder>(*s_leftEncoder),
 			std::make_shared<ADIEncoder>(*s_middleEncoder),
 			std::make_shared<ADIEncoder>(*s_rightEncoder),
-			100,
+			200,
 			12000);
 
 
 			tracker = new lib7842::OdomTracker
 			(
 				model,
-				27_cm, 18_cm,
+				27_cm, -18_cm,
 				4_in,
 				360, 360
 			);
