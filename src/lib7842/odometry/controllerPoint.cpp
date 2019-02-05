@@ -18,17 +18,18 @@ namespace lib7842
       m_angleErr = computeAngleToPoint(targetPoint);
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < chassis->m_chassisWidth) {
-        m_angleErr = 0_deg;
-        m_distanceErr = distanceToClose;
-      } else {
+      if(distanceToTarget.abs() > chassis->m_chassisWidth) {
+        m_angleErr = computeAngleToPoint(targetPoint);
         m_distanceErr = distanceToTarget;
+      } else {
+        m_angleErr = 0_deg; //Lock onto angle
+        m_distanceErr = distanceToClose;
       }
 
       if(m_angleErr.abs() > 90_deg)
       {
         m_angleErr += 180_deg;
-        m_angleErr = rollAngle180(m_angleErr);// * sgn(m_angleErr.convert(degree));
+        m_angleErr = rollAngle180(m_angleErr);
       }
 
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
