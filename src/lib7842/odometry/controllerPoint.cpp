@@ -34,13 +34,12 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
-      normalizeDrive(distanceVel, angleVel);
-      chassis->model->driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
     while(!settleFunction(this));
 
-    chassis->model->driveVector(0, 0);
+    driveVector(0, 0);
   }
 
 
@@ -64,15 +63,13 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
-      normalizeDrive(distanceVel, angleVel);
-      chassis->model->driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
     while(m_distanceErr > chassis->m_chassisWidth);
 
-    driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
-
-    chassis->model->driveVector(0, 0);
+    driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction);
+    driveVector(0, 0);
   }
 
 

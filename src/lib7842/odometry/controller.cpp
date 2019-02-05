@@ -49,14 +49,18 @@ namespace lib7842
     return computeDistanceBetweenPoints(chassis->state, point);
   }
 
+  void OdomController::driveVector(double forwardSpeed, double yaw)
+  {
+    double leftOutput = forwardSpeed + yaw;
+    double rightOutput = forwardSpeed - yaw;
+    // double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
+    // if (maxInputMag > 1) {
+    //   leftOutput /= maxInputMag;
+    //   rightOutput /= maxInputMag;
+    // }
 
-  void OdomController::normalizeDrive(double &distanceVel, double &angleVel) {
-    double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
-    if(maxMag > 1.0) {
-      distanceVel = (distanceVel / maxMag);
-      angleVel = (angleVel / maxMag);
-    }
+    chassis->model->left(leftOutput);
+    chassis->model->right(rightOutput);
   }
-
 
 }

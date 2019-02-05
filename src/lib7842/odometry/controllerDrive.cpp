@@ -21,13 +21,12 @@ namespace lib7842
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
 
-      normalizeDrive(distanceVel, angleVel);
-      chassis->model->driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
     while(!settleFunction(this));
 
-    chassis->model->driveVector(0, 0);
+    driveVector(0, 0);
   }
 
 
@@ -39,9 +38,9 @@ namespace lib7842
 
   void OdomController::driveForTime(int time, double vel)
   {
-    chassis->model->driveVector(vel, 0);
+    driveVector(vel, 0);
     pros::delay(time);
-    chassis->model->driveVector(0, 0);
+    driveVector(0, 0);
   }
 
 
@@ -50,12 +49,11 @@ namespace lib7842
     while(time > 0) {
       m_angleErr = rollAngle180(angle - chassis->state.theta);
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      normalizeDrive(vel, angleVel);
-      chassis->model->driveVector(vel, angleVel);
+      driveVector(vel, angleVel);
       time -= 10;
       pros::delay(10);
     }
-    chassis->model->driveVector(0, 0);
+    driveVector(0, 0);
   }
 
 

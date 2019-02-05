@@ -19,7 +19,7 @@ namespace lib7842
 
   void OdomController::turnAngle(QAngle angle, settleFunc_t settleFunction)
   {
-      turnToAngle(angle + chassis->state.theta, settleFunction);
+    turnToAngle(angle + chassis->state.theta, settleFunction);
   }
 
 

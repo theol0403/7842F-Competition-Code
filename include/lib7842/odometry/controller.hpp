@@ -46,7 +46,7 @@ namespace lib7842
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
-    void normalizeDrive(double &, double &);
+    void driveVector(double, double);
 
     void turnToAngle(QAngle, settleFunc_t = turnSettle);
     void turnAngle(QAngle, settleFunc_t = turnSettle);
