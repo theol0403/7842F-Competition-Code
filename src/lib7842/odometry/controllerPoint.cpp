@@ -5,19 +5,17 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
-    distancePid->reset();
-    anglePid->reset();
 
     do
     {
       m_angleErr = computeAngleToPoint(targetPoint);
       m_distanceErr = computeDistanceToPoint(targetPoint);
-      if(m_distanceErr.abs() < 4_in) { m_angleErr = 0_deg; }
+      if(m_distanceErr.abs() < chassis->m_chassisWidth) { m_angleErr = 0_deg; }
 
       if(m_angleErr.abs() > 90_deg)
       {
-        m_angleErr -= 180_deg;
-        m_angleErr = rollAngle180(m_angleErr) * sgn(m_angleErr.convert(degree));
+        m_angleErr += 180_deg;
+        m_angleErr = rollAngle180(m_angleErr);// * sgn(m_angleErr.convert(degree));
       }
 
       qPoint closestPoint = closest(chassis->state, targetPoint);
@@ -31,8 +29,11 @@ namespace lib7842
       double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceToClose.convert(millimeter));
 
-      normalizeDrive(distanceVel, angleVel);
-      chassis->model->driveVector(distanceVel, angleVel);
+      std::cout << "angleVel: " << angleVel << std::endl;
+
+      //normalizeDrive(distanceVel, angleVel);
+  chassis->model->driveVector(distanceVel, angleVel);
+
       pros::delay(10);
     }
     while(!settleFunction(this));
