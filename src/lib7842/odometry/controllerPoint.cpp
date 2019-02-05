@@ -26,14 +26,11 @@ namespace lib7842
       QLength m_distanceToClose = computeDistanceToPoint(closestPoint);
       if(angleToClose.abs() >= 90_deg) m_distanceToClose = -m_distanceToClose;
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceToClose.convert(millimeter));
-
-      std::cout << "angleVel: " << angleVel << std::endl;
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = distancePid->calculateErr(m_distanceToClose.convert(millimeter));
 
       //normalizeDrive(distanceVel, angleVel);
-  chassis->model->driveVector(distanceVel, angleVel);
-
+      chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
     while(!settleFunction(this));

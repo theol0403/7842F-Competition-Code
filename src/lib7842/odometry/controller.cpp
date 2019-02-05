@@ -52,9 +52,9 @@ namespace lib7842
 
   void OdomController::normalizeDrive(double &distanceVel, double &angleVel) {
     double maxMag = std::max(fabs(angleVel), fabs(distanceVel));
-    if(maxMag > chassis->model->maxVelocity) {
-      distanceVel = (distanceVel / maxMag) * chassis->model->maxVelocity;
-      angleVel = (angleVel / maxMag) * chassis->model->maxVelocity;
+    if(maxMag > 1.0) {
+      distanceVel = (distanceVel / maxMag);
+      angleVel = (angleVel / maxMag);
     }
   }
 
