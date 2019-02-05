@@ -57,8 +57,8 @@ namespace lib7842
         m_distanceErr = -m_distanceErr;
       }
 
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);

@@ -190,8 +190,8 @@ class ChassisModel : public ReadOnlyChassisModel {
    */
   virtual void setMaxVoltage(double imaxVoltage);
 
-  double maxVelocity; //Theo
   protected:
+  double maxVelocity;
   double maxVoltage;
 };
 } // namespace okapi

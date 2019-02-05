@@ -24,8 +24,8 @@ namespace lib7842
       m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
       m_angleErr = rollAngle180(angle - chassis->state.theta);
 
-      double distanceVel = chassis->model->maxVelocity * distancePid->calculateErr(m_distanceErr.convert(millimeter));
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
 
       normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
@@ -55,7 +55,7 @@ namespace lib7842
   {
     while(time > 0) {
       m_angleErr = rollAngle180(angle - chassis->state.theta);
-      double angleVel = chassis->model->maxVelocity * anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       chassis->model->driveVector(vel, angleVel);
       time -= 10;
       pros::delay(10);
