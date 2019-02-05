@@ -79,7 +79,7 @@ namespace lib7842
   {
     for(qPoint &point : path.wayPoints)
     {
-      driveToPointSimple(point, turnScale, moveOnSettle);
+      driveToPoint(point, turnScale, moveOnSettle);
     }
     //driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle);
   }
