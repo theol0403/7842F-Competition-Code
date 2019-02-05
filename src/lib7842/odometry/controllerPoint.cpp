@@ -5,12 +5,25 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
-
     do
     {
+      qPoint closestPoint = closest(chassis->state, targetPoint);
+
+      QAngle angleToClose = computeAngleToPoint(closestPoint);
+      if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg;
+
+      QLength distanceToClose = computeDistanceToPoint(closestPoint);
+      if(angleToClose.abs() >= 90_deg) distanceToClose = -distanceToClose;
+
       m_angleErr = computeAngleToPoint(targetPoint);
-      m_distanceErr = computeDistanceToPoint(targetPoint);
-      if(m_distanceErr.abs() < chassis->m_chassisWidth) { m_angleErr = 0_deg; }
+      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
+
+      if(distanceToTarget.abs() < chassis->m_chassisWidth) {
+        m_angleErr = 0_deg;
+        m_distanceErr = distanceToClose;
+      } else {
+        m_distanceErr = distanceToTarget;
+      }
 
       if(m_angleErr.abs() > 90_deg)
       {
@@ -18,16 +31,8 @@ namespace lib7842
         m_angleErr = rollAngle180(m_angleErr);// * sgn(m_angleErr.convert(degree));
       }
 
-      qPoint closestPoint = closest(chassis->state, targetPoint);
-
-      QAngle angleToClose = computeAngleToPoint(closestPoint);
-      if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg; //check
-
-      QLength m_distanceToClose = computeDistanceToPoint(closestPoint);
-      if(angleToClose.abs() >= 90_deg) m_distanceToClose = -m_distanceToClose;
-
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      double distanceVel = distancePid->calculateErr(m_distanceToClose.convert(millimeter));
+      double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
       //normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
