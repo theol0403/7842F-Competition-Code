@@ -3,16 +3,10 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunction, bool reset)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunction)
   {
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
-
-    if(reset) { // Used for smoothing into this drive
-      distancePid->reset();
-      anglePid->reset();
-    }
-
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
 
     do
@@ -56,6 +50,7 @@ namespace lib7842
     while(time > 0) {
       m_angleErr = rollAngle180(angle - chassis->state.theta);
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      normalizeDrive(vel, angleVel);
       chassis->model->driveVector(vel, angleVel);
       time -= 10;
       pros::delay(10);

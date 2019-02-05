@@ -52,7 +52,7 @@ namespace lib7842
     void turnAngle(QAngle, settleFunc_t = turnSettle);
     void turnToPoint(qPoint, settleFunc_t = turnSettle);
 
-    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle, bool = true);
+    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle);
     void driveDistance(QLength, settleFunc_t = driveSettle);
 
     void driveForTime(int, double);

@@ -34,7 +34,7 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
-      //normalizeDrive(distanceVel, angleVel);
+      normalizeDrive(distanceVel, angleVel);
       chassis->model->driveVector(distanceVel, angleVel);
       pros::delay(10);
     }
