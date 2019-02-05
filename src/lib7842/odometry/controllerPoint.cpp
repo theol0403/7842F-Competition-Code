@@ -42,7 +42,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
-    settleFunc_t exitFunction = makeSettle(4_in);
+    settleFunc_t exitFunction = driveSettle;//makeSettle(4_in);
     distancePid->reset();
     anglePid->reset();
     do
@@ -52,8 +52,8 @@ namespace lib7842
 
       if(m_angleErr.abs() > 90_deg)
       {
-        m_angleErr -= 180_deg;
-        m_angleErr = rollAngle180(m_angleErr) * sgn(m_angleErr.convert(degree));
+        m_angleErr += 180_deg;
+        m_angleErr = rollAngle180(m_angleErr);
         m_distanceErr = -m_distanceErr;
       }
 
@@ -66,7 +66,7 @@ namespace lib7842
     }
     while(!exitFunction(this));
 
-    driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
+    //driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunction, false);
 
     chassis->model->driveVector(0, 0);
   }
@@ -79,7 +79,16 @@ namespace lib7842
     {
       driveToPoint(point, turnScale, moveOnSettle);
     }
-    //driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle);
+    driveToPoint(path.wayPoints.back(), turnScale, finalSettle);
+  }
+
+  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle)
+  {
+    for(qPoint &point : path.wayPoints)
+    {
+      driveToPointSimple(point, turnScale, moveOnSettle);
+    }
+    driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle);
   }
 
 

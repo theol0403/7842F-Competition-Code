@@ -62,6 +62,7 @@ namespace lib7842
     void driveToPointSimple(qPoint, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle);
 
     void drivePath(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
+    void drivePathSimple(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
 
   };
 
