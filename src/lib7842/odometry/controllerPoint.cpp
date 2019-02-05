@@ -5,6 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunction)
   {
+    QAngle lastTarget = chassis->state.theta;
     do
     {
       qPoint closestPoint = closest(chassis->state, targetPoint);
@@ -20,9 +21,10 @@ namespace lib7842
 
       if(distanceToTarget.abs() > chassis->m_chassisWidth) {
         m_angleErr = computeAngleToPoint(targetPoint);
+        lastTarget = m_angleErr + chassis->state.theta;
         m_distanceErr = distanceToTarget;
       } else {
-        m_angleErr = 0_deg; //Lock onto angle
+        m_angleErr = lastTarget - chassis->state.theta;
         m_distanceErr = distanceToClose;
       }
 
