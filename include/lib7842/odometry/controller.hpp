@@ -15,12 +15,10 @@ namespace lib7842
   settleFunc_t makeSettle(QAngle);
   settleFunc_t makeSettle(QLength);
   settleFunc_t makeSettle(QLength, QAngle);
-
   bool turnSettle(OdomController*);
   bool driveSettle(OdomController*);
 
   turnFunc_t makeArc(double, double);
-
   void pointTurn(OdomController*, double);
   void leftPivot(OdomController*, double);
   void rightPivot(OdomController*, double);
@@ -52,9 +50,9 @@ namespace lib7842
 
     void driveVector(double, double);
 
-    void turnToAngle(QAngle, settleFunc_t = turnSettle);
-    void turnAngle(QAngle, settleFunc_t = turnSettle);
-    void turnToPoint(qPoint, settleFunc_t = turnSettle);
+    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
 
     void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle);
     void driveDistance(QLength, settleFunc_t = driveSettle);
