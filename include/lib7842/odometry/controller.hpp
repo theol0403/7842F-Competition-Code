@@ -13,6 +13,7 @@ namespace lib7842
 
   class OdomController;
   typedef std::function<bool(OdomController*)> settleFunc_t;
+  typedef std::function<void(OdomController*, double)> turnFunc_t;
 
   settleFunc_t makeSettle(QAngle);
   settleFunc_t makeSettle(QLength);
