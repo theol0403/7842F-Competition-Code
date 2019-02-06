@@ -106,6 +106,11 @@ namespace lib7842
     }
   }
 
+  double OdomController::filterVelocity()
+  {
+    return velFilter.filter(getActualVelocity());
+  }
+
   double OdomController::getActualVelocity()
   {
     return (std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
@@ -113,7 +118,7 @@ namespace lib7842
 
   double OdomController::getFilteredVelocity()
   {
-    return velFilter.filter(getActualVelocity());
+    return velFilter.getOutput();
   }
 
 

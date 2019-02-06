@@ -46,7 +46,7 @@ namespace lib7842
 
     #define velFilterSize 20
     AverageFilter<velFilterSize> velFilter;
-    
+
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
@@ -54,6 +54,7 @@ namespace lib7842
     void driveVector(double, double);
 
     void resetVelocity();
+    double filterVelocity();
     double getActualVelocity();
     double getFilteredVelocity();
 
