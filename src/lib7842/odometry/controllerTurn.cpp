@@ -3,6 +3,18 @@
 namespace lib7842
 {
 
+  void OdomController::turnPoint(double turnVel) {
+    chassis->model->rotate(turnVel);
+  }
+
+  void OdomController::turnPivotLeft(double turnVel) {
+    chassis->model->left(turnVel * 2);
+  }
+
+  void OdomController::turnPivotRight(double turnVel) {
+    chassis->model->right(-turnVel * 2);
+  }
+
   void OdomController::turnToAngle(QAngle angle, settleFunc_t settleFunction)
   {
     angle = rollAngle180(angle);
