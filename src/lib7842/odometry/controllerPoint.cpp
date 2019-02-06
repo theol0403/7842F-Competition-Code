@@ -17,15 +17,16 @@ namespace lib7842
       if(angleToClose.abs() >= 90_deg) distanceToClose = -distanceToClose;
 
       m_angleErr = computeAngleToPoint(targetPoint);
+
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() > chassis->m_chassisWidth) {
+      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < 4_in) {
+        m_angleErr = lastTarget - chassis->state.theta;
+        m_distanceErr = distanceToClose;
+      } else {
         m_angleErr = computeAngleToPoint(targetPoint);
         lastTarget = m_angleErr + chassis->state.theta;
         m_distanceErr = distanceToTarget;
-      } else {
-        m_angleErr = lastTarget - chassis->state.theta;
-        m_distanceErr = distanceToClose;
       }
 
       if(m_angleErr.abs() > 90_deg)
