@@ -57,4 +57,19 @@ namespace lib7842
   }
 
 
+  void OdomController::allignToAngle(QAngle angle, double vel, double velThresh)
+  {
+    turnToAngle(angle);
+    chassis->model->forward(vel);
+    
+    AverageFilter<20> avgFilter;
+
+    while(avgFilter.getOutput() < velThresh) {
+      avgFilter.filter((chassis->model->getLeftSideMotor()->getActualVelocity() + chassis->model->getRightSideMotor()->getActualVelocity()) / 2);
+      pros::delay(10); }
+
+
+  }
+
+
 }

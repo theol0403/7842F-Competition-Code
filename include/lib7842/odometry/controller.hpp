@@ -23,7 +23,6 @@ namespace lib7842
   void leftPivot(OdomController*, double);
   void rightPivot(OdomController*, double);
 
-
   class OdomController
   {
 
@@ -45,10 +44,18 @@ namespace lib7842
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
+    #define velFilterSize 20
+    AverageFilter<velFilterSize> velFilter;
+    
+
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
     void driveVector(double, double);
+
+    void resetVelocity();
+    double getActualVelocity();
+    double getFilteredVelocity();
 
     void turnToAngle(QAngle, bool = true, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
     void turnAngle(QAngle, bool = true, turnFunc_t = pointTurn, settleFunc_t = turnSettle);

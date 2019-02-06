@@ -96,4 +96,27 @@ namespace lib7842
     chassis->model->right(rightOutput);
   }
 
+
+
+  void OdomController::resetVelocity()
+  {
+    double actualVelocity = getActualVelocity();
+    for(int i = 0; i < velFilterSize; i++) {
+      velFilter.filter(actualVelocity);
+    }
+  }
+
+  double OdomController::getActualVelocity()
+  {
+    return (std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
+  }
+
+  double OdomController::getFilteredVelocity()
+  {
+    return velFilter.filter(getActualVelocity());
+  }
+
+
+
+
 }

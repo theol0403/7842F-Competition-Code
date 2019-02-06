@@ -29,8 +29,7 @@ namespace lib7842
         m_distanceErr = distanceToTarget;
       }
 
-      if(m_angleErr.abs() > 90_deg)
-      {
+      if(m_angleErr.abs() > 90_deg) {
         m_angleErr += 180_deg;
         m_angleErr = rollAngle180(m_angleErr);
       }
