@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunction)
+  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
     angle = rollAngle180(angle);
     turnPid->reset();
@@ -13,17 +13,17 @@ namespace lib7842
       chassis->model->rotate(turnVel);
       pros::delay(10);
     }
-    while(!settleFunction(this));
+    while(!settleFunc(this));
     chassis->model->rotate(0);
   }
 
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunction)
+  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
-    turnToAngle(angle + chassis->state.theta, settleFunction);
+    turnToAngle(angle + chassis->state.theta, settleFunc);
   }
 
 
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunction)
+  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
     turnPid->reset();
     do
@@ -33,7 +33,7 @@ namespace lib7842
       chassis->model->rotate(turnVel);
       pros::delay(10);
     }
-    while(!settleFunction(this));
+    while(!settleFunc(this));
     chassis->model->rotate(0);
   }
 
