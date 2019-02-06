@@ -4,9 +4,6 @@
 #include "tracker.hpp"
 #include "lib7842/pid/pidSystem.hpp"
 
-#define DEFAULT_POINT_SCALE 4
-#define DEFAULT_PATH_SETTLE 2_in
-
 namespace lib7842
 {
   using namespace OdomMath;
@@ -65,11 +62,11 @@ namespace lib7842
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);
 
-    void driveToPoint(qPoint, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle);
-    void driveToPointSimple(qPoint, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle);
+    void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle);
+    void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle);
 
-    void drivePath(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
-    void drivePathSimple(Path, double = DEFAULT_POINT_SCALE, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
+    void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
+    void drivePathSimple(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
 
   };
 
