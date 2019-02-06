@@ -15,6 +15,40 @@ namespace lib7842
     return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
   }
 
+  bool turnSettle(OdomController* that) {
+    return that->turnPid->isSettled();
+  }
+
+  bool driveSettle(OdomController* that) {
+    return that->distancePid->isSettled() && that->anglePid->isSettled();
+  }
+
+
+  turnFunc_t makeArc(double leftRatio, double rightRatio) { return [=](OdomController* that, double turnVel) {
+    if(leftRatio > rightRatio) {
+      that->chassis->model->left(turnVel * leftRatio);
+      that->chassis->model->right(turnVel * rightRatio);
+    } else if(leftRatio < rightRatio) {
+      that->chassis->model->left(-turnVel * leftRatio);
+      that->chassis->model->right(-turnVel * rightRatio);
+    } else {
+      that->chassis->model->rotate(turnVel);
+    }
+  };}
+
+  void pointTurn(OdomController* that, double turnVel) {
+    that->chassis->model->rotate(turnVel);
+  }
+
+  void leftPivot(OdomController* that, double turnVel) {
+    that->chassis->model->left(turnVel * 2);
+  }
+
+  void rightPivot(OdomController* that, double turnVel) {
+    that->chassis->model->right(-turnVel * 2);
+  }
+  
+
 
   OdomController::OdomController(
     OdomTracker *ichassis,
@@ -27,15 +61,6 @@ namespace lib7842
   anglePid(ianglePid),
   turnPid(iturnPid)
   {};
-
-
-  bool OdomController::turnSettle(OdomController* that) {
-    return that->turnPid->isSettled();
-  }
-
-  bool OdomController::driveSettle(OdomController* that) {
-    return that->distancePid->isSettled() && that->anglePid->isSettled();
-  }
 
 
   QAngle OdomController::computeAngleToPoint(qPoint point)

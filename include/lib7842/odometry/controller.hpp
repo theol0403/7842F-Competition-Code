@@ -19,6 +19,16 @@ namespace lib7842
   settleFunc_t makeSettle(QLength);
   settleFunc_t makeSettle(QLength, QAngle);
 
+  bool turnSettle(OdomController*);
+  bool driveSettle(OdomController*);
+
+  turnFunc_t makeArc(double, double);
+
+  void pointTurn(OdomController*, double);
+  void leftPivot(OdomController*, double);
+  void rightPivot(OdomController*, double);
+
+
   class OdomController
   {
 
@@ -39,10 +49,6 @@ namespace lib7842
 
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
-
-
-    static bool turnSettle(OdomController*);
-    static bool driveSettle(OdomController*);
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
