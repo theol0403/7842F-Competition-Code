@@ -7,7 +7,7 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-  chassis->turnAngle(90_deg, makeArc(3, 1));
+  chassis->turnAngle(90_deg, false, rightPivot);
   //chassis->driveToPoint({0_in, 1_ft});
   //chassis->drivePath({{0_in, 2_ft}, {2_ft, 2_ft}}, 1);//, {2_ft, 0_ft}, {0_ft, 0_ft}}, 10);// makeSettle(1_in));
 
