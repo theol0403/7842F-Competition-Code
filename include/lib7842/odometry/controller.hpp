@@ -53,9 +53,11 @@ namespace lib7842
 
     void driveVector(double, double);
 
-    void resetVelocity();
-    double filterVelocity();
+    void resetVelocity(double);
+    void resetVelocityActual();
+    void resetVelocityMax();
     double getActualVelocity();
+    double filterVelocity();
     double getFilteredVelocity();
 
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
@@ -64,9 +66,9 @@ namespace lib7842
 
     void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle);
     void driveDistance(QLength, settleFunc_t = driveSettle);
-
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);
+    void allignToAngle(QAngle, double, double);
 
     void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle);
     void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle);
