@@ -58,9 +58,9 @@ namespace lib7842
     double getActualVelocity();
     double getFilteredVelocity();
 
-    void turnToAngle(QAngle, bool = true, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
-    void turnAngle(QAngle, bool = true, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
-    void turnToPoint(qPoint, bool = true, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
 
     void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle);
     void driveDistance(QLength, settleFunc_t = driveSettle);

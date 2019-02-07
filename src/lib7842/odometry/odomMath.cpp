@@ -84,6 +84,15 @@ namespace lib7842::OdomMath
     return newAngle;
   }
 
+  QAngle rollAngle90(QAngle angle) {
+    angle = rollAngle180(angle);
+    if(angle.abs() > 90_deg) {
+      angle += 180_deg;
+      angle = rollAngle180(angle);
+    }
+    return angle;
+  }
+
 
   QLength computeDistanceBetweenPoints(qPoint firstPoint, qPoint secondPoint)
   {

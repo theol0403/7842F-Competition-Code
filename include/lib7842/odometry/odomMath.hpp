@@ -69,7 +69,7 @@ namespace lib7842::OdomMath
 
   QAngle rollAngle360(QAngle);
   QAngle rollAngle180(QAngle);
-  bool shouldDriveBackwards(QAngle);
+  QAngle rollAngle90(QAngle);
 
   QLength computeDistanceBetweenPoints(qPoint, qPoint);
 }
