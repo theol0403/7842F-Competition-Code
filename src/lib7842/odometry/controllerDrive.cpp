@@ -5,6 +5,7 @@ namespace lib7842
 
   void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc)
   {
+    resetEmergencyAbort();
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
     std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
@@ -66,6 +67,6 @@ namespace lib7842
     while(filterVelocity() > velThresh) { pros::delay(10); }
     chassis->setTheta(angle);
   }
-  
+
 
 }

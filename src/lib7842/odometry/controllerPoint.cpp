@@ -5,6 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
+    resetEmergencyAbort();
     QAngle lastTarget = chassis->state.theta;
     do
     {
@@ -47,6 +48,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
+    resetEmergencyAbort(); //work here
     distancePid->reset();
     anglePid->reset();
     do

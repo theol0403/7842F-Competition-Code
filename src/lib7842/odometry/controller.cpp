@@ -4,23 +4,23 @@ namespace lib7842
 {
 
   settleFunc_t makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold; };
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
   }
 
   settleFunc_t makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold; };
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
   }
 
   settleFunc_t makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold; };
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
   }
 
   bool turnSettle(OdomController* that) {
-    return that->turnPid->isSettled();
+    return that->turnPid->isSettled() || that->emergencyAbort();
   }
 
   bool driveSettle(OdomController* that) {
-    return that->distancePid->isSettled() && that->anglePid->isSettled();
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
   }
 
 
@@ -98,36 +98,19 @@ namespace lib7842
 
 
 
-  void OdomController::resetVelocity(double vel)
-  {
-    for(int i = 0; i < velFilterSize; i++) { velFilter.filter(vel); }
+  void OdomController::resetVelocity(double vel) { for(int i = 0; i < velFilterSize; i++) { velFilter.filter(vel); } }
+  void OdomController::resetVelocityActual() { resetVelocity(getActualVelocity()); }
+  void OdomController::resetVelocityMax() { resetVelocity(200); }
+
+  double OdomController::getActualVelocity() {
+    return ( std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
   }
 
-  void OdomController::resetVelocityActual()
-  {
-    resetVelocity(getActualVelocity());
-  }
+  double OdomController::filterVelocity() { return velFilter.filter(getActualVelocity()); }
+  double OdomController::getFilteredVelocity() { return velFilter.getOutput(); }
 
-  void OdomController::resetVelocityMax()
-  {
-    resetVelocity(200);
-  }
-
-  double OdomController::getActualVelocity()
-  {
-    return (std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
-  }
-
-  double OdomController::filterVelocity()
-  {
-    return velFilter.filter(getActualVelocity());
-  }
-
-  double OdomController::getFilteredVelocity()
-  {
-    return velFilter.getOutput();
-  }
-
+  void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
+  bool OdomController::emergencyAbort() { return getFilteredVelocity() < 5; }
 
 
 

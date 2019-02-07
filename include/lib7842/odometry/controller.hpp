@@ -59,6 +59,8 @@ namespace lib7842
     double getActualVelocity();
     double filterVelocity();
     double getFilteredVelocity();
+    void resetEmergencyAbort();
+    bool emergencyAbort();
 
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
     void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
