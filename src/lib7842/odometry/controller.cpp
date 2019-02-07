@@ -110,7 +110,7 @@ namespace lib7842
   double OdomController::getFilteredVelocity() { return velFilter.getOutput(); }
 
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
-  bool OdomController::emergencyAbort() { return getFilteredVelocity() < 5; }
+  bool OdomController::emergencyAbort() { return filterVelocity() < 5; }
 
 
 

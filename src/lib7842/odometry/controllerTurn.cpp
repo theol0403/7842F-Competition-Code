@@ -5,6 +5,7 @@ namespace lib7842
 
   void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
+    resetEmergencyAbort();
     angle = rollAngle180(angle);
     turnPid->reset();
     do {
@@ -25,6 +26,7 @@ namespace lib7842
 
   void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
+    resetEmergencyAbort();
     turnPid->reset();
     do
     {
