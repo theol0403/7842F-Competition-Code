@@ -30,10 +30,7 @@ namespace lib7842
         m_distanceErr = distanceToTarget;
       }
 
-      if(m_angleErr.abs() > 90_deg) {
-        m_angleErr += 180_deg;
-        m_angleErr = rollAngle180(m_angleErr);
-      }
+      m_angleErr = rollAngle90(m_angleErr);
 
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
@@ -58,11 +55,8 @@ namespace lib7842
       m_distanceErr = computeDistanceToPoint(targetPoint);
 
       if(m_angleErr.abs() > 90_deg)
-      {
-        m_angleErr += 180_deg;
-        m_angleErr = rollAngle180(m_angleErr);
-        m_distanceErr = -m_distanceErr;
-      }
+      { m_distanceErr = -m_distanceErr; }
+      m_angleErr = rollAngle90(m_angleErr);
 
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
