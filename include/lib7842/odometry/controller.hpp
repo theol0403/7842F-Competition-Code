@@ -3,6 +3,7 @@
 #include "odomMath.hpp"
 #include "tracker.hpp"
 #include "lib7842/pid/pidSystem.hpp"
+#include "lib7842/auton/autonSelector.hpp"
 
 namespace lib7842
 {

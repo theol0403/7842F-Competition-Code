@@ -15,7 +15,7 @@ namespace lib7842
   struct autonPair
   {
     std::string autonName;
-    std::function<void(lib7842::autonSides)> autoFunction;
+    std::function<void(lib7842::autonSides)> autonFunc;
   };
 
 

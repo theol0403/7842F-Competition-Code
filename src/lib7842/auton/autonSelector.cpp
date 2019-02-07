@@ -147,7 +147,7 @@ namespace lib7842
 
   void AutonSelector::run()
   {
-    m_autonPairs[m_currentAutonIndex].autoFunction(m_currentSide);
+    m_autonPairs[m_currentAutonIndex].autonFunc(m_currentSide);
   }
 
   void AutonSelector::unlockDriver(std::function<void()> unlockFunction)

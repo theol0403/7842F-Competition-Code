@@ -6,7 +6,7 @@ namespace lib7842
   /**
   * Settle Functions
   */
- 
+
   settleFunc_t makeSettle(QAngle threshold) {
     return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
   }
@@ -73,7 +73,7 @@ namespace lib7842
   void OdomController::resetVelocityMax() { resetVelocity(200); }
 
   double OdomController::getActualVelocity() {
-    return ( std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
+    return (std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
   }
 
   double OdomController::filterVelocity() { return velFilter.filter(getActualVelocity()); }
@@ -82,6 +82,11 @@ namespace lib7842
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
   bool OdomController::emergencyAbort() { return filterVelocity() < 5; }
 
+
+  void OdomController::setFeildColor(autonSides side)
+  {
+    
+  }
 
 
 }
