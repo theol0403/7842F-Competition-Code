@@ -48,7 +48,7 @@ namespace lib7842
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
     resetEmergencyAbort();
-    settleFunc_t exitFunc = makeSettle(chassis->m_chassisWidth);
+    settleFunc_t exitFunc = makeSettle(2_in);
     distancePid->reset();
     anglePid->reset();
     do
@@ -60,13 +60,13 @@ namespace lib7842
       { m_distanceErr = -m_distanceErr; }
       m_angleErr = rollAngle90(m_angleErr);
 
-      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
-      driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel * turnScale);
       pros::delay(10);
     }
-    while(!exitFunc);
+    while(!(exitFunc(this) || settleFunc(this)));
 
     driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunc);
     driveVector(0, 0);

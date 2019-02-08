@@ -80,7 +80,14 @@ namespace lib7842
   double OdomController::getFilteredVelocity() { return velFilter.getOutput(); }
 
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
-  bool OdomController::emergencyAbort() { return filterVelocity() < 5; }
+  bool OdomController::emergencyAbort() {
+    if(filterVelocity() < 5)
+    {
+      std::cout << "EMERGENCY ABORT" << std::endl;
+      return true;
+    }
+    return false;
+  }
 
 
   // void OdomController::setFeildColor(autonSides side)
