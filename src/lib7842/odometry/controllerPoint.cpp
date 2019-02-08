@@ -20,9 +20,8 @@ namespace lib7842
       m_angleErr = computeAngleToPoint(targetPoint);
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
-      QLength distanceTargetClose = computeDistanceBetweenPoints(targetPoint, closestPoint);
 
-      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < 2_in && distanceTargetClose < 2_in) {
+      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < chassis->m_chassisWidth / 2) {
         m_angleErr = lastTarget - chassis->state.theta;
         m_distanceErr = distanceToClose;
       } else {

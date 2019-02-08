@@ -83,10 +83,10 @@ namespace lib7842
   bool OdomController::emergencyAbort() { return filterVelocity() < 5; }
 
 
-  void OdomController::setFeildColor(autonSides side)
-  {
-    
-  }
+  // void OdomController::setFeildColor(autonSides side)
+  // {
+  //
+  // }
 
 
 }
