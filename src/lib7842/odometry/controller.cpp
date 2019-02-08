@@ -56,11 +56,11 @@ namespace lib7842
   {
     double leftOutput = forwardSpeed + yaw;
     double rightOutput = forwardSpeed - yaw;
-    // double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
-    // if (maxInputMag > 1) {
-    //   leftOutput /= maxInputMag;
-    //   rightOutput /= maxInputMag;
-    // }
+    double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
+    if (maxInputMag > 1) {
+      leftOutput /= maxInputMag;
+      rightOutput /= maxInputMag;
+    }
 
     chassis->model->left(leftOutput);
     chassis->model->right(rightOutput);

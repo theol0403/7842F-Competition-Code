@@ -32,10 +32,10 @@ namespace lib7842
 
       m_angleErr = rollAngle90(m_angleErr);
 
-      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
-      driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel * turnScale);
       pros::delay(10);
     }
     while(!settleFunc(this));
