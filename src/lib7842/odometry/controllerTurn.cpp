@@ -41,7 +41,6 @@ namespace lib7842
   {
     resetEmergencyAbort();
     angle = rollAngle180(angle);
-    turnPid->reset();
     do {
       m_angleErr = rollAngle180(angle - chassis->state.theta);
       double turnVel = turnPid->calculateErr(m_angleErr.convert(degree));
@@ -62,7 +61,6 @@ namespace lib7842
   void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
     resetEmergencyAbort();
-    turnPid->reset();
     do
     {
       m_angleErr = computeAngleToPoint(point);

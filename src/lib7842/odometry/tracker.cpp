@@ -46,7 +46,7 @@ namespace lib7842
     m_lastRightInch = newRightInch;
     m_lastMiddleInch = newMiddleInch;
 
-    QAngle newAngle = ((newLeftInch - newRightInch) / m_chassisWidth) * radian;
+    QAngle newAngle = state.theta + (((dLeftInch - dRightInch) / m_chassisWidth) * radian);
     QAngle dAngle = newAngle - state.theta;
 
     // std::cout << "dA: " << dA << std::endl;
