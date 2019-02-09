@@ -81,7 +81,7 @@ namespace lib7842
 
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
   bool OdomController::emergencyAbort() {
-    if(filterVelocity() < 5)
+    if(std::abs(filterVelocity()) < 5)
     {
       std::cout << "EMERGENCY ABORT" << std::endl;
       return true;
