@@ -20,9 +20,9 @@ namespace lib7842
       m_angleErr = rollAngle180(angle - chassis->state.theta);
 
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
-      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
 
-      driveVector(distanceVel, angleVel);
+      driveVector(distanceVel, angleVel * turnScale);
       pros::delay(10);
     }
     while(!settleFunc(this));
@@ -49,8 +49,8 @@ namespace lib7842
   {
     while(time > 0) {
       m_angleErr = rollAngle180(angle - chassis->state.theta);
-      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree) / turnScale) * turnScale;
-      driveVector(vel, angleVel);
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
+      driveVector(vel, angleVel * turnScale);
       time -= 10;
       pros::delay(10);
     }

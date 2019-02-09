@@ -48,7 +48,6 @@ namespace lib7842
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
     resetEmergencyAbort();
-    std::cout << "First Vel: " << getFilteredVelocity() << std::endl;
     settleFunc_t exitFunc = makeSettle(1_in);
     distancePid->reset();
     anglePid->reset();
@@ -66,8 +65,6 @@ namespace lib7842
 
       driveVector(distanceVel, angleVel * turnScale);
       pros::delay(10);
-      std::cout << "Vel: " << getFilteredVelocity() << std::endl;
-      std::cout << "Current Vel: " << getActualVelocity() << std::endl;
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
