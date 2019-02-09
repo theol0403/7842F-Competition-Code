@@ -21,7 +21,7 @@ namespace lib7842
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < chassis->m_chassisWidth / 2) {
+      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < 2_in) {
         m_angleErr = lastTarget - chassis->state.theta;
         m_distanceErr = distanceToClose;
       } else {
@@ -48,7 +48,7 @@ namespace lib7842
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
     resetEmergencyAbort();
-    settleFunc_t exitFunc = makeSettle(2_in);
+    settleFunc_t exitFunc = makeSettle(1_in);
     distancePid->reset();
     anglePid->reset();
     do

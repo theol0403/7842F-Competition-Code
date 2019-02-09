@@ -45,7 +45,7 @@ namespace lib7842
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
-    #define velFilterSize 10
+    #define velFilterSize 15
     AverageFilter<velFilterSize> velFilter;
 
 
