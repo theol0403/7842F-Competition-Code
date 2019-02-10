@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
   {
     resetEmergencyAbort();
     QAngle lastTarget = tracker->state.theta;
@@ -36,6 +36,7 @@ namespace lib7842
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
+      checkActions(actions);
       pros::delay(10);
     }
     while(!settleFunc(this));
@@ -45,7 +46,7 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
   {
     resetEmergencyAbort();
     settleFunc_t exitFunc = makeSettle(1_in);
@@ -64,32 +65,33 @@ namespace lib7842
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
+      checkActions(actions);
       pros::delay(10);
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    driveDistanceAtAngle(m_distanceErr / 2, tracker->state.theta, turnScale, settleFunc);
+    driveDistanceAtAngle(m_distanceErr / 2, tracker->state.theta, turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 
 
 
-  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle)
+  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
   {
     for(qPoint &point : path.wayPoints)
     {
-      driveToPoint(point, turnScale, moveOnSettle);
+      driveToPoint(point, turnScale, moveOnSettle, actions);
     }
-    driveToPoint(path.wayPoints.back(), turnScale, finalSettle);
+    driveToPoint(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle)
+  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
   {
     for(qPoint &point : path.wayPoints)
     {
-      driveToPointSimple(point, turnScale, moveOnSettle);
+      driveToPointSimple(point, turnScale, moveOnSettle, actions);
     }
-    driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle);
+    driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
 
