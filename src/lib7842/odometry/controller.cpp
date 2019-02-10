@@ -27,6 +27,25 @@ namespace lib7842
     return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
   }
 
+  /**
+   * Trigger Functions
+   */
+   triggerFunc_t makeTrigger(qPoint point, QLength distance) {
+     return [=](OdomController* that){ return that->computeDistanceToPoint(point) < distance; };
+   }
+
+   triggerFunc_t makeTrigger(qPoint point, QLength distance, QAngle angle) {
+     return [=](OdomController* that){ return that->computeDistanceToPoint(point) < distance && that->computeAngleToPoint(point) < angle; };
+   }
+
+   triggerFunc_t makeTrigger(qPoint point, QAngle angle) {
+     return [=](OdomController* that){ return that->computeAngleToPoint(point) < angle; };
+   }
+
+   triggerFunc_t makeTrigger(QAngle angle) {
+     return [=](OdomController* that){ return that->chassis->getTheta() < angle; };
+   }
+
 
   OdomController::OdomController(
     OdomTracker *ichassis,

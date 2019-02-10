@@ -10,19 +10,32 @@ namespace lib7842
   using namespace OdomMath;
 
   class OdomController;
-  typedef std::function<bool(OdomController*)> settleFunc_t;
-  typedef std::function<void(OdomController*, double)> turnFunc_t;
 
+  typedef std::function<bool(OdomController*)> settleFunc_t;
   settleFunc_t makeSettle(QAngle);
   settleFunc_t makeSettle(QLength);
   settleFunc_t makeSettle(QLength, QAngle);
   bool turnSettle(OdomController*);
   bool driveSettle(OdomController*);
 
+  typedef std::function<void(OdomController*, double)> turnFunc_t;
   turnFunc_t makeArc(double, double);
   void pointTurn(OdomController*, double);
   void leftPivot(OdomController*, double);
   void rightPivot(OdomController*, double);
+
+  typedef std::function<bool(OdomController*)> triggerFunc_t;
+  typedef std::function<void(OdomController*)> actionFunc_t;
+  struct triggerAction_t
+  {
+    triggerFunc_t trigger;
+    actionFunc_t action;
+    bool triggered = false;
+  };
+  triggerFunc_t makeTrigger(qPoint, QLength);
+  triggerFunc_t makeTrigger(qPoint, QLength, QAngle);
+  triggerFunc_t makeTrigger(qPoint, QAngle);
+  triggerFunc_t makeTrigger(QAngle);
 
   class OdomController
   {
