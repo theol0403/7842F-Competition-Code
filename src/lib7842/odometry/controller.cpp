@@ -117,17 +117,17 @@ namespace lib7842
   }
 
 
-  // void OdomController::checkTriggers(std::vector<triggerAction_t> &triggerActions)
-  // {
-  //   for(triggerAction_t &triggerAction : triggerActions)
-  //   {
-  //     if(triggerAction.trigger(this) && !triggerAction.triggered)
-  //     {
-  //       triggerAction.action(this);
-  //       triggerAction.triggered = true;
-  //     }
-  //   }
-  // }
+  void OdomController::checkTriggers(trigActVector_t triggerActions)
+  {
+    for(triggerAction_t &triggerAction : triggerActions.value())
+    {
+      if(triggerAction.trigger(this) && !triggerAction.triggered)
+      {
+        triggerAction.action(this);
+        triggerAction.triggered = true;
+      }
+    }
+  }
 
 
   // void OdomController::setFeildColor(autonSides side)

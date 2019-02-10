@@ -32,6 +32,10 @@ namespace lib7842
     actionFunc_t action;
     bool triggered = false;
   };
+  template <typename T> using RefList = std::vector<std::reference_wrapper<T>>;
+  using TriggerList = RefList<triggerAction_t>;
+  typedef std::optional<TriggerList> trigActVector_t;
+
   triggerFunc_t makeTrigger(qPoint, QLength);
   triggerFunc_t makeTrigger(qPoint, QLength, QAngle);
   triggerFunc_t makeTrigger(qPoint, QAngle);
@@ -77,11 +81,13 @@ namespace lib7842
     void resetEmergencyAbort();
     bool emergencyAbort();
 
+    void checkTriggers(trigActVector_t);
+
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
     void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
     void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
 
-    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle);
+    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle, trigActVector_t = {});
     void driveDistance(QLength, settleFunc_t = driveSettle);
     void driveForTime(int, double);
     void driveForTimeAtAngle(int, double, QAngle, double = 1);

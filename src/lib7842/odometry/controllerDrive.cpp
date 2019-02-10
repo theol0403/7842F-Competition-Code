@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, trigActVector_t triggerActions)
   {
     resetEmergencyAbort();
     //distance = distance/2; //Idk
@@ -12,6 +12,7 @@ namespace lib7842
 
     do
     {
+      checkTriggers(triggerActions);
       std::valarray<int32_t> newTicks = tracker->model->getSensorVals();
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * tracker->m_mainDegToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * tracker->m_mainDegToInch) * inch;
