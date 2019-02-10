@@ -21,7 +21,7 @@ namespace lib7842
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < tracker->m_trackerWidth && distanceToClose.abs() < 2_in) {
+      if(distanceToTarget.abs() < tracker->m_chassisWidth && distanceToClose.abs() < 2_in) {
         m_angleErr = lastTarget - tracker->state.theta;
         m_distanceErr = distanceToClose;
       } else {

@@ -36,6 +36,7 @@ namespace lib7842
   triggerFunc_t makeTrigger(qPoint, QLength, QAngle);
   triggerFunc_t makeTrigger(qPoint, QAngle);
   triggerFunc_t makeTrigger(QAngle);
+  #define makeAction(x) [=](OdomController* that){ x }
 
   class OdomController
   {
