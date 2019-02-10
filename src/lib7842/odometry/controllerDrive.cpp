@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, trigActVector_t triggerActions)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, asyncActionList_t triggerActions)
   {
     resetEmergencyAbort();
     //distance = distance/2; //Idk

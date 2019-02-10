@@ -117,9 +117,9 @@ namespace lib7842
   }
 
 
-  void OdomController::checkTriggers(trigActVector_t triggerActions)
+  void OdomController::checkTriggers(asyncActionList_t triggerActions)
   {
-    for(triggerAction_t &triggerAction : triggerActions.value())
+    for(asyncAction_t &triggerAction : triggerActions.value())
     {
       if(triggerAction.trigger(this) && !triggerAction.triggered)
       {
