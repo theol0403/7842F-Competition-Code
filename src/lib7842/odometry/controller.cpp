@@ -43,17 +43,17 @@ namespace lib7842
    }
 
    triggerFunc_t makeTrigger(QAngle angle) {
-     return [=](OdomController* that){ return that->chassis->getTheta() < angle; };
+     return [=](OdomController* that){ return that->tracker->getTheta() < angle; };
    }
 
 
   OdomController::OdomController(
-    OdomTracker *ichassis,
+    OdomTracker *itracker,
     PID *idistancePid,
     PID *ianglePid,
     PID *iturnPid
   ) :
-  chassis(ichassis),
+  tracker(itracker),
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid)
@@ -62,13 +62,13 @@ namespace lib7842
 
   QAngle OdomController::computeAngleToPoint(qPoint point)
   {
-    QAngle angle = (atan2(point.x.convert(inch) - chassis->state.x.convert(inch), point.y.convert(inch) - chassis->state.y.convert(inch)) * radian) - chassis->state.theta;
+    QAngle angle = (atan2(point.x.convert(inch) - tracker->state.x.convert(inch), point.y.convert(inch) - tracker->state.y.convert(inch)) * radian) - tracker->state.theta;
     return rollAngle180(angle);
   }
 
   QLength OdomController::computeDistanceToPoint(qPoint point)
   {
-    return computeDistanceBetweenPoints(chassis->state, point);
+    return computeDistanceBetweenPoints(tracker->state, point);
   }
 
   void OdomController::driveVector(double forwardSpeed, double yaw)
@@ -81,8 +81,8 @@ namespace lib7842
       rightOutput /= maxInputMag;
     }
 
-    chassis->model->left(leftOutput);
-    chassis->model->right(rightOutput);
+    tracker->model->left(leftOutput);
+    tracker->model->right(rightOutput);
   }
 
 
@@ -92,7 +92,7 @@ namespace lib7842
   void OdomController::resetVelocityMax() { resetVelocity(200); }
 
   double OdomController::getActualVelocity() {
-    return (std::abs(chassis->model->getLeftSideMotor()->getActualVelocity()) + std::abs(chassis->model->getRightSideMotor()->getActualVelocity())) / 2;
+    return (std::abs(tracker->model->getLeftSideMotor()->getActualVelocity()) + std::abs(tracker->model->getRightSideMotor()->getActualVelocity())) / 2;
   }
 
   double OdomController::filterVelocity() { return velFilter.filter(getActualVelocity()); }

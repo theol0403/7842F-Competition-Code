@@ -13,26 +13,26 @@ namespace lib7842
       rightVel = (rightVel / maxMag);
     }
     if(leftRatio > rightRatio) {
-      that->chassis->model->left(leftVel);
-      that->chassis->model->right(rightVel);
+      that->tracker->model->left(leftVel);
+      that->tracker->model->right(rightVel);
     } else if(leftRatio < rightRatio) {
-      that->chassis->model->left(-leftVel);
-      that->chassis->model->right(-rightVel);
+      that->tracker->model->left(-leftVel);
+      that->tracker->model->right(-rightVel);
     } else {
-      that->chassis->model->rotate(turnVel);
+      that->tracker->model->rotate(turnVel);
     }
   };}
 
   void pointTurn(OdomController* that, double turnVel) {
-    that->chassis->model->rotate(turnVel);
+    that->tracker->model->rotate(turnVel);
   }
 
   void leftPivot(OdomController* that, double turnVel) {
-    that->chassis->model->left(turnVel * 2);
+    that->tracker->model->left(turnVel * 2);
   }
 
   void rightPivot(OdomController* that, double turnVel) {
-    that->chassis->model->right(-turnVel * 2);
+    that->tracker->model->right(-turnVel * 2);
   }
 
 
@@ -42,7 +42,7 @@ namespace lib7842
     resetEmergencyAbort();
     angle = rollAngle180(angle);
     do {
-      m_angleErr = rollAngle180(angle - chassis->state.theta);
+      m_angleErr = rollAngle180(angle - tracker->state.theta);
       double turnVel = turnPid->calculateErr(m_angleErr.convert(degree));
       turnFunc(this, turnVel);
       pros::delay(10);
@@ -53,7 +53,7 @@ namespace lib7842
 
   void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc)
   {
-    turnToAngle(angle + chassis->state.theta, turnFunc, settleFunc);
+    turnToAngle(angle + tracker->state.theta, turnFunc, settleFunc);
   }
 
 

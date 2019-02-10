@@ -8,16 +8,16 @@ namespace lib7842
     resetEmergencyAbort();
     //distance = distance/2; //Idk
     angle = rollAngle180(angle);
-    std::valarray<int32_t> lastTicks = chassis->model->getSensorVals();
+    std::valarray<int32_t> lastTicks = tracker->model->getSensorVals();
 
     do
     {
-      std::valarray<int32_t> newTicks = chassis->model->getSensorVals();
-      QLength leftDistance = ((newTicks[0] - lastTicks[0]) * chassis->m_mainDegToInch) * inch;
-      QLength rightDistance = ((newTicks[1] - lastTicks[1]) * chassis->m_mainDegToInch) * inch;
+      std::valarray<int32_t> newTicks = tracker->model->getSensorVals();
+      QLength leftDistance = ((newTicks[0] - lastTicks[0]) * tracker->m_mainDegToInch) * inch;
+      QLength rightDistance = ((newTicks[1] - lastTicks[1]) * tracker->m_mainDegToInch) * inch;
 
       m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
-      m_angleErr = rollAngle180(angle - chassis->state.theta);
+      m_angleErr = rollAngle180(angle - tracker->state.theta);
 
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
@@ -33,7 +33,7 @@ namespace lib7842
 
   void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc)
   {
-    driveDistanceAtAngle(distance, chassis->state.theta, 1, settleFunc);
+    driveDistanceAtAngle(distance, tracker->state.theta, 1, settleFunc);
   }
 
 
@@ -48,7 +48,7 @@ namespace lib7842
   void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale)
   {
     while(time > 0) {
-      m_angleErr = rollAngle180(angle - chassis->state.theta);
+      m_angleErr = rollAngle180(angle - tracker->state.theta);
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       driveVector(vel, angleVel * turnScale);
       time -= 10;
@@ -63,9 +63,9 @@ namespace lib7842
     angle = rollAngle180(angle);
     turnToAngle(angle);
     resetVelocityMax();
-    chassis->model->forward(vel);
+    tracker->model->forward(vel);
     while(filterVelocity() > velThresh) { pros::delay(10); }
-    chassis->setTheta(angle);
+    tracker->setTheta(angle);
   }
 
 

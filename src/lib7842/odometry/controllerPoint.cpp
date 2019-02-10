@@ -6,10 +6,10 @@ namespace lib7842
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc)
   {
     resetEmergencyAbort();
-    QAngle lastTarget = chassis->state.theta;
+    QAngle lastTarget = tracker->state.theta;
     do
     {
-      qPoint closestPoint = closest(chassis->state, targetPoint);
+      qPoint closestPoint = closest(tracker->state, targetPoint);
 
       QAngle angleToClose = computeAngleToPoint(closestPoint);
       if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg;
@@ -21,12 +21,12 @@ namespace lib7842
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < chassis->m_chassisWidth && distanceToClose.abs() < 2_in) {
-        m_angleErr = lastTarget - chassis->state.theta;
+      if(distanceToTarget.abs() < tracker->m_trackerWidth && distanceToClose.abs() < 2_in) {
+        m_angleErr = lastTarget - tracker->state.theta;
         m_distanceErr = distanceToClose;
       } else {
         m_angleErr = computeAngleToPoint(targetPoint);
-        lastTarget = m_angleErr + chassis->state.theta;
+        lastTarget = m_angleErr + tracker->state.theta;
         m_distanceErr = distanceToTarget;
       }
 
@@ -68,7 +68,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    driveDistanceAtAngle(m_distanceErr / 2, chassis->state.theta, turnScale, settleFunc);
+    driveDistanceAtAngle(m_distanceErr / 2, tracker->state.theta, turnScale, settleFunc);
     driveVector(0, 0);
   }
 

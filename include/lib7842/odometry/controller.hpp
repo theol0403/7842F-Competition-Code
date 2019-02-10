@@ -49,7 +49,7 @@ namespace lib7842
       PID *
     );
 
-    OdomTracker *chassis = nullptr;
+    OdomTracker *tracker = nullptr;
 
     PID *distancePid = nullptr;
     PID *anglePid = nullptr;
