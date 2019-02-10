@@ -26,19 +26,17 @@ namespace lib7842
 
   typedef std::function<bool(OdomController*)> triggerFunc_t;
   typedef std::function<void(OdomController*)> actionFunc_t;
-  struct asyncAction_t
-  {
+  struct asyncAction_t {
     triggerFunc_t trigger;
     actionFunc_t action;
     bool triggered = false;
   };
   typedef std::vector<std::reference_wrapper<asyncAction_t>> asyncActionList_t;
-
   triggerFunc_t makeTrigger(qPoint, QLength);
   triggerFunc_t makeTrigger(qPoint, QLength, QAngle);
   triggerFunc_t makeTrigger(qPoint, QAngle);
   triggerFunc_t makeTrigger(QAngle);
-  #define makeAction(x) [=](OdomController* that){ x }
+  #define makeAction(x) [=](OdomController* that){x}
 
   class OdomController
   {
@@ -79,23 +77,23 @@ namespace lib7842
     void resetEmergencyAbort();
     bool emergencyAbort();
 
-    void checkTriggers(asyncActionList_t);
+    void checkActions(asyncActionList_t);
 
-    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
-    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
-    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle);
+    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, asyncActionList_t = {});
+    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, asyncActionList_t = {});
+    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, asyncActionList_t = {});
 
     void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle, asyncActionList_t = {});
-    void driveDistance(QLength, settleFunc_t = driveSettle);
-    void driveForTime(int, double);
-    void driveForTimeAtAngle(int, double, QAngle, double = 1);
+    void driveDistance(QLength, settleFunc_t = driveSettle, asyncActionList_t = {});
+    void driveForTime(int, double, asyncActionList_t = {});
+    void driveForTimeAtAngle(int, double, QAngle, double = 1, asyncActionList_t = {});
     void allignToAngle(QAngle, double, double);
 
-    void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle);
-    void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle);
+    void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle, asyncActionList_t = {});
+    void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle, asyncActionList_t = {});
 
-    void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
-    void drivePathSimple(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle);
+    void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, asyncActionList_t = {});
+    void drivePathSimple(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, asyncActionList_t = {});
 
   };
 

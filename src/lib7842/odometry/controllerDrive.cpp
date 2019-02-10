@@ -3,10 +3,9 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, asyncActionList_t triggers)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
   {
     resetEmergencyAbort();
-    //distance = distance/2; //Idk
     angle = rollAngle180(angle);
     std::valarray<int32_t> lastTicks = tracker->model->getSensorVals();
 
@@ -23,8 +22,8 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
 
       driveVector(distanceVel, angleVel * turnScale);
+      checkActions(actions);
       pros::delay(10);
-      checkTriggers(triggers);
     }
     while(!settleFunc(this));
 
@@ -32,27 +31,32 @@ namespace lib7842
   }
 
 
-  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc)
+  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, asyncActionList_t actions)
   {
-    driveDistanceAtAngle(distance, tracker->state.theta, 1, settleFunc);
+    driveDistanceAtAngle(distance, tracker->state.theta, 1, settleFunc, actions);
   }
 
 
-  void OdomController::driveForTime(int time, double vel)
+  void OdomController::driveForTime(int time, double vel, asyncActionList_t actions)
   {
-    driveVector(vel, 0);
-    pros::delay(time);
+    while(time > 0) {
+      driveVector(vel, 0);
+      time -= 10;
+      checkActions(actions);
+      pros::delay(10);
+    }
     driveVector(0, 0);
   }
+  
 
-
-  void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale)
+  void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale, asyncActionList_t actions)
   {
     while(time > 0) {
       m_angleErr = rollAngle180(angle - tracker->state.theta);
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       driveVector(vel, angleVel * turnScale);
       time -= 10;
+      checkActions(actions);
       pros::delay(10);
     }
     driveVector(0, 0);
