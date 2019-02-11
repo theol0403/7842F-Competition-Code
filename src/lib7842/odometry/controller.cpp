@@ -130,7 +130,7 @@ namespace lib7842
   }
 
 
-  void OdomController::setFeildColor(autonSides side)
+  void OdomController::setSide(autonSides side)
   {
     m_autonSide = side;
   }

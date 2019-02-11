@@ -38,6 +38,7 @@ namespace lib7842
   triggerFunc_t makeTrigger(QAngle);
   #define makeAction(x) [=](OdomController* that){x}
 
+
   class OdomController
   {
 
@@ -80,6 +81,8 @@ namespace lib7842
     bool emergencyAbort();
 
     void checkActions(asyncActionList_t);
+
+    void setSide(autonSides);
 
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, asyncActionList_t = {});
     void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, asyncActionList_t = {});

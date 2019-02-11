@@ -5,6 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
   {
+    targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
     QAngle lastTarget = tracker->state.theta;
     do
@@ -48,6 +49,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
   {
+    targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
     settleFunc_t exitFunc = makeSettle(1_in);
     distancePid->reset();
@@ -78,6 +80,7 @@ namespace lib7842
 
   void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
   {
+    path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
     {
       driveToPoint(point, turnScale, moveOnSettle, actions);
@@ -87,6 +90,7 @@ namespace lib7842
 
   void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
   {
+    path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
     {
       driveToPointSimple(point, turnScale, moveOnSettle, actions);
