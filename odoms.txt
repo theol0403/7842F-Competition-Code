@@ -151,3 +151,19 @@ OdomState ThreeEncoderOdometry::odomMathStep(std::valarray<std::int32_t> &tickDi
 
 
 
+
+
+void Odometry_t::update() {
+    double curDL = getDL(), curDR = getDR();
+    double deltaDL = (curDL - this->prevDL) / ticksPerInch, deltaDR = (curDR - this->prevDR) / ticksPerInch;
+    double deltaDC = (deltaDL + deltaDR) / 2.0;
+    double deltaA = (deltaDR - deltaDL) / (2.0 * L);
+    this->x += deltaDC * cos(a + deltaA / 2);
+    this->y += deltaDC * sin(a + deltaA / 2);
+    this->a += deltaA;
+    prevDL = curDL;
+    prevDR = curDR;
+}
+
+
+

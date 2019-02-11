@@ -13,7 +13,7 @@ void AutoTest(lib7842::autonSides side)
   chassis->drivePath({{0_in, 2_ft}, {2_ft, 2_ft}, {0_ft, 0_ft}}, 4, makeSettle(4_in));
 
   asyncAction_t shootFlag {
-    { makeTrigger(leftFlag, 10_in) },
+    { makeTrigger(leftFlag, 10_in, 5_deg) },
     { makeAction(setIntakeMode(intakeModes::shootIndexer);) }
   };
   chassis->driveDistanceAtAngle(10_in, 0_deg, 1, driveSettle, {shootFlag});
