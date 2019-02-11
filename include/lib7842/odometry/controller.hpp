@@ -60,7 +60,9 @@ namespace lib7842
     QLength m_distanceErr = 0_in;
 
     #define velFilterSize 20
-    AverageFilter<velFilterSize> velFilter;
+    AverageFilter<velFilterSize> m_velFilter;
+
+    autonSides m_autonSide = autonSides::red;
 
 
     QAngle computeAngleToPoint(qPoint);

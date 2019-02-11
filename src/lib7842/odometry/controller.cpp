@@ -95,7 +95,7 @@ namespace lib7842
   /**
   * Velocity calculations, used for emergency abort
   */
-  void OdomController::resetVelocity(double vel) { for(int i = 0; i < velFilterSize; i++) { velFilter.filter(vel); } }
+  void OdomController::resetVelocity(double vel) { for(int i = 0; i < velFilterSize; i++) { m_velFilter.filter(vel); } }
   void OdomController::resetVelocityActual() { resetVelocity(getActualVelocity()); }
   void OdomController::resetVelocityMax() { resetVelocity(200); }
 
@@ -103,8 +103,8 @@ namespace lib7842
     return (std::abs(tracker->model->getLeftSideMotor()->getActualVelocity()) + std::abs(tracker->model->getRightSideMotor()->getActualVelocity())) / 2;
   }
 
-  double OdomController::filterVelocity() { return velFilter.filter(getActualVelocity()); }
-  double OdomController::getFilteredVelocity() { return velFilter.getOutput(); }
+  double OdomController::filterVelocity() { return m_velFilter.filter(getActualVelocity()); }
+  double OdomController::getFilteredVelocity() { return m_velFilter.getOutput(); }
 
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
   bool OdomController::emergencyAbort() {
@@ -130,10 +130,10 @@ namespace lib7842
   }
 
 
-  // void OdomController::setFeildColor(autonSides side)
-  // {
-  //
-  // }
+  void OdomController::setFeildColor(autonSides side)
+  {
+    m_autonSide = side;
+  }
 
 
 }

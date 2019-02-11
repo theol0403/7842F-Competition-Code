@@ -16,6 +16,8 @@ namespace lib7842
   qPoint::qPoint(qPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
   qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
+  void qPoint::setSide(autonSides side) { if(side != currentSide) { x = 12_ft - x; theta *= -1; currentSide = side;}
+  }
 
   /**
   * dPoint
@@ -38,6 +40,7 @@ namespace lib7842
   Path::Path(std::initializer_list<qPoint> points) : wayPoints {points} {}
   void Path::add(qPoint point) { wayPoints.push_back(point); }
   void Path::add(Path path) { for(const qPoint &point : path.wayPoints) { wayPoints.push_back(point); } }
+  void Path::setSide(autonSides side) { for(qPoint &point : wayPoints) { point.setSide(side); } }
 
 }
 
