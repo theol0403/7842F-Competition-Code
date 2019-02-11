@@ -2,6 +2,8 @@
 
 namespace lib7842
 {
+  void QSAngle::setSide(autonSides side) { if(side != currentSide) { value *= -1; currentSide = side; } }
+  
   /**
   * qPoint
   */
@@ -16,8 +18,7 @@ namespace lib7842
   qPoint::qPoint(qPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
   qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
-  void qPoint::setSide(autonSides side) { if(side != currentSide) { x = 12_ft - x; theta *= -1; currentSide = side;}
-  }
+  void qPoint::setSide(autonSides side) { if(side != currentSide) { x = 12_ft - x; theta *= -1; currentSide = side; } }
 
   /**
   * dPoint

@@ -68,7 +68,7 @@ class RQuantity {
     return RQuantity<MassDim, LengthDim, TimeDim, AngleDim>(std::fabs(value));
   }
 
-  private:
+  //private:
   double value;
 };
 
