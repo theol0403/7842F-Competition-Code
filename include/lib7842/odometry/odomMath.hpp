@@ -6,17 +6,17 @@ namespace lib7842
 {
   struct dPoint; //Forward declare
 
-  struct QSAngle : public QAngle
-  {
-    autonSides currentSide = autonSides::red;
-    void setSide(autonSides);
-  };
+  // struct QSAngle : public QAngle
+  // {
+  //   autonSides currentSide = autonSides::red;
+  //   void setSide(autonSides);
+  // };
 
   struct qPoint
   {
     QLength x {0_in};
     QLength y {0_in};
-    QSAngle theta {0_rad};
+    QAngle theta {0_rad};
     autonSides currentSide = autonSides::red;
 
     qPoint(const qPoint&); //Needs to be by reference to avoid enless loop
