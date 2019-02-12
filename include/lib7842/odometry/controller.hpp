@@ -24,20 +24,7 @@ namespace lib7842
   void leftPivot(OdomController*, double);
   void rightPivot(OdomController*, double);
 
-  typedef std::function<bool(OdomController*)> triggerFunc_t;
-  typedef std::function<void(OdomController*)> actionFunc_t;
-  struct asyncAction_t {
-    triggerFunc_t trigger;
-    actionFunc_t action;
-    bool triggered = false;
-  };
   typedef std::vector<std::reference_wrapper<asyncAction_t>> asyncActionList_t;
-  triggerFunc_t makeTrigger(qPoint, QLength);
-  triggerFunc_t makeTrigger(qPoint, QLength, QAngle);
-  triggerFunc_t makeTrigger(qPoint, QAngle);
-  triggerFunc_t makeTrigger(QAngle);
-  #define makeAction(x) [=](OdomController* that){x}
-
 
   class OdomController
   {

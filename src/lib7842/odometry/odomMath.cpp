@@ -2,8 +2,6 @@
 
 namespace lib7842
 {
-  //void QSAngle::setSide(autonSides side) { if(side != currentSide) { value *= -1; currentSide = side; } }
-
   /**
   * qPoint
   */
