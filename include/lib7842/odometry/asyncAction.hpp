@@ -41,8 +41,8 @@ namespace lib7842
     AsyncAction &onlyBefore(AsyncAction&);
     AsyncAction &onlyAfter(AsyncAction&);
 
-    #define makeTrigger(x) withTrigger([&](){x})
-    #define makeAction(x) withAction([&](){x})
+    #define makeTrigger(x) [&](OdomController* that){x}
+    #define makeAction(x) [&](){x}
 
   };
 }

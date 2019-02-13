@@ -14,10 +14,9 @@ void AutoNothing(lib7842::autonSides side)
   chassis->turnToPoint(leftFlag);                         //turn to flag
 
   AsyncAction shootTopFlag = AsyncAction()
-  .withContinuousActionBefore( setFlywheelRPM(calculateRPM(topShootDistance - shootingDelay(robotVelocity))); )
-  .withTrigger( return calculateDistanceToPoint(leftFlag) < topShootDistance; )
-  .withAction( setIntakeMode(intakeModes::shootIndexer); )
-  .build();
+  .withContinuousActionBefore(makeAction(setFlywheelRPM(2800);))
+  .withTrigger(leftFlag, topShootDistance)
+  .withAction(makeAction(setIntakeMode(intakeModes::shootIndexer);));
 
   AsyncAction shootMiddleFlag = AsyncAction()
   .withBeforeAction( setFlywheelRPM(calculateRPM(middleShootDistance - shootingDelay(robotVelocity))); )
