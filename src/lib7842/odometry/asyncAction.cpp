@@ -1,18 +1,18 @@
-/**
-* Trigger Functions
-*/
-triggerFunc_t makeTrigger(qPoint point, QLength distanceThresh) {
-  return [=](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh; };
-}
+#include "asyncAction.hpp"
 
-triggerFunc_t makeTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh) {
-  return [=](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh && that->computeAngleToPoint(point).abs() < angleThresh; };
-}
+namespace lib7842
+{
 
-triggerFunc_t makeTrigger(qPoint point, QAngle angleThresh) {
-  return [=](OdomController* that){ return that->computeAngleToPoint(point).abs() < angleThresh; };
-}
+  AsyncAction::AsyncAction() {}
 
-triggerFunc_t makeTrigger(QAngle angle, QAngle angleThresh) {
-  return [=](OdomController* that){ return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; };
-}
+  AsyncAction &AsyncAction::withTrigger(triggerFunc_t) { m_triggers.push_back(triggerFunc_t); }
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh) { m_triggers.push_back([&](){ return computeDistanceToPoint(point) < distanceThresh }); }
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh) { m_triggers.push_back([&](){ return computeDistanceToPoint(point) < distanceThresh && computeAngleToPoint(point).abs() < angleThresh; }); }
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh) { m_triggers.push_back([&](){ return computeAngleToPoint(point).abs() < angleThresh; }); }
+  AsyncAction &AsyncAction::withTrigger(QAngle angle, QAngle angleThresh) { m_triggers.push_back([&](){ return tracker->getTheta() > angle - angleThresh && tracker->getTheta() < angle + angleThresh; }); }
+
+  AsyncAction &AsyncAction::withAction(actionFunc_t);
+  AsyncAction &AsyncAction::withContinuousActionBefore(actionFunc_t);
+  AsyncAction &AsyncAction::withContinuousActionAfter(actionFunc_t);
+  AsyncAction &AsyncAction::onlyBefore(AsyncAction&);
+  AsyncAction &AsyncAction::onlyAfter(AsyncAction&);
