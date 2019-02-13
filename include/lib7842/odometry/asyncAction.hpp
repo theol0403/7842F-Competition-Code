@@ -40,9 +40,14 @@ namespace lib7842
     std::vector<std::reference_wrapper<AsyncAction>> m_onlyBefores;
     std::vector<std::reference_wrapper<AsyncAction>> m_onlyAfters;
 
+    bool m_triggered = false;
+
   public:
 
     AsyncAction();
+
+    AsyncAction &onlyBefore(AsyncAction&);
+    AsyncAction &onlyAfter(AsyncAction&);
 
     AsyncAction &withTrigger(triggerFunc_t);
     AsyncAction &withTrigger(qPoint, QLength);
@@ -51,12 +56,12 @@ namespace lib7842
     AsyncAction &withTrigger(QAngle, QAngle);
 
     AsyncAction &withAction(actionFunc_t, actionTypes = actionTypes::onceAfter);
-    AsyncAction &onlyBefore(AsyncAction&);
-    AsyncAction &onlyAfter(AsyncAction&);
 
     #define makeTrigger(x) [&](OdomController* that){x}
     #define makeAction(x) [&](){x}
     #define withMakeAction(x) withAction(makeAction(x))
+
+    void run();
 
   };
 }
