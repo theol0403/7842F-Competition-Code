@@ -1,9 +1,11 @@
 #pragma once
 #include "main.h"
+#include "odomMath.hpp"
+#include "tracker.hpp"
 
 namespace lib7842
 {
-  typedef std::function<bool()> triggerFunc_t;
+  typedef std::function<bool(OdomController*)> triggerFunc_t;
   typedef std::function<void()> actionFunc_t;
 
   class AsyncAction
@@ -18,8 +20,8 @@ namespace lib7842
     std::vector<actionFunc_t> m_continuousActionBefore;
     std::vector<actionFunc_t> m_continuousActionAfter;
 
-    std::vector<AsyncAction*> m_onlyBefores;
-    std::vector<AsyncAction*> m_onlyAfters;
+    std::vector<std::reference_wrapper<AsyncAction>> m_onlyBefores;
+    std::vector<std::reference_wrapper<AsyncAction>> m_onlyAfters;
 
   public:
 
