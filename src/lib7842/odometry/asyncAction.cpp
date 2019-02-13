@@ -31,20 +31,11 @@ namespace lib7842
   }
 
 
-  AsyncAction &AsyncAction::withAction(actionFunc_t action) {
-    m_actions.push_back(action);
+  AsyncAction &AsyncAction::withAction(actionFunc_t action, actionTypes type) {
+    m_actions.push_back({action, type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withContinuousActionBefore(actionFunc_t action) {
-    m_continuousActionBefore.push_back(action);
-    return *this;
-  }
-
-  AsyncAction &AsyncAction::withContinuousActionAfter(actionFunc_t action) {
-    m_continuousActionAfter.push_back(action);
-    return *this;
-  }
 
   AsyncAction &AsyncAction::onlyBefore(AsyncAction& action) {
     m_onlyBefores.push_back(action);

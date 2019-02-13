@@ -7,20 +7,35 @@
 namespace lib7842
 {
   class OdomController;
+  class AsyncAction;
+
+  using AsyncActionList = std::vector<std::reference_wrapper<AsyncAction>>;
+
   typedef std::function<bool(OdomController*)> triggerFunc_t;
   typedef std::function<void()> actionFunc_t;
+
+  enum class actionTypes
+  {
+    onceBefore,
+    onceAfter,
+    continousBefore,
+    continousAfter
+  };
+
+  struct actionAndType
+  {
+    actionFunc_t action;
+    actionTypes type;
+  };
+
 
   class AsyncAction
   {
 
   private:
 
-    bool m_triggered = false;
     std::vector<triggerFunc_t> m_triggers;
-    std::vector<actionFunc_t> m_actions;
-
-    std::vector<actionFunc_t> m_continuousActionBefore;
-    std::vector<actionFunc_t> m_continuousActionAfter;
+    std::vector<actionAndType> m_actions;
 
     std::vector<std::reference_wrapper<AsyncAction>> m_onlyBefores;
     std::vector<std::reference_wrapper<AsyncAction>> m_onlyAfters;
@@ -35,14 +50,13 @@ namespace lib7842
     AsyncAction &withTrigger(qPoint, QAngle);
     AsyncAction &withTrigger(QAngle, QAngle);
 
-    AsyncAction &withAction(actionFunc_t);
-    AsyncAction &withContinuousActionBefore(actionFunc_t);
-    AsyncAction &withContinuousActionAfter(actionFunc_t);
+    AsyncAction &withAction(actionFunc_t, actionTypes = actionTypes::onceAfter);
     AsyncAction &onlyBefore(AsyncAction&);
     AsyncAction &onlyAfter(AsyncAction&);
 
     #define makeTrigger(x) [&](OdomController* that){x}
     #define makeAction(x) [&](){x}
+    #define withMakeAction(x) withAction(makeAction(x))
 
   };
 }
