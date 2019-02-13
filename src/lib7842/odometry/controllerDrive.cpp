@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::driveDistanceAtAngle(QLength distance, QAngle angle, double turnScale, settleFunc_t settleFunc, asyncActions actions)
   {
     resetEmergencyAbort();
     angle = rollAngle180(angle);
@@ -31,13 +31,13 @@ namespace lib7842
   }
 
 
-  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, asyncActions actions)
   {
     driveDistanceAtAngle(distance, tracker->state.theta, 1, settleFunc, actions);
   }
 
 
-  void OdomController::driveForTime(int time, double vel, asyncActionList_t actions)
+  void OdomController::driveForTime(int time, double vel, asyncActions actions)
   {
     while(time > 0) {
       driveVector(vel, 0);
@@ -49,7 +49,7 @@ namespace lib7842
   }
   
 
-  void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale, asyncActionList_t actions)
+  void OdomController::driveForTimeAtAngle(int time, double vel, QAngle angle, double turnScale, asyncActions actions)
   {
     while(time > 0) {
       m_angleErr = rollAngle180(angle - tracker->state.theta);

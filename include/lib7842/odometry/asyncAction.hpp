@@ -41,3 +41,6 @@ namespace lib7842
 
     #define .makeTrigger(x) .withTrigger([&](){x})
     #define .makeAction(x) .withAction([&](){x})
+    
+  }
+}

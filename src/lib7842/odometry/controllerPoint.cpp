@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActions actions)
   {
     targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
@@ -47,7 +47,7 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActions actions)
   {
     targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
@@ -78,7 +78,7 @@ namespace lib7842
 
 
 
-  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
+  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActions actions)
   {
     path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
@@ -88,7 +88,7 @@ namespace lib7842
     driveToPoint(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActionList_t actions)
+  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActions actions)
   {
     path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)

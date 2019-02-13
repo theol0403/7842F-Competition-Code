@@ -37,7 +37,7 @@ namespace lib7842
 
 
 
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActions actions)
   {
     resetEmergencyAbort();
     angle = rollAngle180(angle);
@@ -52,14 +52,14 @@ namespace lib7842
     turnFunc(this, 0);
   }
 
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActions actions)
   {
     turnToAngle(angle + tracker->state.theta, turnFunc, settleFunc, actions);
   }
 
 
 
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActionList_t actions)
+  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, asyncActions actions)
   {
     resetEmergencyAbort();
     do
