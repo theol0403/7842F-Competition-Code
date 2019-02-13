@@ -6,6 +6,7 @@
 
 namespace lib7842
 {
+  class OdomController;
   typedef std::function<bool(OdomController*)> triggerFunc_t;
   typedef std::function<void()> actionFunc_t;
 
@@ -32,7 +33,7 @@ namespace lib7842
     AsyncAction &withTrigger(qPoint, QLength);
     AsyncAction &withTrigger(qPoint, QLength, QAngle);
     AsyncAction &withTrigger(qPoint, QAngle);
-    AsyncAction &withTrigger(QAngle);
+    AsyncAction &withTrigger(QAngle, QAngle);
 
     AsyncAction &withAction(actionFunc_t);
     AsyncAction &withContinuousActionBefore(actionFunc_t);
