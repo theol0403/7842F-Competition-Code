@@ -11,6 +11,7 @@ namespace lib7842
   using namespace OdomMath;
 
   class OdomController;
+  class AsyncAction;
 
   typedef std::function<bool(OdomController*)> settleFunc_t;
   settleFunc_t makeSettle(QAngle);

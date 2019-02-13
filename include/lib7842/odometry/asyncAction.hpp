@@ -2,6 +2,7 @@
 #include "main.h"
 #include "odomMath.hpp"
 #include "tracker.hpp"
+#include "controller.hpp"
 
 namespace lib7842
 {
@@ -39,8 +40,8 @@ namespace lib7842
     AsyncAction &onlyBefore(AsyncAction&);
     AsyncAction &onlyAfter(AsyncAction&);
 
-    #define .makeTrigger(x) .withTrigger([&](){x})
-    #define .makeAction(x) .withAction([&](){x})
-    
-  }
+    #define makeTrigger(x) withTrigger([&](){x})
+    #define makeAction(x) withAction([&](){x})
+
+  };
 }
