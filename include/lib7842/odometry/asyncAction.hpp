@@ -71,7 +71,7 @@ namespace lib7842
     #define makeAction(x) [&](){x}
     #define withMakeAction(x) withAction(makeAction(x))
 
-    void run(OdomController*);
+    void run(OdomController* = nullptr);
 
   };
 }
