@@ -28,7 +28,6 @@ namespace lib7842
 
   typedef std::function<QAngle(OdomController*)> turnCalc_t;
   turnCalc_t toAngleCalc(QAngle);
-  //#define turnAngle turnToAngle(angle + tracker->state.theta)
   turnCalc_t toPointCalc(qPoint);
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
@@ -80,6 +79,8 @@ namespace lib7842
     void setSide(autonSides);
 
     void turn(turnCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
     void driveDistanceAtAngle(QLength, turnCalc_t, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
