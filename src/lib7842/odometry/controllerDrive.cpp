@@ -65,7 +65,7 @@ namespace lib7842
   void OdomController::allignToAngle(QAngle angle, double vel, double velThresh)
   {
     angle = rollAngle180(angle);
-    turnToAngle(angle));
+    turnToAngle(angle);
     resetVelocityMax();
     tracker->model->forward(vel);
     while(filterVelocity() > velThresh) { pros::delay(10); }

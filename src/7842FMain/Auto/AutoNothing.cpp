@@ -7,7 +7,7 @@ void AutoNothing(lib7842::autonSides side)
 void AutoTest(lib7842::autonSides side)
 {
 
-chassis->driveDistanceAtAngle(1_ft, angleCalc({1_ft, 0_ft}));
+  chassis->driveDistanceAtAngle(1_ft, angleCalc({2_ft, 2_ft}), 3);
 
 }
 
