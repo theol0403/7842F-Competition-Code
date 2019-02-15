@@ -140,6 +140,11 @@ namespace lib7842
           if(m_triggered) { std::get<0>(action)(); }
           break;
         }
+        case actionTypes::continous:
+        {
+          std::get<0>(action)();
+          break;
+        }
       }
     }
 

@@ -33,7 +33,8 @@ namespace lib7842
     onceAfter,
     onceUnlessTriggered,
     continousBefore,
-    continousAfter
+    continousAfter,
+    continous
   };
 
   class AsyncAction
