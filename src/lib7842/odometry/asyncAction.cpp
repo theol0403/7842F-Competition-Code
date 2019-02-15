@@ -49,18 +49,18 @@ namespace lib7842
     /**
     * Exclusions
     */
-    for(exclusionGroup exclusion : m_excusions)
+    for(exclusionGroup exclusion : m_exclusions)
     {
       switch(std::get<1>(exclusion))
       {
         case exclusionTypes::onlyBefore:
         {
-          if(std::get<0>(exclusion).m_triggered) { return; }
+          if(std::get<0>(exclusion).get().m_triggered) { return; }
           break;
         }
         case exclusionTypes::onlyAfter:
         {
-          if(!std::get<0>(exclusion).m_triggered) { return; }
+          if(!std::get<0>(exclusion).get().m_triggered) { return; }
           break;
         }
       }
@@ -94,7 +94,7 @@ namespace lib7842
           if(!m_triggered) { std::get<0>(action)(); }
           break;
         }
-        case actionTypes::continousBefore:
+        case actionTypes::continousAfter:
         {
           if(m_triggered) { std::get<0>(action)(); }
           break;

@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActions actions)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
@@ -37,7 +37,7 @@ namespace lib7842
       double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
-      checkActions(actions);
+      runActions(actions);
       pros::delay(10);
     }
     while(!settleFunc(this));
@@ -47,7 +47,7 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, asyncActions actions)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     targetPoint.setSide(m_autonSide);
     resetEmergencyAbort();
@@ -67,7 +67,7 @@ namespace lib7842
       double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
-      checkActions(actions);
+      runActions(actions);
       pros::delay(10);
     }
     while(!(exitFunc(this) || settleFunc(this)));
@@ -78,7 +78,7 @@ namespace lib7842
 
 
 
-  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActions actions)
+  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
     path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
@@ -88,7 +88,7 @@ namespace lib7842
     driveToPoint(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, asyncActions actions)
+  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
     path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)

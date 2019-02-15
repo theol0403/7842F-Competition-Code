@@ -26,6 +26,7 @@ namespace lib7842
   void leftPivot(OdomController*, double);
   void rightPivot(OdomController*, double);
 
+  using AsyncActionRef = std::reference_wrapper<AsyncAction>;
   using AsyncActionList = std::vector<AsyncActionRef>;
 
   class OdomController

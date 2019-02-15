@@ -22,7 +22,7 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
 
       driveVector(distanceVel, angleVel * turnScale);
-      checkActions(actions);
+      runActions(actions);
       pros::delay(10);
     }
     while(!settleFunc(this));
@@ -42,7 +42,7 @@ namespace lib7842
     while(time > 0) {
       driveVector(vel, 0);
       time -= 10;
-      checkActions(actions);
+      runActions(actions);
       pros::delay(10);
     }
     driveVector(0, 0);
@@ -56,7 +56,7 @@ namespace lib7842
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       driveVector(vel, angleVel * turnScale);
       time -= 10;
-      checkActions(actions);
+      runActions(actions);
       pros::delay(10);
     }
     driveVector(0, 0);
