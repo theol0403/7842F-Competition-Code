@@ -27,8 +27,8 @@ namespace lib7842
   void rightPivot(OdomController*, double);
 
   typedef std::function<QAngle(OdomController*)> turnCalc_t;
-  turnCalc_t toAngleCalc(QAngle);
-  turnCalc_t toPointCalc(qPoint);
+  turnCalc_t angleCalc(QAngle);
+  turnCalc_t angleCalc(qPoint);
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
   using AsyncActionList = std::vector<AsyncActionRef>;
