@@ -49,7 +49,7 @@ namespace lib7842
     /**
     * Exclusions
     */
-    for(exclusionGroup exclusion : m_exclusions)
+    for(exclusionGroup &exclusion : m_exclusions)
     {
       switch(std::get<1>(exclusion))
       {
@@ -69,7 +69,7 @@ namespace lib7842
     /**
     * Actions
     */
-    for(actionGroup action : m_actions)
+    for(actionGroup &action : m_actions)
     {
       switch(std::get<1>(action))
       {

@@ -6,7 +6,28 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
+  bool runTrigger = false;
 
+  AsyncAction testAction = AsyncAction()
+  .withAction(makeAction(std::cout << "Continuous Before" << std::endl;), actionTypes::continousBefore)
+  .withAction(makeAction(std::cout << "Continuous After" << std::endl;), actionTypes::continousAfter)
+  .withTrigger(makeTrigger(return runTrigger;))
+  .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
+  .withAction(makeAction(std::cout << "Once After" << std::endl;));
+
+  int count = 0;
+  while(true)
+  {
+    if(count > 50 && !runTrigger)
+    {
+      runTrigger = true;
+      std::cout << "TRUE" << std::endl;
+    }
+    std::cout << "Count is: " << count << std::endl;
+    testAction.run(nullptr);
+    count++;
+    pros::delay(200);
+  }
 
 }
 
