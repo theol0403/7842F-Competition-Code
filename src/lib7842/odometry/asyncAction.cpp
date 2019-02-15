@@ -6,16 +6,10 @@ namespace lib7842
   AsyncAction::AsyncAction() {}
 
 
-  AsyncAction &AsyncAction::onlyBefore(AsyncAction& action) {
-    m_onlyBefores.push_back(action);
+  AsyncAction &AsyncAction::withExclusion(AsyncActionRef action, exclusionTypes type) {
+    m_exclusions.push_back({action, type});
     return *this;
   }
-
-  AsyncAction &AsyncAction::onlyAfter(AsyncAction& action) {
-    m_onlyAfters.push_back(action);
-    return *this;
-  }
-
 
   AsyncAction &AsyncAction::withTrigger(triggerFunction trigger) {
     m_triggers.push_back(trigger);
@@ -42,7 +36,6 @@ namespace lib7842
     return *this;
   }
 
-
   AsyncAction &AsyncAction::withAction(actionFunction action, actionTypes type) {
     m_actions.push_back({action, type});
     return *this;
@@ -53,51 +46,73 @@ namespace lib7842
   void AsyncAction::run(OdomController* that)
   {
 
-    for(AsyncAction &onlyBefore : m_onlyBefores)
+    /**
+    * Exclusions
+    */
+    for(exclusionGroup exclusion : m_excusions)
     {
-      if(onlyBefore.m_triggered)
+      switch(std::get<1>(exclusion))
       {
-        return;
+        case exclusionTypes::onlyBefore:
+        {
+          if(std::get<0>(exclusion).m_triggered) { return; }
+          break;
+        }
+        case exclusionTypes::onlyAfter:
+        {
+          if(!std::get<0>(exclusion).m_triggered) { return; }
+          break;
+        }
       }
     }
 
-    for(AsyncAction &onlyAfter : m_onlyAfters)
+    /**
+    * Actions
+    */
+    for(actionGroup action : m_actions)
     {
-      if(!onlyAfter.m_triggered)
+      switch(std::get<1>(action))
       {
-        return;
+        case actionTypes::onceBefore:
+        {
+          if(!std::get<2>(action) && !m_triggered) {
+            std::get<2>(action) = true;
+            std::get<0>(action)();
+          }
+          break;
+        }
+        case actionTypes::onceAfter:
+        {
+          if(!std::get<2>(action) && m_triggered) {
+            std::get<2>(action) = true;
+            std::get<0>(action)();
+          }
+          break;
+        }
+        case actionTypes::continousBefore:
+        {
+          if(!m_triggered) { std::get<0>(action)(); }
+          break;
+        }
+        case actionTypes::continousBefore:
+        {
+          if(m_triggered) { std::get<0>(action)(); }
+          break;
+        }
       }
     }
 
 
-    if(m_triggered) //if already triggered
-    {
-      //run continousAfter actions
-    }
-    else
-    {
-      //run continousBefore actions
-    }
-
-
-    bool anyTriggered = false;
-
+    /**
+    * Triggers
+    */
     for(triggerFunction &trigger : m_triggers)
     {
-      if(trigger(that))
-      {
-        anyTriggered = true;
-      }
+      if(trigger(that) && !m_triggered) { m_triggered = true; }
     }
-
-    if(anyTriggered && !m_triggered)
-    {
-      //run once after triggers
-      m_triggered = true;
-    }
-
 
   }
+
 
 
 }
