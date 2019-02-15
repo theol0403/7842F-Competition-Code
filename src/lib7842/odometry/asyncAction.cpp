@@ -17,7 +17,7 @@ namespace lib7842
   }
 
 
-  AsyncAction &AsyncAction::withTrigger(triggerFunc_t trigger) {
+  AsyncAction &AsyncAction::withTrigger(triggerFunction trigger) {
     m_triggers.push_back(trigger);
     return *this;
   }
@@ -43,7 +43,7 @@ namespace lib7842
   }
 
 
-  AsyncAction &AsyncAction::withAction(actionFunc_t action, actionTypes type) {
+  AsyncAction &AsyncAction::withAction(actionFunction action, actionTypes type) {
     m_actions.push_back({action, type});
     return *this;
   }
@@ -82,7 +82,7 @@ namespace lib7842
 
     bool anyTriggered = false;
 
-    for(triggerFunc_t &trigger : m_triggers)
+    for(triggerFunction &trigger : m_triggers)
     {
       if(trigger(that))
       {
