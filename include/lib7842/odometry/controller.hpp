@@ -81,10 +81,10 @@ namespace lib7842
 
     void turn(turnCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
-    void driveDistanceAtAngle(QLength, QAngle, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveDistanceAtAngle(QLength, turnCalc_t, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveForTime(int, double, AsyncActionList = {});
-    void driveForTimeAtAngle(int, double, QAngle, double = 1, AsyncActionList = {});
+    void driveForTimeAtAngle(int, double, turnCalc_t, double = 1, AsyncActionList = {});
     void allignToAngle(QAngle, double, double);
 
     void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});

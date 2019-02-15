@@ -7,16 +7,7 @@ void AutoNothing(lib7842::autonSides side)
 void AutoTest(lib7842::autonSides side)
 {
 
-  AsyncAction testAction = AsyncAction()
-  .withAction(makeAction(std::cout << "Continuous Before" << std::endl;), actionTypes::continousBefore)
-  .withAction(makeAction(std::cout << "Continuous After" << std::endl;), actionTypes::continousAfter)
-  .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
-  .withAction(makeAction(std::cout << "Once After" << std::endl;))
-  .withTrigger({0_in, 1_ft}, 5_in);
-
-  chassis->driveToPoint({0_in, 1_ft}, 4, driveSettle, {testAction});
-  std::cout << "Drive Back" << std::endl;
-  chassis->driveToPoint({0_in, 0_ft}, 4, driveSettle, {testAction});
+chassis->turn(toPoint({1_ft, 0_ft}));
 
 }
 
