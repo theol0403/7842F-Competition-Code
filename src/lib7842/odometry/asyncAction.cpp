@@ -66,6 +66,16 @@ namespace lib7842
       }
     }
 
+
+    /**
+    * Triggers
+    */
+    for(triggerFunction &trigger : m_triggers)
+    {
+      if(trigger(that) && !m_triggered) { m_triggered = true; }
+    }
+
+
     /**
     * Actions
     */
@@ -75,7 +85,7 @@ namespace lib7842
       {
         case actionTypes::onceBefore:
         {
-          if(!std::get<2>(action) && !m_triggered) {
+          if(!std::get<2>(action)) {
             std::get<2>(action) = true;
             std::get<0>(action)();
           }
@@ -84,6 +94,14 @@ namespace lib7842
         case actionTypes::onceAfter:
         {
           if(!std::get<2>(action) && m_triggered) {
+            std::get<2>(action) = true;
+            std::get<0>(action)();
+          }
+          break;
+        }
+        case actionTypes::onceUnlessTriggered:
+        {
+          if(!std::get<2>(action) && !m_triggered) {
             std::get<2>(action) = true;
             std::get<0>(action)();
           }
@@ -102,17 +120,6 @@ namespace lib7842
       }
     }
 
-
-    /**
-    * Triggers
-    */
-    for(triggerFunction &trigger : m_triggers)
-    {
-      if(trigger(that) && !m_triggered) { m_triggered = true; }
-    }
-
   }
-
-
 
 }

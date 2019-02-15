@@ -18,6 +18,7 @@ namespace lib7842
   {
     onceBefore,
     onceAfter,
+    onceUnlessTriggered,
     continousBefore,
     continousAfter
   };

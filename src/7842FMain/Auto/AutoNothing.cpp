@@ -18,12 +18,12 @@ void AutoTest(lib7842::autonSides side)
   int count = 0;
   while(true)
   {
-    if(count > 50 && !runTrigger)
+    std::cout << "Count is: " << count << std::endl;
+    if(count >= 50 && !runTrigger)
     {
       runTrigger = true;
       std::cout << "TRUE" << std::endl;
     }
-    std::cout << "Count is: " << count << std::endl;
     testAction.run(nullptr);
     count++;
     pros::delay(200);
