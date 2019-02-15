@@ -35,36 +35,20 @@ namespace lib7842
     that->tracker->model->right(-turnVel * 2);
   }
 
-
-
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
-  {
-    resetEmergencyAbort();
+  turnCalc_t toAngle(QAngle angle) {
     angle = rollAngle180(angle);
-    do {
-      m_angleErr = rollAngle180(angle - tracker->state.theta);
-      double turnVel = turnPid->calculateErr(m_angleErr.convert(degree));
-      turnFunc(this, turnVel);
-      runActions(actions);
-      pros::delay(10);
-    }
-    while(!settleFunc(this));
-    turnFunc(this, 0);
+    return [=](OdomController* that) { return rollAngle180(angle - that->tracker->state.theta); };
   }
 
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
-  {
-    turnToAngle(angle + tracker->state.theta, turnFunc, settleFunc, actions);
+  turnCalc_t toPoint(qPoint point) {
+    return [=](OdomController* that) { return that->computeAngleToPoint(point); };
   }
 
-
-
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::turn(turnCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
-    do
-    {
-      m_angleErr = computeAngleToPoint(point);
+    do {
+      m_angleErr = turnCalc(this);
       double turnVel = turnPid->calculateErr(m_angleErr.convert(degree));
       turnFunc(this, turnVel);
       runActions(actions);
@@ -73,7 +57,6 @@ namespace lib7842
     while(!settleFunc(this));
     turnFunc(this, 0);
   }
-
 
 
 

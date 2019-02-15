@@ -31,7 +31,7 @@ void AutoDraft(lib7842::autonSides side)
 
   chassis->driveToPoint({4.5_ft, 7_ft});                  //Move to ball under cap
   chassis->driveToPoint({1_ft, topShootDistance - 2_ft}); //Move to behind shooting position
-  chassis->turnToPoint(leftFlag);                         //turn to flag
+  chassis->turn(toPoint(leftFlag));                         //turn to flag
 
 
   AsyncAction shootTopFlag = AsyncAction()
