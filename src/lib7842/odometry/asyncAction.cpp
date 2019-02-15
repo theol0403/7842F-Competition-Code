@@ -22,22 +22,22 @@ namespace lib7842
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, triggerTypes type) {
-    m_triggers.push_back({makeTrigger( return that->computeDistanceToPoint(point) < distanceThresh; ), type});
+    m_triggers.push_back({[=](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh; }, type});
     return *this;
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh, triggerTypes type) {
-    m_triggers.push_back({makeTrigger( return that->computeDistanceToPoint(point) < distanceThresh && that->computeAngleToPoint(point).abs() < angleThresh; ), type});
+    m_triggers.push_back({[=](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh && that->computeAngleToPoint(point).abs() < angleThresh; }, type});
     return *this;
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh, triggerTypes type) {
-    m_triggers.push_back({makeTrigger( return that->computeAngleToPoint(point).abs() < angleThresh; ), type});
+    m_triggers.push_back({[=](OdomController* that){ return that->computeAngleToPoint(point).abs() < angleThresh; }, type});
     return *this;
   }
 
   AsyncAction &AsyncAction::withTrigger(QAngle angle, QAngle angleThresh, triggerTypes type) {
-    m_triggers.push_back({makeTrigger( return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; ), type});
+    m_triggers.push_back({[=](OdomController* that){ return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; }, type});
     return *this;
   }
 

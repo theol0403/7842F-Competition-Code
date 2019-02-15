@@ -6,50 +6,17 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-  bool run = false;
-  bool exit = false;
-  bool start = false;
-
-  AsyncAction startAction = AsyncAction()
-  .withTrigger(makeTrigger(return start;));
-
-  AsyncAction stopAction = AsyncAction()
-  .withTrigger(makeTrigger(return exit;));
 
   AsyncAction testAction = AsyncAction()
   .withAction(makeAction(std::cout << "Continuous Before" << std::endl;), actionTypes::continousBefore)
   .withAction(makeAction(std::cout << "Continuous After" << std::endl;), actionTypes::continousAfter)
   .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
   .withAction(makeAction(std::cout << "Once After" << std::endl;))
-  .withTrigger(makeTrigger(return run;))
-  .withExclusion(startAction, exclusionTypes::onlyAfter)
-  .withExclusion(stopAction, exclusionTypes::onlyBefore);
+  .withTrigger({0_in, 1_ft}, 5_in);
 
-  int count = 0;
-  while(true)
-  {
-    std::cout << "Count is: " << count << std::endl;
-    if(count >= 50 && !run)
-    {
-      run = true;
-      std::cout << "TRUE" << std::endl;
-    }
-    if(count >= 70 && !exit)
-    {
-      exit = true;
-      std::cout << "EXIT" << std::endl;
-    }
-    if(count >= 20 && !start)
-    {
-      start = true;
-      std::cout << "START" << std::endl;
-    }
-    startAction.run(nullptr);
-    stopAction.run(nullptr);
-    testAction.run(nullptr);
-    count++;
-    pros::delay(200);
-  }
+  chassis->driveToPoint({0_in, 1_ft}, 4, driveSettle, {testAction});
+  std::cout << "Drive Back" << std::endl;
+  chassis->driveToPoint({0_in, 0_ft}, 4, driveSettle, {testAction});
 
 }
 
