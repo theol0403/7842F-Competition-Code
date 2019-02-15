@@ -13,6 +13,7 @@ void AutoTest(lib7842::autonSides side)
   .withAction(makeAction(std::cout << "Continuous After" << std::endl;), actionTypes::continousAfter)
   .withTrigger(makeTrigger(return runTrigger;))
   .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
+  .withAction(makeAction(std::cout << "Once Unless Triggered" << std::endl;), actionTypes::onceUnlessTriggered)
   .withAction(makeAction(std::cout << "Once After" << std::endl;));
 
   int count = 0;
