@@ -16,28 +16,28 @@ namespace lib7842
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(triggerFunction trigger) {
-    m_triggers.push_back(trigger);
+  AsyncAction &AsyncAction::withTrigger(triggerFunction trigger, triggerTypes type) {
+    m_triggers.push_back({trigger, type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh) {
-    m_triggers.push_back([&](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh; });
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, triggerTypes type) {
+    m_triggers.push_back({makeTrigger( return that->computeDistanceToPoint(point) < distanceThresh; ), type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh) {
-    m_triggers.push_back([&](OdomController* that){ return that->computeDistanceToPoint(point) < distanceThresh && that->computeAngleToPoint(point).abs() < angleThresh; });
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh, triggerTypes type) {
+    m_triggers.push_back({makeTrigger( return that->computeDistanceToPoint(point) < distanceThresh && that->computeAngleToPoint(point).abs() < angleThresh; ), type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh) {
-    m_triggers.push_back([&](OdomController* that){ return that->computeAngleToPoint(point).abs() < angleThresh; });
+  AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh, triggerTypes type) {
+    m_triggers.push_back({makeTrigger( return that->computeAngleToPoint(point).abs() < angleThresh; ), type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(QAngle angle, QAngle angleThresh) {
-    m_triggers.push_back([&](OdomController* that){ return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; });
+  AsyncAction &AsyncAction::withTrigger(QAngle angle, QAngle angleThresh, triggerTypes type) {
+    m_triggers.push_back({makeTrigger( return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; ), type});
     return *this;
   }
 
@@ -69,12 +69,35 @@ namespace lib7842
 
     /**
     * Triggers
+    * This goes through all the onlyBefores and Afters before checking the actual trigger
     */
-    for(triggerFunction &trigger : m_triggers)
+    for(triggerGroup &trigger : m_triggers)
     {
-      if(trigger(that) && !m_triggered) { m_triggered = true; }
+      switch(std::get<1>(trigger))
+      {
+        case triggerTypes::onlyBefore:
+        {
+          if(std::get<0>(trigger)(that)) { return; }
+          break;
+        }
+        case triggerTypes::onlyAfter:
+        {
+          if(!std::get<0>(trigger)(that)) { return; }
+          break;
+        }
+      }
     }
-
+    for(triggerGroup &trigger : m_triggers)
+    {
+      switch(std::get<1>(trigger))
+      {
+        case triggerTypes::trigger:
+        {
+          if(std::get<0>(trigger)(that) && !m_triggered) { m_triggered = true; }
+          break;
+        }
+      }
+    }
 
     /**
     * Actions

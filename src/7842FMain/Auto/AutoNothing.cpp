@@ -7,14 +7,18 @@ void AutoNothing(lib7842::autonSides side)
 void AutoTest(lib7842::autonSides side)
 {
   bool runTrigger = false;
+  bool exitAction = false;
+  bool startAction = false;
 
   AsyncAction testAction = AsyncAction()
   .withAction(makeAction(std::cout << "Continuous Before" << std::endl;), actionTypes::continousBefore)
   .withAction(makeAction(std::cout << "Continuous After" << std::endl;), actionTypes::continousAfter)
-  .withTrigger(makeTrigger(return runTrigger;))
-  .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
   .withAction(makeAction(std::cout << "Once Unless Triggered" << std::endl;), actionTypes::onceUnlessTriggered)
-  .withAction(makeAction(std::cout << "Once After" << std::endl;));
+  .withAction(makeAction(std::cout << "Once Before" << std::endl;), actionTypes::onceBefore)
+  .withAction(makeAction(std::cout << "Once After" << std::endl;))
+  .withTrigger(makeTrigger(return runTrigger;))
+  .withTrigger(makeTrigger(return exitAction;), triggerTypes::onlyBefore)
+  .withTrigger(makeTrigger(return startAction;), triggerTypes::onlyAfter);
 
   int count = 0;
   while(true)
@@ -24,6 +28,16 @@ void AutoTest(lib7842::autonSides side)
     {
       runTrigger = true;
       std::cout << "TRUE" << std::endl;
+    }
+    if(count >= 70 && !exitAction)
+    {
+      exitAction = true;
+      std::cout << "EXIT" << std::endl;
+    }
+    if(count >= 20 && !startAction)
+    {
+      startAction = true;
+      std::cout << "START" << std::endl;
     }
     testAction.run(nullptr);
     count++;
