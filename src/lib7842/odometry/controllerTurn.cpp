@@ -63,6 +63,11 @@ namespace lib7842
     turn(angleCalc(angle), turnFunc, settleFunc, actions);
   }
 
+  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  {
+    turn(angleCalc(angle + tracker->state.theta), turnFunc, settleFunc, actions);
+  }
+
   void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     turn(angleCalc(point), turnFunc, settleFunc, actions);

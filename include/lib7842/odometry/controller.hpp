@@ -80,6 +80,7 @@ namespace lib7842
 
     void turn(turnCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
     void driveDistanceAtAngle(QLength, turnCalc_t, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
