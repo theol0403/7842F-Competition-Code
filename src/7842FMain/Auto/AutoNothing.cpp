@@ -2,6 +2,17 @@
 
 void AutoNothing(lib7842::autonSides side)
 {
+}
+
+void AutoTest(lib7842::autonSides side)
+{
+
+
+}
+
+
+void AutoDraft(lib7842::autonSides side)
+{
   tracker->setState(1_ft, 7_ft, 90_deg); //Robot is facing cap
   setIntakeMode(intakeModes::loading);
 
@@ -19,29 +30,14 @@ void AutoNothing(lib7842::autonSides side)
   .withMakeAction(setIntakeMode(intakeModes::shootIndexer););
 
   AsyncAction shootMiddleFlag = AsyncAction()
-  .onlyAfter(shootTopFlag)
+  .withExclusion(shootTopFlag, exclusionTypes::onlyAfter)
   //.withAction(makeAction( setFlywheelAngle(calculateAngle(middleShootDistance - shootingDelay(getRobotVelocity()))); ), actionModes::continousBefore)
   .withTrigger(leftFlag, middleShootDistance)
   .withMakeAction(setIntakeMode(intakeModes::shootIndexer););
 
-  chassis->driveToPoint({1_ft, 12_ft}, {shootTopFlag, shootMiddleFlag}); // Move forward towards flags and push bottom flag
+  chassis->driveToPoint({1_ft, 12_ft}, 4, driveSettle, {shootTopFlag, shootMiddleFlag}); // Move forward towards flags and push bottom flag
 
   chassis->driveToPoint({0.5_ft, 10.5_ft}); //Push Bottom Flag
   chassis->driveToPoint({0.4_ft, 8.6_ft});  //Move back
-
-}
-
-void AutoTest(lib7842::autonSides side)
-{
-  // chassis->driveDistance(1_ft);
-  // chassis->driveToPoint({2_ft, 1_ft}, 3, makeSettle(1_in));
-  //chassis->driveToPoint({0_in, 1_ft}, 3, driveSettle);
-  chassis->drivePath({{0_in, 2_ft}, {2_ft, 2_ft}, {0_ft, 0_ft}}, 4, makeSettle(4_in));
-
-  // asyncAction_t shootFlag{
-  //   {makeTrigger(leftFlag, 10_in, 5_deg)},
-  //   {makeAction(setIntakeMode(intakeModes::shootIndexer);)}};
-  //   chassis->driveDistanceAtAngle(10_in, 0_deg, 1, driveSettle, {shootFlag});
-  // }
 
 }

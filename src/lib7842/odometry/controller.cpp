@@ -98,17 +98,10 @@ namespace lib7842
   }
 
 
-  // void OdomController::checkActions(asyncActions triggerActions)
-  // {
-  //   for(asyncAction_t &triggerAction : triggerActions)
-  //   {
-  //     if(triggerAction.trigger(this) && !triggerAction.triggered)
-  //     {
-  //       triggerAction.action(this);
-  //       triggerAction.triggered = true;
-  //     }
-  //   }
-  // }
+  void OdomController::runActions(AsyncActionList actions)
+  {
+    for(AsyncActionRef action : actions) { action.get().run(this); }
+  }
 
 
   void OdomController::setSide(autonSides side)

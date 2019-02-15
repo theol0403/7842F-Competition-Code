@@ -36,7 +36,7 @@ namespace lib7842
     using exclusionGroup = std::tuple<AsyncActionRef, exclusionTypes>;
     std::vector<exclusionGroup> m_exclusions;
 
-    using actionGroup = std::tuple<actionFunction, actionTypes, bool = false>;
+    using actionGroup = std::tuple<actionFunction, actionTypes, bool>;
     std::vector<actionGroup> m_actions;
 
     std::vector<triggerFunction> m_triggers;

@@ -11,6 +11,11 @@ namespace lib7842
     return *this;
   }
 
+  AsyncAction &AsyncAction::withAction(actionFunction action, actionTypes type) {
+    m_actions.push_back({action, type, false});
+    return *this;
+  }
+
   AsyncAction &AsyncAction::withTrigger(triggerFunction trigger) {
     m_triggers.push_back(trigger);
     return *this;
@@ -33,11 +38,6 @@ namespace lib7842
 
   AsyncAction &AsyncAction::withTrigger(QAngle angle, QAngle angleThresh) {
     m_triggers.push_back([&](OdomController* that){ return that->tracker->getTheta() > angle - angleThresh && that->tracker->getTheta() < angle + angleThresh; });
-    return *this;
-  }
-
-  AsyncAction &AsyncAction::withAction(actionFunction action, actionTypes type) {
-    m_actions.push_back({action, type});
     return *this;
   }
 
