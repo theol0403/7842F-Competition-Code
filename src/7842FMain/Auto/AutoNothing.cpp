@@ -7,7 +7,7 @@ void AutoNothing(lib7842::autonSides side)
 void AutoTest(lib7842::autonSides side)
 {
 
-chassis->turn(toPoint({1_ft, 0_ft}));
+chassis->driveDistanceAtAngle(1_ft, toPointCalc({1_ft, 0_ft}));
 
 }
 
@@ -22,7 +22,7 @@ void AutoDraft(lib7842::autonSides side)
 
   chassis->driveToPoint({4.5_ft, 7_ft});                  //Move to ball under cap
   chassis->driveToPoint({1_ft, topShootDistance - 2_ft}); //Move to behind shooting position
-  chassis->turn(toPoint(leftFlag));                         //turn to flag
+  chassis->turn(toPointCalc(leftFlag));                         //turn to flag
 
 
   AsyncAction shootTopFlag = AsyncAction()

@@ -35,12 +35,12 @@ namespace lib7842
     that->tracker->model->right(-turnVel * 2);
   }
 
-  turnCalc_t toAngle(QAngle angle) {
+  turnCalc_t toAngleCalc(QAngle angle) {
     angle = rollAngle180(angle);
     return [=](OdomController* that) { return rollAngle180(angle - that->tracker->state.theta); };
   }
 
-  turnCalc_t toPoint(qPoint point) {
+  turnCalc_t toPointCalc(qPoint point) {
     return [=](OdomController* that) { return that->computeAngleToPoint(point); };
   }
 
