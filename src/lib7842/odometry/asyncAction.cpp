@@ -6,15 +6,15 @@ namespace lib7842
   AsyncAction::AsyncAction() {}
 
 
-    AsyncAction &AsyncAction::onlyBefore(AsyncAction& action) {
-      m_onlyBefores.push_back(action);
-      return *this;
-    }
+  AsyncAction &AsyncAction::onlyBefore(AsyncAction& action) {
+    m_onlyBefores.push_back(action);
+    return *this;
+  }
 
-    AsyncAction &AsyncAction::onlyAfter(AsyncAction& action) {
-      m_onlyAfters.push_back(action);
-      return *this;
-    }
+  AsyncAction &AsyncAction::onlyAfter(AsyncAction& action) {
+    m_onlyAfters.push_back(action);
+    return *this;
+  }
 
 
   AsyncAction &AsyncAction::withTrigger(triggerFunc_t trigger) {
@@ -50,7 +50,7 @@ namespace lib7842
 
 
 
-  void AsyncAction::run()
+  void AsyncAction::run(OdomController* that)
   {
 
     for(AsyncAction &onlyBefore : m_onlyBefores)
@@ -80,21 +80,22 @@ namespace lib7842
     }
 
 
-    bool triggered = false;
+    bool anyTriggered = false;
 
     for(triggerFunc_t &trigger : m_triggers)
     {
-      if(trigger() && triggered)
+      if(trigger(that))
       {
-        shouldTrigger = true;
+        anyTriggered = true;
       }
     }
 
-        if(triggerAction.trigger(this) && shouldTrigger)
-        {
-          triggerAction.action(this);
-          triggerAction.triggered = true;
-        }
+    if(anyTriggered && !m_triggered)
+    {
+      //run once after triggers
+      m_triggered = true;
+    }
+
 
   }
 

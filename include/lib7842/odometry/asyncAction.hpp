@@ -9,7 +9,7 @@ namespace lib7842
   class OdomController;
   class AsyncAction;
 
-  using AsyncActionList = std::vector<std::reference_wrapper<AsyncAction>>;
+  using AsyncActions = std::reference_wrapper<AsyncAction>;
 
   typedef std::function<bool(OdomController*)> triggerFunc_t;
   typedef std::function<void()> actionFunc_t;
@@ -22,23 +22,24 @@ namespace lib7842
     continousAfter
   };
 
-  struct actionAndType
+  enum class exclusionTypes
   {
-    actionFunc_t action;
-    actionTypes type;
+    onlyBefore,
+    onlyAfter
   };
 
+  using actionGroup = std::tuple<actionFunc_t, actionTypes, bool>;
+  using onlyGroup = std::tuple<AsyncActions, exclusionTypes>;
 
   class AsyncAction
   {
 
   private:
 
-    std::vector<triggerFunc_t> m_triggers;
-    std::vector<actionAndType> m_actions;
+    std::vector<onlyGroup> m_exclusions;
 
-    std::vector<std::reference_wrapper<AsyncAction>> m_onlyBefores;
-    std::vector<std::reference_wrapper<AsyncAction>> m_onlyAfters;
+    std::vector<triggerFunc_t> m_triggers;
+    std::vector<actionGroup> m_actions;
 
     bool m_triggered = false;
 
@@ -46,8 +47,7 @@ namespace lib7842
 
     AsyncAction();
 
-    AsyncAction &onlyBefore(AsyncAction&);
-    AsyncAction &onlyAfter(AsyncAction&);
+    AsyncAction &withExclusion(AsyncAction&, exclusionTypes);
 
     AsyncAction &withTrigger(triggerFunc_t);
     AsyncAction &withTrigger(qPoint, QLength);
