@@ -32,7 +32,7 @@ namespace lib7842
 
   void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    driveDistanceAtAngle(distance, angleCalc(setSide(tracker->state.theta)), 1, settleFunc, actions);
+    driveDistanceAtAngle(distance, angleCalc(getTheta()), 1, settleFunc, actions);
   }
 
 

@@ -80,6 +80,7 @@ namespace lib7842
     QAngle setSide(QAngle);
     qPoint setSide(qPoint);
     void setState(qPoint);
+    QAngle getTheta();
 
     void turn(turnCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});

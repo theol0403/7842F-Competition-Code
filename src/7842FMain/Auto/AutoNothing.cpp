@@ -6,10 +6,11 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-
   chassis->setSide(side);
-  chassis->setState({0_ft, 0_ft});
-  chassis->driveToPoint({1_ft, 1_ft}, 3);
+  chassis->setState({0_ft, 0_ft, chassis->getTheta()});
+
+  chassis->turnAngle(45_deg);
+  chassis->turnToAngle(90_deg);
 
 }
 

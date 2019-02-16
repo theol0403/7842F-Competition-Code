@@ -126,5 +126,10 @@ namespace lib7842
     tracker->setState(point);
   }
 
+  QAngle OdomController::getTheta()
+  {
+    return setSide(tracker->state.theta);
+  }
+
 
 }
