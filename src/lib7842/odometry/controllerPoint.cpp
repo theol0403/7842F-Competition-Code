@@ -5,7 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    targetPoint.setSide(m_autonSide);
+    targetPoint = setSide(targetPoint);
     resetEmergencyAbort();
     QAngle lastTarget = tracker->state.theta;
     do
@@ -49,7 +49,7 @@ namespace lib7842
 
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    targetPoint.setSide(m_autonSide);
+    targetPoint = setSide(targetPoint);
     resetEmergencyAbort();
     settleFunc_t exitFunc = makeSettle(1_in);
     distancePid->reset();

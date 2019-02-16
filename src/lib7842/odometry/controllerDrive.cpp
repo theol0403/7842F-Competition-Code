@@ -32,7 +32,7 @@ namespace lib7842
 
   void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    driveDistanceAtAngle(distance, angleCalc(tracker->state.theta), 1, settleFunc, actions);
+    driveDistanceAtAngle(distance, angleCalc(setSide(tracker->state.theta)), 1, settleFunc, actions);
   }
 
 
@@ -65,6 +65,7 @@ namespace lib7842
   void OdomController::allignToAngle(QAngle angle, double vel, double velThresh)
   {
     angle = rollAngle180(angle);
+    angle = setSide(angle);
     turnToAngle(angle);
     resetVelocityMax();
     tracker->model->forward(vel);

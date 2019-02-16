@@ -89,8 +89,7 @@ namespace lib7842
 
   void OdomController::resetEmergencyAbort() { resetVelocityMax(); }
   bool OdomController::emergencyAbort() {
-    if(std::abs(filterVelocity()) < 5)
-    {
+    if(std::abs(filterVelocity()) < 5) {
       std::cout << "EMERGENCY ABORT" << std::endl;
       return true;
     }
@@ -107,6 +106,18 @@ namespace lib7842
   void OdomController::setSide(autonSides side)
   {
     m_autonSide = side;
+  }
+
+  QAngle OdomController::setSide(QAngle angle)
+  {
+    if(m_autonSide == autonSides::blue) {angle = -angle;}
+    return angle;
+  }
+
+  qPoint OdomController::setSide(qPoint point)
+  {
+    point.setSide(m_autonSide);
+    return point;
   }
 
   void OdomController::setState(qPoint point)

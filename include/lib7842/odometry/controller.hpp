@@ -77,6 +77,8 @@ namespace lib7842
     void runActions(AsyncActionList);
 
     void setSide(autonSides);
+    QAngle setSide(QAngle);
+    qPoint setSide(qPoint);
     void setState(qPoint);
 
     void turn(turnCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
