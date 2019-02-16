@@ -9,8 +9,7 @@ void AutoTest(lib7842::autonSides side)
   chassis->setSide(side);
   chassis->setState({0_ft, 0_ft, chassis->getTheta()});
 
-  chassis->turnAngle(45_deg);
-  chassis->turnToAngle(90_deg);
+  chassis->driveDistanceAtAngle(1_ft, angleCalc(30_deg));
 
 }
 

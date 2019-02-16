@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::driveDistanceAtAngle(QLength distance, turnCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveDistanceAtAngle(QLength distance, angleCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
     std::valarray<int32_t> lastTicks = tracker->model->getSensorVals();
@@ -48,7 +48,7 @@ namespace lib7842
   }
 
 
-  void OdomController::driveForTimeAtAngle(int time, double vel, turnCalc_t turnCalc, double turnScale, AsyncActionList actions)
+  void OdomController::driveForTimeAtAngle(int time, double vel, angleCalc_t turnCalc, double turnScale, AsyncActionList actions)
   {
     while(time > 0) {
       m_angleErr = turnCalc(this);
