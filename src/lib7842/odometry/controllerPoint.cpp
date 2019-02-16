@@ -72,7 +72,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    driveDistanceAtAngle(m_distanceErr / 2, tracker->state.theta, turnScale, settleFunc, actions);
+    driveDistanceAtAngle(m_distanceErr / 2, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 
@@ -80,7 +80,6 @@ namespace lib7842
 
   void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
     {
       driveToPoint(point, turnScale, moveOnSettle, actions);
@@ -90,7 +89,6 @@ namespace lib7842
 
   void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    path.setSide(m_autonSide);
     for(qPoint &point : path.wayPoints)
     {
       driveToPointSimple(point, turnScale, moveOnSettle, actions);

@@ -109,5 +109,11 @@ namespace lib7842
     m_autonSide = side;
   }
 
+  void OdomController::setState(qPoint point)
+  {
+    point.setSide(m_autonSide);
+    tracker->setState(point);
+  }
+
 
 }

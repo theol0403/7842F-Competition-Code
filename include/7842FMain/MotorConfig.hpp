@@ -23,7 +23,6 @@ void initializeDevices();
 extern std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
 
-extern lib7842::OdomTracker* tracker;
 extern lib7842::OdomController* chassis;
 
 void initializeBase();
