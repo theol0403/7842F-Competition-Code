@@ -103,33 +103,4 @@ namespace lib7842
   }
 
 
-  void OdomController::setSide(autonSides side)
-  {
-    m_autonSide = side;
-  }
-
-  QAngle OdomController::setSide(QAngle angle)
-  {
-    if(m_autonSide == autonSides::blue) {angle = -angle;}
-    return angle;
-  }
-
-  qPoint OdomController::setSide(qPoint point)
-  {
-    point.setSide(m_autonSide);
-    return point;
-  }
-
-  void OdomController::setState(qPoint point)
-  {
-    point.setSide(m_autonSide);
-    tracker->setState(point);
-  }
-
-  QAngle OdomController::getTheta()
-  {
-    return setSide(tracker->state.theta);
-  }
-
-
 }

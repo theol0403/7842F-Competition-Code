@@ -6,17 +6,16 @@ void AutoNothing(lib7842::autonSides side)
 
 void AutoTest(lib7842::autonSides side)
 {
-  chassis->setSide(side);
-  chassis->setState({0_ft, 0_ft, chassis->getTheta()});
+  tracker->setState({0_ft, 0_ft, chassis->tracker->state.theta});
 
-  chassis->driveDistanceAtAngle(1_ft, angleCalc(30_deg));
+  chassis->driveDistance(1_ft);
 
 }
 
 
 void AutoDraft(lib7842::autonSides side)
 {
-  chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
+  tracker->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   setIntakeMode(intakeModes::loading);
 
   QLength topShootDistance = 7_ft;

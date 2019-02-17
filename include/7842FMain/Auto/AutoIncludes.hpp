@@ -15,9 +15,5 @@ void AutoFar(autonSides);
 void AutoMiddle(autonSides);
 
 
-#define FX 12_ft- //Flips X
-#define FA - //Flips Angle
-
-
 extern qPoint leftFlag;
 extern qPoint rightFlag;

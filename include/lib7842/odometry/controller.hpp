@@ -57,9 +57,6 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
-    autonSides m_autonSide = autonSides::red;
-
-
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
@@ -75,12 +72,6 @@ namespace lib7842
     bool emergencyAbort();
 
     void runActions(AsyncActionList);
-
-    void setSide(autonSides);
-    QAngle setSide(QAngle);
-    qPoint setSide(qPoint);
-    void setState(qPoint);
-    QAngle getTheta();
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});

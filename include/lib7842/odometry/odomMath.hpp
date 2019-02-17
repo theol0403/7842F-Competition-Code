@@ -17,7 +17,6 @@ namespace lib7842
     QLength x {0_in};
     QLength y {0_in};
     QAngle theta {0_rad};
-    autonSides currentSide = autonSides::red;
 
     qPoint(const qPoint&); //Needs to be by reference to avoid enless loop
 
@@ -30,7 +29,6 @@ namespace lib7842
     qPoint(qPoint, QAngle);
 
     qPoint(dPoint);
-    void setSide(autonSides);
   };
 
   struct dPoint
@@ -58,8 +56,11 @@ namespace lib7842
     Path(std::initializer_list<qPoint>);
     void add(qPoint);
     void add(Path);
-    void setSide(autonSides);
   };
+
+  qPoint setSide(qPoint, autonSides);
+  QAngle setSide(QAngle, autonSides);
+  Path setSide(Path, autonSides);
 
 }
 
