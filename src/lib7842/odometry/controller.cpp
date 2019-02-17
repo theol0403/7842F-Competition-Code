@@ -42,36 +42,6 @@ namespace lib7842
   turnPid(iturnPid)
   {};
 
-  /**
-  * Relative Position Calcs
-  */
-  QAngle OdomController::computeAngleToPoint(qPoint point) {
-    QAngle angle = (atan2(point.x.convert(inch) - tracker->state.x.convert(inch), point.y.convert(inch) - tracker->state.y.convert(inch)) * radian) - tracker->state.theta;
-    return rollAngle180(angle);
-  }
-
-  QLength OdomController::computeDistanceToPoint(qPoint point) {
-    return computeDistanceBetweenPoints(tracker->state, point);
-  }
-
-  /**
-  * custom vector control which allows yaw to have priority over forwardSped
-  * @param forwardSpeed
-  * @param yaw
-  */
-  void OdomController::driveVector(double forwardSpeed, double yaw)
-  {
-    double leftOutput = forwardSpeed + yaw;
-    double rightOutput = forwardSpeed - yaw;
-    double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
-    if (maxInputMag > 1) {
-      leftOutput /= maxInputMag;
-      rightOutput /= maxInputMag;
-    }
-    tracker->model->left(leftOutput);
-    tracker->model->right(rightOutput);
-  }
-
 
   /**
   * Velocity calculations, used for emergency abort
@@ -97,10 +67,68 @@ namespace lib7842
   }
 
 
+  /**
+  * custom vector control which allows yaw to have priority over forwardSped
+  * @param forwardSpeed
+  * @param yaw
+  */
+  void OdomController::driveVector(double forwardSpeed, double yaw)
+  {
+    double leftOutput = forwardSpeed + yaw;
+    double rightOutput = forwardSpeed - yaw;
+    double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
+    if (maxInputMag > 1) {
+      leftOutput /= maxInputMag;
+      rightOutput /= maxInputMag;
+    }
+    tracker->model->left(leftOutput);
+    tracker->model->right(rightOutput);
+  }
+
+
+/**
+ * execute a list of actions
+ * @param actions
+ */
   void OdomController::runActions(AsyncActionList actions)
   {
     for(AsyncActionRef action : actions) { action.get().run(this); }
   }
+
+
+  /**
+  * Relative Position Calcs
+  */
+  QAngle OdomController::m_computeAngleToPoint(qPoint point) {
+    QAngle angle = (atan2(point.x.convert(inch) - tracker->state.x.convert(inch), point.y.convert(inch) - tracker->state.y.convert(inch)) * radian) - tracker->state.theta;
+    return rollAngle180(angle);
+  }
+
+  QLength OdomController::m_computeDistanceToPoint(qPoint point) {
+    return computeDistanceBetweenPoints(tracker->state, point);
+  }
+
+
+
+  /**
+   * Wrapper Functions which mirror side
+   */
+   void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+   void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+   void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+   void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+
+   void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+   void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
+   void driveForTime(int, double, AsyncActionList = {});
+   void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
+   void allignToAngle(QAngle, double, double);
+
+   void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+   void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+
+   void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+   void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
 
 }

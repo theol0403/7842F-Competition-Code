@@ -12,7 +12,7 @@ void AutoTest(lib7842::autonSides side)
   chassis->turnAngle(90_deg, makeArc(1, 3));
   angleCalc_t calc = angleCalc(30_deg);
 
-  chassis->turnToAngle(90_deg, makeArc(1, 3))
+  chassis->turnToAngle(90_deg, makeArc(1, 3));
 
 }
 

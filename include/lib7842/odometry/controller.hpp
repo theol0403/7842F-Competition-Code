@@ -38,12 +38,7 @@ namespace lib7842
 
   public:
 
-    OdomController(
-      OdomTracker*,
-      PID *,
-      PID *,
-      PID *
-    );
+    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     OdomTracker *tracker = nullptr;
 
@@ -57,10 +52,6 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
-    QAngle computeAngleToPoint(qPoint);
-    QLength computeDistanceToPoint(qPoint);
-
-    void driveVector(double, double);
 
     void resetVelocity(double);
     void resetVelocityActual();
@@ -71,7 +62,10 @@ namespace lib7842
     void resetEmergencyAbort();
     bool emergencyAbort();
 
+    void driveVector(double, double);
+
     void runActions(AsyncActionList);
+    
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
@@ -89,6 +83,29 @@ namespace lib7842
 
     void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+
+
+  private:
+
+    QAngle m_computeAngleToPoint(qPoint);
+    QLength m_computeDistanceToPoint(qPoint);
+
+    void m_turn(angleCalc_t, turnFunc_t, settleFunc_t, AsyncActionList);
+    void m_turnToAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
+    void m_turnAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
+    void m_turnToPoint(qPoint, turnFunc_t , settleFunc_t, AsyncActionList);
+
+    void m_driveDistanceAtAngle(QLength, angleCalc_t, double, settleFunc_t, AsyncActionList);
+    void m_driveDistance(QLength, settleFunc_t, AsyncActionList);
+    void m_driveForTime(int, double, AsyncActionList);
+    void m_driveForTimeAtAngle(int, double, angleCalc_t, double, AsyncActionList);
+    void m_allignToAngle(QAngle, double, double);
+
+    void m_driveToPoint(qPoint, double, settleFunc_t, AsyncActionList);
+    void m_driveToPointSimple(qPoint, double, settleFunc_t, AsyncActionList);
+
+    void m_drivePath(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
+    void m_drivePathSimple(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
 
   };
 
