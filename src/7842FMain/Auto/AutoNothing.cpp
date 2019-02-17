@@ -7,8 +7,12 @@ void AutoNothing(lib7842::autonSides side)
 void AutoTest(lib7842::autonSides side)
 {
   tracker->setState({0_ft, 0_ft, chassis->tracker->state.theta});
-
   chassis->driveDistance(1_ft);
+
+  chassis->turnAngle(90_deg, makeArc(1, 3));
+  angleCalc_t calc = angleCalc(30_deg);
+
+  chassis->turnToAngle(90_deg, makeArc(1, 3))
 
 }
 
