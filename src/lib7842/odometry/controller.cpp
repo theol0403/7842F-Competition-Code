@@ -86,14 +86,48 @@ namespace lib7842
   }
 
 
-/**
- * execute a list of actions
- * @param actions
- */
+  /**
+  * execute a list of actions
+  * @param actions
+  */
   void OdomController::runActions(AsyncActionList actions)
   {
     for(AsyncActionRef action : actions) { action.get().run(this); }
   }
+
+  /**
+  * sets the side
+  * @param side
+  */
+  void OdomController::setSide(autonSides side)
+  {
+    m_autonSide = side;
+  }
+
+
+
+  /**
+  * Wrapper Functions which mirror side
+  */
+  void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {}) {
+    m_turn()
+  }
+  void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+  void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+  void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+
+  void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+  void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
+  void driveForTime(int, double, AsyncActionList = {});
+  void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
+  void allignToAngle(QAngle, double, double);
+
+  void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+  void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+
+  void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+  void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+
 
 
   /**
@@ -107,28 +141,6 @@ namespace lib7842
   QLength OdomController::m_computeDistanceToPoint(qPoint point) {
     return computeDistanceBetweenPoints(tracker->state, point);
   }
-
-
-
-  /**
-   * Wrapper Functions which mirror side
-   */
-   void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-   void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-   void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-   void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-
-   void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-   void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
-   void driveForTime(int, double, AsyncActionList = {});
-   void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
-   void allignToAngle(QAngle, double, double);
-
-   void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-   void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-
-   void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-   void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
 
 }

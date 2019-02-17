@@ -52,6 +52,8 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
+    autonSides m_autonSide = autonSides::red;
+
 
     void resetVelocity(double);
     void resetVelocityActual();
@@ -63,9 +65,10 @@ namespace lib7842
     bool emergencyAbort();
 
     void driveVector(double, double);
-
     void runActions(AsyncActionList);
-    
+
+    void setSide(autonSides);
+
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
