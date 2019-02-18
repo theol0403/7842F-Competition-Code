@@ -6,27 +6,27 @@ namespace lib7842
   settleFunc_t SideController::makeSettle(QAngle angle) {
     return OdomController::makeSettle(mirrorSide(angle, side));
   }
-  settleFunc_t SideController::makeSettle(QLength length); {
+  settleFunc_t SideController::makeSettle(QLength length) {
     return OdomController::makeSettle(length);
   }
-  settleFunc_t SideController::makeSettle(QLength length, QAngle angle); {
+  settleFunc_t SideController::makeSettle(QLength length, QAngle angle) {
     return OdomController::makeSettle(length, mirrorSide(angle, side));
   }
 
-  turnFunc_t SideController::makeArc(double leftRatio, double rightRatio); {
-    return side == autonSides::red ? OdomController::makeArc(leftRatio, rightRatio); : OdomController::makeArc(rightRatio, leftRatio);
+  turnFunc_t SideController::makeArc(double leftRatio, double rightRatio) {
+    return side == autonSides::red ? OdomController::makeArc(leftRatio, rightRatio) : OdomController::makeArc(rightRatio, leftRatio);
   }
-  void SideController::leftPivot(OdomController* that, double vel); {
+  void SideController::leftPivot(OdomController* that, double vel) {
     side == autonSides::red ? OdomController::leftPivot(that, vel) : OdomController::rightPivot(that, vel);
   }
-  void SideController::rightPivot(OdomController* that, double vel); {
+  void SideController::rightPivot(OdomController* that, double vel) {
     side == autonSides::red ? OdomController::rightPivot(that, vel) : OdomController::leftPivot(that, vel);
   }
 
-  angleCalc_t SideController::angleCalc(QAngle angle); {
+  angleCalc_t SideController::angleCalc(QAngle angle) {
     return OdomController::angleCalc(mirrorSide(angle, side));
   }
-  angleCalc_t SideController::angleCalc(qPoint point); {
+  angleCalc_t SideController::angleCalc(qPoint point) {
     return OdomController::angleCalc(mirrorSide(point, side));
   }
 

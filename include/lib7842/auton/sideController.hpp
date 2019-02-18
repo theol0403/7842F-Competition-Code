@@ -50,18 +50,18 @@ namespace lib7842
 
 
     #ifdef CONTROLLER_NAME_FOR_SHORTCUTS
-    #define makeSettle CONTROLLER_NAME_FOR_SHORTCUTS.makeSettle
+    #define makeSettle CONTROLLER_NAME_FOR_SHORTCUTS makeSettle
     #define turnSettle OdomController::turnSettle
     #define driveSettle OdomController::driveSettle
 
-    #define makeArc CONTROLLER_NAME_FOR_SHORTCUTS.makeArc
+    #define makeArc CONTROLLER_NAME_FOR_SHORTCUTS makeArc
     #define pointTurn OdomController::pointTurn
-    #define leftPivot CONTROLLER_NAME_FOR_SHORTCUTS.leftPivot
-    #define rightPivot CONTROLLER_NAME_FOR_SHORTCUTS.rightPivot
+    #define leftPivot CONTROLLER_NAME_FOR_SHORTCUTS leftPivot
+    #define rightPivot CONTROLLER_NAME_FOR_SHORTCUTS rightPivot
 
-    #define angleCalc CONTROLLER_NAME_FOR_SHORTCUTS.angleCalc
+    #define angleCalc CONTROLLER_NAME_FOR_SHORTCUTS angleCalc
     #endif
 
 
-  }
+  };
 }
