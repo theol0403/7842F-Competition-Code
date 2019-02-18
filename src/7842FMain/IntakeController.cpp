@@ -105,7 +105,7 @@ void run(void* input)
 
     }
 
-    pros::delay(20);
+    pros::delay(10);
   }
 
 }
