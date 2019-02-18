@@ -10,7 +10,9 @@ void AutoTest(lib7842::autonSides side)
   tracker->setState({0_ft, 0_ft, 0_deg});
   //chassis->driveDistance(1_ft);
 
-  chassis->turnToAngle(90_deg, makeArc(4, 1));
+  //chassis->turnToAngle(90_deg, makeArc(4, 1));
+
+  chassis->driveToPoint({1_ft, 1_ft});     
 
 }
 
