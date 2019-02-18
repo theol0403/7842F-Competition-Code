@@ -1,4 +1,3 @@
-#define IGNORE_MACRO_REMAP
 #include "controller.hpp"
 
 namespace lib7842

@@ -89,7 +89,7 @@ namespace lib7842
     void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
-    #ifndef IGNORE_MACRO_REMAP
+    #ifdef USE_SIDE_MACROS
     #define makeArc(x, y) (side == autonSides::red ? makeArc(x, y) : makeArc(y, x))
     #define leftPivot (side == autonSides::red ? leftPivot : rightPivot)
     #define rightPivot (side == autonSides::red ? rightPivot : leftPivot)

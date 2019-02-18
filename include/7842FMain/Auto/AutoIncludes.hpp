@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 
+#define USE_SIDE_MACROS
 #include "7842FMain/MotorConfig.hpp"
 #include "lib7842/other/miscUtils.hpp"
 #include "lib7842/auton/autonSelector.hpp"
