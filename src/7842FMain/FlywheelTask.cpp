@@ -1,10 +1,13 @@
 #include "FlywheelTask.hpp"
 
+static bool extendArm = false;
+static double wantedFlywheelRPM = 0;
+
 void flywheelTask(void*)
 {
   int flywheelRPM = 0;
 
-  const double slewRate = 0.7;
+  const double slewRate = 0.35;
   double lastPower = 0;
   double motorPower = 0;
 
@@ -40,7 +43,7 @@ void flywheelTask(void*)
 
       //std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
-      pros::delay(20);
+      pros::delay(10);
     }
   }
 }

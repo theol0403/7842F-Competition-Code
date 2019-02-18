@@ -1,7 +1,7 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(AbstractMotor* iflywheel) :
-flywheel(iflywheel)
+FlywheelController::FlywheelController(AbstractMotor* iflywheel, lib7842::velPID* ipid, double irpmEma) :
+flywheel(iflywheel), pid(ipid), rpmFilter(irpmEma)
 flywheelTask(run, this)
 {}
 
@@ -10,18 +10,13 @@ FlywheelController::setRPM(double rpm)
   targetRPM = rpm;
 }
 
+// calculate is on a scale of -1 - 1
+// motorpower is on a scale of 12000
+// before motorpower was 127, so now it is scaled by 94.4881889764
+
 void FlywheelController::run(void* input)
 {
   FlywheelController* that = static_cast<FlywheelController*>(input);
-
-  int flywheelRPM = 0;
-
-  const double slewRate = 0.7;
-  double lastPower = 0;
-  double motorPower = 0;
-
-  lib7842::velPID flywheelPID(0.4, 0.05, 0.044, 0.9);
-  lib7842::emaFilter rpmEma(0.15);
 
   while(true)
   {
@@ -52,7 +47,7 @@ void FlywheelController::run(void* input)
 
       //std::cout << "RPM: " << flywheelRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
-      pros::delay(20);
+      pros::delay(10);
     }
   }
 
