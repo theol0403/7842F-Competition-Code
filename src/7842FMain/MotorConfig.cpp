@@ -13,55 +13,16 @@ okapi::Motor* m_Indexer = nullptr;
 
 pros::ADILineSensor* s_indexerSensor = nullptr;
 
-okapi::ADIEncoder* s_leftEncoder = nullptr;
-okapi::ADIEncoder* s_rightEncoder = nullptr;
-okapi::ADIEncoder* s_middleEncoder = nullptr;
-
-std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model = nullptr;
-std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile = nullptr;
-
-lib7842::OdomTracker* tracker = nullptr;
-lib7842::OdomController* chassis = nullptr;
-
-lib7842::AutonSelector *autonSelector = nullptr;
-
-
-void setFlywheelPower(double speed)
-{
-	m_Flywheel->moveVoltage(speed/127.0*12000);
-	m_Flywheel2->moveVoltage(speed/127.0*12000);
-}
-double getFlywheelRPM() { return m_Flywheel->getActualVelocity() * 15; } // 1:15 ratio from motor output to flywhel speed
-
-void setIntakePower(double speed) { m_Intake->moveVoltage(speed/127.0*12000); }
-void setIndexerPower(double speed) { m_Indexer->moveVoltage(speed/127.0*12000); }
-void setIntakeVelocity(double speed) { m_Intake->moveVelocity(speed); }
-void setIndexerVelocity(double speed) {	m_Indexer->moveVelocity(speed); }
-
-double getIndexerSensor() {	return s_indexerSensor->get_value_calibrated(); }
-
+robot_t robot;
 
 void checkBaseStatus()
 {
-	if(model == nullptr)
+	if(robot.model == nullptr)
 	{
 		std::cout << "USING BASE BEFORE INIT\n";
 		pros::delay(500);
 	}
 }
-
-void setBaseArcade(double yPower, double zPower)
-{
-	checkBaseStatus();
-	model->arcade(yPower, zPower, 0);
-}
-
-void setBasePower(double leftPower, double rightPower)
-{
-	checkBaseStatus();
-	model->tank(leftPower, rightPower, 0);
-}
-
 
 /***
 *     _____                            _   _ _   _              ______      _           _
@@ -97,54 +58,40 @@ void initializeDevices()
 
 	s_indexerSensor = new pros::ADILineSensor('A');
 	s_indexerSensor->calibrate();
-
-	s_leftEncoder = new okapi::ADIEncoder(3, 4);
-	s_rightEncoder = new okapi::ADIEncoder(5, 6);
-	s_middleEncoder = new okapi::ADIEncoder(8, 7);
-
-	s_leftEncoder->reset();
-	s_rightEncoder->reset();
-	s_middleEncoder->reset();
-
 }
 
 
 void initializeBase()
 {
 
-	model = std::make_shared<ThreeEncoderSkidSteerModel>(
+	robot.model = std::make_shared<ThreeEncoderSkidSteerModel>(
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
-		std::make_shared<ADIEncoder>(*s_leftEncoder),
-		std::make_shared<ADIEncoder>(*s_middleEncoder),
-		std::make_shared<ADIEncoder>(*s_rightEncoder),
+		std::make_shared<ADIEncoder>(3, 4),
+		std::make_shared<ADIEncoder>(8, 7),
+		std::make_shared<ADIEncoder>(5, 6),
 		200,
 		12000);
 
 
-		tracker = new lib7842::OdomTracker
+		robot.tracker = new lib7842::OdomTracker
 		(
-			model,
+			robot.model,
 			12.55_in, 8_in,
 			2.75_in,
 			360 * 1.6, 360
 		);
 
 
-		chassis = new lib7842::OdomController
+		robot.chassis = new lib7842::OdomController
 		(
-			tracker,
+			robot.tracker,
 			new lib7842::PID(0.00001, 0, 1, 50, 5, 250_ms), //Distance PID - To mm
 			new lib7842::PID(0.00005, 0, 1, 50, 5, 250_ms), //Angle PID - To Degree
 			new lib7842::PID(0.00005, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
 		);
 
-
-		pros::delay(200);
-		tracker->resetSensors();
-		tracker->resetState();
 	}
-
 
 
 
@@ -166,53 +113,38 @@ void initializeBase()
 
 	void initializeDevices()
 	{
-		s_leftEncoder = new okapi::ADIEncoder(3, 4);
-		s_rightEncoder = new okapi::ADIEncoder(5, 6);
-		// s_middleEncoder = new okapi::ADIEncoder(8, 7);
-		s_middleEncoder = new okapi::ADIEncoder(1, 2);
-
-		s_leftEncoder->reset();
-		s_rightEncoder->reset();
-		s_middleEncoder->reset();
 	}
 
 	void initializeBase()
 	{
 
-
-		model = std::make_shared<ThreeEncoderSkidSteerModel>(
+		robot.model = std::make_shared<ThreeEncoderSkidSteerModel>(
 			std::make_shared<Motor>(left_mPort),
 			std::make_shared<Motor>(right_mPort),
-			std::make_shared<ADIEncoder>(*s_leftEncoder),
-			std::make_shared<ADIEncoder>(*s_middleEncoder),
-			std::make_shared<ADIEncoder>(*s_rightEncoder),
+			std::make_shared<ADIEncoder>(3, 4),
+			std::make_shared<ADIEncoder>(1, 2),
+			std::make_shared<ADIEncoder>(5, 6),
 			200,
 			12000);
 
 
-			tracker = new lib7842::OdomTracker
+			robot.tracker = new lib7842::OdomTracker
 			(
-				model,
+				robot.model,
 				27_cm, 0_cm,
 				4_in,
 				360, 360
 			);
 
 
-			chassis = new lib7842::OdomController
+			robot.chassis = new lib7842::OdomController
 			(
-				tracker,
+				robot.tracker,
 				new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
 				new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
 				new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
 			);
 
-
-			pros::delay(200);
-			tracker->resetSensors();
-			tracker->resetState();
 		}
-
-
 
 		#endif //COMPETITION_ROBOT

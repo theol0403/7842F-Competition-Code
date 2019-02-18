@@ -38,6 +38,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     pros::Task* objectTask_t = nullptr;
     pros::Task* odomTask_t = nullptr;
 
+    lib7842::AutonSelector *autonSelector;
 
 
     /***
@@ -66,8 +67,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       intakeTask_t = new pros::Task(intakeControlTask);
       #endif
 
-
-    //  odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, tracker);
 
     }
 
@@ -128,15 +127,23 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void opcontrol()
     {
-      setFlywheelRPM(0);
       checkBaseStatus();
-
-      model->stop();
+      robot.model->stop();
 
       while(true)
       {
-        checkBaseStatus();
-        driverBaseControl();
+
+        if(j_Digital(A)) { autonomous(); }
+
+        if(j_Digital(B)) {
+          tracker->resetState();
+          tracker->resetSensors();
+        }
+
+        double rightY = j_Analog(rightY);
+        double leftX = j_Analog(leftX);
+
+        robot.model->arcade(rightY, leftX, 0);
 
         #ifndef TEST_ROBOT
         driverIntakeControl();
