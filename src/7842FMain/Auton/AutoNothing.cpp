@@ -8,8 +8,7 @@ void AutonTest(void* input)
 {
   SideController* chassis = static_cast<SideController*>(input);
 
-  // chassis->setSide(side);
-  // chassis->setState({0_ft, 0_ft, 0_deg});
+  chassis->setState({0_ft, 0_ft, 0_deg});
   //chassis->driveDistance(1_ft);
 
   //chassis->turnToAngle(90_deg, makeArc(4, 1));

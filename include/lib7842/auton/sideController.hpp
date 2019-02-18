@@ -20,6 +20,8 @@ namespace lib7842
 
     SideController(OdomController*, autonSides);
 
+    void setState(qPoint);
+
     settleFunc_t makeSettle(QAngle);
     settleFunc_t makeSettle(QLength);
     settleFunc_t makeSettle(QLength, QAngle);

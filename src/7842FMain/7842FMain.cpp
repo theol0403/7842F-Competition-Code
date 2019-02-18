@@ -168,7 +168,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-      SideController* sidechassis = new SideController(chassis, autonSelector->getSelectedSide());
-      autonSelector->getSelectedAuton().autonFunc(sidechassis);
-      //pros::delay(500000);
+      SideController* sideChassis = new SideController(chassis, autonSelector->getSelectedSide());
+      autonSelector->getSelectedAuton().autonFunc(sideChassis);
+      delete sideChassis;
+    //pros::delay(500000);
     }
