@@ -12,6 +12,9 @@
 
 #include "7842FMain/Auton/AutonFunctions.hpp"
 
+extern lib7842::OdomController* chassis;
+extern lib7842::OdomTracker* tracker;
+
 
 /***   _____         _
 *    |_   _|       | |
@@ -165,7 +168,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-      OdomController* controller = nullptr;
-      autonSelector->getSelectedAuton().autonFunc(controller);
+      SideController* sidechassis = new SideController(chassis, autonSelector->getSelectedSide());
+      autonSelector->getSelectedAuton().autonFunc(sidechassis);
       //pros::delay(500000);
     }

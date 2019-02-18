@@ -6,7 +6,7 @@ void AutonNothing(void* input)
 
 void AutonTest(void* input)
 {
-  OdomController* chassis = static_cast<OdomController*>(input);
+  SideController* chassis = static_cast<SideController*>(input);
 
   // chassis->setSide(side);
   // chassis->setState({0_ft, 0_ft, 0_deg});
@@ -21,7 +21,7 @@ void AutonTest(void* input)
 
 void AutoDraft(void* input)
 {
-  OdomController* chassis = static_cast<OdomController*>(input);
+  SideController* chassis = static_cast<SideController*>(input);
 
   //chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   setIntakeMode(intakeModes::loading);

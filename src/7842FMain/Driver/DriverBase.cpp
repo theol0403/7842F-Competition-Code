@@ -26,7 +26,8 @@ void driverBaseControl()
 
   if(j_Digital(A))
   {
-    autonSelector->run();
+    autonomous();
+    //autonSelector->run();
     // model->stop();
     // chassis->m_chassisController->stop();
     // chassis->m_chassisController->moveDistance(1_cm);
