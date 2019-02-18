@@ -103,7 +103,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     {
       //Tries to turn everything off
       setFlywheelRPM(0);
-      model->stop();
+      robot.model->stop();
     }
 
     /***
@@ -176,7 +176,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-      SideController* sideChassis = new SideController(chassis, autonSelector->getSelectedSide());
+      SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());
       autonSelector->getSelectedAuton().autonFunc(sideChassis);
       delete sideChassis;
       std::cout << "Exit Auton" << std::endl;

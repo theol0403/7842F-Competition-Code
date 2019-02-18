@@ -3,11 +3,6 @@
 static intakeModes dIntakeState = intakeModes::off;
 static intakeModes dLastIntakeState = intakeModes::off;
 
-// r2 && r2 shoot everything
-//r2 intake r1 just indake outtake
-//l2 shoot l1 everything outtake
-
-
 void driverIntakeControl()
 {
 	if(j_Digital(R2) && j_Digital(L2))
@@ -58,17 +53,6 @@ static bool flywheelManual = false; // Toggle whether RPM control is used or man
 
 void driverFlywheelControl()
 {
-	//
-	// if(j_Main.getDigital(okapi::ControllerDigital::Y) && !togglePressed) // Is button pressed and not before?
-	// {
-	// 	togglePressed = true;
-	// 	flywheelManual = flywheelManual ? false : true; //Switch flywheel mode
-	// }
-	// else if(!j_Main.getDigital(okapi::ControllerDigital::Y) && togglePressed) // Is button not pressed but it was before?
-	// {
-	// 	togglePressed = false;
-	// }
-
 
 	if(j_Main.getDigital(okapi::ControllerDigital::left))
 	{
