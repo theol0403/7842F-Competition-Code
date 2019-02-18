@@ -15,7 +15,7 @@ namespace lib7842
   struct autonPair
   {
     std::string autonName;
-    std::function<void(lib7842::autonSides)> autonFunc;
+    std::function<void(void*)> autonFunc;
   };
 
 
@@ -39,8 +39,8 @@ namespace lib7842
     static lv_res_t matrixAction(lv_obj_t*, const char*);
     static lv_res_t sliderAction(lv_obj_t*);
 
-    void run();
-    void unlockDriver(std::function<void()>);
+    autonPair getSelectedAuton();
+    autonSides getSelectedSide();
 
   };
 
