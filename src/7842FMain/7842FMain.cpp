@@ -167,5 +167,5 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
       OdomController* controller = nullptr;
       autonSelector->getSelectedAuton().autonFunc(controller);
-      pros::delay(500000);
+      //pros::delay(500000);
     }

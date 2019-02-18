@@ -1,4 +1,4 @@
-#include "7842FMain/Auto/AutoIncludes.hpp"
+#include "7842FMain/Auton/AutonIncludes.hpp"
 
 
 void AutonClose(autonSides side)
