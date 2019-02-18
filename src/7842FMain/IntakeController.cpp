@@ -9,12 +9,12 @@ intakeTask(run, this)
   lineSensor->calibrate();
 }
 
-IntakeController::setState(intakeStates state)
+void IntakeController::setState(intakeStates state)
 {
   intakeState = state;
 }
 
-void FlywheelController::run(void* input)
+void IntakeController::run(void* input)
 {
   IntakeController* that = static_cast<IntakeController*>(input);
 
