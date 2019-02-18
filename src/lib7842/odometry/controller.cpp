@@ -82,7 +82,7 @@ namespace lib7842
   QLength OdomController::computeDistanceToPoint(qPoint point) {
     return computeDistanceBetweenPoints(tracker->state, point);
   }
-  
+
 
   /**
   * Settle Functions
