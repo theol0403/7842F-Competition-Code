@@ -6,12 +6,6 @@ namespace lib7842
 {
   struct dPoint; //Forward declare
 
-  // struct QSAngle : public QAngle
-  // {
-  //   autonSides currentSide = autonSides::red;
-  //   void setSide(autonSides);
-  // };
-
   struct qPoint
   {
     QLength x {0_in};
@@ -58,9 +52,9 @@ namespace lib7842
     void add(Path);
   };
 
-  qPoint setSide(qPoint, autonSides);
-  QAngle setSide(QAngle, autonSides);
-  Path setSide(Path, autonSides);
+  qPoint mirrorSide(qPoint, autonSides);
+  QAngle mirrorSide(QAngle, autonSides);
+  Path mirrorSide(Path, autonSides);
 
 }
 

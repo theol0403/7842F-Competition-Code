@@ -69,6 +69,8 @@ namespace lib7842
 
     void setSide(autonSides);
 
+    QAngle computeAngleToPoint(qPoint);
+    QLength computeDistanceToPoint(qPoint);
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
@@ -87,11 +89,19 @@ namespace lib7842
     void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
+    #ifndef IGNORE_MACRO_REMAP
+    #define makeArc(x, y) (side == autonSides::red ? makeArc(x, y) : makeArc(y, x))
+    #define leftPivot (side == autonSides::red ? leftPivot : rightPivot)
+    #define rightPivot (side == autonSides::red ? rightPivot : leftPivot)
+
+    #define angleCalc(x) angleCalc(setSide(x, side))
+
+    #define computeAngleToPoint(x) computeAngleToPoint(setSide(x, side))
+    #define computeDistanceToPoint(x) computeDistanceToPoint(setSide(x, side))
+    #endif
+
 
   private:
-
-    QAngle m_computeAngleToPoint(qPoint);
-    QLength m_computeDistanceToPoint(qPoint);
 
     void m_turn(angleCalc_t, turnFunc_t, settleFunc_t, AsyncActionList);
     void m_turnToAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);

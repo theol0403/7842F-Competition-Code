@@ -42,7 +42,7 @@ namespace lib7842
   /**
   * Sides
   */
-  qPoint setSide(qPoint point, autonSides side) {
+  qPoint mirrorSide(qPoint point, autonSides side) {
     if(side == autonSides::blue) {
       point.x = 12_ft - point.x;
       point.theta *= -1;
@@ -50,14 +50,14 @@ namespace lib7842
     return point;
   }
 
-  QAngle setSide(QAngle angle, autonSides side) {
+  QAngle mirrorSide(QAngle angle, autonSides side) {
     if(side == autonSides::blue) { angle = -angle; }
     return angle;
   }
 
-  Path setSide(Path path, autonSides side) {
+  Path mirrorSide(Path path, autonSides side) {
     if(side == autonSides::blue) {
-      for(qPoint &point : path.wayPoints) { point = setSide(point, side); }
+      for(qPoint &point : path.wayPoints) { point = mirrorSide(point, side); }
     }
     return path;
   }

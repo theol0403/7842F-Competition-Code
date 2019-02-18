@@ -1,3 +1,4 @@
+#define IGNORE_MACRO_REMAP 
 #include "controller.hpp"
 
 namespace lib7842
@@ -45,7 +46,7 @@ namespace lib7842
     return [=](OdomController* that) { return that->computeAngleToPoint(point); };
   }
 
-  void OdomController::turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::m_turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
     do {
@@ -59,17 +60,17 @@ namespace lib7842
     turnFunc(this, 0);
   }
 
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::m_turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     turn(angleCalc(angle), turnFunc, settleFunc, actions);
   }
 
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::m_turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     turn(angleCalc(angle + tracker->state.theta), turnFunc, settleFunc, actions);
   }
 
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::m_turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     turn(angleCalc(point), turnFunc, settleFunc, actions);
   }
