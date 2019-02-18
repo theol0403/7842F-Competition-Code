@@ -101,6 +101,15 @@ namespace lib7842
   {
     m_autonSide = side;
   }
+  
+  /**
+  * sets the state based on side
+  * @param state
+  */
+  void OdomController::setState(qPoint state)
+  {
+    tracker->setState(mirrorSide(state, m_autonSide));
+  }
 
   /**
   * Relative Position Calcs

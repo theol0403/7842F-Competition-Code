@@ -44,10 +44,10 @@ namespace lib7842
   */
   qPoint mirrorSide(qPoint point, autonSides side) {
     if(side == autonSides::blue) {
-      return {12_ft - point.x, point.y, point.theta *= -1};
-    } else {
-      return point;
+      point.x = 12_ft - point.x;
+      point.theta *= -1;
     }
+    return point;
   }
 
   QAngle mirrorSide(QAngle angle, autonSides side) {

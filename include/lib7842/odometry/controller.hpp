@@ -68,6 +68,7 @@ namespace lib7842
     void runActions(AsyncActionList);
 
     void setSide(autonSides);
+    void setState(qPoint);
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
@@ -98,6 +99,7 @@ namespace lib7842
 
     #define computeAngleToPoint(x) computeAngleToPoint(mirrorSide(x, side))
     #define computeDistanceToPoint(x) computeDistanceToPoint(mirrorSide(x, side))
+
     #endif
 
 
