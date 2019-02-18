@@ -22,10 +22,10 @@ extern lib7842::OdomTracker* tracker;
 *      | |/ _` / __| |/ / __|
 *      | | (_| \__ \   <\__ \
 *      \_/\__,_|___/_|\_\___/
- * Checks current task state and changes it if the state does not match the wanted state
- * @param taskPtr  pointer to the task
- * @param taskMode one of two options, TASK_STATE_SUSPENDED or TASK_STATE_RUNNING
- */
+* Checks current task state and changes it if the state does not match the wanted state
+* @param taskPtr  pointer to the task
+* @param taskMode one of two options, TASK_STATE_SUSPENDED or TASK_STATE_RUNNING
+*/
 void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
   if(taskPtr != nullptr && taskPtr->get_state() != taskMode) { switch(taskMode) {
     case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
@@ -54,10 +54,10 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     */
     void initialize()
     {
-      //Initializes autonomous selector with list of autonomous programs
-      // autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutonNothing}, {"Test", AutonTest}, {"Close", AutonClose}, {"Middle", AutonMiddle}, {"Far", AutonFar}});
-      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutonTest}, {"Close", AutonClose}});
       pros::delay(500); //Give the legacy ports time to start up
+
+      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutonTest}, {"Close", AutonClose}});
+
       initializeDevices();
       initializeBase();
 
@@ -65,8 +65,9 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       flywheelTask_t = new pros::Task(flywheelTask);
       intakeTask_t = new pros::Task(intakeControlTask);
       #endif
-      //  objectTask_t = new pros::Task(ObjectTrackingTask);
-      odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, tracker);
+
+
+    //  odomTask_t = new pros::Task(lib7842::OdomTracker::odometryTask, tracker);
 
     }
 
@@ -171,5 +172,5 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       SideController* sideChassis = new SideController(chassis, autonSelector->getSelectedSide());
       autonSelector->getSelectedAuton().autonFunc(sideChassis);
       delete sideChassis;
-    //pros::delay(500000);
+      std::cout << "Exit Auton" << std::endl;
     }

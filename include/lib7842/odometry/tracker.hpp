@@ -16,12 +16,13 @@ namespace lib7842
 
   public:
 
-    OdomTracker(
+    OdomTracker (
       std::shared_ptr<okapi::ThreeEncoderSkidSteerModel>,
       QLength, QLength,
       QLength,
       double, double
     );
+
 
     std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 
@@ -30,6 +31,8 @@ namespace lib7842
 
     const double m_mainDegToInch;
     const double m_middleDegToInch;
+
+    pros::Task m_trackerTask;
 
     qPoint state {0_in, 0_in, 0_rad};
 

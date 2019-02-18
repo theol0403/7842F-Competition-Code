@@ -16,7 +16,9 @@ namespace lib7842
   m_distanceMiddle(distanceMiddle),
 
   m_mainDegToInch(wheelDiam.convert(inch) * 1_pi / mainTicksPerRev),
-  m_middleDegToInch(wheelDiam.convert(inch) * 1_pi / middleTicksPerRev)
+  m_middleDegToInch(wheelDiam.convert(inch) * 1_pi / middleTicksPerRev),
+
+  m_trackerTask(odometryTask, this)
   {};
 
 

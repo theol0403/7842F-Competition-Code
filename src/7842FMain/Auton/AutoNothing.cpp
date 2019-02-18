@@ -13,7 +13,7 @@ void AutonTest(void* input)
 
   //chassis->turnToAngle(90_deg, makeArc(4, 1));
 
-  chassis->driveToPoint({1_ft, 1_ft});
+  //chassis->driveToPoint({1_ft, 1_ft});
 
 }
 

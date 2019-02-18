@@ -1,7 +1,6 @@
 #pragma once
 #include "main.h"
 #include "lib7842/lib7842.hpp"
-#include "7842FMain/Auton/AutonFunctions.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
