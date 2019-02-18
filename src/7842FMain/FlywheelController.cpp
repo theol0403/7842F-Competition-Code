@@ -1,11 +1,11 @@
 #include "FlywheelController.hpp"
 
 FlywheelController::FlywheelController(AbstractMotor* iflywheel, lib7842::velPID* ipid, double irpmEma, double iflywheelRatio, double islewRate) :
-flywheel(iflywheel), pid(ipid), rpmFilter(irpmEma), flywheelRatio(iflywheelRatio), slewRate(islewRate)
+flywheel(iflywheel), pid(ipid), rpmFilter(irpmEma), flywheelRatio(iflywheelRatio), slewRate(islewRate),
 flywheelTask(run, this)
 {}
 
-  FlywheelController::setRPM(double rpm)
+  void FlywheelController::setRPM(double rpm)
   {
     targetRPM = rpm;
   }
@@ -21,16 +21,16 @@ flywheelTask(run, this)
     while(true)
     {
 
-      currentRPM = rpmFilter.filter(flywheel->getActualVelocity() * flywheelRatio);
-      motorPower = flywheelPID.calculate(targetRPM, currentRPM);
+      that->currentRPM = that->rpmFilter.filter(that->flywheel->getActualVelocity() * that->flywheelRatio);
+      that->finalPower = that->pid->calculate(that->targetRPM, that->currentRPM);
 
-      if(targetRPM <= 0) motorPower = 0;
-      if(motorPower <= 0) motorPower = 0;
-      if(motorPower > lastPower && lastPower < 10) lastPower = 10;
-      if((motorPower - lastPower) > slewRate) motorPower = lastPower + slewRate;
-      lastPower = motorPower;
+      if(that->targetRPM <= 0) that->finalPower = 0;
+      if(that->finalPower <= 0) that->finalPower = 0;
+      if(that->finalPower > that->lastPower && that->lastPower < 10) that->lastPower = 10;
+      if((that->finalPower - that->lastPower) > that->slewRate) that->finalPower = that->lastPower + that->slewRate;
+      that->lastPower = that->finalPower;
 
-      that->flywheel->moveVelocity(motorPower * 12000);
+      that->flywheel->moveVelocity(that->finalPower * 12000);
 
 
       pros::delay(10);

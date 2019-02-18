@@ -1,37 +1,33 @@
 #pragma once
 #include "main.h"
+#include "lib7842/pid/pidVelSystem.hpp"
 
-
-namespace lib7842
+class FlywheelController
 {
 
-  class FlywheelController
-  {
+public:
 
-  public:
+  AbstractMotor* flywheel = nullptr;
+  lib7842::velPID* pid = nullptr;
+  lib7842::emaFilter rpmFilter;
+  double flywheelRatio = 1;
 
-    AbstractMotor* flywheel = nullptr;
-    lib7842::velPID* pid = nullptr;
-    lib7842::emaFilter rpmFilter;
-    double flywheelRatio = 1;
+  double slewRate = 1;
 
-    double powerSlew = 1;
+  pros::Task flywheelTask;
+  
+  double targetRPM = 0;
+  double currentRPM = 0;
 
-    pros::Task flywheelTask;
+  double lastPower = 0;
+  double finalPower = 0;
 
-    double targetRPM = 0;
-    double currentRPM = 0;
+  FlywheelController(AbstractMotor*, lib7842::velPID*, double, double, double);
 
-    double lastPower = 0;
-    double finalPower = 0;
+  void setRPM(double);
+  void disable();
+  void enable();
 
-    FlywheelController(AbstractMotor*, lib7842::velPID*, double, double, double);
+  static void run(void*);
 
-    void setRPM(double);
-    void disable();
-    void enable();
-
-    static void run(void*);
-
-  };
-}
+};

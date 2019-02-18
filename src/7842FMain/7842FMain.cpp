@@ -1,19 +1,13 @@
 #include "main.h"
 
 #include "MotorConfig.hpp"
-#include "Shared/FlywheelTask.hpp"
-#include "Shared/IntakeTask.hpp"
+#include "FlywheelController.hpp"
+#include "IntakeController.hpp"
 #include "lib7842/lib7842.hpp"
 
-#include "Shared/ObjectTracking.hpp"
-
-#include "Driver/DriverFunctions.hpp"
-#include "Driver/DriverBase.hpp"
+#include "DriverControl.hpp"
 
 #include "7842FMain/Auton/AutonFunctions.hpp"
-
-extern lib7842::OdomController* chassis;
-extern lib7842::OdomTracker* tracker;
 
 
 /***   _____         _
@@ -61,13 +55,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
       initializeDevices();
       initializeBase();
-
-      #ifndef TEST_ROBOT
-      flywheelTask_t = new pros::Task(flywheelTask);
-      intakeTask_t = new pros::Task(intakeControlTask);
-      #endif
-
-
     }
 
     /***
@@ -102,7 +89,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void disabled()
     {
       //Tries to turn everything off
-      setFlywheelRPM(0);
+      //setFlywheelRPM(0);
       robot.model->stop();
     }
 
@@ -136,8 +123,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         if(j_Digital(A)) { autonomous(); }
 
         if(j_Digital(B)) {
-          tracker->resetState();
-          tracker->resetSensors();
+          robot.tracker->resetState();
+          robot.tracker->resetSensors();
         }
 
         double rightY = j_Analog(rightY);
