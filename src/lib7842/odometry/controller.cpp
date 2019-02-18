@@ -4,30 +4,6 @@ namespace lib7842
 {
 
   /**
-  * Settle Functions
-  */
-  settleFunc_t makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
-  }
-
-  settleFunc_t makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
-  }
-
-  settleFunc_t makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
-  }
-
-  bool turnSettle(OdomController* that) {
-    return that->turnPid->isSettled() || that->emergencyAbort();
-  }
-
-  bool driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
-  }
-
-
-  /**
   * Odom Controller
   */
   OdomController::OdomController(
@@ -105,6 +81,30 @@ namespace lib7842
 
   QLength OdomController::computeDistanceToPoint(qPoint point) {
     return computeDistanceBetweenPoints(tracker->state, point);
+  }
+  
+
+  /**
+  * Settle Functions
+  */
+  settleFunc_t OdomController::makeSettle(QAngle threshold) {
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
+  }
+
+  settleFunc_t OdomController::makeSettle(QLength threshold) {
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
+  }
+
+  settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
+  }
+
+  bool OdomController::turnSettle(OdomController* that) {
+    return that->turnPid->isSettled() || that->emergencyAbort();
+  }
+
+  bool OdomController::driveSettle(OdomController* that) {
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
   }
 
 

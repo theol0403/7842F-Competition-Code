@@ -14,21 +14,8 @@ namespace lib7842
   class AsyncAction;
 
   typedef std::function<bool(OdomController*)> settleFunc_t;
-  settleFunc_t makeSettle(QAngle);
-  settleFunc_t makeSettle(QLength);
-  settleFunc_t makeSettle(QLength, QAngle);
-  bool turnSettle(OdomController*);
-  bool driveSettle(OdomController*);
-
   typedef std::function<void(OdomController*, double)> turnFunc_t;
-  turnFunc_t makeArc(double, double);
-  void pointTurn(OdomController*, double);
-  void leftPivot(OdomController*, double);
-  void rightPivot(OdomController*, double);
-
   typedef std::function<QAngle(OdomController*)> angleCalc_t;
-  angleCalc_t angleCalc(QAngle);
-  angleCalc_t angleCalc(qPoint);
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
   using AsyncActionList = std::vector<AsyncActionRef>;
@@ -37,8 +24,6 @@ namespace lib7842
   {
 
   public:
-
-    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     OdomTracker *tracker = nullptr;
 
@@ -52,6 +37,8 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
+
+    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     void resetVelocity(double);
     void resetVelocityActual();
@@ -67,6 +54,20 @@ namespace lib7842
 
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
+
+    static settleFunc_t makeSettle(QAngle);
+    static settleFunc_t makeSettle(QLength);
+    static settleFunc_t makeSettle(QLength, QAngle);
+    static bool turnSettle(OdomController*);
+    static bool driveSettle(OdomController*);
+
+    static turnFunc_t makeArc(double, double);
+    static void pointTurn(OdomController*, double);
+    static void leftPivot(OdomController*, double);
+    static void rightPivot(OdomController*, double);
+
+    static angleCalc_t angleCalc(QAngle);
+    static angleCalc_t angleCalc(qPoint);
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
