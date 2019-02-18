@@ -13,6 +13,8 @@ namespace lib7842
     AbstractMotor* flywheel = nullptr;
     lib7842::velPID* pid = nullptr;
     lib7842::emaFilter rpmFilter;
+    double flywheelRatio = 1;
+
     double powerSlew = 1;
 
     pros::Task flywheelTask;
@@ -23,7 +25,7 @@ namespace lib7842
     double lastPower = 0;
     double finalPower = 0;
 
-    FlywheelController(AbstractMotor*, lib7842::velPID*, double);
+    FlywheelController(AbstractMotor*, lib7842::velPID*, double, double, double);
 
     void setRPM(double);
     void disable();

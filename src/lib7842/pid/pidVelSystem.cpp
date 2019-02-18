@@ -23,9 +23,10 @@ namespace lib7842
 		m_derivative = m_dFilter.filter(m_derivative);
 
 		double finalPower = (m_Error * m_Kp) + (m_derivative * m_Kd) + (wantedRPM * m_Kf);
-		if(fabs(finalPower) > 127)
+		
+		if(fabs(finalPower) > 1)
 		{
-			finalPower = sgn(finalPower) * 127;
+			finalPower = sgn(finalPower) * 1;
 		}
 
 		return finalPower;

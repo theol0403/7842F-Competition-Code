@@ -11,7 +11,7 @@ void flywheelTask(void*)
   double lastPower = 0;
   double motorPower = 0;
 
-  lib7842::velPID flywheelPID(0.4, 0.05, 0.044, 0.9);
+  lib7842::velPID flywheelPID(0.4, 0.05, 0.044, 0.9); // divide by 127
   lib7842::emaFilter rpmEma(0.15);
 
   while(true)
