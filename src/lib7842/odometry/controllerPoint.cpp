@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  void OdomController::m_driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
     QAngle lastTarget = tracker->state.theta;
@@ -46,7 +46,7 @@ namespace lib7842
 
 
 
-  void OdomController::m_driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
     settleFunc_t exitFunc = makeSettle(1_in);
@@ -76,7 +76,7 @@ namespace lib7842
 
 
 
-  void OdomController::m_drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
+  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
     for(qPoint &point : path.wayPoints)
     {
@@ -85,7 +85,7 @@ namespace lib7842
     driveToPoint(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
-  void OdomController::m_drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
+  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
     for(qPoint &point : path.wayPoints)
     {

@@ -14,21 +14,8 @@ namespace lib7842
   class AsyncAction;
 
   typedef std::function<bool(OdomController*)> settleFunc_t;
-  settleFunc_t makeSettle(QAngle);
-  settleFunc_t makeSettle(QLength);
-  settleFunc_t makeSettle(QLength, QAngle);
-  bool turnSettle(OdomController*);
-  bool driveSettle(OdomController*);
-
   typedef std::function<void(OdomController*, double)> turnFunc_t;
-  turnFunc_t makeArc(double, double);
-  void pointTurn(OdomController*, double);
-  void leftPivot(OdomController*, double);
-  void rightPivot(OdomController*, double);
-
   typedef std::function<QAngle(OdomController*)> angleCalc_t;
-  angleCalc_t angleCalc(QAngle);
-  angleCalc_t angleCalc(qPoint);
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
   using AsyncActionList = std::vector<AsyncActionRef>;
@@ -37,8 +24,6 @@ namespace lib7842
   {
 
   public:
-
-    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     OdomTracker *tracker = nullptr;
 
@@ -52,8 +37,8 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
-    autonSides m_autonSide = autonSides::red;
 
+    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     void resetVelocity(double);
     void resetVelocityActual();
@@ -67,11 +52,22 @@ namespace lib7842
     void driveVector(double, double);
     void runActions(AsyncActionList);
 
-    void setSide(autonSides);
-    void setState(qPoint);
-
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
+
+    static settleFunc_t makeSettle(QAngle);
+    static settleFunc_t makeSettle(QLength);
+    static settleFunc_t makeSettle(QLength, QAngle);
+    static bool turnSettle(OdomController*);
+    static bool driveSettle(OdomController*);
+
+    static turnFunc_t makeArc(double, double);
+    static void pointTurn(OdomController*, double);
+    static void leftPivot(OdomController*, double);
+    static void rightPivot(OdomController*, double);
+
+    static angleCalc_t angleCalc(QAngle);
+    static angleCalc_t angleCalc(qPoint);
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
@@ -89,38 +85,6 @@ namespace lib7842
 
     void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-
-    #ifdef USE_SIDE_MACROS
-    #define makeArc(x, y) (side == autonSides::red ? makeArc(x, y) : makeArc(y, x))
-    #define leftPivot (side == autonSides::red ? leftPivot : rightPivot)
-    #define rightPivot (side == autonSides::red ? rightPivot : leftPivot)
-
-    #define angleCalc(x) angleCalc(mirrorSide(x, side))
-
-    #define computeAngleToPoint(x) computeAngleToPoint(mirrorSide(x, side))
-    #define computeDistanceToPoint(x) computeDistanceToPoint(mirrorSide(x, side))
-
-    #endif
-
-
-  private:
-
-    void m_turn(angleCalc_t, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnToAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnToPoint(qPoint, turnFunc_t , settleFunc_t, AsyncActionList);
-
-    void m_driveDistanceAtAngle(QLength, angleCalc_t, double, settleFunc_t, AsyncActionList);
-    void m_driveDistance(QLength, settleFunc_t, AsyncActionList);
-    void m_driveForTime(int, double, AsyncActionList);
-    void m_driveForTimeAtAngle(int, double, angleCalc_t, double, AsyncActionList);
-    void m_allignToAngle(QAngle, double, double);
-
-    void m_driveToPoint(qPoint, double, settleFunc_t, AsyncActionList);
-    void m_driveToPointSimple(qPoint, double, settleFunc_t, AsyncActionList);
-
-    void m_drivePath(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
-    void m_drivePathSimple(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
 
   };
 

@@ -4,30 +4,6 @@ namespace lib7842
 {
 
   /**
-  * Settle Functions
-  */
-  settleFunc_t makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
-  }
-
-  settleFunc_t makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
-  }
-
-  settleFunc_t makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
-  }
-
-  bool turnSettle(OdomController* that) {
-    return that->turnPid->isSettled() || that->emergencyAbort();
-  }
-
-  bool driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
-  }
-
-
-  /**
   * Odom Controller
   */
   OdomController::OdomController(
@@ -93,23 +69,6 @@ namespace lib7842
     for(AsyncActionRef action : actions) { action.get().run(this); }
   }
 
-  /**
-  * sets the side
-  * @param side
-  */
-  void OdomController::setSide(autonSides side)
-  {
-    m_autonSide = side;
-  }
-  
-  /**
-  * sets the state based on side
-  * @param state
-  */
-  void OdomController::setState(qPoint state)
-  {
-    tracker->setState(mirrorSide(state, m_autonSide));
-  }
 
   /**
   * Relative Position Calcs
@@ -124,53 +83,29 @@ namespace lib7842
     return computeDistanceBetweenPoints(tracker->state, point);
   }
 
+
   /**
-  * Wrapper Functions which mirror side
+  * Settle Functions
   */
-  void OdomController::turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turn(turnCalc, turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnToAngle(mirrorSide(angle, m_autonSide), turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnAngle(mirrorSide(angle, m_autonSide), turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnToPoint(mirrorSide(point, m_autonSide), turnFunc, settleFunc, actions);
+  settleFunc_t OdomController::makeSettle(QAngle threshold) {
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
   }
 
-  void OdomController::driveDistanceAtAngle(QLength distance, angleCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveDistanceAtAngle(distance, turnCalc, turnScale, settleFunc, actions);
-  }
-  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveDistance(distance, settleFunc, actions);
-  }
-  void OdomController::driveForTime(int time, double vel, AsyncActionList actions) {
-    m_driveForTime(time, vel, actions);
-  }
-  void OdomController::driveForTimeAtAngle(int time, double vel, angleCalc_t turnCalc, double turnScale, AsyncActionList actions) {
-    m_driveForTimeAtAngle(time, vel, turnCalc, turnScale, actions);
-  }
-  void OdomController::allignToAngle(QAngle angle, double vel, double velThresh) {
-    m_allignToAngle(mirrorSide(angle, m_autonSide), vel, velThresh);
+  settleFunc_t OdomController::makeSettle(QLength threshold) {
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
   }
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveToPoint(mirrorSide(targetPoint, m_autonSide), turnScale, settleFunc, actions);
-  }
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveToPointSimple(mirrorSide(targetPoint, m_autonSide), turnScale, settleFunc, actions);
+  settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
   }
 
-  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
-    m_drivePath(mirrorSide(path, m_autonSide), turnScale, moveOnSettle, finalSettle, actions);
-  }
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
-    m_drivePathSimple(mirrorSide(path, m_autonSide), turnScale, moveOnSettle, finalSettle, actions);
+  bool OdomController::turnSettle(OdomController* that) {
+    return that->turnPid->isSettled() || that->emergencyAbort();
   }
 
-
+  bool OdomController::driveSettle(OdomController* that) {
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
+  }
 
 
 

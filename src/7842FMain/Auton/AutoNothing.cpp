@@ -1,12 +1,13 @@
-#include "7842FMain/Auto/AutoIncludes.hpp"
+#include "7842FMain/Auton/AutonIncludes.hpp"
 
-void AutoNothing(lib7842::autonSides side)
+void AutonNothing(void* input)
 {
 }
 
-void AutoTest(lib7842::autonSides side)
+void AutonTest(void* input)
 {
-  chassis->setSide(side);
+  SideController* chassis = static_cast<SideController*>(input);
+
   chassis->setState({0_ft, 0_ft, 0_deg});
   //chassis->driveDistance(1_ft);
 
@@ -17,9 +18,11 @@ void AutoTest(lib7842::autonSides side)
 }
 
 
-void AutoDraft(lib7842::autonSides side)
+void AutoDraft(void* input)
 {
-  chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
+  SideController* chassis = static_cast<SideController*>(input);
+
+  //chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   setIntakeMode(intakeModes::loading);
 
   QLength topShootDistance = 7_ft;
