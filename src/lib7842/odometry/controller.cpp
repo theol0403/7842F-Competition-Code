@@ -93,23 +93,6 @@ namespace lib7842
     for(AsyncActionRef action : actions) { action.get().run(this); }
   }
 
-  /**
-  * sets the side
-  * @param side
-  */
-  void OdomController::setSide(autonSides side)
-  {
-    m_autonSide = side;
-  }
-  
-  /**
-  * sets the state based on side
-  * @param state
-  */
-  void OdomController::setState(qPoint state)
-  {
-    tracker->setState(mirrorSide(state, m_autonSide));
-  }
 
   /**
   * Relative Position Calcs
@@ -123,54 +106,6 @@ namespace lib7842
   QLength OdomController::computeDistanceToPoint(qPoint point) {
     return computeDistanceBetweenPoints(tracker->state, point);
   }
-
-  /**
-  * Wrapper Functions which mirror side
-  */
-  void OdomController::turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turn(turnCalc, turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnToAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnToAngle(mirrorSide(angle, m_autonSide), turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnAngle(mirrorSide(angle, m_autonSide), turnFunc, settleFunc, actions);
-  }
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_turnToPoint(mirrorSide(point, m_autonSide), turnFunc, settleFunc, actions);
-  }
-
-  void OdomController::driveDistanceAtAngle(QLength distance, angleCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveDistanceAtAngle(distance, turnCalc, turnScale, settleFunc, actions);
-  }
-  void OdomController::driveDistance(QLength distance, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveDistance(distance, settleFunc, actions);
-  }
-  void OdomController::driveForTime(int time, double vel, AsyncActionList actions) {
-    m_driveForTime(time, vel, actions);
-  }
-  void OdomController::driveForTimeAtAngle(int time, double vel, angleCalc_t turnCalc, double turnScale, AsyncActionList actions) {
-    m_driveForTimeAtAngle(time, vel, turnCalc, turnScale, actions);
-  }
-  void OdomController::allignToAngle(QAngle angle, double vel, double velThresh) {
-    m_allignToAngle(mirrorSide(angle, m_autonSide), vel, velThresh);
-  }
-
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveToPoint(mirrorSide(targetPoint, m_autonSide), turnScale, settleFunc, actions);
-  }
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    m_driveToPointSimple(mirrorSide(targetPoint, m_autonSide), turnScale, settleFunc, actions);
-  }
-
-  void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
-    m_drivePath(mirrorSide(path, m_autonSide), turnScale, moveOnSettle, finalSettle, actions);
-  }
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
-    m_drivePathSimple(mirrorSide(path, m_autonSide), turnScale, moveOnSettle, finalSettle, actions);
-  }
-
-
 
 
 

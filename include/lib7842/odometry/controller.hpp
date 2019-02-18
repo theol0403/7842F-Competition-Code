@@ -68,24 +68,22 @@ namespace lib7842
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 
-  private:
+    void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
-    void m_turn(angleCalc_t, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnToAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnAngle(QAngle, turnFunc_t, settleFunc_t, AsyncActionList);
-    void m_turnToPoint(qPoint, turnFunc_t , settleFunc_t, AsyncActionList);
+    void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveForTime(int, double, AsyncActionList = {});
+    void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
+    void allignToAngle(QAngle, double, double);
 
-    void m_driveDistanceAtAngle(QLength, angleCalc_t, double, settleFunc_t, AsyncActionList);
-    void m_driveDistance(QLength, settleFunc_t, AsyncActionList);
-    void m_driveForTime(int, double, AsyncActionList);
-    void m_driveForTimeAtAngle(int, double, angleCalc_t, double, AsyncActionList);
-    void m_allignToAngle(QAngle, double, double);
+    void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
 
-    void m_driveToPoint(qPoint, double, settleFunc_t, AsyncActionList);
-    void m_driveToPointSimple(qPoint, double, settleFunc_t, AsyncActionList);
-
-    void m_drivePath(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
-    void m_drivePathSimple(Path, double, settleFunc_t, settleFunc_t, AsyncActionList);
+    void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+    void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
   };
 
