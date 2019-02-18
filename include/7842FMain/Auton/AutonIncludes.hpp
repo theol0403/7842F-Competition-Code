@@ -15,11 +15,5 @@
 extern qPoint leftFlag;
 extern qPoint rightFlag;
 
-/**
-* Functions
-*/
-void AutoNothing(autonSides);
-void AutoTest(autonSides);
-void AutoClose(autonSides);
-void AutoFar(autonSides);
-void AutoMiddle(autonSides);
+
+#include "AutonFunctions.hpp"

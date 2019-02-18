@@ -1,7 +1,7 @@
 #pragma once
 #include "main.h"
 #include "lib7842/lib7842.hpp"
-#include "7842FMain/Auto/AutoIncludes.hpp"
+#include "7842FMain/Auton/AutonFunctions.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -23,8 +23,8 @@ void initializeDevices();
 extern std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> robotProfile;
 
-extern lib7842::OdomController* chassis;
-//extern lib7842::OdomTracker* tracker;
+//extern lib7842::OdomController* chassis;
+extern lib7842::OdomTracker* tracker;
 
 void initializeBase();
 void checkBaseStatus();

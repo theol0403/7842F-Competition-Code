@@ -1,7 +1,7 @@
 #include "7842FMain/Auto/AutoIncludes.hpp"
 
 
-void AutoClose(autonSides side)
+void AutonClose(autonSides side)
  {
 //   setIntakeMode(intakeModes::loading);
 //

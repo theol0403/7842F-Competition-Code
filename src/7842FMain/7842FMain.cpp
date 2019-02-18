@@ -10,7 +10,7 @@
 #include "Driver/DriverFunctions.hpp"
 #include "Driver/DriverBase.hpp"
 
-#include "7842FMain/Auto/AutoIncludes.hpp"
+#include "7842FMain/Auton/AutonFunctions.hpp"
 
 
 /***   _____         _
@@ -52,9 +52,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void initialize()
     {
       //Initializes autonomous selector with list of autonomous programs
-      // autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutoNothing}, {"Test", AutoTest}, {"Close", AutoClose}, {"Middle", AutoMiddle}, {"Far", AutoFar}});
-      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutoTest}, {"Close", AutoClose}});
-
+      // autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"None", AutonNothing}, {"Test", AutonTest}, {"Close", AutonClose}, {"Middle", AutonMiddle}, {"Far", AutonFar}});
+      autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutonTest}, {"Close", AutonClose}});
       pros::delay(500); //Give the legacy ports time to start up
       initializeDevices();
       initializeBase();
@@ -102,9 +101,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       //Tries to turn everything off
       setFlywheelRPM(0);
       model->stop();
-      //chassis->m_chassisController->stop();
-      model->stop();
-      //chassis->m_chassisController->stop();
     }
 
     /***
@@ -131,13 +127,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
       setFlywheelRPM(0);
       checkBaseStatus();
 
-      //Tries to turn off okapi controller in background
-      //chassis->m_chassisController->stop();
-      //Sometimes getting it to move a bit turns it off
-      //autonSelector->unlockDriver([&]() { //chassis->m_chassisController->moveDistance(1_cm); });
       model->stop();
-      //chassis->m_chassisController->stop();
-
 
       while(true)
       {
@@ -149,7 +139,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
         driverFlywheelControl();
         #endif
 
-        //  lv_task_handler();
         pros::delay(20);
       }
     }
@@ -176,6 +165,7 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
     void autonomous()
     {
       //#include "Auto/AutoExec/AutoBlueMiddle.auton"
-      autonSelector->run();
+      OdomController* controller = nullptr;
+      autonSelector->getSelectedAuton().autonFunc(controller);
       pros::delay(500000);
     }
