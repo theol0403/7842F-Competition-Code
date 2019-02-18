@@ -52,8 +52,6 @@ namespace lib7842
     #define velFilterSize 20
     AverageFilter<velFilterSize> m_velFilter;
 
-    autonSides m_autonSide = autonSides::red;
-
 
     void resetVelocity(double);
     void resetVelocityActual();
@@ -67,41 +65,8 @@ namespace lib7842
     void driveVector(double, double);
     void runActions(AsyncActionList);
 
-    void setSide(autonSides);
-    void setState(qPoint);
-
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
-
-    void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-    void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-    void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-
-    void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveForTime(int, double, AsyncActionList = {});
-    void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
-    void allignToAngle(QAngle, double, double);
-
-    void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-
-    void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-    void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-
-    #ifdef USE_SIDE_MACROS
-    #define makeArc(x, y) (side == autonSides::red ? makeArc(x, y) : makeArc(y, x))
-    #define leftPivot (side == autonSides::red ? leftPivot : rightPivot)
-    #define rightPivot (side == autonSides::red ? rightPivot : leftPivot)
-
-    #define angleCalc(x) angleCalc(mirrorSide(x, side))
-
-    #define computeAngleToPoint(x) computeAngleToPoint(mirrorSide(x, side))
-    #define computeDistanceToPoint(x) computeDistanceToPoint(mirrorSide(x, side))
-
-    #endif
-
 
   private:
 
