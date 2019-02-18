@@ -12,20 +12,10 @@ namespace lib7842
   settleFunc_t SideController::makeSettle(QLength length, QAngle angle); {
     return OdomController::makeSettle(length, mirrorSide(angle, side));
   }
-  bool SideController::turnSettle(OdomController* that); {
-    OdomController::turnSettle(that);
-  }
-  bool SideController::driveSettle(OdomController* that); {
-    OdomController::driveSettle(that);
-  }
 
   turnFunc_t SideController::makeArc(double leftRatio, double rightRatio); {
     return side == autonSides::red ? OdomController::makeArc(leftRatio, rightRatio); : OdomController::makeArc(rightRatio, leftRatio);
   }
-  void SideController::pointTurn(OdomController* that, double vel); {
-    OdomController::pointTurn(that, vel);
-  }
-
   void SideController::leftPivot(OdomController* that, double vel); {
     side == autonSides::red ? OdomController::leftPivot(that, vel) : OdomController::rightPivot(that, vel);
   }
