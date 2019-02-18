@@ -1,44 +1,43 @@
 #include "DriverFunctions.hpp"
 
-static intakeModes dIntakeState = intakeModes::off;
-static intakeModes dLastIntakeState = intakeModes::off;
+static IntakeController::intakeStates intakeState = IntakeController::off;
+static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
 void driverIntakeControl()
 {
 	if(j_Digital(R2) && j_Digital(L2))
 	{
-		dIntakeState = intakeModes::shootBoth;
+		intakeState = IntakeController::shootBoth;
 	}
 	else if(j_Digital(R1) && j_Digital(L1))
 	{
-		dIntakeState = intakeModes::outSlow;
+		intakeState = IntakeController::outSlow;
 	}
 	else if(j_Digital(R2))
 	{
-		dIntakeState = intakeModes::loading;
+		intakeState = IntakeController::loading;
 	}
 	else if(j_Digital(L2))
 	{
-		dIntakeState = intakeModes::shootIndexer;
+		intakeState = IntakeController::shootIndexer;
 	}
 	else if(j_Digital(L1))
 	{
-		dIntakeState = intakeModes::outIntake;
+		intakeState = IntakeController::outIntake;
 	}
 	else if(j_Digital(R1))
 	{
-		dIntakeState = intakeModes::outBoth;
+		intakeState = IntakeController::outBoth;
 	}
 	else
 	{
-		dIntakeState = intakeModes::off;
+		intakeState = IntakeController::off;
 	}
 
-
-	if(dIntakeState != dLastIntakeState)
+	if(intakeState != lastIntakeState)
 	{
-		setIntakeMode(dIntakeState);
-		dLastIntakeState = dIntakeState;
+		robot.intake->setState(intakeState);
+		lastIntakeState = intakeState;
 	}
 
 }
