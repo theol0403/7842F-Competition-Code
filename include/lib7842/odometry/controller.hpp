@@ -94,10 +94,10 @@ namespace lib7842
     #define leftPivot (side == autonSides::red ? leftPivot : rightPivot)
     #define rightPivot (side == autonSides::red ? rightPivot : leftPivot)
 
-    #define angleCalc(x) angleCalc(setSide(x, side))
+    #define angleCalc(x) angleCalc(mirrorSide(x, side))
 
-    #define computeAngleToPoint(x) computeAngleToPoint(setSide(x, side))
-    #define computeDistanceToPoint(x) computeDistanceToPoint(setSide(x, side))
+    #define computeAngleToPoint(x) computeAngleToPoint(mirrorSide(x, side))
+    #define computeDistanceToPoint(x) computeDistanceToPoint(mirrorSide(x, side))
     #endif
 
 
