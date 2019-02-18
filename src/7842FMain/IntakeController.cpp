@@ -14,21 +14,21 @@ IntakeController::setState(intakeStates state)
   intakeState = state;
 }
 
-void run(void* input)
+void FlywheelController::run(void* input)
 {
   IntakeController* that = static_cast<IntakeController*>(input);
 
   while(true)
   {
-    double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
+    double filteredSensor = that->sensorFilter.filter(that->lineSensor->get_value_calibrated());
 
-    switch(intakeState)
+    switch(that->intakeState)
     {
 
       case intakeStates::off:
       {
-        intake->moveVelocity(0);
-        indexer->moveVelocity(0);
+        that->intake->moveVelocity(0);
+        that->indexer->moveVelocity(0);
         break;
       }
 
@@ -39,12 +39,12 @@ void run(void* input)
         //collecting
         if(filteredSensor < -200)
         {
-          intakeState = intakeStates::collecting;
+          that->intakeState = intakeStates::collecting;
         }
         else
         {
-          intake->moveVelocity(200);
-          indexer->moveVelocity(100);
+          that->intake->moveVelocity(200);
+          that->indexer->moveVelocity(100);
         }
         break;
       }
@@ -52,24 +52,24 @@ void run(void* input)
       case intakeStates::collecting:
       {
         //Run intake
-        intake->moveVelocity(200);
-        indexer->moveVelocity(0);
+        that->intake->moveVelocity(200);
+        that->indexer->moveVelocity(0);
         break;
       }
 
       case intakeStates::shootIndexer:
       {
-        intake->moveVelocity(0);
-        indexer->moveVelocity(200);
-        intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
+        that->intake->moveVelocity(0);
+        that->indexer->moveVelocity(200);
+        that->intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
         pros::delay(200);
         break;
       }
 
       case intakeStates::shootBoth:
       {
-        intake->moveVelocity(200);
-        indexer->moveVelocity(200);
+        that->intake->moveVelocity(200);
+        that->indexer->moveVelocity(200);
         //intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
         pros::delay(200);
         break;
@@ -77,29 +77,29 @@ void run(void* input)
 
       case intakeStates::outIntake:
       {
-        intake->moveVelocity(-200);
-        indexer->moveVelocity(0);
+        that->intake->moveVelocity(-200);
+        that->indexer->moveVelocity(0);
         break;
       }
 
       case intakeStates::outBoth:
       {
-        intake->moveVelocity(-200);
-        indexer->moveVelocity(-100);
+        that->intake->moveVelocity(-200);
+        that->indexer->moveVelocity(-100);
         break;
       }
 
       case intakeStates::outSlow:
       {
-        intake->moveVelocity(-40);
-        indexer->moveVelocity(-40);
+        that->intake->moveVelocity(-40);
+        that->indexer->moveVelocity(-40);
         break;
       }
 
       case intakeStates::compress:
       {
-        intake->moveVelocity(80);
-        indexer->moveVelocity(-40);
+        that->intake->moveVelocity(80);
+        that->indexer->moveVelocity(-40);
         break;
       }
 

@@ -27,7 +27,6 @@ namespace lib7842
     AbstractMotor* indexer = nullptr;
     pros::ADILineSensor* lineSensor = nullptr;
     okapi::EmaFilter sensorFilter;
-
     pros::Task intakeTask;
 
     intakeStates intakeState;

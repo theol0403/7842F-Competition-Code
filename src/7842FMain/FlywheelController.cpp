@@ -1,7 +1,19 @@
-#include "FlywheelTask.hpp"
+#include "FlywheelController.hpp"
 
-void flywheelTask(void*)
+FlywheelController::FlywheelController(AbstractMotor* iflywheel) :
+flywheel(iflywheel)
+flywheelTask(run, this)
+{}
+
+FlywheelController::setRPM(double rpm)
 {
+  targetRPM = rpm;
+}
+
+void FlywheelController::run(void* input)
+{
+  FlywheelController* that = static_cast<FlywheelController*>(input);
+
   int flywheelRPM = 0;
 
   const double slewRate = 0.7;
@@ -43,16 +55,5 @@ void flywheelTask(void*)
       pros::delay(20);
     }
   }
-}
 
-
-
-void setFlywheelRPM(int wantedRPM)
-{
-  wantedFlywheelRPM = wantedRPM;
-}
-
-void setFlywheelArmMode(bool enable)
-{
-  extendArm = enable;
 }
