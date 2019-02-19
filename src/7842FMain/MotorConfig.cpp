@@ -37,8 +37,8 @@ const int8_t e_m_LeftBack = 20;
 void initializeDevices()
 {
 	robot.intake = new IntakeController(new okapi::Motor(e_m_Intake), new okapi::Motor(e_m_Indexer), new pros::ADILineSensor('A'), 1);
-	
-	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), 15, new lib7842::velPID(0.4, 0.05, 0.044, 0.9));
+
+	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), 15, new lib7842::velPID(0.4, 0.05, 0.044, 0.9), new lib7842::emaFilter(0.15), 0.7);
 }
 
 

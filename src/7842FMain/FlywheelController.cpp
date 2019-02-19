@@ -1,8 +1,8 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid) :
+FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
 flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
-rpmFilter(0.15), motorSlew(0.7),
+rpmFilter(irpmFilter), motorSlew(imotorSlew),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
@@ -32,7 +32,7 @@ void FlywheelController::run()
     }
     else
     {
-      currentRPM = rpmFilter.filter(flywheel->getActualVelocity() * flywheelRatio);
+      currentRPM = rpmFilter->filter(flywheel->getActualVelocity() * flywheelRatio);
       motorPower = pid->calculate(targetRPM, currentRPM);
 
       if(motorPower <= 0) motorPower = 0;
