@@ -2,10 +2,6 @@
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
-//Pointers to all devices
-okapi::Motor* m_Flywheel = nullptr;
-okapi::Motor* m_Flywheel2 = nullptr;
-
 robot_t robot;
 
 void checkBaseStatus()
@@ -29,7 +25,6 @@ void checkBaseStatus()
 */
 #ifndef TEST_ROBOT //Competition
 const int8_t e_m_Flywheel = 11;
-const int8_t e_m_Flywheel2 = -12;
 const int8_t e_m_Intake = -7;
 const int8_t e_m_Indexer = 8;
 
@@ -41,10 +36,9 @@ const int8_t e_m_LeftBack = 20;
 
 void initializeDevices()
 {
-	m_Flywheel = new okapi::Motor(e_m_Flywheel);
-	m_Flywheel2 = new okapi::Motor(e_m_Flywheel2);
-
 	robot.intake = new IntakeController(new okapi::Motor(e_m_Intake), new okapi::Motor(e_m_Indexer), new pros::ADILineSensor('A'), 1);
+	
+	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), new velPID(0.0032, 0.0004, 0.044, 0.00035), 0.15, 15, 5, 0.0028);
 }
 
 

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "lib7842/lib7842.hpp"
 #include "IntakeController.hpp"
+#include "FlywheelController.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -15,6 +16,7 @@ struct robot_t
   lib7842::OdomTracker* tracker = nullptr;
 
   IntakeController* intake = nullptr;
+  FlywheelController* flywheel = nullptr;
 };
 
 extern robot_t robot;
