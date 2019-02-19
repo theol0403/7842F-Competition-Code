@@ -39,7 +39,7 @@ void initializeDevices()
 	robot.intake = new IntakeController(new okapi::Motor(e_m_Intake), new okapi::Motor(e_m_Indexer), new pros::ADILineSensor('A'), 1);
 	//AbstractMotor* iflywheel, lib7842::velPID* ipid, double irpmEma, double iflywheelRatio, double irpmSlew, double imotorSlew)
 	//0.0032, 0.0004, 0.044, 0.00035
-	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), 15, new velPID(0.000001, 0.000, 0.0, 1), 1, 3000, 1);
+	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), 15, new velPID(0.0001, 0.000, 0.0, 0.000), 1, 3000, 1);
 }
 
 

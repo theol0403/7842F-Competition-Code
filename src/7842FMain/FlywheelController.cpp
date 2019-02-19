@@ -45,7 +45,7 @@ void FlywheelController::run()
       lastPower = finalPower;
       std::cout << "slewPower: " << finalPower << std::endl;
 
-      flywheel->moveVelocity(finalPower * 12000);
+      flywheel->moveVoltage(finalPower * 12000);
     }
 
     pros::delay(100);
