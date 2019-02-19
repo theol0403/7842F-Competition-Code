@@ -23,7 +23,7 @@ void AutoDraft(void* input)
   SideController* chassis = static_cast<SideController*>(input);
 
   //chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
-  setIntakeMode(intakeModes::loading);
+  robot.intake->setState(IntakeController::loading);
 
   QLength topShootDistance = 7_ft;
   QLength middleShootDistance = 5_ft;
@@ -36,13 +36,13 @@ void AutoDraft(void* input)
   AsyncAction shootTopFlag = AsyncAction()
   //.withAction(makeAction( setFlywheelAngle(calculateAngle(middleShootDistance - shootingDelay(getRobotVelocity()))); ), actionTypes::continousBefore)
   .withTrigger(leftFlag, topShootDistance)
-  .withMakeAction(setIntakeMode(intakeModes::shootIndexer););
+  .withMakeAction(robot.intake->setState(IntakeController::shootIndexer););
 
   AsyncAction shootMiddleFlag = AsyncAction()
   .withExclusion(shootTopFlag, exclusionTypes::onlyAfter)
   //.withAction(makeAction( setFlywheelAngle(calculateAngle(middleShootDistance - shootingDelay(getRobotVelocity()))); ), actionModes::continousBefore)
   .withTrigger(leftFlag, middleShootDistance)
-  .withMakeAction(setIntakeMode(intakeModes::shootIndexer););
+  .withMakeAction(robot.intake->setState(IntakeController::shootIndexer););
 
   chassis->driveToPoint({1_ft, 12_ft}, 4, driveSettle, {shootTopFlag, shootMiddleFlag}); // Move forward towards flags and push bottom flag
 
