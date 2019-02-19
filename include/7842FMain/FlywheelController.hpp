@@ -11,7 +11,6 @@ public:
   double flywheelRatio = 1;
   lib7842::velPID* pid = nullptr;
   lib7842::emaFilter rpmFilter;
-  double rpmSlew;
   double motorSlew;
 
   pros::Task flywheelTask;

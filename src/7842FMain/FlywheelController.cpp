@@ -2,7 +2,7 @@
 
 FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid) :
 flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
-rpmFilter(1), rpmSlew(3000), motorSlew(0.35),
+rpmFilter(0.15), motorSlew(0.7),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
@@ -21,9 +21,6 @@ void FlywheelController::enable()
   disabled = false;
 }
 
-// calculate is on a scale of -1 - 1
-// motorpower is on a scale of -1 to 1
-// before motorpower was 127, so now it is scaled by 0.00787401574
 
 void FlywheelController::run()
 {
@@ -38,10 +35,11 @@ void FlywheelController::run()
       currentRPM = rpmFilter.filter(flywheel->getActualVelocity() * flywheelRatio);
       motorPower = pid->calculate(targetRPM, currentRPM);
 
-      if(targetRPM <= 0) motorPower = 0;
       if(motorPower <= 0) motorPower = 0;
-      if(motorPower > lastPower && lastPower < 10) lastPower = 10;
-      if((motorPower - lastPower) > motorSlew) motorPower = lastPower + motorSlew;
+      if(motorPower > lastPower && lastPower < 10 && motorPower > 10) lastPower = 10;
+
+      double increment = motorPower - lastPower;
+      if(std::abs(increment) > motorSlew) motorPower = lastPower + (motorSlew * lib7842::sgn(increment));
       lastPower = motorPower;
 
       flywheel->moveVoltage(motorPower/127.0*12000);
@@ -49,7 +47,7 @@ void FlywheelController::run()
 
     //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
 
-    pros::delay(10);
+    pros::delay(20);
   }
 }
 
