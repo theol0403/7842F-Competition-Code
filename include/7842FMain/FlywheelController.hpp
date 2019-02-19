@@ -17,7 +17,6 @@ public:
 
   double targetRPM = 0;
   double currentRPM = 0;
-  double slewRPM = 0;
 
   double lastPower = 0;
   double motorPower = 0;
