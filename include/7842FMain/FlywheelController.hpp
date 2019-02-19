@@ -11,8 +11,8 @@ public:
   double flywheelRatio = 1;
   lib7842::velPID* pid = nullptr;
   lib7842::emaFilter rpmFilter;
-  double rpmSlew = 3000;
-  double motorSlew = 1;
+  double rpmSlew;
+  double motorSlew;
 
   pros::Task flywheelTask;
 
@@ -25,7 +25,7 @@ public:
 
   bool disabled = false;
 
-  FlywheelController(AbstractMotor*, double, lib7842::velPID*, double, double, double);
+  FlywheelController(AbstractMotor*, double, lib7842::velPID*);
 
   void setRpm(double);
   void disable();

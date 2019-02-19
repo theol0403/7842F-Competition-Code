@@ -1,7 +1,8 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, double irpmEma, double irpmSlew, double imotorSlew) :
-flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid), rpmFilter(irpmEma), rpmSlew(irpmSlew), motorSlew(imotorSlew),
+FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid) :
+flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
+rpmFilter(1), rpmSlew(3000), motorSlew(1),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
