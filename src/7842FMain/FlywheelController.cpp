@@ -2,7 +2,7 @@
 
 FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid) :
 flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
-rpmFilter(1), rpmSlew(3000), motorSlew(1),
+rpmFilter(1), rpmSlew(3000), motorSlew(0.35),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
@@ -29,29 +29,30 @@ void FlywheelController::run()
 {
   while(true)
   {
-    if(!disabled)
+    if(disabled)
+    {
+      lastPower = lastPower <= 0 ? 0 : lastPower - 0.27;
+    }
+    else
     {
       currentRPM = rpmFilter.filter(flywheel->getActualVelocity() * flywheelRatio);
-      std::cout << "currentRPM: " << currentRPM << std::endl;
+      motorPower = pid->calculate(targetRPM, currentRPM);
 
-      //if((targetRPM - slewRPM) > rpmSlew) targetRPM = slewRPM + rpmSlew;
-      finalPower = pid->calculate(targetRPM, currentRPM);
-      std::cout << "finalPower: " << finalPower << std::endl;
+      if(targetRPM <= 0) motorPower = 0;
+      if(motorPower <= 0) motorPower = 0;
+      if(motorPower > lastPower && lastPower < 10) lastPower = 10;
+      if((motorPower - lastPower) > motorSlew) motorPower = lastPower + motorSlew;
+      lastPower = motorPower;
 
-      if(finalPower <= 0) finalPower = 0; //stops from going negative
-      //if(lastPower < 0.2 && finalPower > 0.2) lastPower = 0.2; //gives starting boost
-
-      double increment = finalPower - lastPower;
-      if(std::abs(increment) > motorSlew) finalPower = lastPower + (motorSlew * lib7842::sgn(increment));
-      lastPower = finalPower;
-      std::cout << "slewPower: " << finalPower << std::endl;
-
-      flywheel->moveVoltage(finalPower * 12000);
+      flywheel->moveVoltage(motorPower/127.0*12000);
     }
 
-    pros::delay(100);
+    //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
+
+    pros::delay(10);
   }
 }
+
 
 
 void FlywheelController::task(void* input)

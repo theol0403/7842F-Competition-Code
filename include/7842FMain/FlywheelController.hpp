@@ -21,7 +21,7 @@ public:
   double slewRPM = 0;
 
   double lastPower = 0;
-  double finalPower = 0;
+  double motorPower = 0;
 
   bool disabled = false;
 
