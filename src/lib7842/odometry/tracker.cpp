@@ -55,11 +55,11 @@ namespace lib7842
   }
 
   void OdomTracker::resetSensors() {
-    m_lastLeftInch = 0_in;
-    m_lastRightInch = 0_in;
+    m_lastLeft = 0_in;
+    m_lastRight = 0_in;
     model->resetSensors();
-    m_lastLeftInch = 0_in;
-    m_lastRightInch = 0_in;
+    m_lastLeft = 0_in;
+    m_lastRight = 0_in;
   }
 
 
@@ -91,11 +91,11 @@ namespace lib7842
     QLength newLeftInch = (newTicks[0] * m_degToInch) * inch;
     QLength newRightInch = (newTicks[1] * m_degToInch) * inch;
 
-    QLength dLeftInch = newLeftInch - m_lastLeftInch;
-    QLength dRightInch = newRightInch - m_lastRightInch;
+    QLength dLeftInch = newLeftInch - m_lastLeft;
+    QLength dRightInch = newRightInch - m_lastRight;
 
-    m_lastLeftInch = newLeftInch;
-    m_lastRightInch = newRightInch;
+    m_lastLeft = newLeftInch;
+    m_lastRight = newRightInch;
 
     QAngle newAngle = state.theta + (((dLeftInch - dRightInch).convert(inch) / m_chassisWidth.convert(inch)) * radian);
     QAngle dAngle = newAngle - state.theta;
@@ -142,8 +142,8 @@ namespace lib7842
     QLength newLeftInch = (newTicks[0] * m_degToInch) * inch;
     QLength newRightInch = (newTicks[1] * m_degToInch) * inch;
 
-    QLength dLeftInch = newLeftInch - m_lastLeftInch;
-    QLength dRightInch = newRightInch - m_lastRightInch;
+    QLength dLeftInch = newLeftInch - m_lastLeft;
+    QLength dRightInch = newRightInch - m_lastRight;
 
     QLength dCenterArc = ((dLeftInch.convert(inch) + dRightInch.convert(inch)) / 2.0) * inch;
 
@@ -153,14 +153,50 @@ namespace lib7842
 
     dX = dTheta == 0_rad ? 0_in : (radius - (radius.convert(inch) * cos(dTheta.convert(radian))) * inch);
     dY = dTheta == 0_rad ? dCenterArc : (radius.convert(inch) * sin(dTheta.convert(radian))) * inch;
-    
+
     state.x = (dX.convert(inch) * cos(state.theta.convert(radian)) + dY.convert(inch) * sin(state.theta.convert(radian)) + state.x.convert(inch)) * inch;
     state.y = (dY.convert(inch) * cos(state.theta.convert(radian)) - dX.convert(inch) * sin(state.theta.convert(radian)) + state.y.convert(inch)) * inch;
 
     state.theta = dTheta + state.theta;
 
-    m_lastLeftInch = newLeftInch;
-    m_lastRightInch = newRightInch;
+    m_lastLeft = newLeftInch;
+    m_lastRight = newRightInch;
+  }
+
+
+  void OdomTracker::mdTracking(OdomTracker* that) {
+    that->m_mdTracking();
+  }
+
+  void OdomTracker::m_mdTracking()
+  {
+    std::valarray<int32_t> newTicks = model->getSensorVals();
+
+    double dX = 0.0;
+    double dY = 0.0;
+    double dTheta = 0.0;
+
+    double lCurrEnc = newTicks[0] * m_degToInch;
+    double rCurrEnc = newTicks[1] * m_degToInch;
+
+    double lDEnc = lCurrEnc - m_lastLeft.convert(inch);
+    double rDEnc = rCurrEnc - m_lastRight.convert(inch);
+
+    double dCenterArc = (rDEnc + lDEnc) / 2.0;
+
+    dTheta = (lDEnc - rDEnc) / m_chassisWidth.convert(inch);
+
+    double radius = (dTheta == 0) ? 0 : dCenterArc / dTheta;
+    dX = dTheta == 0 ? 0 : (radius - radius * cos(dTheta));
+    dY = dTheta == 0 ? dCenterArc : radius * sin(dTheta);
+
+    state.x = (dX * cos(state.theta.convert(radian)) + dY * sin(state.theta.convert(radian)) + state.x.convert(inch)) * inch;
+    state.y = (dY * cos(state.theta.convert(radian)) - dX * sin(state.theta.convert(radian)) + state.y.convert(inch)) * inch;
+
+    state.theta = ((dTheta * 180.0 / PI) + state.theta.convert(degree)) * degree;
+
+    m_lastLeft = lCurrEnc * inch;
+    m_lastLeft = rCurrEnc * inch;
   }
 
 }

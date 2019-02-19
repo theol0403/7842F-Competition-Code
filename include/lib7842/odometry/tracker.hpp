@@ -10,8 +10,8 @@ namespace lib7842
 
   private:
 
-    QLength m_lastLeftInch {0_in};
-    QLength m_lastRightInch {0_in};
+    QLength m_lastLeft {0_in};
+    QLength m_lastRight {0_in};
 
   public:
 
@@ -51,11 +51,13 @@ namespace lib7842
 
     static void aTracking(OdomTracker*);
     static void mTracking(OdomTracker*);
+    static void mdTracking(OdomTracker*);
 
   private:
 
     void m_aTracking();
     void m_mTracking();
+    void m_mdTracking();
 
   };
 
