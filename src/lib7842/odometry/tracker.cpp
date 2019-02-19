@@ -11,7 +11,7 @@ namespace lib7842
   ):
   model(imodel),
   m_chassisWidth(chassisWidth),
-  m_mainDegToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
+  m_degToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
   m_trackerFunc(trackerFunc),
   m_trackerTask(odometryTask, this)
   {
@@ -79,6 +79,7 @@ namespace lib7842
   }
 
 
+
   void OdomTracker::aTracking(OdomTracker* that) {
     that->m_aTracking();
   }
@@ -87,8 +88,8 @@ namespace lib7842
   {
     std::valarray<int32_t> newTicks = model->getSensorVals();
 
-    QLength newLeftInch = (newTicks[0] * m_mainDegToInch) * inch;
-    QLength newRightInch = (newTicks[1] * m_mainDegToInch) * inch;
+    QLength newLeftInch = (newTicks[0] * m_degToInch) * inch;
+    QLength newRightInch = (newTicks[1] * m_degToInch) * inch;
 
     QLength dLeftInch = newLeftInch - m_lastLeftInch;
     QLength dRightInch = newRightInch - m_lastRightInch;
@@ -96,19 +97,16 @@ namespace lib7842
     m_lastLeftInch = newLeftInch;
     m_lastRightInch = newRightInch;
 
-    QAngle newAngle = state.theta + (((dLeftInch - dRightInch) / m_chassisWidth) * radian);
+    QAngle newAngle = state.theta + (((dLeftInch - dRightInch).convert(inch) / m_chassisWidth.convert(inch)) * radian);
     QAngle dAngle = newAngle - state.theta;
 
     QLength dAvgMainInch = (dLeftInch + dRightInch) / 2;
 
     QLength localOffX = 0_in, localOffY = 0_in;
 
-    if(dAngle == 0.0_rad)
-    {
+    if(dAngle == 0.0_rad) {
       localOffY = dAvgMainInch;
-    }
-    else
-    {
+    } else {
       localOffY = 2 * sin(dAngle.convert(radian) / 2) * ((dAvgMainInch.convert(inch) / dAngle.convert(radian)) + (m_chassisWidth.convert(inch) / 2)) * inch;
     }
 
@@ -127,5 +125,42 @@ namespace lib7842
     state.theta = OdomMath::rollAngle180(state.theta);
   }
 
+
+
+  void OdomTracker::mTracking(OdomTracker* that) {
+    that->m_mTracking();
+  }
+
+  void OdomTracker::m_mTracking()
+  {
+    std::valarray<int32_t> newTicks = model->getSensorVals();
+
+    QLength dX = 0.0_in;
+    QLength dY = 0.0_in;
+    QAngle dTheta = 0.0_rad;
+
+    QLength newLeftInch = (newTicks[0] * m_degToInch) * inch;
+    QLength newRightInch = (newTicks[1] * m_degToInch) * inch;
+
+    QLength dLeftInch = newLeftInch - m_lastLeftInch;
+    QLength dRightInch = newRightInch - m_lastRightInch;
+
+    QLength dCenterArc = ((dLeftInch.convert(inch) + dRightInch.convert(inch)) / 2.0) * inch;
+
+    dTheta = ((dLeftInch - dRightInch).convert(inch) / m_chassisWidth.convert(inch)) * radian;
+
+    QLength radius = (dTheta == 0_rad) ? 0_in : (dCenterArc.convert(inch) / dTheta.convert(radian)) * inch;
+
+    dX = dTheta == 0_rad ? 0_in : (radius - (radius.convert(inch) * cos(dTheta.convert(radian))) * inch);
+    dY = dTheta == 0_rad ? dCenterArc : (radius.convert(inch) * sin(dTheta.convert(radian))) * inch;
+    
+    state.x = (dX.convert(inch) * cos(state.theta.convert(radian)) + dY.convert(inch) * sin(state.theta.convert(radian)) + state.x.convert(inch)) * inch;
+    state.y = (dY.convert(inch) * cos(state.theta.convert(radian)) - dX.convert(inch) * sin(state.theta.convert(radian)) + state.y.convert(inch)) * inch;
+
+    state.theta = dTheta + state.theta;
+
+    m_lastLeftInch = newLeftInch;
+    m_lastRightInch = newRightInch;
+  }
 
 }
