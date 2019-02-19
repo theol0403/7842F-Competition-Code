@@ -1,7 +1,7 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(AbstractMotor* iflywheel, lib7842::velPID* ipid, double irpmEma, double iflywheelRatio, double irpmSlew, double imotorSlew) :
-flywheel(iflywheel), pid(ipid), rpmFilter(irpmEma), flywheelRatio(iflywheelRatio), rpmSlew(irpmSlew), motorSlew(imotorSlew),
+FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, double irpmEma, double irpmSlew, double imotorSlew) :
+flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid), rpmFilter(irpmEma), rpmSlew(irpmSlew), motorSlew(imotorSlew),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
@@ -31,20 +31,24 @@ void FlywheelController::run()
     if(!disabled)
     {
       currentRPM = rpmFilter.filter(flywheel->getActualVelocity() * flywheelRatio);
+      std::cout << "currentRPM: " << currentRPM << std::endl;
 
-      if((targetRPM - slewRPM) > rpmSlew) targetRPM = slewRPM + rpmSlew;
+      //if((targetRPM - slewRPM) > rpmSlew) targetRPM = slewRPM + rpmSlew;
       finalPower = pid->calculate(targetRPM, currentRPM);
+      std::cout << "finalPower: " << finalPower << std::endl;
 
       if(finalPower <= 0) finalPower = 0; //stops from going negative
-      if(finalPower > lastPower && lastPower < 0.2) lastPower = 0.2; //gives starting boost
+      //if(lastPower < 0.2 && finalPower > 0.2) lastPower = 0.2; //gives starting boost
+
       double increment = finalPower - lastPower;
       if(std::abs(increment) > motorSlew) finalPower = lastPower + (motorSlew * lib7842::sgn(increment));
       lastPower = finalPower;
+      std::cout << "slewPower: " << finalPower << std::endl;
 
       flywheel->moveVelocity(finalPower * 12000);
     }
 
-    pros::delay(10);
+    pros::delay(100);
   }
 }
 

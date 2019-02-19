@@ -8,9 +8,9 @@ class FlywheelController
 public:
 
   AbstractMotor* flywheel = nullptr;
+  double flywheelRatio = 1;
   lib7842::velPID* pid = nullptr;
   lib7842::emaFilter rpmFilter;
-  double flywheelRatio = 1;
   double rpmSlew = 3000;
   double motorSlew = 1;
 
@@ -25,7 +25,7 @@ public:
 
   bool disabled = false;
 
-  FlywheelController(AbstractMotor*, lib7842::velPID*, double, double, double, double);
+  FlywheelController(AbstractMotor*, double, lib7842::velPID*, double, double, double);
 
   void setRpm(double);
   void disable();
