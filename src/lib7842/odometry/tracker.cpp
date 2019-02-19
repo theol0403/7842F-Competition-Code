@@ -182,7 +182,7 @@ namespace lib7842
     double lDEnc = lCurrEnc - m_lastLeft.convert(inch);
     double rDEnc = rCurrEnc - m_lastRight.convert(inch);
 
-    double dCenterArc = (rDEnc + lDEnc) / 2.0;
+    double dCenterArc = (lDEnc + rDEnc) / 2.0;
 
     dTheta = (lDEnc - rDEnc) / m_chassisWidth.convert(inch);
 
@@ -193,10 +193,11 @@ namespace lib7842
     state.x = (dX * cos(state.theta.convert(radian)) + dY * sin(state.theta.convert(radian)) + state.x.convert(inch)) * inch;
     state.y = (dY * cos(state.theta.convert(radian)) - dX * sin(state.theta.convert(radian)) + state.y.convert(inch)) * inch;
 
-    state.theta = ((dTheta * 180.0 / PI) + state.theta.convert(degree)) * degree;
+    //state.theta = ((dTheta * 180.0 / PI) + state.theta.convert(degree)) * degree;
+    state.theta = dTheta * radian + state.theta;
 
     m_lastLeft = lCurrEnc * inch;
-    m_lastLeft = rCurrEnc * inch;
+    m_lastRight = rCurrEnc * inch;
   }
 
 }
