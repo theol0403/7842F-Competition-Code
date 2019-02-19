@@ -11,7 +11,7 @@ extern okapi::Controller j_Main;
 
 struct robot_t
 {
-  std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model = nullptr;
+  std::shared_ptr<okapi::SkidSteerModel> model = nullptr;
   lib7842::OdomController* chassis = nullptr;
   lib7842::OdomTracker* tracker = nullptr;
 

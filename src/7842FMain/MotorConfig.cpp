@@ -45,11 +45,10 @@ void initializeDevices()
 void initializeBase()
 {
 
-	robot.model = std::make_shared<ThreeEncoderSkidSteerModel> (
+	robot.model = std::make_shared<SkidSteerModel> (
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_LeftFront, e_m_LeftBack})),
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({e_m_RightFront, e_m_RightBack})),
 		std::make_shared<ADIEncoder>(3, 4),
-		std::make_shared<ADIEncoder>(8, 7),
 		std::make_shared<ADIEncoder>(5, 6),
 		200,
 		12000
