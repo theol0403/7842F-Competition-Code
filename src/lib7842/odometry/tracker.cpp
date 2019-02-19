@@ -80,10 +80,10 @@ namespace lib7842
 
 
   void OdomTracker::aTracking(OdomTracker* that) {
-    that->aTracking();
+    that->m_aTracking();
   }
 
-  void OdomTracker::aTracking()
+  void OdomTracker::m_aTracking()
   {
     std::valarray<int32_t> newTicks = model->getSensorVals();
 

@@ -52,8 +52,8 @@ namespace lib7842
     static void aTracking(OdomTracker*);
 
   private:
-
-    void aTracking();
+    
+    void m_aTracking();
 
   };
 
