@@ -12,34 +12,27 @@ namespace lib7842
 
     QLength m_lastLeftInch {0_in};
     QLength m_lastRightInch {0_in};
-    QLength m_lastMiddleInch {0_in};
 
   public:
 
     OdomTracker (
-      std::shared_ptr<okapi::ThreeEncoderSkidSteerModel>,
-      QLength, QLength,
-      QLength,
-      double, double
+      std::shared_ptr<okapi::SkidSteerModel>,
+      QLength, QLength, double,
+      std::function<void(OdomTracker*)>
     );
 
 
-    std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> model;
-
+    std::shared_ptr<okapi::SkidSteerModel> model;
     const QLength m_chassisWidth;
-    const QLength m_distanceMiddle;
-
     const double m_mainDegToInch;
-    const double m_middleDegToInch;
 
+    std::function<void(OdomTracker*)> m_trackerFunc;
     pros::Task m_trackerTask;
 
     qPoint state {0_in, 0_in, 0_rad};
 
     void debug();
-    void step();
 
-    void setState(QLength, QLength, QAngle);
     void setState(qPoint);
     qPoint& getState();
 
@@ -55,6 +48,12 @@ namespace lib7842
     void resetSensors();
 
     static void odometryTask(void*);
+
+    static void aTracking(OdomTracker*);
+
+  private:
+
+    void aTracking();
 
   };
 
