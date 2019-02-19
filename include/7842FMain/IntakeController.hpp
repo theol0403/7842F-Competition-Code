@@ -32,6 +32,8 @@ public:
 
   void setState(intakeStates);
 
-  static void run(void*);
+  void run();
+
+  static void task(void*);
 
 };

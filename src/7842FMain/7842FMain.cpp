@@ -162,7 +162,6 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     void autonomous()
     {
-      //#include "Auto/AutoExec/AutoBlueMiddle.auton"
       SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());
       autonSelector->getSelectedAuton().autonFunc(sideChassis);
       delete sideChassis;
