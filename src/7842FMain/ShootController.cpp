@@ -45,7 +45,19 @@ void ShootController::doMacro(shootMacros macro) {
 
     case shootMacros::shootTopFlag :
     {
-      doJobs({angleTop});
+      doJobs({shootStates::angleTop, shootStates::waitForFlywheel, shootStates::shootIndexer});
+      break;
+    }
+    
+    case shootMacros::shootMiddleFlag :
+    {
+      doJobs({shootStates::angleMiddle, shootStates::waitForFlywheel, shootStates::shootIndexer});
+      break;
+    }
+
+    case shootMacros::shootBothFlags :
+    {
+      doJobs({shootStates::angleTop, shootStates::waitForFlywheel, shootStates::shootIndexer, shootStates::angleMiddle, shootStates::waitForFlywheel, shootStates::shootIndexer});
       break;
     }
   }

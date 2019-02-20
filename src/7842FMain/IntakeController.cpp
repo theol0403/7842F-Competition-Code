@@ -69,8 +69,8 @@ void IntakeController::run()
       {
         intake->moveVelocity(200);
         indexer->moveVelocity(200);
-        intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
-        pros::delay(400);
+        //intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
+        pros::delay(200);
         break;
       }
 
