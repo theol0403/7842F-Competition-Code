@@ -97,17 +97,17 @@ namespace lib7842
     m_lastLeft = newLeftInch;
     m_lastRight = newRightInch;
 
-    QAngle newAngle = state.theta + (((dLeftInch - dRightInch).convert(inch) / m_chassisWidth.convert(inch)) * radian);
-    QAngle dAngle = newAngle - state.theta;
+    QAngle dAngle = ((dLeftInch - dRightInch).convert(inch) / m_chassisWidth.convert(inch)) * radian;
+    QAngle newAngle = state.theta + dAngle;
 
-    QLength dAvgMainInch = (dLeftInch + dRightInch) / 2;
+    QLength dAvgInch = (dLeftInch + dRightInch) / 2;
 
     QLength localOffX = 0_in, localOffY = 0_in;
 
     if(dAngle == 0.0_rad) {
-      localOffY = dAvgMainInch;
+      localOffY = dAvgInch;
     } else {
-      localOffY = 2 * sin(dAngle.convert(radian) / 2) * ((dAvgMainInch.convert(inch) / dAngle.convert(radian)) + (m_chassisWidth.convert(inch) / 2)) * inch;
+      localOffY = 2 * sin(dAngle.convert(radian) / 2) * ((dAvgInch.convert(inch) / dAngle.convert(radian)) + (m_chassisWidth.convert(inch) / 2)) * inch;
     }
 
     QAngle avgAngle = state.theta + (dAngle / 2);

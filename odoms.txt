@@ -1,31 +1,31 @@
 using namespace okapi;
 
-    double dX = 0.0;
-    double dY = 0.0;
-    double dTheta = 0.0;
+double dX = 0.0;
+double dY = 0.0;
+double dTheta = 0.0;
 
-    double rCurrEnc = /*rightEnc.get() */ drive::driveR2.get_position() * TICKSINCH2;
-    double lCurrEnc = /*leftEnc.get() */ drive::driveL2.get_position() * TICKSINCH2;
+double rCurrEnc = /*rightEnc.get() */ drive::driveR2.get_position() * TICKSINCH2;
+double lCurrEnc = /*leftEnc.get() */ drive::driveL2.get_position() * TICKSINCH2;
 
-    double rDEnc = rCurrEnc - rEncLast;
-    double lDEnc = lCurrEnc - lEncLast;
+double rDEnc = rCurrEnc - rEncLast;
+double lDEnc = lCurrEnc - lEncLast;
 
-    double dCenterArc = (rDEnc + lDEnc) / 2.0;
-    // dCenterArc *= TICKSINCH;
+double dCenterArc = (rDEnc + lDEnc) / 2.0;
+// dCenterArc *= TICKSINCH;
 
-    dTheta = (lDEnc - rDEnc) / CHASSISWIDTH /** PI / 180.0*/;
+dTheta = (lDEnc - rDEnc) / CHASSISWIDTH /** PI / 180.0*/;
 
-    double radius = (dTheta == 0) ? 0 : dCenterArc / dTheta;
-    dX = dTheta == 0 ? 0 : (radius - radius * cos(dTheta));
-    dY = dTheta == 0 ? dCenterArc : radius * sin(dTheta);
+double radius = (dTheta == 0) ? 0 : dCenterArc / dTheta;
+dX = dTheta == 0 ? 0 : (radius - radius * cos(dTheta));
+dY = dTheta == 0 ? dCenterArc : radius * sin(dTheta);
 
-    currX = (dX * cos(currAngle.convert(radian)) + dY * sin(currAngle.convert(radian)) + currX.convert(inch)) * inch;
-    currY = (dY * cos(currAngle.convert(radian)) - dX * sin(currAngle.convert(radian)) + currY.convert(inch)) * inch;
+currX = (dX * cos(currAngle.convert(radian)) + dY * sin(currAngle.convert(radian)) + currX.convert(inch)) * inch;
+currY = (dY * cos(currAngle.convert(radian)) - dX * sin(currAngle.convert(radian)) + currY.convert(inch)) * inch;
 
-    currAngle = ((dTheta * 180.0 / PI) + currAngle.convert(degree)) * degree;
+currAngle = ((dTheta * 180.0 / PI) + currAngle.convert(degree)) * degree;
 
-    rEncLast = rCurrEnc;
-    lEncLast = lCurrEnc;
+rEncLast = rCurrEnc;
+lEncLast = lCurrEnc;
 
 
 
@@ -66,7 +66,7 @@ OdomState Odometry::odomMathStep(std::valarray<std::int32_t> &tickDiff, const QT
   if (deltaTheta != 0) {
     localOffX = 2 * sin(deltaTheta / 2) * chassisScales.middleWheelDistance.convert(meter);
     localOffY = 2 * sin(deltaTheta / 2) *
-                (deltaR / deltaTheta + chassisScales.wheelbaseWidth.convert(meter) / 2);
+    (deltaR / deltaTheta + chassisScales.wheelbaseWidth.convert(meter) / 2);
   } else {
     localOffX = 0;
     localOffY = deltaR;
@@ -116,44 +116,44 @@ OdomState ThreeEncoderOdometry::odomMathStep(std::valarray<std::int32_t> &tickDi
     tickDiff[2] / chassisScales.middle -
     ((deltaTheta / 2_pi) * 1_pi * chassisScales.middleWheelDistance.convert(meter)));
 
-  if (deltaL == deltaR) {
-    localOffX = deltaM;
-    localOffY = deltaR;
-  } else {
-    localOffX = 2 * sin(deltaTheta / 2) *
-                (deltaM / deltaTheta + chassisScales.middleWheelDistance.convert(meter));
-    localOffY = 2 * sin(deltaTheta / 2) *
-                (deltaR / deltaTheta + chassisScales.wheelbaseWidth.convert(meter) / 2);
+    if (deltaL == deltaR) {
+      localOffX = deltaM;
+      localOffY = deltaR;
+    } else {
+      localOffX = 2 * sin(deltaTheta / 2) *
+      (deltaM / deltaTheta + chassisScales.middleWheelDistance.convert(meter));
+      localOffY = 2 * sin(deltaTheta / 2) *
+      (deltaR / deltaTheta + chassisScales.wheelbaseWidth.convert(meter) / 2);
+    }
+
+    double avgA = state.theta.convert(radian) + (deltaTheta / 2);
+
+    double polarR = sqrt((localOffX * localOffX) + (localOffY * localOffY));
+    double polarA = atan2(localOffY, localOffX) - avgA;
+
+    double dX = sin(polarA) * polarR;
+    double dY = cos(polarA) * polarR;
+
+    if (isnan(dX)) {
+      dX = 0;
+    }
+
+    if (isnan(dY)) {
+      dY = 0;
+    }
+
+    if (isnan(deltaTheta)) {
+      deltaTheta = 0;
+    }
+
+    return OdomState{dX * meter, dY * meter, deltaTheta * radian};
   }
 
-  double avgA = state.theta.convert(radian) + (deltaTheta / 2);
-
-  double polarR = sqrt((localOffX * localOffX) + (localOffY * localOffY));
-  double polarA = atan2(localOffY, localOffX) - avgA;
-
-  double dX = sin(polarA) * polarR;
-  double dY = cos(polarA) * polarR;
-
-  if (isnan(dX)) {
-    dX = 0;
-  }
-
-  if (isnan(dY)) {
-    dY = 0;
-  }
-
-  if (isnan(deltaTheta)) {
-    deltaTheta = 0;
-  }
-
-  return OdomState{dX * meter, dY * meter, deltaTheta * radian};
-}
 
 
 
 
-
-void Odometry_t::update() {
+  void Odometry_t::update() {
     double curDL = getDL(), curDR = getDR();
     double deltaDL = (curDL - this->prevDL) / ticksPerInch, deltaDR = (curDR - this->prevDR) / ticksPerInch;
     double deltaDC = (deltaDL + deltaDR) / 2.0;
@@ -163,7 +163,69 @@ void Odometry_t::update() {
     this->a += deltaA;
     prevDL = curDL;
     prevDR = curDR;
-}
+  }
 
 
 
+
+  void GPS::gpsDaemon() {
+    uint32_t lastTime = pros::c::millis();
+    //These two change how encoder smoothing happens.
+    const int sampleCount = 2;
+    const int dT = 5;
+    pair<double, double> lastMeasurement;
+    deque<pair<double, double>> samples;
+    for(int i = 0; i < sampleCount; i++) {
+      samples.push_back({0.0f, 0.0f});
+    }
+    while(true) {
+      samples.pop_front();
+      samples.push_back({left.getPosition(), right.getPosition()});
+      pair<double, double> currentMeasurement;
+      for(auto &sample: samples) {
+        currentMeasurement.first += sample.first;
+        currentMeasurement.second += sample.second;
+      }
+      currentMeasurement.first /= sampleCount;
+      currentMeasurement.second /= sampleCount;
+      pair<double, double> delta;
+      delta.first = currentMeasurement.first - lastMeasurement.first;
+      delta.second = currentMeasurement.second - lastMeasurement.second;
+      lastMeasurement = currentMeasurement;
+
+      daemonLock.take(TIMEOUT_MAX);
+      addPosDelta(position, delta.first, delta.second);
+      daemonLock.give();
+      pros::c::task_delay_until(&lastTime, dT);
+    }
+  }
+
+  void GPS::addPosDelta(RoboPosition& robot, double L, double R) {
+    //No motion
+    if(R == 0 && L == 0) {
+      return;
+    }
+
+    //Change in angle
+    double dTheta = countsToRadians(R-L) / 2;
+
+    //Straight/reverse (Infinite circle)
+    if(abs(dTheta) < 0.0001) {
+      robot.x += cos(robot.o) * L;
+      robot.y += sin(robot.o) * R;
+      return;
+    }
+
+    //Turning circle radius
+    double r = radiansToCounts((R + L) / (R - L));
+
+    //Rotation around turning circle by dTheta
+    //The math here is quite compact, but there's a simple way to think about it.
+    //The sin & cos with robot.o serve to undo the current rotation about the turning circle, while
+    //the sin & cos with robot.o + dTheta serve to update it with the new dTheta.
+    //(-sin, cos) means r units from the left of the robot
+    //(sin, -cos) means r units from the right of the robot
+    robot.x += (sin(robot.o + dTheta) - sin(robot.o)) * r;
+    robot.y += (cos(robot.o) - cos(robot.o + dTheta)) * r;
+    robot.o += dTheta;
+  }
