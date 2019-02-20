@@ -1,7 +1,7 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle) :
-tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle),
+ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double i0) :
+tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), 0(i0),
 shootTask(task, this)
 {
 }
@@ -11,13 +11,8 @@ void ShootController::clearQueue() {
   stateQueue.push_back(shootStates::standby);
 }
 
-void ShootController::addJob(shootStates state) {
-  stateQueue.push_back(state);
-}
-
-ShootController::shootStates ShootController::getCurrentJob() {
-  return stateQueue.back();
-}
+void ShootController::addJob(shootStates state) { stateQueue.push_back(state); }
+ShootController::shootStates ShootController::getCurrentJob() { return stateQueue.back(); }
 
 void ShootController::completeJob() {
   if(stateQueue.back() != shootStates::standby) {
@@ -26,9 +21,7 @@ void ShootController::completeJob() {
 }
 
 void ShootController::addJobs(std::vector<shootStates> states) {
-  for(shootStates &state : states) {
-    stateQueue.push_back(state);
-  }
+  for(shootStates &state : states) { stateQueue.push_back(state); }
 }
 
 void ShootController::doJob(shootStates state) {
@@ -40,9 +33,8 @@ void ShootController::doJobs(std::vector<shootStates> states) {
   addJobs(states);
 }
 
-double ShootController::getAngle() {
-  return hoodSensor->get_value() / 4095.0 * 265.0;
-}
+
+double ShootController::getAngle() { return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle; }
 
 QLength ShootController::getDistanceToFlag() {
   return 11_ft - tracker->state.y;
@@ -53,22 +45,22 @@ double ShootController::getTopFlagAngle() {
   {
     case 0 ... 12 :
     {
-      return backAngle;
+      return 0;
       break;
     }
     case 13 ... 24 :
     {
-      return backAngle + 30;
+      return 30;
       break;
     }
     case 25 ... 36 :
     {
-      return backAngle + 60;
+      return 60;
       break;
     }
     case 37 ... 48 :
     {
-      return backAngle + 90;
+      return 90;
       break;
     }
     default :
@@ -77,7 +69,7 @@ double ShootController::getTopFlagAngle() {
       break;
     }
   }
-  return backAngle;
+  return 0;
 }
 
 double ShootController::getMiddleFlagAngle() {
@@ -85,22 +77,22 @@ double ShootController::getMiddleFlagAngle() {
   {
     case 0 ... 12 :
     {
-      return backAngle;
+      return 0;
       break;
     }
     case 13 ... 24 :
     {
-      return backAngle + 60;
+      return 60;
       break;
     }
     case 25 ... 36 :
     {
-      return backAngle + 90;
+      return 90;
       break;
     }
     case 37 ... 48 :
     {
-      return backAngle + 120;
+      return 120;
       break;
     }
     default :
@@ -109,7 +101,7 @@ double ShootController::getMiddleFlagAngle() {
       break;
     }
   }
-  return backAngle;
+  return 0;
 }
 
 void ShootController::run()
@@ -123,7 +115,7 @@ void ShootController::run()
     {
       case shootStates::standby:
       {
-        if(getAngle() > backAngle + angleThresh) {
+        if(getAngle() > angleThresh) {
           addJob(shootStates::cycle);
         } else {
           flywheel->enable();
@@ -135,7 +127,7 @@ void ShootController::run()
       {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() > backAngle) {
+        if(getAngle() > 0) {
           flywheel->enable();
           completeJob();
         }
