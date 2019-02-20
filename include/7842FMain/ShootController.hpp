@@ -23,16 +23,19 @@ public:
   lib7842::OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
+  ADIPotentiometer* hoodSensor = nullptr;
   pros::Task shootTask;
 
   std::vector<shootStates> stateQueue = {standby};
 
-  ShootController(OdomTracker*, IntakeController*, FlywheelController*);
+  ShootController(OdomTracker*, IntakeController*, FlywheelController*, ADIPotentiometer*);
 
   void clearQueue();
   void addJob(shootStates);
   shootStates getCurrentJob();
   void completeJob();
+
+  double getAngle();
 
 
   void run();

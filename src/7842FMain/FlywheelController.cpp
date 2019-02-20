@@ -12,8 +12,8 @@ void FlywheelController::setRpm(double rpm)
 
 void FlywheelController::disable()
 {
+  if(!disabled) flywheel->moveVelocity(0);
   disabled = true;
-  flywheel->moveVelocity(0);
 }
 
 void FlywheelController::enable()
@@ -42,7 +42,7 @@ void FlywheelController::run()
       if(std::abs(increment) > motorSlew) motorPower = lastPower + (motorSlew * lib7842::sgn(increment));
       lastPower = motorPower;
 
-      flywheel->moveVoltage(motorPower/127.0*12000 * (int)!disabled);
+      if(!disabled) flywheel->moveVoltage(motorPower / 127.0 * 12000.0);
     }
 
     //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";

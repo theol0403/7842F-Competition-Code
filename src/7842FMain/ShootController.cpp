@@ -1,7 +1,7 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel) :
-tracker(itracker), intake(iintake), flywheel(iflywheel),
+ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor) :
+tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor),
 shootTask(task, this)
 {
 }
@@ -22,8 +22,14 @@ void ShootController::completeJob() {
   }
 }
 
+double ShootController::getAngle() {
+  return hoodSensor->get_value() / 4095.0 * 265.0;
+}
+
 void ShootController::run()
 {
+  const double standbyAngle = 200;
+  const double angleThresh = 30;
 
   while(true)
   {
@@ -32,7 +38,17 @@ void ShootController::run()
     {
       case standby:
       {
+        if(getAngle() > standbyAngle + angleThresh) {
+          addJob(cycle);
+        } else {
+          flywheel->enable();
+        }
+        break;
+      }
 
+      case angleTop:
+      {
+        flywheel->disable();
         break;
       }
 
