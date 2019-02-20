@@ -1,7 +1,7 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor) :
-tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor),
+ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle) :
+tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle),
 shootTask(task, this)
 {
 }
@@ -26,9 +26,66 @@ double ShootController::getAngle() {
   return hoodSensor->get_value() / 4095.0 * 265.0;
 }
 
+QLength ShootController::getDistanceToFlag() {
+  return 11_ft - tracker->state.y;
+}
+
+double ShootController::getTopFlagAngle() {
+  switch((int)getDistanceToFlag().convert(inch))
+  {
+    case 0 ... 12 :
+    {
+      return backAngle;
+      break;
+    }
+    case 13 ... 24 :
+    {
+      return backAngle + 30;
+      break;
+    }
+    case 25 ... 36 :
+    {
+      return backAngle + 60;
+      break;
+    }
+    case 37 ... 48 :
+    {
+      return backAngle + 90;
+      break;
+    }
+  }
+  return backAngle;
+}
+
+double ShootController::getMiddleFlagAngle() {
+  switch((int)getDistanceToFlag().convert(inch))
+  {
+    case 0 ... 12 :
+    {
+      return backAngle;
+      break;
+    }
+    case 13 ... 24 :
+    {
+      return backAngle + 60;
+      break;
+    }
+    case 25 ... 36 :
+    {
+      return backAngle + 90;
+      break;
+    }
+    case 37 ... 48 :
+    {
+      return backAngle + 120;
+      break;
+    }
+  }
+  return backAngle;
+}
+
 void ShootController::run()
 {
-  const double standbyAngle = 200;
   const double angleThresh = 30;
 
   while(true)
@@ -38,7 +95,7 @@ void ShootController::run()
     {
       case standby:
       {
-        if(getAngle() > standbyAngle + angleThresh) {
+        if(getAngle() > backAngle + angleThresh) {
           addJob(cycle);
         } else {
           flywheel->enable();
@@ -49,6 +106,22 @@ void ShootController::run()
       case angleTop:
       {
         flywheel->disable();
+        flywheel->flywheel->moveVelocity(-50);
+        if(getAngle() > getTopFlagAngle()) {
+          flywheel->enable();
+          completeJob();
+        }
+        break;
+      }
+
+      case angleMiddle:
+      {
+        flywheel->disable();
+        flywheel->flywheel->moveVelocity(-50);
+        if(getAngle() > getMiddleFlagAngle()) {
+          flywheel->enable();
+          completeJob();
+        }
         break;
       }
 
