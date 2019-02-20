@@ -38,10 +38,15 @@ public:
   void completeJob();
   void addJobs(std::vector<shootStates>);
 
+  void doJob(shootStates);
+  void doJobs(std::vector<shootStates>);
+
   double getAngle();
   QLength getDistanceToFlag();
   double getTopFlagAngle();
   double getMiddleFlagAngle();
+
+  void shootTop
 
 
   void run();

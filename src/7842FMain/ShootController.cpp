@@ -31,6 +31,15 @@ void ShootController::addJobs(std::vector<shootStates> states) {
   }
 }
 
+void ShootController::doJob(shootStates state) {
+  clearQueue();
+  addJob(state);
+}
+void ShootController::doJobs(std::vector<shootStates> states) {
+  clearQueue();
+  addJobs(states);
+}
+
 double ShootController::getAngle() {
   return hoodSensor->get_value() / 4095.0 * 265.0;
 }
@@ -62,6 +71,11 @@ double ShootController::getTopFlagAngle() {
       return backAngle + 90;
       break;
     }
+    default :
+    {
+      return 100;
+      break;
+    }
   }
   return backAngle;
 }
@@ -87,6 +101,11 @@ double ShootController::getMiddleFlagAngle() {
     case 37 ... 48 :
     {
       return backAngle + 120;
+      break;
+    }
+    default :
+    {
+      return 100;
       break;
     }
   }
