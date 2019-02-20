@@ -11,8 +11,8 @@ namespace lib7842
     do
     {
       std::valarray<int32_t> newTicks = tracker->model->getSensorVals();
-      QLength leftDistance = ((newTicks[0] - lastTicks[0]) * tracker->m_mainDegToInch) * inch;
-      QLength rightDistance = ((newTicks[1] - lastTicks[1]) * tracker->m_mainDegToInch) * inch;
+      QLength leftDistance = ((newTicks[0] - lastTicks[0]) * tracker->m_degToInch) * inch;
+      QLength rightDistance = ((newTicks[1] - lastTicks[1]) * tracker->m_degToInch) * inch;
 
       m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
       m_angleErr = turnCalc(this);
