@@ -36,6 +36,7 @@ public:
   void addJob(shootStates);
   shootStates getCurrentJob();
   void completeJob();
+  void addJobs(std::vector<shootStates>);
 
   double getAngle();
   QLength getDistanceToFlag();

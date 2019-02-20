@@ -10,15 +10,24 @@ void ShootController::clearQueue() {
   stateQueue.clear();
   stateQueue.push_back({standby});
 }
+
 void ShootController::addJob(shootStates state) {
   stateQueue.push_back(state);
 }
+
 ShootController::shootStates ShootController::getCurrentJob() {
   return stateQueue.back();
 }
+
 void ShootController::completeJob() {
   if(stateQueue.back() != standby) {
     stateQueue.pop_back();
+  }
+}
+
+void ShootController::addJobs(std::vector<shootStates> states) {
+  for(shootStates &state : states) {
+    stateQueue.push_back(state);
   }
 }
 
