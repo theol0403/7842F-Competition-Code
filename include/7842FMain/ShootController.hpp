@@ -20,7 +20,7 @@ public:
     cycle, //head to back position
   };
 
-  OdomTracker* tracker = nullptr;
+  lib7842::OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
   pros::Task shootTask;
@@ -30,8 +30,10 @@ public:
   ShootController(OdomTracker*, IntakeController*, FlywheelController*);
 
   void clearQueue();
-  void addQueue(shootStates);
-  void setState(shootStates);
+  void addJob(shootStates);
+  shootStates getCurrentJob();
+  void completeJob();
+
 
   void run();
   static void task(void*);
