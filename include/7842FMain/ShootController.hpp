@@ -24,13 +24,13 @@ public:
   lib7842::OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
-  ADIPotentiometer* hoodSensor = nullptr;
+  pros::ADIPotentiometer* hoodSensor = nullptr;
   double backAngle = 0;
   pros::Task shootTask;
 
   std::vector<shootStates> stateQueue = {standby};
 
-  ShootController(OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
+  ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
   void clearQueue();
   void addJob(shootStates);
@@ -45,9 +45,6 @@ public:
   QLength getDistanceToFlag();
   double getTopFlagAngle();
   double getMiddleFlagAngle();
-
-  void shootTop
-
 
   void run();
   static void task(void*);
