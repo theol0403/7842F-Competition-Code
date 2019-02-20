@@ -23,11 +23,11 @@ USE_PACKAGE:=1
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
 # TODO: CHANGE THIS!
-LIBNAME:=libbest
+LIBNAME:=lib7842
 VERSION:=1.0.0
-EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
+EXCLUDE_SRC_FROM_LIB=
 # this line excludes opcontrol.c and similar files
-EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/opcontrol $(SRCDIR)/initialize $(SRCDIR)/autonomous,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
+EXCLUDE_SRC_FROM_LIB+=$(shell find $(SRCDIR)/7842FMain/ ! -name "*.cpp")
 
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files
