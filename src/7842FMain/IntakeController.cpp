@@ -99,6 +99,8 @@ void IntakeController::run()
       {
         intake->moveVelocity(80);
         indexer->moveVelocity(-40);
+        pros::delay(400);
+        intakeState = intakeStates::loading;
         break;
       }
 
