@@ -10,7 +10,7 @@ class ShootController
 
 public:
 
-  enum shootStates
+  enum class shootStates
   {
     standby, //back position, control to flywheel
     cycle, //head to back position
@@ -28,7 +28,7 @@ public:
   double backAngle = 0;
   pros::Task shootTask;
 
-  std::vector<shootStates> stateQueue = {standby};
+  std::vector<shootStates> stateQueue = {shootStates::standby};
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 

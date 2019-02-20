@@ -8,7 +8,7 @@ shootTask(task, this)
 
 void ShootController::clearQueue() {
   stateQueue.clear();
-  stateQueue.push_back({standby});
+  stateQueue.push_back(shootStates::standby);
 }
 
 void ShootController::addJob(shootStates state) {
@@ -20,7 +20,7 @@ ShootController::shootStates ShootController::getCurrentJob() {
 }
 
 void ShootController::completeJob() {
-  if(stateQueue.back() != standby) {
+  if(stateQueue.back() != shootStates::standby) {
     stateQueue.pop_back();
   }
 }
@@ -121,17 +121,17 @@ void ShootController::run()
 
     switch(getCurrentJob())
     {
-      case standby:
+      case shootStates::standby:
       {
         if(getAngle() > backAngle + angleThresh) {
-          addJob(cycle);
+          addJob(shootStates::cycle);
         } else {
           flywheel->enable();
         }
         break;
       }
 
-      case cycle:
+      case shootStates::cycle:
       {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
@@ -142,7 +142,7 @@ void ShootController::run()
         break;
       }
 
-      case angleTop:
+      case shootStates::angleTop:
       {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
@@ -153,7 +153,7 @@ void ShootController::run()
         break;
       }
 
-      case angleMiddle:
+      case shootStates::angleMiddle:
       {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
@@ -164,7 +164,7 @@ void ShootController::run()
         break;
       }
 
-      case waitForFlywheel:
+      case shootStates::waitForFlywheel:
       {
         flywheel->enable();
         if(flywheel->pid->getError() < 100) {
@@ -173,7 +173,7 @@ void ShootController::run()
         break;
       }
 
-      case shootIndexer:
+      case shootStates::shootIndexer:
       {
         flywheel->enable();
         intake->setState(IntakeController::shootIndexer);
@@ -181,7 +181,7 @@ void ShootController::run()
         break;
       }
 
-      case shootBoth:
+      case shootStates::shootBoth:
       {
         flywheel->enable();
         intake->setState(IntakeController::shootBoth);
