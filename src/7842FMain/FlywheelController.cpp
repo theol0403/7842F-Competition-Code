@@ -42,7 +42,7 @@ void FlywheelController::run()
       if(std::abs(increment) > motorSlew) motorPower = lastPower + (motorSlew * lib7842::sgn(increment));
       lastPower = motorPower;
 
-      flywheel->moveVoltage(motorPower/127.0*12000);
+      flywheel->moveVoltage(motorPower/127.0*12000 * (int)!disabled);
     }
 
     //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
