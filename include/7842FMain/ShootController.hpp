@@ -1,5 +1,8 @@
 #pragma once
 #include "main.h"
+#include "FlywheelController.hpp"
+#include "IntakeController.hpp"
+#include "lib7842/odometry/tracker.hpp"
 
 
 class ShootController
@@ -20,13 +23,14 @@ public:
   OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
+  pros::Task shootTask;
 
   std::vector<shootStates> stateQueue = {standby};
 
   ShootController(OdomTracker*, IntakeController*, FlywheelController*);
 
-  void addQueue(shootStates);
   void clearQueue();
+  void addQueue(shootStates);
   void setState(shootStates);
 
   void run();
