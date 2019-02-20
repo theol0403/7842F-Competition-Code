@@ -103,6 +103,17 @@ void ShootController::run()
         break;
       }
 
+      case cycle:
+      {
+        flywheel->disable();
+        flywheel->flywheel->moveVelocity(-50);
+        if(getAngle() > backAngle) {
+          flywheel->enable();
+          completeJob();
+        }
+        break;
+      }
+
       case angleTop:
       {
         flywheel->disable();
@@ -122,6 +133,31 @@ void ShootController::run()
           flywheel->enable();
           completeJob();
         }
+        break;
+      }
+
+      case waitForFlywheel:
+      {
+        flywheel->enable();
+        if(flywheel->pid->getError() < 100) {
+          completeJob();
+        }
+        break;
+      }
+
+      case shootIndexer:
+      {
+        flywheel->enable();
+        intake->setState(IntakeController::shootIndexer);
+        if(intake->getState() != IntakeController::shootIndexer) completeJob();
+        break;
+      }
+
+      case shootBoth:
+      {
+        flywheel->enable();
+        intake->setState(IntakeController::shootBoth);
+        if(intake->getState() != IntakeController::shootBoth) completeJob();
         break;
       }
 

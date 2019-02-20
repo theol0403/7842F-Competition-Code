@@ -13,12 +13,12 @@ public:
   enum shootStates
   {
     standby, //back position, control to flywheel
-    take
+    cycle, //head to back position
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     waitForFlywheel, //wait until flywheel is ready
-    shoot, //shoot indexer
-    cycle, //head to back position
+    shootIndexer, //shoot indexer
+    shootBoth, //shoot both
   };
 
   lib7842::OdomTracker* tracker = nullptr;

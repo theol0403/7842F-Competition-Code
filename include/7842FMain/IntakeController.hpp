@@ -31,6 +31,7 @@ public:
   IntakeController(AbstractMotor*, AbstractMotor*, pros::ADILineSensor*, double);
 
   void setState(intakeStates);
+  intakeStates getState();
 
   void run();
 
