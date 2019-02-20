@@ -28,9 +28,27 @@ void ShootController::doJob(shootStates state) {
   clearQueue();
   addJob(state);
 }
+
 void ShootController::doJobs(std::vector<shootStates> states) {
   clearQueue();
   addJobs(states);
+}
+
+void ShootController::doMacro(shootMacros macro) {
+  switch(macro)
+  {
+    case shootMacros::off :
+    {
+      clearQueue();
+      break;
+    }
+
+    case shootMacros::shootTopFlag :
+    {
+      doJobs({angleTop});
+      break;
+    }
+  }
 }
 
 
@@ -115,7 +133,7 @@ void ShootController::run()
     {
       case shootStates::standby:
       {
-        if(getAngle() > angleThresh) {
+        if(getAngle() > 0 + angleThresh) {
           addJob(shootStates::cycle);
         } else {
           flywheel->enable();
@@ -127,7 +145,7 @@ void ShootController::run()
       {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() > 0) {
+        if(getAngle() < angleThresh) {
           flywheel->enable();
           completeJob();
         }
@@ -136,22 +154,30 @@ void ShootController::run()
 
       case shootStates::angleTop:
       {
-        flywheel->disable();
-        flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() > getTopFlagAngle()) {
-          flywheel->enable();
-          completeJob();
+        if(getAngle() > getTopFlagAngle() + angleThresh) {
+          addJob(shootStates::cycle);
+        } else {
+          flywheel->disable();
+          flywheel->flywheel->moveVelocity(-50);
+          if(getAngle() > getTopFlagAngle()) {
+            flywheel->enable();
+            completeJob();
+          }
         }
         break;
       }
 
       case shootStates::angleMiddle:
       {
-        flywheel->disable();
-        flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() > getMiddleFlagAngle()) {
-          flywheel->enable();
-          completeJob();
+        if(getAngle() > getMiddleFlagAngle() + angleThresh) {
+          addJob(shootStates::cycle);
+        } else {
+          flywheel->disable();
+          flywheel->flywheel->moveVelocity(-50);
+          if(getAngle() > getMiddleFlagAngle()) {
+            flywheel->enable();
+            completeJob();
+          }
         }
         break;
       }
@@ -159,9 +185,7 @@ void ShootController::run()
       case shootStates::waitForFlywheel:
       {
         flywheel->enable();
-        if(flywheel->pid->getError() < 100) {
-          completeJob();
-        }
+        if(flywheel->pid->getError() < 100) completeJob();
         break;
       }
 

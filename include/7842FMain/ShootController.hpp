@@ -21,6 +21,14 @@ public:
     shootBoth, //shoot both
   };
 
+  enum class shootMacros
+  {
+    off, //reverts to standby
+    shootTopFlag,
+    shootMiddleFlag,
+    shootBothFlags
+  };
+
   lib7842::OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
@@ -40,6 +48,7 @@ public:
 
   void doJob(shootStates);
   void doJobs(std::vector<shootStates>);
+  void doMacro(shootMacros);
 
   double getAngle();
   QLength getDistanceToFlag();
