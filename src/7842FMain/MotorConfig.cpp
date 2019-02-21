@@ -68,7 +68,7 @@ void initializeDevices()
 
 	robot.flywheel = new FlywheelController(new okapi::Motor(e_m_Flywheel), 15, new lib7842::velPID(0.4, 0.05, 0.044, 0.9), new lib7842::emaFilter(0.15), 0.7);
 
-	robot.intake = new IntakeController(new okapi::Motor(e_m_Intake), new okapi::Motor(e_m_Indexer), new pros::ADILineSensor('A'), 1);
+	robot.shooter = new ShootController(robot.tracker, robot.intake, robot.flywheel, new pros::ADIPotentiometer('B'), 30);
 }
 
 
@@ -96,28 +96,28 @@ void initializeDevices()
 void initializeBase()
 {
 
-	robot.model = std::make_shared<SkidSteerModel>(
+	robot.model = std::make_shared<SkidSteerModel> (
 		std::make_shared<Motor>(left_mPort),
 		std::make_shared<Motor>(right_mPort),
 		std::make_shared<ADIEncoder>(3, 4),
 		std::make_shared<ADIEncoder>(5, 6),
 		200,
-		12000);
+		12000
+	);
 
-		robot.tracker = new lib7842::OdomTracker (
-			robot.model,
-			27_cm, 4_in, 360,
-			lib7842::OdomTracker::mTracking
-		);
+	robot.tracker = new lib7842::OdomTracker (
+		robot.model,
+		27_cm, 4_in, 360,
+		lib7842::OdomTracker::mTracking
+	);
 
-		robot.chassis = new lib7842::OdomController
-		(
-			robot.tracker,
-			new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
-			new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
-			new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
-		);
+	robot.chassis = new lib7842::OdomController (
+		robot.tracker,
+		new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
+		new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
+		new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
+	);
 
-	}
+}
 
-	#endif //COMPETITION_ROBOT
+#endif //COMPETITION_ROBOT

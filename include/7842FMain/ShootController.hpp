@@ -10,8 +10,9 @@ class ShootController
 
 public:
 
-  enum class shootStates
+  enum shootStates
   {
+    off,
     standby, //back position, control to flywheel
     cycle, //head to back position
     angleTop, //drop hood to top angle

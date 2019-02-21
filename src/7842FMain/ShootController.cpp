@@ -8,14 +8,14 @@ shootTask(task, this)
 
 void ShootController::clearQueue() {
   stateQueue.clear();
-  stateQueue.push_back(shootStates::standby);
+  stateQueue.push_back(standby);
 }
 
 void ShootController::addJob(shootStates state) { stateQueue.push_back(state); }
 ShootController::shootStates ShootController::getCurrentJob() { return stateQueue.back(); }
 
 void ShootController::completeJob() {
-  if(stateQueue.back() != shootStates::standby) {
+  if(stateQueue.back() != standby) {
     stateQueue.pop_back();
   }
 }
@@ -45,19 +45,19 @@ void ShootController::doMacro(shootMacros macro) {
 
     case shootMacros::shootTopFlag :
     {
-      doJobs({shootStates::angleTop, shootStates::waitForFlywheel, shootStates::shootIndexer});
+      doJobs({angleTop, waitForFlywheel, shootIndexer});
       break;
     }
 
     case shootMacros::shootMiddleFlag :
     {
-      doJobs({shootStates::angleMiddle, shootStates::waitForFlywheel, shootStates::shootIndexer});
+      doJobs({angleMiddle, waitForFlywheel, shootIndexer});
       break;
     }
 
     case shootMacros::shootBothFlags :
     {
-      doJobs({shootStates::angleTop, shootStates::waitForFlywheel, shootStates::shootIndexer, shootStates::angleMiddle, shootStates::waitForFlywheel, shootStates::shootIndexer});
+      doJobs({angleTop, waitForFlywheel, shootIndexer, angleMiddle, waitForFlywheel, shootIndexer});
       break;
     }
   }
@@ -106,16 +106,20 @@ void ShootController::run()
     switch(getCurrentJob())
     {
 
-      case shootStates::standby:
+      case off:
+      flywheel->disable();
+      break;
+
+      case standby:
 
       if(getAngle() >= angleThresh) {
-        addJob(shootStates::cycle);
+        addJob(cycle);
       } else {
         flywheel->enable();
       }
       break;
 
-      case shootStates::cycle:
+      case cycle:
 
       flywheel->disable();
       flywheel->flywheel->moveVelocity(-50);
@@ -127,10 +131,10 @@ void ShootController::run()
       break;
 
 
-      case shootStates::angleTop:
+      case angleTop:
 
       if(getAngle() > getTopFlagAngle() + angleThresh) {
-        addJob(shootStates::cycle);
+        addJob(cycle);
       } else {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
@@ -142,10 +146,10 @@ void ShootController::run()
       break;
 
 
-      case shootStates::angleMiddle:
+      case angleMiddle:
 
       if(getAngle() > getMiddleFlagAngle() + angleThresh) {
-        addJob(shootStates::cycle);
+        addJob(cycle);
       } else {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
@@ -157,14 +161,14 @@ void ShootController::run()
       break;
 
 
-      case shootStates::waitForFlywheel:
+      case waitForFlywheel:
 
       flywheel->enable();
       if(flywheel->pid->getError() < 100) completeJob();
       break;
 
 
-      case shootStates::shootIndexer:
+      case shootIndexer:
 
       flywheel->enable();
       intake->setState(IntakeController::shootIndexer);
@@ -172,7 +176,7 @@ void ShootController::run()
       break;
 
 
-      case shootStates::shootBoth:
+      case shootBoth:
 
       flywheel->enable();
       intake->setState(IntakeController::shootBoth);
