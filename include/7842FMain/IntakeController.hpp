@@ -27,11 +27,14 @@ public:
   pros::Task intakeTask;
 
   intakeStates intakeState;
+  bool disabled = false;
 
   IntakeController(AbstractMotor*, AbstractMotor*, pros::ADILineSensor*, double);
 
   void setState(intakeStates);
   intakeStates getState();
+  void disable();
+  void enable();
 
   void run();
 

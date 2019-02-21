@@ -53,7 +53,7 @@ void initialize()
   initializeBase();
   initializeDevices();
 
-  robot.flywheel->setRpm(2800); //will always reach this goal
+  robot.flywheel->setRpm(2800); //will always go for this speed
 }
 
 /***
@@ -87,7 +87,7 @@ void competition_initialize() {}
 */
 void disabled()
 {
-  robot.shoot->doJob(ShootController::off);
+  robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   robot.model->stop();
 }
@@ -115,7 +115,7 @@ void opcontrol()
 {
   checkBaseStatus();
   robot.model->stop();
-  robot.shoot->clearQueue();
+  robot.shooter->clearQueue();
   robot.flywheel->enable();
 
   while(true)
@@ -164,7 +164,7 @@ void opcontrol()
 
 void autonomous()
 {
-  robot.shoot->clearQueue();
+  robot.shooter->clearQueue();
   robot.flywheel->enable();
 
   SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());

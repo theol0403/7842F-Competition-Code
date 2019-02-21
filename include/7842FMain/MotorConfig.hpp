@@ -18,7 +18,7 @@ struct robot_t
 
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
-  ShootController* shoot = nullptr;
+  ShootController* shooter = nullptr;
 };
 
 extern robot_t robot;
@@ -28,4 +28,4 @@ void initializeBase();
 void checkBaseStatus();
 
 
-#define TEST_ROBOT
+//#define TEST_ROBOT

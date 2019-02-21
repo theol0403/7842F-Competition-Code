@@ -12,7 +12,7 @@ void FlywheelController::setRpm(double rpm)
 
 void FlywheelController::disable()
 {
-  if(!disabled) flywheel->moveVelocity(0);
+  if(!disabled) flywheel->moveVoltage(0);
   disabled = true;
 }
 
