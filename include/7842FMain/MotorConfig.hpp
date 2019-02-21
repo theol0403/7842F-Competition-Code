@@ -3,6 +3,7 @@
 #include "lib7842/lib7842.hpp"
 #include "IntakeController.hpp"
 #include "FlywheelController.hpp"
+#include "ShootController.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -17,6 +18,7 @@ struct robot_t
 
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
+  ShootController* shoot = nullptr;
 };
 
 extern robot_t robot;

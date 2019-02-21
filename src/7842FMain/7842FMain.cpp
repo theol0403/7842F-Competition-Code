@@ -49,8 +49,8 @@ void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
 
     autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Test", AutonTest}, {"Close", AutonClose}});
 
-    initializeDevices();
     initializeBase();
+    initializeDevices();
   }
 
   /***
