@@ -26,4 +26,4 @@ void initializeBase();
 void checkBaseStatus();
 
 
-//#define TEST_ROBOT
+#define TEST_ROBOT

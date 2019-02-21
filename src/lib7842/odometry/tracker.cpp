@@ -17,6 +17,7 @@ namespace lib7842
   {
     resetSensors();
     resetState();
+    resetSensors();
   };
 
 

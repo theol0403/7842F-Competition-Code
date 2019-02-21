@@ -94,21 +94,18 @@ void initializeDevices()
 void initializeBase()
 {
 
-	robot.model = std::make_shared<ThreeEncoderSkidSteerModel>(
+	robot.model = std::make_shared<SkidSteerModel>(
 		std::make_shared<Motor>(left_mPort),
 		std::make_shared<Motor>(right_mPort),
 		std::make_shared<ADIEncoder>(3, 4),
-		std::make_shared<ADIEncoder>(1, 2),
 		std::make_shared<ADIEncoder>(5, 6),
 		200,
 		12000);
 
-		robot.tracker = new lib7842::OdomTracker
-		(
+		robot.tracker = new lib7842::OdomTracker (
 			robot.model,
-			27_cm, 0_cm,
-			4_in,
-			360, 360
+			27_cm, 4_in, 360,
+			lib7842::OdomTracker::mTracking
 		);
 
 		robot.chassis = new lib7842::OdomController
