@@ -12,8 +12,6 @@ public:
     off,
     loading, //Ball into indexer
     collecting, //Intake running
-    shootIndexer,
-    shootBoth,
     outIntake,
     outBoth,
     outSlow,

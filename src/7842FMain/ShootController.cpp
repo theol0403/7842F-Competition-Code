@@ -171,18 +171,25 @@ void ShootController::run()
       case shootIndexer:
 
       flywheel->enable();
-      intake->setState(IntakeController::shootIndexer);
-      if(intake->getState() != IntakeController::shootIndexer) completeJob();
+      intake->disable();
+      intake->intake->moveVelocity(0);
+      intake->indexer->moveVelocity(200);
+      pros::delay(300);
+      intake->enable();
+      completeJob();
       break;
 
 
       case shootBoth:
 
       flywheel->enable();
-      intake->setState(IntakeController::shootBoth);
-      if(intake->getState() != IntakeController::shootBoth) completeJob();
+      intake->disable();
+      intake->intake->moveVelocity(200);
+      intake->indexer->moveVelocity(200);
+      pros::delay(400);
+      intake->enable();
+      completeJob();
       break;
-
 
     }
 

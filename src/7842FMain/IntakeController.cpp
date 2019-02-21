@@ -60,19 +60,6 @@ void IntakeController::run()
         indexer->moveVelocity(0);
         break;
 
-        case intakeStates::shootIndexer:
-        intake->moveVelocity(0);
-        indexer->moveVelocity(200);
-        intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
-        pros::delay(300);
-        break;
-
-        case intakeStates::shootBoth:
-        intake->moveVelocity(200);
-        indexer->moveVelocity(200);
-        //intakeState = intakeStates::loading; // Allows mode to be set to off while waiting
-        pros::delay(200);
-        break;
 
         case intakeStates::outIntake:
         intake->moveVelocity(-200);
