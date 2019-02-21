@@ -21,6 +21,9 @@ namespace lib7842
     SideController(OdomController*, autonSides);
 
     void setState(qPoint);
+    
+    QAngle computeAngleToPoint(qPoint);
+    QLength computeDistanceToPoint(qPoint);
 
     settleFunc_t makeSettle(QAngle);
     settleFunc_t makeSettle(QLength);
@@ -52,6 +55,9 @@ namespace lib7842
 
 
     #ifdef CONTROLLER_NAME_FOR_SHORTCUTS
+    #define computeAngleToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeAngleToPoint
+    #define computeDistanceToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeDistanceToPoint
+
     #define makeSettle CONTROLLER_NAME_FOR_SHORTCUTS makeSettle
     #define turnSettle OdomController::turnSettle
     #define driveSettle OdomController::driveSettle

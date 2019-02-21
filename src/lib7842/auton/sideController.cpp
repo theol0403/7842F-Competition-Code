@@ -8,7 +8,14 @@ namespace lib7842
   void SideController::setState(qPoint point) {
     controller->tracker->setState(mirrorSide(point, side));
   }
-  
+
+  QAngle SideController::computeAngleToPoint(qPoint point) {
+    return controller->computeAngleToPoint(mirrorSide(point, side));
+  }
+  QLength SideController::computeDistanceToPoint(qPoint point) {
+    return controller->computeDistanceToPoint(mirrorSide(point, side));
+  }
+
 
   settleFunc_t SideController::makeSettle(QAngle angle) {
     return OdomController::makeSettle(mirrorSide(angle, side));
