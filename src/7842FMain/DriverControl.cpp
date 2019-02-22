@@ -38,17 +38,26 @@ void driverIntakeControl()
 	/**
 	* Shoot Controller
 	*/
-	if(j_Digital(L2) && j_Digital(L1))
+	// if(j_Digital(L2) && j_Digital(L1))
+	// {
+	// 	shootMacro = ShootController::shootMacros::shootBothFlags;
+	// }
+	// else if(j_Digital(L2))
+	// {
+	// 	shootMacro = ShootController::shootMacros::shootMiddleFlag;
+	// }
+	// else if(j_Digital(L1))
+	// {
+	// 	shootMacro = ShootController::shootMacros::shootTopFlag;
+	// }
+	// else
+	// {
+	// 	shootMacro = ShootController::shootMacros::off;
+	// }
+
+	if(j_Digital(L2))
 	{
-		shootMacro = ShootController::shootMacros::shootBothFlags;
-	}
-	else if(j_Digital(L2))
-	{
-		shootMacro = ShootController::shootMacros::shootMiddleFlag;
-	}
-	else if(j_Digital(L1))
-	{
-		shootMacro = ShootController::shootMacros::shootTopFlag;
+		shootMacro = ShootController::shootMacros::shoot;
 	}
 	else
 	{
@@ -66,32 +75,32 @@ void driverIntakeControl()
 
 void driverFlywheelControl()
 {
-
-	if(j_Digital(left))
-	{
-		wantedRpm = 2350;
-		triggerUpdate = true;
-	}
-	else if(j_Digital(up))
-	{
-		wantedRpm = 2500;
-		triggerUpdate = true;
-	}
-	else if(j_Digital(right))
-	{
-		wantedRpm = 2800;
-		triggerUpdate = true;
-	}
-	else if(j_Digital(down))
-	{
-		wantedRpm = 0;
-		triggerUpdate = true;
-	}
-
-	if(triggerUpdate) //If new flywheel speed was set
-	{
-		robot.flywheel->setRpm(wantedRpm);
-		triggerUpdate = false;
-	}
+	//
+	// if(j_Digital(left))
+	// {
+	// 	wantedRpm = 2350;
+	// 	triggerUpdate = true;
+	// }
+	// else if(j_Digital(up))
+	// {
+	// 	wantedRpm = 2500;
+	// 	triggerUpdate = true;
+	// }
+	// else if(j_Digital(right))
+	// {
+	// 	wantedRpm = 2800;
+	// 	triggerUpdate = true;
+	// }
+	// else if(j_Digital(down))
+	// {
+	// 	wantedRpm = 0;
+	// 	triggerUpdate = true;
+	// }
+	//
+	// if(triggerUpdate) //If new flywheel speed was set
+	// {
+	// 	robot.flywheel->setRpm(wantedRpm);
+	// 	triggerUpdate = false;
+	// }
 
 }

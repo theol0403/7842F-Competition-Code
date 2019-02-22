@@ -1,7 +1,7 @@
 #include "IntakeController.hpp"
 
-IntakeController::IntakeController(AbstractMotor* iintake, AbstractMotor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma) :
-intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
+IntakeController::IntakeController(AbstractMotor* iintake, AbstractMotor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma, FlywheelController* iflywheel) :
+intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma), flywheel(iflywheel),
 intakeTask(task, this)
 {
   intake->setBrakeMode(AbstractMotor::brakeMode::hold);
@@ -39,7 +39,7 @@ void IntakeController::run()
 
         case intakeStates::off:
         intake->moveVelocity(0);
-        indexer->moveVelocity(0);
+        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
         break;
 
         case intakeStates::loading:
@@ -57,13 +57,13 @@ void IntakeController::run()
         case intakeStates::collecting:
         //Run intake
         intake->moveVelocity(200);
-        indexer->moveVelocity(0);
+        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
         break;
 
 
         case intakeStates::outIntake:
         intake->moveVelocity(-200);
-        indexer->moveVelocity(0);
+        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
         break;
 
         case intakeStates::outBoth:

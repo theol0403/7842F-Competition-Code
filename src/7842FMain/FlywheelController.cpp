@@ -29,6 +29,7 @@ void FlywheelController::run()
     if(disabled)
     {
       lastPower = lastPower <= 0 ? 0 : lastPower - 0.25; //tune, was 0.27
+      motorPower = 0;
     }
     else
     {

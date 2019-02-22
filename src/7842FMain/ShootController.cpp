@@ -60,6 +60,12 @@ void ShootController::doMacro(shootMacros macro) {
       doJobs({angleTop, waitForFlywheel, shootIndexer, angleMiddle, waitForFlywheel, shootIndexer});
       break;
     }
+
+    case shootMacros::shoot :
+    {
+      doJobs({waitForFlywheel, shootIndexer});
+      break;
+    }
   }
 }
 
