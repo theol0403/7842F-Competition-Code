@@ -20,6 +20,7 @@ public:
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
+    loopMacro
   };
 
   enum class shootMacros

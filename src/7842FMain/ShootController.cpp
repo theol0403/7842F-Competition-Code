@@ -124,7 +124,6 @@ void ShootController::run()
       break;
 
       case standby:
-
       if(getAngle() >= angleThresh) {
         addJob(cycle);
       } else {
@@ -133,7 +132,6 @@ void ShootController::run()
       break;
 
       case cycle:
-
       flywheel->disable();
       flywheel->flywheel->moveVelocity(-50);
       //If angle is within error of 0
@@ -145,7 +143,6 @@ void ShootController::run()
 
 
       case angleTop:
-
       if(getAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
@@ -160,7 +157,6 @@ void ShootController::run()
 
 
       case angleMiddle:
-
       if(getAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
@@ -175,14 +171,12 @@ void ShootController::run()
 
 
       case waitForFlywheel:
-
       flywheel->enable();
       if(flywheel->pid->getError() < 100) completeJob();
       break;
 
 
       case shootIndexer:
-
       flywheel->enable();
       intake->disable();
       intake->intake->moveVelocity(0);
@@ -194,7 +188,6 @@ void ShootController::run()
 
 
       case shootBoth:
-
       flywheel->enable();
       intake->disable();
       intake->intake->moveVelocity(200);
@@ -202,6 +195,10 @@ void ShootController::run()
       pros::delay(400);
       intake->enable();
       completeJob();
+      break;
+
+      case loopMacro:
+      addMacro(currentMacro);
       break;
 
     }
