@@ -27,7 +27,8 @@ public:
     off, //reverts to standby
     shootTopFlag,
     shootMiddleFlag,
-    shootBothFlags
+    shootBothFlags,
+    shoot
   };
 
   lib7842::OdomTracker* tracker = nullptr;

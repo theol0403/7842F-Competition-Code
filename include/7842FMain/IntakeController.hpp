@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "FlywheelController.hpp"
 
 
 class IntakeController
@@ -22,12 +23,13 @@ public:
   AbstractMotor* indexer = nullptr;
   pros::ADILineSensor* lineSensor = nullptr;
   okapi::EmaFilter sensorFilter;
+  FlywheelController* flywheel = nullptr;
   pros::Task intakeTask;
 
-  intakeStates intakeState;
+  intakeStates intakeState = off;
   bool disabled = false;
 
-  IntakeController(AbstractMotor*, AbstractMotor*, pros::ADILineSensor*, double);
+  IntakeController(AbstractMotor*, AbstractMotor*, pros::ADILineSensor*, double, FlywheelController*);
 
   void setState(intakeStates);
   intakeStates getState();
