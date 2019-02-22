@@ -39,18 +39,23 @@ public:
   pros::Task shootTask;
 
   std::vector<shootStates> stateQueue = {shootStates::standby};
+  shootMacros currentMacro = shootMacros::off;
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
   void clearQueue();
-  void addJob(shootStates);
   shootStates getCurrentJob();
   void completeJob();
-  void addJobs(std::vector<shootStates>);
 
+  void addJob(shootStates);
+  void addJobs(std::vector<shootStates>);
   void doJob(shootStates);
   void doJobs(std::vector<shootStates>);
+
+  void addMacro(shootMacros);
   void doMacro(shootMacros);
+  void addMacroLoop(shootMacros);
+  void doMacroLoop(shootMacros);
 
   double getAngle();
   QLength getDistanceToFlag();

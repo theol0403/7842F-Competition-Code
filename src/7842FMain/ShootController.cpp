@@ -34,39 +34,46 @@ void ShootController::doJobs(std::vector<shootStates> states) {
   addJobs(states);
 }
 
-void ShootController::doMacro(shootMacros macro) {
+void ShootController::addMacro(shootMacros macro) {
+  //these need to be reversed because the last one gets done first
   switch(macro)
   {
     case shootMacros::off :
-    {
-      clearQueue();
-      break;
-    }
+    clearQueue();
+    break;
 
     case shootMacros::shootTopFlag :
-    {
-      doJobs({angleTop, waitForFlywheel, shootIndexer});
-      break;
-    }
+    addJobs({shootIndexer, waitForFlywheel, angleTop});
+    break;
 
     case shootMacros::shootMiddleFlag :
-    {
-      doJobs({angleMiddle, waitForFlywheel, shootIndexer});
-      break;
-    }
+    addJobs({shootIndexer, waitForFlywheel, angleMiddle});
+    break;
 
     case shootMacros::shootBothFlags :
-    {
-      doJobs({angleTop, waitForFlywheel, shootIndexer, angleMiddle, waitForFlywheel, shootIndexer});
-      break;
-    }
+    addJobs({shootIndexer, waitForFlywheel, angleMiddle, shootIndexer, waitForFlywheel, angleTop});
+    break;
 
     case shootMacros::shoot :
-    {
-      doJobs({waitForFlywheel, shootIndexer});
-      break;
-    }
+    addJobs({shootIndexer, waitForFlywheel});
+    break;
   }
+}
+
+void ShootController::doMacro(shootMacros macro) {
+  clearQueue();
+  addMacro(macro);
+}
+
+void ShootController::addMacroLoop(shootMacros macro) {
+  currentMacro = macro;
+  addJob(loopMacro);
+  addMacro(macro);
+}
+
+void ShootController::doMacroLoop(shootMacros macro) {
+  clearQueue();
+  addMacroLoop(macro);
 }
 
 
