@@ -22,6 +22,7 @@ struct robot_t
 };
 
 extern robot_t robot;
+extern const int globalFlywheelRPM;
 
 void initializeDevices();
 void initializeBase();

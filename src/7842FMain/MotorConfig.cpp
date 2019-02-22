@@ -61,6 +61,7 @@ void initializeBase()
 
 }
 
+const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {

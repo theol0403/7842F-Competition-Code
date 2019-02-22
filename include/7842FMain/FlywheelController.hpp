@@ -26,6 +26,7 @@ public:
   FlywheelController(AbstractMotor*, double, lib7842::velPID*, lib7842::emaFilter*, double);
 
   void setRpm(double);
+  double getTargetRpm();
   void disable();
   void enable();
 

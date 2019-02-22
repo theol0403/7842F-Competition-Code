@@ -72,9 +72,18 @@ void driverIntakeControl()
 
 }
 
+okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
 
 void driverFlywheelControl()
 {
+	if(flywheelTrigger.changedToPressed()) {
+		if(robot.flywheel->getTargetRpm() == 0) {
+			robot.flywheel->setRpm(globalFlywheelRPM);
+		} else {
+			robot.flywheel->setRpm(0);
+		}
+	}
+
 	//
 	// if(j_Digital(left))
 	// {

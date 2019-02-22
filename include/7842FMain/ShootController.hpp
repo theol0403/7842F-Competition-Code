@@ -25,7 +25,7 @@ public:
 
   enum class shootMacros
   {
-    off, //reverts to standby
+    off,
     shootTopFlag,
     shootMiddleFlag,
     shootBothFlags,
@@ -39,7 +39,9 @@ public:
   double backAngle = 0;
   pros::Task shootTask;
 
-  std::vector<shootStates> stateQueue = {shootStates::standby};
+  const shootStates defaultState = off;
+
+  std::vector<shootStates> stateQueue = {defaultState};
   shootMacros currentMacro = shootMacros::off;
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);

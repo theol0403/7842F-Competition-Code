@@ -52,8 +52,6 @@ void initialize()
 
   initializeBase();
   initializeDevices();
-
-  robot.flywheel->setRpm(2800); //will always go for this speed
 }
 
 /***

@@ -8,14 +8,14 @@ shootTask(task, this)
 
 void ShootController::clearQueue() {
   stateQueue.clear();
-  stateQueue.push_back(standby);
+  stateQueue.push_back(defaultState);
 }
 
 void ShootController::addJob(shootStates state) { stateQueue.push_back(state); }
 ShootController::shootStates ShootController::getCurrentJob() { return stateQueue.back(); }
 
 void ShootController::completeJob() {
-  if(stateQueue.back() != standby) {
+  if(stateQueue.back() != defaultState) {
     stateQueue.pop_back();
   }
 }
@@ -120,7 +120,8 @@ void ShootController::run()
     {
 
       case off:
-      flywheel->disable();
+      flywheel->enable();
+      intake->enable();
       break;
 
       case standby:
