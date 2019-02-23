@@ -54,9 +54,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
-		new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
-		new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
+		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
+		new IterativePosPIDController(0.01, 0, 0.005, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
 	);
 
 }
@@ -114,9 +114,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
-		new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
-		new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
+		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
+		new IterativePosPIDController(0.01, 0, 0.005, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
 	);
 
 }
