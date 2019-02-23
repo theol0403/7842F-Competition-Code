@@ -85,8 +85,10 @@ void competition_initialize() {}
 */
 void disabled()
 {
+  #ifdef TEST_ROBOT
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
+  #endif
   robot.model->stop();
 }
 
@@ -113,8 +115,10 @@ void opcontrol()
 {
   checkBaseStatus();
   robot.model->stop();
+  #ifdef TEST_ROBOT
   robot.shooter->clearQueue();
   robot.flywheel->enable();
+  #endif
 
   while(true)
   {
@@ -162,8 +166,10 @@ void opcontrol()
 
 void autonomous()
 {
+  #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
   robot.flywheel->enable();
+  #endif
 
   SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());
   autonSelector->getSelectedAuton().autonFunc(sideChassis);
