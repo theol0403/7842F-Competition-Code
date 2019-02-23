@@ -13,14 +13,11 @@ public:
     off,
     loading, //Ball into indexer
     collecting, //Intake running
-    outIntake,
-    outBoth,
-    outSlow,
-    compress
+    outIntake
   };
 
-  AbstractMotor* intake = nullptr;
-  AbstractMotor* indexer = nullptr;
+  Motor* intake = nullptr;
+  Motor* indexer = nullptr;
   pros::ADILineSensor* lineSensor = nullptr;
   okapi::EmaFilter sensorFilter;
   FlywheelController* flywheel = nullptr;
@@ -29,12 +26,14 @@ public:
   intakeStates intakeState = off;
   bool disabled = false;
 
-  IntakeController(AbstractMotor*, AbstractMotor*, pros::ADILineSensor*, double, FlywheelController*);
+  IntakeController(Motor*, Motor*, pros::ADILineSensor*, double, FlywheelController*);
 
   void setState(intakeStates);
   intakeStates getState();
   void disable();
   void enable();
+
+  void moveIndexerSlave();
 
   void run();
 

@@ -26,6 +26,10 @@ void IntakeController::enable() {
   disabled = false;
 }
 
+void IntakeController::moveIndexerSlave() {
+  indexer->move(-flywheel->motorPower);
+}
+
 void IntakeController::run()
 {
 
@@ -39,7 +43,7 @@ void IntakeController::run()
 
         case intakeStates::off:
         intake->moveVelocity(0);
-        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
+        moveIndexerSlave();
         break;
 
         case intakeStates::loading:
@@ -57,30 +61,13 @@ void IntakeController::run()
         case intakeStates::collecting:
         //Run intake
         intake->moveVelocity(200);
-        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
+        moveIndexerSlave();
         break;
 
 
         case intakeStates::outIntake:
         intake->moveVelocity(-200);
-        indexer->moveVoltage(-flywheel->motorPower / 127.0 * 12000.0);
-        break;
-
-        case intakeStates::outBoth:
-        intake->moveVelocity(-200);
-        indexer->moveVelocity(-100);
-        break;
-
-        case intakeStates::outSlow:
-        intake->moveVelocity(-40);
-        indexer->moveVelocity(-40);
-        break;
-
-        case intakeStates::compress:
-        intake->moveVelocity(80);
-        indexer->moveVelocity(-40);
-        pros::delay(400);
-        intakeState = intakeStates::loading;
+        moveIndexerSlave();
         break;
 
       }

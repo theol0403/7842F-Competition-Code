@@ -11,11 +11,7 @@ void driverIntakeControl()
 	/**
 	* Intake
 	*/
-	if(j_Digital(R1) && j_Digital(L1))
-	{
-		intakeState = IntakeController::outSlow;
-	}
-	else if(j_Digital(R2))
+	if(j_Digital(R2))
 	{
 		intakeState = IntakeController::loading;
 	}
@@ -59,6 +55,10 @@ void driverIntakeControl()
 	{
 		shootMacro = ShootController::shootMacros::shoot;
 	}
+	else if(j_Digital(L1))
+	{
+		shootMacro = ShootController::shootMacros::angleHoodManual;
+	}
 	else
 	{
 		shootMacro = ShootController::shootMacros::off;
@@ -66,7 +66,7 @@ void driverIntakeControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		robot.shooter->doMacro(shootMacro);
+		robot.shooter->doMacroLoop(shootMacro);
 		lastShootMacro = shootMacro;
 	}
 
