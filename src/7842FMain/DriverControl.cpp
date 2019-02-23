@@ -57,7 +57,7 @@ void driverIntakeControl()
 	}
 	else if(j_Digital(L1))
 	{
-		shootMacro = ShootController::shootMacros::angleHoodManual;
+		shootMacro = ShootController::shootMacros::angleManual;
 	}
 	else
 	{
