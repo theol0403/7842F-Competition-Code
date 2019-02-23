@@ -53,7 +53,7 @@ void driverIntakeControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		robot.shooter->doMacro(shootMacro);
+		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
 
