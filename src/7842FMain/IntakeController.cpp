@@ -1,7 +1,7 @@
 #include "IntakeController.hpp"
 
-IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma, FlywheelController* iflywheel) :
-intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma), flywheel(iflywheel),
+IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma) :
+intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
 intakeTask(task, this)
 {
   intake->setBrakeMode(AbstractMotor::brakeMode::hold);
@@ -12,9 +12,11 @@ intakeTask(task, this)
 void IntakeController::setState(intakeStates state) {
   intakeState = state;
 }
+
 IntakeController::intakeStates IntakeController::getState() {
   return intakeState;
 }
+
 void IntakeController::disable() {
   if(!disabled) {
     intake->moveVelocity(0);
@@ -22,13 +24,11 @@ void IntakeController::disable() {
   }
   disabled = true;
 }
+
 void IntakeController::enable() {
   disabled = false;
 }
 
-void IntakeController::moveIndexerSlave() {
-  indexer->move(-flywheel->motorPower);
-}
 
 void IntakeController::run()
 {
@@ -43,7 +43,7 @@ void IntakeController::run()
 
         case intakeStates::off:
         intake->moveVelocity(0);
-        moveIndexerSlave();
+        indexerSlave = true;
         break;
 
         case intakeStates::loading:
@@ -53,6 +53,7 @@ void IntakeController::run()
         if(filteredSensor < -200) {
           intakeState = intakeStates::collecting;
         } else {
+          indexerSlave = false;
           intake->moveVelocity(200);
           indexer->moveVelocity(100);
         }
@@ -61,16 +62,17 @@ void IntakeController::run()
         case intakeStates::collecting:
         //Run intake
         intake->moveVelocity(200);
-        moveIndexerSlave();
+        indexerSlave = true;
         break;
 
 
         case intakeStates::outIntake:
         intake->moveVelocity(-200);
-        moveIndexerSlave();
+        indexerSlave = true;
         break;
 
       }
+
     }
 
     pros::delay(10);

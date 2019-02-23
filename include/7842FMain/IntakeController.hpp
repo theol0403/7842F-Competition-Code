@@ -20,20 +20,18 @@ public:
   Motor* indexer = nullptr;
   pros::ADILineSensor* lineSensor = nullptr;
   okapi::EmaFilter sensorFilter;
-  FlywheelController* flywheel = nullptr;
   pros::Task intakeTask;
 
   intakeStates intakeState = off;
   bool disabled = false;
+  bool indexerSlave = true;
 
-  IntakeController(Motor*, Motor*, pros::ADILineSensor*, double, FlywheelController*);
+  IntakeController(Motor*, Motor*, pros::ADILineSensor*, double);
 
   void setState(intakeStates);
   intakeStates getState();
   void disable();
   void enable();
-
-  void moveIndexerSlave();
 
   void run();
 

@@ -1,7 +1,7 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(Motor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
-flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
+FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
+intake(iintake), flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
 rpmFilter(irpmFilter), motorSlew(imotorSlew),
 flywheelTask(task, this) {}
 
@@ -26,14 +26,17 @@ void FlywheelController::run()
 {
   while(true)
   {
-    if(disabled)
+    if(!disabled || intake->indexerSlave) //there is a motor available
     {
-      lastPower = lastPower <= 0 ? 0 : lastPower - 0.25; //tune, was 0.27
-      motorPower = 0;
-    }
-    else
-    {
-      currentRPM = rpmFilter->filter(flywheel->getActualVelocity() * flywheelRatio);
+      if(!disabled) //main motor is available for rpm reading
+      {
+        currentRPM = rpmFilter->filter(flywheel->getActualVelocity() * flywheelRatio);
+      }
+      else //indexer needs to supply rpm
+      {
+        currentRPM = rpmFilter->filter(-intake->indexer->getActualVelocity() * flywheelRatio);
+      }
+
       motorPower = pid->calculate(targetRPM, currentRPM);
 
       if(motorPower <= 0) motorPower = 0;
@@ -44,6 +47,12 @@ void FlywheelController::run()
       lastPower = motorPower;
 
       if(!disabled) flywheel->move(motorPower);
+      if(intake->indexerSlave) intake->indexer->move(-motorPower);
+    }
+    else
+    {
+      lastPower = lastPower <= 0 ? 0 : lastPower - 0.25; //tune, was 0.27
+      motorPower = 0;
     }
 
     //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";

@@ -1,12 +1,14 @@
 #pragma once
 #include "main.h"
 #include "lib7842/pid/pidVelSystem.hpp"
+#include "IntakeController.hpp"
 
 class FlywheelController
 {
 
 public:
 
+  IntakeController* intake = nullptr;
   Motor* flywheel = nullptr;
   double flywheelRatio = 1;
   lib7842::velPID* pid = nullptr;
@@ -23,7 +25,7 @@ public:
 
   bool disabled = false;
 
-  FlywheelController(Motor*, double, lib7842::velPID*, lib7842::emaFilter*, double);
+  FlywheelController(IntakeController*, Motor*, double, lib7842::velPID*, lib7842::emaFilter*, double);
 
   void setRpm(double);
   double getTargetRpm();
