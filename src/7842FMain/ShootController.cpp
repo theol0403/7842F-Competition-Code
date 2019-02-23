@@ -125,6 +125,7 @@ double ShootController::getMiddleFlagAngle() {
 void ShootController::run()
 {
   const double angleThresh = 15;
+  const double angleSpeed = -50;
 
   while(true)
   {
@@ -139,7 +140,7 @@ void ShootController::run()
 
       case angling:
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(-50);
+      flywheel->flywheel->moveVelocity(angleSpeed);
       break;
 
       case standby:
@@ -152,7 +153,7 @@ void ShootController::run()
 
       case cycle:
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(-50);
+      flywheel->flywheel->moveVelocity(angleSpeed);
       //If angle is within error of 0
       if(getHoodAngle() <= angleThresh) {
         flywheel->enable();
@@ -166,7 +167,7 @@ void ShootController::run()
         addJob(cycle);
       } else {
         flywheel->disable();
-        flywheel->flywheel->moveVelocity(-50);
+        flywheel->flywheel->moveVelocity(angleSpeed);
         if(getHoodAngle() >= getTopFlagAngle()) {
           flywheel->enable();
           completeJob();
@@ -180,7 +181,7 @@ void ShootController::run()
         addJob(cycle);
       } else {
         flywheel->disable();
-        flywheel->flywheel->moveVelocity(-50);
+        flywheel->flywheel->moveVelocity(angleSpeed);
         if(getHoodAngle() >= getMiddleFlagAngle()) {
           flywheel->enable();
           completeJob();

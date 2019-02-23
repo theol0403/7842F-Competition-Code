@@ -46,25 +46,15 @@ void IntakeController::run()
         indexerSlave = true;
         break;
 
-        case intakeStates::loading:
-        //Intake and collect until ball is in sensor
-        //once ball is in sensor index brake
-        //collecting
+        case intakeStates::loadBall:
+        intake->moveVelocity(200);
         if(filteredSensor < -200) {
-          intakeState = intakeStates::collecting;
+          indexerSlave = true;
         } else {
           indexerSlave = false;
-          intake->moveVelocity(200);
           indexer->moveVelocity(100);
         }
         break;
-
-        case intakeStates::collecting:
-        //Run intake
-        intake->moveVelocity(200);
-        indexerSlave = true;
-        break;
-
 
         case intakeStates::outIntake:
         intake->moveVelocity(-200);

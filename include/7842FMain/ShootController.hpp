@@ -21,7 +21,7 @@ public:
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
-    loopMacro
+    loopMacro //reloads current macro
   };
 
   enum class shootMacros

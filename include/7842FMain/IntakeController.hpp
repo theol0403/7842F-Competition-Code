@@ -11,8 +11,7 @@ public:
   enum intakeStates
   {
     off,
-    loading, //Ball into indexer
-    collecting, //Intake running
+    loadBall,
     outIntake
   };
 
