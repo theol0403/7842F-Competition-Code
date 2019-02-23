@@ -11,32 +11,26 @@ void ShootController::clearQueue() {
   stateQueue.push_back(defaultState);
 }
 
-void ShootController::addJob(shootStates state) { stateQueue.push_back(state); }
-ShootController::shootStates ShootController::getCurrentJob() { return stateQueue.back(); }
-
 void ShootController::completeJob() {
   if(stateQueue.back() != defaultState) {
     stateQueue.pop_back();
   }
 }
 
+ShootController::shootStates ShootController::getCurrentJob() {
+  return stateQueue.back();
+}
+
+void ShootController::addJob(shootStates state) {
+  stateQueue.push_back(state);
+}
+
 void ShootController::addJobs(std::vector<shootStates> states) {
   for(shootStates &state : states) { stateQueue.push_back(state); }
 }
 
-void ShootController::doJob(shootStates state) {
-  clearQueue();
-  addJob(state);
-}
-
-void ShootController::doJobs(std::vector<shootStates> states) {
-  clearQueue();
-  addJobs(states);
-}
-
 void ShootController::addMacro(shootMacros macro) {
-  //these need to be reversed because the last one gets done first
-  switch(macro)
+  switch(macro) //these need to be reversed because the last one gets done first
   {
     case shootMacros::off :
     clearQueue();
@@ -57,17 +51,32 @@ void ShootController::addMacro(shootMacros macro) {
     case shootMacros::shoot :
     addJobs({shootIndexer, waitForFlywheel});
     break;
-  }
-}
 
-void ShootController::doMacro(shootMacros macro) {
-  clearQueue();
-  addMacro(macro);
+    case shootMacros::angleManual :
+    addJobs({angling});
+    break;
+  }
 }
 
 void ShootController::addMacroLoop(shootMacros macro) {
   currentMacro = macro;
   addJob(loopMacro);
+  addMacro(macro);
+}
+
+
+void ShootController::doJob(shootStates state) {
+  clearQueue();
+  addJob(state);
+}
+
+void ShootController::doJobs(std::vector<shootStates> states) {
+  clearQueue();
+  addJobs(states);
+}
+
+void ShootController::doMacro(shootMacros macro) {
+  clearQueue();
   addMacro(macro);
 }
 
@@ -77,7 +86,9 @@ void ShootController::doMacroLoop(shootMacros macro) {
 }
 
 
-double ShootController::getAngle() { return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle; }
+double ShootController::getHoodAngle() {
+  return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle;
+}
 
 QLength ShootController::getDistanceToFlag() {
   return 11_ft - tracker->state.y;
@@ -109,6 +120,8 @@ double ShootController::getMiddleFlagAngle() {
   return 0;
 }
 
+
+
 void ShootController::run()
 {
   const double angleThresh = 15;
@@ -124,8 +137,13 @@ void ShootController::run()
       intake->enable();
       break;
 
+      case angling:
+      flywheel->disable();
+      flywheel->flywheel->moveVelocity(-50);
+      break;
+
       case standby:
-      if(getAngle() >= angleThresh) {
+      if(getHoodAngle() >= angleThresh) {
         addJob(cycle);
       } else {
         flywheel->enable();
@@ -136,7 +154,7 @@ void ShootController::run()
       flywheel->disable();
       flywheel->flywheel->moveVelocity(-50);
       //If angle is within error of 0
-      if(getAngle() <= angleThresh) {
+      if(getHoodAngle() <= angleThresh) {
         flywheel->enable();
         completeJob();
       }
@@ -144,12 +162,12 @@ void ShootController::run()
 
 
       case angleTop:
-      if(getAngle() > getTopFlagAngle() + angleThresh) {
+      if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() >= getTopFlagAngle()) {
+        if(getHoodAngle() >= getTopFlagAngle()) {
           flywheel->enable();
           completeJob();
         }
@@ -158,12 +176,12 @@ void ShootController::run()
 
 
       case angleMiddle:
-      if(getAngle() > getMiddleFlagAngle() + angleThresh) {
+      if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         flywheel->disable();
         flywheel->flywheel->moveVelocity(-50);
-        if(getAngle() >= getMiddleFlagAngle()) {
+        if(getHoodAngle() >= getMiddleFlagAngle()) {
           flywheel->enable();
           completeJob();
         }

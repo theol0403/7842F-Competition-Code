@@ -12,7 +12,8 @@ public:
 
   enum shootStates
   {
-    off,
+    off, //control to flywheel and intake
+    angling, //indefinite angling
     standby, //back position, control to flywheel
     cycle, //head to back position
     angleTop, //drop hood to top angle
@@ -29,7 +30,8 @@ public:
     shootTopFlag,
     shootMiddleFlag,
     shootBothFlags,
-    shoot
+    shoot,
+    angleManual
   };
 
   lib7842::OdomTracker* tracker = nullptr;
@@ -47,20 +49,20 @@ public:
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
   void clearQueue();
-  shootStates getCurrentJob();
   void completeJob();
+  shootStates getCurrentJob();
 
   void addJob(shootStates);
   void addJobs(std::vector<shootStates>);
+  void addMacro(shootMacros);
+  void addMacroLoop(shootMacros);
+
   void doJob(shootStates);
   void doJobs(std::vector<shootStates>);
-
-  void addMacro(shootMacros);
   void doMacro(shootMacros);
-  void addMacroLoop(shootMacros);
   void doMacroLoop(shootMacros);
 
-  double getAngle();
+  double getHoodAngle();
   QLength getDistanceToFlag();
   double getTopFlagAngle();
   double getMiddleFlagAngle();
