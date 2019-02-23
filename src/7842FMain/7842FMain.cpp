@@ -85,7 +85,7 @@ void competition_initialize() {}
 */
 void disabled()
 {
-  #ifdef TEST_ROBOT
+  #ifndef TEST_ROBOT
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   #endif
@@ -115,7 +115,7 @@ void opcontrol()
 {
   checkBaseStatus();
   robot.model->stop();
-  #ifdef TEST_ROBOT
+  #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
   robot.flywheel->enable();
   #endif
