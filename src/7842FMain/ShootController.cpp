@@ -150,6 +150,7 @@ void ShootController::run()
       break;
 
       case angling:
+      intake->enable();
       flywheel->disable();
       flywheel->flywheel->moveVelocity(angleSpeed);
       break;
@@ -159,10 +160,12 @@ void ShootController::run()
         addJob(cycle);
       } else {
         flywheel->enable();
+        intake->enable();
       }
       break;
 
       case cycle:
+      intake->enable();
       flywheel->disable();
       flywheel->flywheel->moveVelocity(angleSpeed);
       //If angle is within error of 0
@@ -177,6 +180,7 @@ void ShootController::run()
       if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
+        intake->enable();
         flywheel->disable();
         flywheel->flywheel->moveVelocity(angleSpeed);
         if(getHoodAngle() >= getTopFlagAngle()) {
@@ -191,6 +195,7 @@ void ShootController::run()
       if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
+        intake->enable();
         flywheel->disable();
         flywheel->flywheel->moveVelocity(angleSpeed);
         if(getHoodAngle() >= getMiddleFlagAngle()) {
@@ -203,6 +208,7 @@ void ShootController::run()
 
       case waitForFlywheel:
       flywheel->enable();
+      intake->enable();
       if(flywheel->pid->getError() < 100) completeJob();
       break;
 
@@ -210,10 +216,11 @@ void ShootController::run()
       case shootIndexer:
       flywheel->enable();
       intake->disable();
+      intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(300);
-      intake->enable();
+      pros::delay(600);
+      //intake->enable();
       completeJob();
       break;
 
@@ -221,10 +228,11 @@ void ShootController::run()
       case shootBoth:
       flywheel->enable();
       intake->disable();
+      intake->indexerSlave = false;
       intake->intake->moveVelocity(200);
       intake->indexer->moveVelocity(200);
       pros::delay(600);
-      intake->enable();
+      //intake->enable();
       completeJob();
       break;
 
