@@ -26,7 +26,7 @@ void ShootController::addJob(shootStates state) {
 }
 
 void ShootController::addJobs(std::vector<shootStates> states) {
-  for(shootStates &state : states) { stateQueue.push_back(state); }
+  for(shootStates &state : states) { addJob(state); }
 }
 
 void ShootController::addMacro(shootMacros macro) {
@@ -58,8 +58,14 @@ void ShootController::addMacro(shootMacros macro) {
   }
 }
 
+void ShootController::addJobLoop(shootStates state) {
+  currentJobLoop = state;
+  addJob(loopJob);
+  addJob(state);
+}
+
 void ShootController::addMacroLoop(shootMacros macro) {
-  currentMacro = macro;
+  currentMacroLoop = macro;
   addJob(loopMacro);
   addMacro(macro);
 }
@@ -78,6 +84,11 @@ void ShootController::doJobs(std::vector<shootStates> states) {
 void ShootController::doMacro(shootMacros macro) {
   clearQueue();
   addMacro(macro);
+}
+
+void ShootController::doJobLoop(shootStates state) {
+  clearQueue();
+  addJobLoop(state);
 }
 
 void ShootController::doMacroLoop(shootMacros macro) {
@@ -212,13 +223,17 @@ void ShootController::run()
       intake->disable();
       intake->intake->moveVelocity(200);
       intake->indexer->moveVelocity(200);
-      pros::delay(400);
+      pros::delay(600);
       intake->enable();
       completeJob();
       break;
 
+      case loopJob:
+      addJob(currentJobLoop);
+      break;
+
       case loopMacro:
-      addMacro(currentMacro);
+      addMacro(currentMacroLoop);
       break;
 
     }

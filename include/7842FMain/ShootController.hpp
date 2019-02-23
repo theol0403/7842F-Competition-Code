@@ -21,6 +21,7 @@ public:
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
+    loopJob, //reloads current job
     loopMacro //reloads current macro
   };
 
@@ -44,7 +45,8 @@ public:
   const shootStates defaultState = off;
 
   std::vector<shootStates> stateQueue = {defaultState};
-  shootMacros currentMacro = shootMacros::off;
+  shootStates currentJobLoop = defaultState;
+  shootMacros currentMacroLoop = shootMacros::off;
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
@@ -55,11 +57,13 @@ public:
   void addJob(shootStates);
   void addJobs(std::vector<shootStates>);
   void addMacro(shootMacros);
+  void addJobLoop(shootStates);
   void addMacroLoop(shootMacros);
 
   void doJob(shootStates);
   void doJobs(std::vector<shootStates>);
   void doMacro(shootMacros);
+  void doJobLoop(shootStates);
   void doMacroLoop(shootMacros);
 
   double getHoodAngle();
