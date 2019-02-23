@@ -136,7 +136,7 @@ double ShootController::getMiddleFlagAngle() {
 void ShootController::run()
 {
   const double angleThresh = 15;
-  const double angleSpeed = -50;
+  const double angleSpeed = -60;
 
   while(true)
   {
@@ -152,7 +152,7 @@ void ShootController::run()
       case angling:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(angleSpeed);
+      flywheel->flywheel->move(angleSpeed);
       break;
 
       case standby:
@@ -167,7 +167,7 @@ void ShootController::run()
       case cycle:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(angleSpeed);
+      flywheel->flywheel->move(angleSpeed);
       //If angle is within error of 0
       if(getHoodAngle() <= angleThresh) {
         flywheel->enable();
@@ -182,7 +182,7 @@ void ShootController::run()
       } else {
         intake->enable();
         flywheel->disable();
-        flywheel->flywheel->moveVelocity(angleSpeed);
+        flywheel->flywheel->move(angleSpeed);
         if(getHoodAngle() >= getTopFlagAngle()) {
           flywheel->enable();
           completeJob();
@@ -197,7 +197,7 @@ void ShootController::run()
       } else {
         intake->enable();
         flywheel->disable();
-        flywheel->flywheel->moveVelocity(angleSpeed);
+        flywheel->flywheel->move(angleSpeed);
         if(getHoodAngle() >= getMiddleFlagAngle()) {
           flywheel->enable();
           completeJob();
@@ -219,7 +219,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(600);
+      pros::delay(200);
       //intake->enable();
       completeJob();
       break;
@@ -231,7 +231,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(200);
       intake->indexer->moveVelocity(200);
-      pros::delay(600);
+      pros::delay(300);
       //intake->enable();
       completeJob();
       break;

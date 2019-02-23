@@ -36,6 +36,7 @@ void IntakeController::run()
   while(true)
   {
     double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
+    //std::cout << "Sensor: " << filteredSensor << std::endl;
 
     if(!disabled)
     {
@@ -48,7 +49,7 @@ void IntakeController::run()
 
         case intakeStates::loadBall:
         intake->moveVelocity(200);
-        if(filteredSensor < -200) {
+        if(filteredSensor < 0) {
           indexerSlave = true;
         } else {
           indexerSlave = false;

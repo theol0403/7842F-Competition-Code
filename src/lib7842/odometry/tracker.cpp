@@ -72,7 +72,7 @@ namespace lib7842
     int count = 0;
     while(true) {
       count++;
-      if(count >= 40) { that->debug(); count = 0; }
+      //if(count >= 40) { that->debug(); count = 0; }
 
       that->m_trackerFunc(that);
       pros::delay(10);
