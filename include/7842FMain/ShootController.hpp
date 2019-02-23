@@ -45,8 +45,8 @@ public:
   const shootStates defaultState = off;
 
   std::vector<shootStates> stateQueue = {defaultState};
-  shootStates currentJobLoop = defaultState;
-  shootMacros currentMacroLoop = shootMacros::off;
+  shootStates currentJob = defaultState;
+  shootMacros currentMacro = shootMacros::off;
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 

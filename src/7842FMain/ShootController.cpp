@@ -22,6 +22,7 @@ ShootController::shootStates ShootController::getCurrentJob() {
 }
 
 void ShootController::addJob(shootStates state) {
+  currentJob = state;
   stateQueue.push_back(state);
 }
 
@@ -30,12 +31,12 @@ void ShootController::addJobs(std::vector<shootStates> states) {
 }
 
 void ShootController::addJobLoop(shootStates state) {
-  currentJobLoop = state;
   addJob(loopJob);
   addJob(state);
 }
 
 void ShootController::addMacro(shootMacros macro) {
+  currentMacro = macro;
   switch(macro) //these need to be reversed because the last one gets done first
   {
     case shootMacros::off :
@@ -65,7 +66,6 @@ void ShootController::addMacro(shootMacros macro) {
 }
 
 void ShootController::addMacroLoop(shootMacros macro) {
-  currentMacroLoop = macro;
   addJob(loopMacro);
   addMacro(macro);
 }
@@ -115,27 +115,27 @@ double ShootController::getTopFlagAngle() {
   //   case 4 : return 120; break;
   //   default : return 150; break;
   // }
-  return 20;
+  return 0;
 }
 
 double ShootController::getMiddleFlagAngle() {
-  switch((int) getDistanceToFlag().convert(foot))
-  {
-    case 0 : return 30; break;
-    case 1 : return 60; break;
-    case 2 : return 90; break;
-    case 3 : return 120; break;
-    case 4 : return 150; break;
-    default : return 180; break;
-  }
-  return 0;
+  // switch((int) getDistanceToFlag().convert(foot))
+  // {
+  //   case 0 : return 30; break;
+  //   case 1 : return 60; break;
+  //   case 2 : return 90; break;
+  //   case 3 : return 120; break;
+  //   case 4 : return 150; break;
+  //   default : return 180; break;
+  // }
+  return 20;
 }
 
 
 
 void ShootController::run()
 {
-  const double angleThresh = 5;
+  const double angleThresh = 6;
   const double angleSpeed = -60;
 
   while(true)
@@ -182,28 +182,32 @@ void ShootController::run()
       if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
-        intake->enable();
-        flywheel->disable();
-        flywheel->flywheel->move(angleSpeed);
-        if(getHoodAngle() >= getTopFlagAngle()) {
+        if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
           std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
+        } else {
+          intake->enable();
+          flywheel->disable();
+          flywheel->flywheel->move(angleSpeed);
         }
       }
       break;
 
 
       case angleMiddle:
+      std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
-        intake->enable();
-        flywheel->disable();
-        flywheel->flywheel->move(angleSpeed);
-        if(getHoodAngle() >= getMiddleFlagAngle()) {
+        if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
+          std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
+        } else {
+          intake->enable();
+          flywheel->disable();
+          flywheel->flywheel->move(angleSpeed);
         }
       }
       break;
@@ -240,11 +244,11 @@ void ShootController::run()
       break;
 
       case loopJob:
-      addJob(currentJobLoop);
+      addJob(currentJob);
       break;
 
       case loopMacro:
-      addMacro(currentMacroLoop);
+      addMacro(currentMacro);
       break;
 
     }
