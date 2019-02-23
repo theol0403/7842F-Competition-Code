@@ -10,6 +10,10 @@ void FlywheelController::setRpm(double rpm)
   targetRPM = rpm;
 }
 
+double FlywheelController::getTargetRpm() {
+  return targetRPM;
+}
+
 void FlywheelController::disable()
 {
   if(!disabled) flywheel->moveVoltage(0);

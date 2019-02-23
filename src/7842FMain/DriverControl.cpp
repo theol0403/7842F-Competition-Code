@@ -13,7 +13,7 @@ void driverIntakeControl()
 	*/
 	if(j_Digital(R2))
 	{
-		intakeState = IntakeController::loading;
+		intakeState = IntakeController::loadBall;
 	}
 	else if(j_Digital(R1))
 	{
