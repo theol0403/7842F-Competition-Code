@@ -136,7 +136,7 @@ double ShootController::getMiddleFlagAngle() {
 void ShootController::run()
 {
   const double angleThresh = 6;
-  const double angleSpeed = -60;
+  const double angleSpeed = -50;
 
   while(true)
   {
@@ -227,7 +227,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(200);
+      pros::delay(300);
       //intake->enable();
       completeJob();
       break;

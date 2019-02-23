@@ -42,7 +42,7 @@ public:
   double backAngle = 0;
   pros::Task shootTask;
 
-  const shootStates defaultState = off;
+  const shootStates defaultState = standby;
 
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
