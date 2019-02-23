@@ -152,7 +152,8 @@ void ShootController::run()
       case angling:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->move(angleSpeed);
+      flywheel->flywheel->moveVelocity(-30);
+      //flywheel->flywheel->move(angleSpeed);
       break;
 
       case standby:
@@ -168,7 +169,7 @@ void ShootController::run()
       std::cout << "Cycling!" << std::endl;
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->move(angleSpeed);
+      flywheel->flywheel->moveVelocity(-30);
       //If angle is within error of 0
       if(getHoodAngle() <= angleThresh) {
         flywheel->enable();

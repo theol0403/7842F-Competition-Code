@@ -49,7 +49,7 @@ void IntakeController::run()
 
         case intakeStates::loadBall:
         intake->moveVelocity(200);
-        if(filteredSensor < 0) {
+        if(filteredSensor < 50) {
           indexerSlave = true;
         } else {
           indexerSlave = false;
