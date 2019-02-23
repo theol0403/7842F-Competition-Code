@@ -1,6 +1,6 @@
 #include "IntakeController.hpp"
 
-IntakeController::IntakeController(AbstractMotor* iintake, AbstractMotor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma, FlywheelController* iflywheel) :
+IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma, FlywheelController* iflywheel) :
 intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma), flywheel(iflywheel),
 intakeTask(task, this)
 {

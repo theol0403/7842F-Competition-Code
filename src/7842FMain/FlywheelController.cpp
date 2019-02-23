@@ -1,6 +1,6 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(AbstractMotor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
+FlywheelController::FlywheelController(Motor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
 flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
 rpmFilter(irpmFilter), motorSlew(imotorSlew),
 flywheelTask(task, this) {}
@@ -43,7 +43,7 @@ void FlywheelController::run()
       if(std::abs(increment) > motorSlew) motorPower = lastPower + (motorSlew * lib7842::sgn(increment));
       lastPower = motorPower;
 
-      if(!disabled) flywheel->moveVoltage(motorPower / 127.0 * 12000.0);
+      if(!disabled) flywheel->move(motorPower);
     }
 
     //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
