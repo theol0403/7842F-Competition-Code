@@ -34,30 +34,17 @@ void driverIntakeControl()
 	/**
 	* Shoot Controller
 	*/
-	// if(j_Digital(L2) && j_Digital(L1))
-	// {
-	// 	shootMacro = ShootController::shootMacros::shootBothFlags;
-	// }
-	// else if(j_Digital(L2))
-	// {
-	// 	shootMacro = ShootController::shootMacros::shootMiddleFlag;
-	// }
-	// else if(j_Digital(L1))
-	// {
-	// 	shootMacro = ShootController::shootMacros::shootTopFlag;
-	// }
-	// else
-	// {
-	// 	shootMacro = ShootController::shootMacros::off;
-	// }
-
-	if(j_Digital(L2))
+	if(j_Digital(L2) && j_Digital(L1))
 	{
-		shootMacro = ShootController::shootMacros::shoot;
+		shootMacro = ShootController::shootMacros::shootBothFlags;
+	}
+	else if(j_Digital(L2))
+	{
+		shootMacro = ShootController::shootMacros::shootMiddleFlag;
 	}
 	else if(j_Digital(L1))
 	{
-		shootMacro = ShootController::shootMacros::angleManual;
+		shootMacro = ShootController::shootMacros::shootTopFlag;
 	}
 	else
 	{
@@ -66,9 +53,28 @@ void driverIntakeControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		robot.shooter->doMacroLoop(shootMacro);
+		robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
+
+	// if(j_Digital(L2))
+	// {
+	// 	shootMacro = ShootController::shootMacros::shoot;
+	// }
+	// else if(j_Digital(L1))
+	// {
+	// 	shootMacro = ShootController::shootMacros::angleManual;
+	// }
+	// else
+	// {
+	// 	shootMacro = ShootController::shootMacros::off;
+	// }
+	//
+	// if(shootMacro != lastShootMacro)
+	// {
+	// 	robot.shooter->doMacroLoop(shootMacro);
+	// 	lastShootMacro = shootMacro;
+	// }
 
 }
 

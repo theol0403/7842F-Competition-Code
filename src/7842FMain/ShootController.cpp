@@ -106,16 +106,16 @@ QLength ShootController::getDistanceToFlag() {
 }
 
 double ShootController::getTopFlagAngle() {
-  switch((int) getDistanceToFlag().convert(foot))
-  {
-    case 0 : return 0; break;
-    case 1 : return 30; break;
-    case 2 : return 60; break;
-    case 3 : return 90; break;
-    case 4 : return 120; break;
-    default : return 150; break;
-  }
-  return 0;
+  // switch((int) getDistanceToFlag().convert(foot))
+  // {
+  //   case 0 : return 0; break;
+  //   case 1 : return 30; break;
+  //   case 2 : return 60; break;
+  //   case 3 : return 90; break;
+  //   case 4 : return 120; break;
+  //   default : return 150; break;
+  // }
+  return 20;
 }
 
 double ShootController::getMiddleFlagAngle() {
@@ -135,7 +135,7 @@ double ShootController::getMiddleFlagAngle() {
 
 void ShootController::run()
 {
-  const double angleThresh = 15;
+  const double angleThresh = 5;
   const double angleSpeed = -60;
 
   while(true)
@@ -165,6 +165,7 @@ void ShootController::run()
       break;
 
       case cycle:
+      std::cout << "Cycling!" << std::endl;
       intake->enable();
       flywheel->disable();
       flywheel->flywheel->move(angleSpeed);
@@ -177,6 +178,7 @@ void ShootController::run()
 
 
       case angleTop:
+      std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
@@ -184,6 +186,7 @@ void ShootController::run()
         flywheel->disable();
         flywheel->flywheel->move(angleSpeed);
         if(getHoodAngle() >= getTopFlagAngle()) {
+          std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         }
@@ -245,7 +248,7 @@ void ShootController::run()
       break;
 
     }
-
+    //std::cout << "Hood: " << getHoodAngle() << std::endl;
     pros::delay(10);
   }
 
