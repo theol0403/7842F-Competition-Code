@@ -152,8 +152,8 @@ void ShootController::run()
       case angling:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(-30);
-      //flywheel->flywheel->move(angleSpeed);
+      //flywheel->flywheel->moveVelocity(-30);
+      flywheel->flywheel->move(angleSpeed);
       break;
 
       case standby:
@@ -166,7 +166,7 @@ void ShootController::run()
       break;
 
       case cycle:
-      std::cout << "Cycling!" << std::endl;
+      //std::cout << "Cycling!" << std::endl;
       intake->enable();
       flywheel->disable();
       flywheel->flywheel->moveVelocity(-30);
@@ -179,7 +179,7 @@ void ShootController::run()
 
 
       case angleTop:
-      std::cout << "Angling!" << std::endl;
+      //std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
@@ -197,12 +197,12 @@ void ShootController::run()
 
 
       case angleMiddle:
-      std::cout << "Angling!" << std::endl;
+      //std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
-          std::cout << "Exit!" << std::endl;
+          //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         } else {
