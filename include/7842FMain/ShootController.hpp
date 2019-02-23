@@ -56,14 +56,14 @@ public:
 
   void addJob(shootStates);
   void addJobs(std::vector<shootStates>);
-  void addMacro(shootMacros);
   void addJobLoop(shootStates);
+  void addMacro(shootMacros);
   void addMacroLoop(shootMacros);
 
   void doJob(shootStates);
   void doJobs(std::vector<shootStates>);
-  void doMacro(shootMacros);
   void doJobLoop(shootStates);
+  void doMacro(shootMacros);
   void doMacroLoop(shootMacros);
 
   double getHoodAngle();

@@ -29,6 +29,12 @@ void ShootController::addJobs(std::vector<shootStates> states) {
   for(shootStates &state : states) { addJob(state); }
 }
 
+void ShootController::addJobLoop(shootStates state) {
+  currentJobLoop = state;
+  addJob(loopJob);
+  addJob(state);
+}
+
 void ShootController::addMacro(shootMacros macro) {
   switch(macro) //these need to be reversed because the last one gets done first
   {
@@ -58,12 +64,6 @@ void ShootController::addMacro(shootMacros macro) {
   }
 }
 
-void ShootController::addJobLoop(shootStates state) {
-  currentJobLoop = state;
-  addJob(loopJob);
-  addJob(state);
-}
-
 void ShootController::addMacroLoop(shootMacros macro) {
   currentMacroLoop = macro;
   addJob(loopMacro);
@@ -81,14 +81,14 @@ void ShootController::doJobs(std::vector<shootStates> states) {
   addJobs(states);
 }
 
-void ShootController::doMacro(shootMacros macro) {
-  clearQueue();
-  addMacro(macro);
-}
-
 void ShootController::doJobLoop(shootStates state) {
   clearQueue();
   addJobLoop(state);
+}
+
+void ShootController::doMacro(shootMacros macro) {
+  clearQueue();
+  addMacro(macro);
 }
 
 void ShootController::doMacroLoop(shootMacros macro) {
