@@ -1,7 +1,7 @@
 #include "DriverControl.hpp"
 
-static IntakeController::intakeStates intakeState = IntakeController::standby;
-static IntakeController::intakeStates lastIntakeState = IntakeController::standby;
+static IntakeController::intakeStates intakeState = IntakeController::off;
+static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
@@ -21,7 +21,7 @@ void driverIntakeControl()
 	}
 	else
 	{
-		intakeState = IntakeController::standby;
+		intakeState = IntakeController::off;
 	}
 
 	if(intakeState != lastIntakeState)

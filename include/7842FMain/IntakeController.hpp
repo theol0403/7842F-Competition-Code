@@ -9,8 +9,7 @@ public:
   enum intakeStates
   {
     off,
-    intakeAll, //runs intake and indexer until ball then indexer stops
-    standby, //runs indexer if no ball
+    intakeBall, //runs intake and indexer until ball then indexer stops
     outIntake
   };
 
@@ -21,6 +20,7 @@ public:
   pros::Task intakeTask;
 
   intakeStates intakeState = off;
+  bool hasBall = false;
   bool disabled = false;
   bool indexerSlave = true;
 

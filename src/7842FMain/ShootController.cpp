@@ -44,23 +44,23 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootTopFlag :
-    addJobs({shootIndexer, waitForFlywheel, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleTop});
     break;
 
     case shootMacros::shootMiddleFlag :
-    addJobs({shootIndexer, waitForFlywheel, angleMiddle});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle});
     break;
 
     case shootMacros::shootTarget :
-    addJobs({shootIndexer, waitForFlywheel, angleTarget});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleTarget});
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForFlywheel, angleMiddle, shootIndexer, waitForFlywheel, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, waitForFlywheel, waitForBall, angleTop});
     break;
 
     case shootMacros::shoot :
-    addJobs({shootIndexer, waitForFlywheel});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall});
     break;
 
     case shootMacros::angleManual :
@@ -114,10 +114,10 @@ double ShootController::getTopFlagAngle() {
   switch((int) getDistanceToFlag().convert(foot))
   {
     case 0 ... 1 : return 0; break;
-    case 2 ... 3 : return 10; break;
-    case 4 ... 5 : return 20; break;
-    case 6 ... 7 : return 30; break;
-    case 8 ... 9 : return 40; break;
+    case 2 ... 3 : return 5; break;
+    case 4 ... 5 : return 15; break;
+    case 6 ... 7 : return 25; break;
+    case 8 ... 9 : return 35; break;
     default : return 0; break;
   }
   return 0;
@@ -140,7 +140,6 @@ double ShootController::getMiddleFlagAngle() {
 void ShootController::setTarget(double target) {
   targetAngle = target;
 }
-
 
 
 void ShootController::run()
@@ -170,8 +169,7 @@ void ShootController::run()
       if(getHoodAngle() >= angleThresh) {
         addJob(cycle);
       } else {
-        flywheel->enable();
-        intake->enable();
+        doJob(off);
       }
       break;
 
@@ -194,7 +192,7 @@ void ShootController::run()
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
-          std::cout << "Exit!" << std::endl;
+          //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         } else {
@@ -238,6 +236,20 @@ void ShootController::run()
           flywheel->disable();
           flywheel->flywheel->move(angleSpeed);
         }
+      }
+      break;
+
+
+      case waitForBall:
+      flywheel->enable();
+      intake->disable();
+      intake->indexerSlave = false;
+      if(intake->hasBall) {
+        intake->enable();
+        completeJob();
+      } else {
+        intake->intake->moveVelocity(200);
+        intake->indexer->moveVelocity(80);
       }
       break;
 

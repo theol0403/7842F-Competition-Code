@@ -19,6 +19,7 @@ public:
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     angleTarget, //drop hood to target angle
+    waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
