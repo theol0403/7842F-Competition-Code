@@ -118,6 +118,7 @@ void opcontrol()
   #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
   robot.flywheel->enable();
+  robot.intake->setState(IntakeController::off);
   #endif
 
   while(true)

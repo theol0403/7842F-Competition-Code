@@ -9,7 +9,8 @@ public:
   enum intakeStates
   {
     off,
-    loadBall,
+    intakeAll, //runs intake and indexer until ball then indexer stops
+    standby, //runs indexer if no ball
     outIntake
   };
 
