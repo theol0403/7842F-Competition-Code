@@ -4,8 +4,8 @@ IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILin
 intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
 intakeTask(task, this)
 {
-  intake->setBrakeMode(AbstractMotor::brakeMode::hold);
-  indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
+  intake->setBrakeMode(AbstractMotor::brakeMode::brake);
+  //indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
   lineSensor->calibrate();
 }
 
@@ -53,7 +53,7 @@ void IntakeController::run()
           indexerSlave = true;
         } else {
           indexerSlave = false;
-          indexer->moveVelocity(100);
+          indexer->moveVelocity(80);
         }
         break;
 
