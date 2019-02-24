@@ -17,8 +17,8 @@ namespace lib7842
       m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
       m_angleErr = turnCalc(this);
 
-      double distanceVel = distancePid->step(-m_distanceErr.convert(millimeter));
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
+      double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
 
       driveVector(distanceVel, angleVel * turnScale);
       runActions(actions);
@@ -52,7 +52,7 @@ namespace lib7842
   {
     while(time > 0) {
       m_angleErr = turnCalc(this);
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
       driveVector(vel, angleVel * turnScale);
       time -= 10;
       runActions(actions);

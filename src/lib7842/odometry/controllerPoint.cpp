@@ -32,8 +32,8 @@ namespace lib7842
 
       m_angleErr = rollAngle90(m_angleErr);
 
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
-      double distanceVel = distancePid->step(-distanceToClose.convert(millimeter));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
+      double distanceVel = distancePid->calculateErr(distanceToClose.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
       runActions(actions);
@@ -61,8 +61,8 @@ namespace lib7842
       { m_distanceErr = -m_distanceErr; }
       m_angleErr = rollAngle90(m_angleErr);
 
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
-      double distanceVel = distancePid->step(-m_distanceErr.convert(millimeter));
+      double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
+      double distanceVel = distancePid->calculateErr(m_distanceErr.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
       runActions(actions);
