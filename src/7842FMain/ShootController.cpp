@@ -51,6 +51,10 @@ void ShootController::addMacro(shootMacros macro) {
     addJobs({shootIndexer, waitForFlywheel, angleMiddle});
     break;
 
+    case shootMacros::shootTarget :
+    addJobs({shootIndexer, waitForFlywheel, angleTarget});
+    break;
+
     case shootMacros::shootBothFlags :
     addJobs({shootIndexer, waitForFlywheel, angleMiddle, shootIndexer, waitForFlywheel, angleTop});
     break;
@@ -133,6 +137,11 @@ double ShootController::getMiddleFlagAngle() {
 }
 
 
+void ShootController::setTarget(double target) {
+  targetAngle = target;
+}
+
+
 
 void ShootController::run()
 {
@@ -203,6 +212,24 @@ void ShootController::run()
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
+          //std::cout << "Exit!" << std::endl;
+          flywheel->enable();
+          completeJob();
+        } else {
+          intake->enable();
+          flywheel->disable();
+          flywheel->flywheel->move(angleSpeed);
+        }
+      }
+      break;
+
+
+      case angleTarget:
+      //std::cout << "Angling!" << std::endl;
+      if(getHoodAngle() > targetAngle + angleThresh) {
+        addJob(cycle);
+      } else {
+        if(getHoodAngle() >= targetAngle - angleThresh) {
           //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();

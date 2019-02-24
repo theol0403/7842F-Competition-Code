@@ -18,6 +18,7 @@ public:
     cycle, //head to back position
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
+    angleTarget, //drop hood to target angle
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
@@ -31,6 +32,7 @@ public:
     shootTopFlag,
     shootMiddleFlag,
     shootBothFlags,
+    shootTarget,
     shoot,
     angleManual
   };
@@ -47,6 +49,7 @@ public:
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
   shootMacros currentMacro = shootMacros::off;
+  double targetAngle = 0;
 
   ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
@@ -70,6 +73,8 @@ public:
   QLength getDistanceToFlag();
   double getTopFlagAngle();
   double getMiddleFlagAngle();
+
+  void setTarget(double);
 
   void run();
   static void task(void*);

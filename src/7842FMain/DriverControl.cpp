@@ -44,7 +44,8 @@ void driverIntakeControl()
 	}
 	else if(j_Digital(L1))
 	{
-		shootMacro = ShootController::shootMacros::shootTopFlag;
+		//shootMacro = ShootController::shootMacros::shootTopFlag;
+		shootMacro = ShootController::shootMacros::shootTarget;
 	}
 	else
 	{
@@ -79,6 +80,7 @@ void driverIntakeControl()
 }
 
 okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
+double targetAngle = 0;
 
 void driverFlywheelControl()
 {
@@ -90,6 +92,18 @@ void driverFlywheelControl()
 		}
 	}
 
+	if(j_Digital(Y))
+	{
+		targetAngle -= 1;
+		robot.shooter->setTarget(targetAngle);
+		std::cout << "Target Angle: " << targetAngle << std::endl;
+	}
+	else if(j_Digital(X))
+	{
+		targetAngle += 1;
+		robot.shooter->setTarget(targetAngle);
+		std::cout << "Target Angle: " << targetAngle << std::endl;
+	}
 
 	if(j_Digital(left))
 	{
