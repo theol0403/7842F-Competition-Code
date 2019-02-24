@@ -217,7 +217,7 @@ void ShootController::run()
       case waitForFlywheel:
       flywheel->enable();
       intake->enable();
-      if(flywheel->pid->getError() < 100) completeJob();
+      if(flywheel->pid->getError() < 50) completeJob();
       break;
 
 
@@ -228,7 +228,7 @@ void ShootController::run()
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
       pros::delay(300);
-      //intake->enable();
+      intake->enable();
       completeJob();
       break;
 
@@ -240,7 +240,7 @@ void ShootController::run()
       intake->intake->moveVelocity(200);
       intake->indexer->moveVelocity(200);
       pros::delay(300);
-      //intake->enable();
+      intake->enable();
       completeJob();
       break;
 
