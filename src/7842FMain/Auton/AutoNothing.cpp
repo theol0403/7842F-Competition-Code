@@ -10,8 +10,8 @@ void AutonTest(void* input)
 
   //chassis->turnToAngle(90_deg);
   //chassis->setState({0_ft, 0_ft, 0_deg});
-  chassis->driveDistance(1_ft);
-  //chassis->driveToPointSimple({1_ft, 1_ft});
+  //chassis->driveDistance(1_ft);
+  chassis->driveToPoint({0_ft, 1_ft});
 }
 
 void AutoDraft(void* input)
