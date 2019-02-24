@@ -49,7 +49,7 @@ namespace lib7842
   void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
-    settleFunc_t exitFunc = makeSettle(2_in);
+    settleFunc_t exitFunc = makeSettle(tracker->m_chassisWidth);
     distancePid->reset();
     anglePid->reset();
     do
@@ -70,7 +70,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    driveDistanceAtAngle(m_distanceErr / 2, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
+    //driveDistanceAtAngle(m_distanceErr, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 
