@@ -27,9 +27,9 @@ namespace lib7842
 
     OdomTracker *tracker = nullptr;
 
-    IterativePosPIDController *distancePid = nullptr;
-    IterativePosPIDController *anglePid = nullptr;
-    IterativePosPIDController *turnPid = nullptr;
+    PID *distancePid = nullptr;
+    PID *anglePid = nullptr;
+    PID *turnPid = nullptr;
 
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
@@ -38,7 +38,7 @@ namespace lib7842
     AverageFilter<velFilterSize> m_velFilter;
 
 
-    OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*);
+    OdomController(OdomTracker*, PID*, PID*, PID*);
 
     void resetVelocity(double);
     void resetVelocityActual();

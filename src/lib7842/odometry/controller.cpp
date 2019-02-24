@@ -8,9 +8,9 @@ namespace lib7842
   */
   OdomController::OdomController(
     OdomTracker *itracker,
-    IterativePosPIDController *idistancePid,
-    IterativePosPIDController *ianglePid,
-    IterativePosPIDController *iturnPid
+    PID *idistancePid,
+    PID *ianglePid,
+    PID *iturnPid
   ) :
   tracker(itracker),
   distancePid(idistancePid),
