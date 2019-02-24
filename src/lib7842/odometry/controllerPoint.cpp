@@ -57,8 +57,7 @@ namespace lib7842
       m_angleErr = computeAngleToPoint(targetPoint);
       m_distanceErr = computeDistanceToPoint(targetPoint);
 
-      if(m_angleErr.abs() > 90_deg)
-      { m_distanceErr = -m_distanceErr; }
+      if(m_angleErr.abs() > 90_deg) m_distanceErr = -m_distanceErr;
       m_angleErr = rollAngle90(m_angleErr);
 
       double angleVel = anglePid->calculateErr(m_angleErr.convert(degree));
@@ -70,7 +69,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    //driveDistanceAtAngle(m_distanceErr, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
+    //driveDistanceAtAngle(m_distanceErr/2, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 
