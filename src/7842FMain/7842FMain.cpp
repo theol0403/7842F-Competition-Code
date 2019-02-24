@@ -115,6 +115,7 @@ void opcontrol()
 {
   checkBaseStatus();
   robot.model->stop();
+
   #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
   robot.flywheel->enable();
@@ -124,7 +125,7 @@ void opcontrol()
   while(true)
   {
 
-    if(j_Digital(A)) { autonomous(); }
+    if(j_Digital(A)) autonomous();
 
     if(j_Digital(B)) {
       robot.tracker->resetState();
@@ -138,8 +139,7 @@ void opcontrol()
     robot.model->arcade(rightY, leftX, 0);
 
     #ifndef TEST_ROBOT
-    driverIntakeControl();
-    driverFlywheelControl();
+    driverControl();
     #endif
 
     pros::delay(20);
