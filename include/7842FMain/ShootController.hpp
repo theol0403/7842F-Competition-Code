@@ -38,7 +38,6 @@ public:
     angleManual
   };
 
-  lib7842::OdomTracker* tracker = nullptr;
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
   pros::ADIPotentiometer* hoodSensor = nullptr;
@@ -51,8 +50,9 @@ public:
   shootStates currentJob = defaultState;
   shootMacros currentMacro = shootMacros::off;
   double targetAngle = 0;
+  QLength distanceToFlag = 0_in;
 
-  ShootController(lib7842::OdomTracker*, IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
+  ShootController(IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
   void clearQueue();
   void completeJob();
@@ -71,11 +71,11 @@ public:
   void doMacroLoop(shootMacros);
 
   double getHoodAngle();
-  QLength getDistanceToFlag();
   double getTopFlagAngle();
   double getMiddleFlagAngle();
 
   void setTarget(double);
+  void setDistanceToFlag(QLength);
 
   void run();
   static void task(void*);

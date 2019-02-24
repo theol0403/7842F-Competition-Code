@@ -1,7 +1,7 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(lib7842::OdomTracker* itracker, IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle) :
-tracker(itracker), intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle),
+ShootController::ShootController(IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle) :
+intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle),
 shootTask(task, this)
 {
 }
@@ -105,13 +105,9 @@ double ShootController::getHoodAngle() {
   return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle;
 }
 
-QLength ShootController::getDistanceToFlag() {
-  return 11_ft - tracker->state.y;
-}
-
 // range is about 60 deg
 double ShootController::getTopFlagAngle() {
-  switch((int) getDistanceToFlag().convert(foot))
+  switch((int) distanceToFlag.convert(foot))
   {
     case 0 ... 1 : return 0; break;
     case 2 ... 3 : return 5; break;
@@ -124,7 +120,7 @@ double ShootController::getTopFlagAngle() {
 }
 
 double ShootController::getMiddleFlagAngle() {
-  switch((int) getDistanceToFlag().convert(foot))
+  switch((int) distanceToFlag.convert(foot))
   {
     case 0 ... 1 : return 0; break;
     case 2 ... 3 : return 15; break;
@@ -139,6 +135,10 @@ double ShootController::getMiddleFlagAngle() {
 
 void ShootController::setTarget(double target) {
   targetAngle = target;
+}
+
+void ShootController::setDistanceToFlag(QLength distance) {
+  distanceToFlag = distance;
 }
 
 

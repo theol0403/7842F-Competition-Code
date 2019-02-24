@@ -13,7 +13,7 @@ void driverIntakeControl()
 	*/
 	if(j_Digital(R2))
 	{
-		intakeState = IntakeController::intakeAll;
+		intakeState = IntakeController::intakeBall;
 	}
 	else if(j_Digital(R1))
 	{
@@ -29,7 +29,6 @@ void driverIntakeControl()
 		robot.intake->setState(intakeState);
 		lastIntakeState = intakeState;
 	}
-
 
 	/**
 	* Shoot Controller
@@ -120,5 +119,7 @@ void driverFlywheelControl()
 		robot.tracker->setY(0_ft);
 		robot.tracker->setTheta(0_deg);
 	}
+
+	robot.shooter->setDistanceToFlag(11_ft - robot.tracker->state.y);
 
 }
