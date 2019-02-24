@@ -90,32 +90,21 @@ void driverFlywheelControl()
 		}
 	}
 
-	//
-	// if(j_Digital(left))
-	// {
-	// 	wantedRpm = 2350;
-	// 	triggerUpdate = true;
-	// }
-	// else if(j_Digital(up))
-	// {
-	// 	wantedRpm = 2500;
-	// 	triggerUpdate = true;
-	// }
-	// else if(j_Digital(right))
-	// {
-	// 	wantedRpm = 2800;
-	// 	triggerUpdate = true;
-	// }
-	// else if(j_Digital(down))
-	// {
-	// 	wantedRpm = 0;
-	// 	triggerUpdate = true;
-	// }
-	//
-	// if(triggerUpdate) //If new flywheel speed was set
-	// {
-	// 	robot.flywheel->setRpm(wantedRpm);
-	// 	triggerUpdate = false;
-	// }
+
+	if(j_Digital(left))
+	{
+		robot.tracker->setY(9_ft);
+		robot.tracker->setTheta(0_deg);
+	}
+	else if(j_Digital(up))
+	{
+		robot.tracker->setY(6_ft);
+		robot.tracker->setTheta(0_deg);
+	}
+	else if(j_Digital(right))
+	{
+		robot.tracker->setY(0_ft);
+		robot.tracker->setTheta(0_deg);
+	}
 
 }

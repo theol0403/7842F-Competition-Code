@@ -105,29 +105,30 @@ QLength ShootController::getDistanceToFlag() {
   return 11_ft - tracker->state.y;
 }
 
+// range is about 60 deg
 double ShootController::getTopFlagAngle() {
-  // switch((int) getDistanceToFlag().convert(foot))
-  // {
-  //   case 0 : return 0; break;
-  //   case 1 : return 30; break;
-  //   case 2 : return 60; break;
-  //   case 3 : return 90; break;
-  //   case 4 : return 120; break;
-  //   default : return 150; break;
-  // }
+  switch((int) getDistanceToFlag().convert(foot))
+  {
+    case 0 ... 1 : return 0; break;
+    case 2 ... 3 : return 10; break;
+    case 4 ... 5 : return 20; break;
+    case 6 ... 7 : return 30; break;
+    case 8 ... 9 : return 40; break;
+    default : return 0; break;
+  }
   return 0;
 }
 
 double ShootController::getMiddleFlagAngle() {
-  // switch((int) getDistanceToFlag().convert(foot))
-  // {
-  //   case 0 : return 30; break;
-  //   case 1 : return 60; break;
-  //   case 2 : return 90; break;
-  //   case 3 : return 120; break;
-  //   case 4 : return 150; break;
-  //   default : return 180; break;
-  // }
+  switch((int) getDistanceToFlag().convert(foot))
+  {
+    case 0 ... 1 : return 0; break;
+    case 2 ... 3 : return 15; break;
+    case 4 ... 5 : return 25; break;
+    case 6 ... 7 : return 35; break;
+    case 8 ... 9 : return 45; break;
+    default : return 20; break;
+  }
   return 20;
 }
 
