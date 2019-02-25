@@ -25,6 +25,12 @@ void FlywheelController::enable()
   disabled = false;
 }
 
+void FlywheelController::resetSlew()
+{
+  lastPower = 0;
+  motorPower = 0;
+}
+
 
 void FlywheelController::run()
 {

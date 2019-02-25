@@ -68,21 +68,14 @@ void driverControl()
 		/**
 		* Shoot Control
 		*/
-		if(j_Digital(L2) && j_Digital(L1))
-		{
+		if(j_Digital(L2) && j_Digital(L1)) {
 			shootMacro = ShootController::shootMacros::shootBothFlags;
-		}
-		else if(j_Digital(L2))
-		{
+		} else if(j_Digital(L2)) {
 			shootMacro = ShootController::shootMacros::shootMiddleFlag;
-		}
-		else if(j_Digital(L1))
-		{
+		} else if(j_Digital(L1)) {
 			//shootMacro = ShootController::shootMacros::shootTopFlag;
 			shootMacro = ShootController::shootMacros::shootTarget;
-		}
-		else
-		{
+		} else {
 			shootMacro = ShootController::shootMacros::off;
 		}
 

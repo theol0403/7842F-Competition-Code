@@ -115,6 +115,7 @@ void opcontrol()
 
   #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
+  robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.intake->setState(IntakeController::off);
   #endif
@@ -166,7 +167,10 @@ void autonomous()
 {
   #ifndef TEST_ROBOT
   robot.shooter->clearQueue();
+  robot.flywheel->resetSlew();
   robot.flywheel->enable();
+  robot.flywheel->setRpm(globalFlywheelRPM);
+  robot.arm->setState(ArmController::unfold);
   #endif
 
   SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());

@@ -31,6 +31,7 @@ public:
   double getTargetRpm();
   void disable();
   void enable();
+  void resetSlew();
 
   void run();
 
