@@ -50,7 +50,7 @@ namespace lib7842
     resetEmergencyAbort();
     do {
       m_angleErr = turnCalc(this);
-      double turnVel = turnPid->calculateErr(m_angleErr.convert(degree));
+      double turnVel = turnPid->step(-m_angleErr.convert(degree));
       turnFunc(this, turnVel);
       runActions(actions);
       pros::delay(10);
