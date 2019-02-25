@@ -56,6 +56,7 @@ void driverControl()
 
 	if(shootMacro != lastShootMacro)
 	{
+		if(shootMacro == ShootController::shootMacros::shootTarget) std::cout << "Shot at Y : " << robot.tracker->state.y.convert(foot) << " at Angle : " << targetAngle << std::endl;
 		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
