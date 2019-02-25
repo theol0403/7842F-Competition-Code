@@ -120,14 +120,14 @@ void initializeBase()
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
 		27_cm, 4_in, 360,
-		lib7842::OdomTracker::mTracking
+		lib7842::OdomTracker::mdTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new lib7842::PID(0.008, 0, 1, 40, 5, 250_ms), //Distance PID - To mm
-		new lib7842::PID(0.008, 0.00, 0, 3, 1, 100_ms), //Angle PID - To Degree
-		new lib7842::PID(0.01, 0.005, 0.9, 3, 1, 100_ms) //Turn PID - To Degree
+		new lib7842::PID(0.008, 2, 1, 40, 5, 250_ms), //Distance PID - To mm
+		new lib7842::PID(0.004, 0.00, 1, 3, 1, 100_ms), //Angle PID - To Degree
+		new lib7842::PID(0.008, 0.01, 1, 0.1, 0, 250_ms) //Turn PID - To Degree
 	);
 
 }
