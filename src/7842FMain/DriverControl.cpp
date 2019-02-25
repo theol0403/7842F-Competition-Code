@@ -9,6 +9,13 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
 static double targetAngle = 0;
 
+enum class driverShootModes {
+	automatic,
+	manual
+};
+
+driverShootModes driverShootMode = driverShootModes::automatic;
+
 void driverControl()
 {
 	/**
@@ -34,90 +41,108 @@ void driverControl()
 	}
 
 	/**
-	* Shoot Control
+	* Automatic Control
+	* Arrow buttons set odom y
+	* Angle of hood is calculated from y using lookup table
+	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(L2) && j_Digital(L1))
+	if(driverShootMode == driverShootModes::automatic)
 	{
-		shootMacro = ShootController::shootMacros::shootBothFlags;
+		/**
+		* Shoot Control
+		*/
+		if(j_Digital(L2) && j_Digital(L1))
+		{
+			shootMacro = ShootController::shootMacros::shootBothFlags;
+		}
+		else if(j_Digital(L2))
+		{
+			shootMacro = ShootController::shootMacros::shootMiddleFlag;
+		}
+		else if(j_Digital(L1))
+		{
+			//shootMacro = ShootController::shootMacros::shootTopFlag;
+			shootMacro = ShootController::shootMacros::shootTarget;
+		}
+		else
+		{
+			shootMacro = ShootController::shootMacros::off;
+		}
+
+		if(shootMacro != lastShootMacro)
+		{
+			if(shootMacro == ShootController::shootMacros::shootTarget) std::cout << "Shot at Y : " << robot.tracker->state.y.convert(foot) << " at Angle : " << targetAngle << std::endl;
+			if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+			lastShootMacro = shootMacro;
+		}
+
+
+		/**
+		* Angle Control
+		*/
+		if(j_Digital(Y))
+		{
+			targetAngle -= 1;
+			robot.shooter->setTarget(targetAngle);
+			std::cout << "Target Angle: " << targetAngle << std::endl;
+		}
+		else if(j_Digital(X))
+		{
+			targetAngle += 1;
+			robot.shooter->setTarget(targetAngle);
+			std::cout << "Target Angle: " << targetAngle << std::endl;
+		}
+
+		if(j_Digital(left))
+		{
+			robot.tracker->setY(9_ft);
+			robot.tracker->setTheta(0_deg);
+		}
+		else if(j_Digital(up))
+		{
+			robot.tracker->setY(6_ft);
+			robot.tracker->setTheta(0_deg);
+		}
+		else if(j_Digital(right))
+		{
+			robot.tracker->setY(0_ft);
+			robot.tracker->setTheta(0_deg);
+		}
+
+		robot.shooter->setDistanceToFlag(11_ft - robot.tracker->state.y);
 	}
-	else if(j_Digital(L2))
-	{
-		shootMacro = ShootController::shootMacros::shootMiddleFlag;
-	}
-	else if(j_Digital(L1))
-	{
-		//shootMacro = ShootController::shootMacros::shootTopFlag;
-		shootMacro = ShootController::shootMacros::shootTarget;
-	}
+
+	/**
+	* Manual Control
+	* L1 Controls angle
+	* L2 Shoots
+	*/
 	else
 	{
-		shootMacro = ShootController::shootMacros::off;
-	}
 
-	if(shootMacro != lastShootMacro)
-	{
-		if(shootMacro == ShootController::shootMacros::shootTarget) std::cout << "Shot at Y : " << robot.tracker->state.y.convert(foot) << " at Angle : " << targetAngle << std::endl;
-		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
-		lastShootMacro = shootMacro;
-	}
+		/**
+		* Shoot Controller
+		* Manual Angling
+		*/
+		if(j_Digital(L2))
+		{
+			shootMacro = ShootController::shootMacros::shoot;
+		}
+		else if(j_Digital(L1))
+		{
+			shootMacro = ShootController::shootMacros::angleManual;
+		}
+		else
+		{
+			shootMacro = ShootController::shootMacros::off;
+		}
 
-	/**
-	* Shoot Controller
-	* Manual Angling
-	*/
-	// if(j_Digital(L2))
-	// {
-	// 	shootMacro = ShootController::shootMacros::shoot;
-	// }
-	// else if(j_Digital(L1))
-	// {
-	// 	shootMacro = ShootController::shootMacros::angleManual;
-	// }
-	// else
-	// {
-	// 	shootMacro = ShootController::shootMacros::off;
-	// }
-	//
-	// if(shootMacro != lastShootMacro)
-	// {
-	// 	robot.shooter->doMacroLoop(shootMacro);
-	// 	lastShootMacro = shootMacro;
-	// }
-
-
-	/**
-	* Angle Control
-	*/
-	if(j_Digital(Y))
-	{
-		targetAngle -= 1;
-		robot.shooter->setTarget(targetAngle);
-		std::cout << "Target Angle: " << targetAngle << std::endl;
+		if(shootMacro != lastShootMacro)
+		{
+			robot.shooter->doMacroLoop(shootMacro);
+			lastShootMacro = shootMacro;
+		}
 	}
-	else if(j_Digital(X))
-	{
-		targetAngle += 1;
-		robot.shooter->setTarget(targetAngle);
-		std::cout << "Target Angle: " << targetAngle << std::endl;
-	}
-
-	if(j_Digital(left))
-	{
-		robot.tracker->setY(9_ft);
-		robot.tracker->setTheta(0_deg);
-	}
-	else if(j_Digital(up))
-	{
-		robot.tracker->setY(6_ft);
-		robot.tracker->setTheta(0_deg);
-	}
-	else if(j_Digital(right))
-	{
-		robot.tracker->setY(0_ft);
-		robot.tracker->setTheta(0_deg);
-	}
-
-	robot.shooter->setDistanceToFlag(11_ft - robot.tracker->state.y);
 
 
 	/**
