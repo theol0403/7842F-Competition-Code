@@ -1,12 +1,9 @@
 #include "main.h"
 
-#include "MotorConfig.hpp"
-#include "FlywheelController.hpp"
-#include "IntakeController.hpp"
 #include "lib7842/lib7842.hpp"
+#include "MotorConfig.hpp"
 
 #include "DriverControl.hpp"
-
 #include "7842FMain/Auton/AutonFunctions.hpp"
 
 
