@@ -55,9 +55,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new IterativePosPIDController(0.0015, 0, 0.0001, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
-		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.007, 0, 0.00015, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms)) //Turn PID - To Degree
+		new IterativePosPIDController(0.002, 0, 0.0002, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
+		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms), std::make_unique<AverageFilter<5>>()), //Angle PID - To Degree
+		new IterativePosPIDController(0.007, 0, 0.0002, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms), std::make_unique<AverageFilter<5>>()) //Turn PID - To Degree
 	);
 
 	// new lib7842::PID(0.002, 0.01, 1, 40, 5, 250_ms), //Distance PID - To mm
@@ -121,15 +121,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-<<<<<<< HEAD
-		new lib7842::PID(0.008, 2, 1, 40, 5, 250_ms), //Distance PID - To mm
-		new lib7842::PID(0.004, 0.00, 1, 3, 1, 100_ms), //Angle PID - To Degree
-		new lib7842::PID(0.008, 0.01, 1, 0.1, 0, 250_ms) //Turn PID - To Degree
-=======
-		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.009, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
 		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.01, 0, 0.005, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
->>>>>>> parent of 6bf618e... revert pid
+		new IterativePosPIDController(0.01, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
 	);
 
 }
