@@ -3,12 +3,6 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
-static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
-
-static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
-static double targetAngle = 0;
-
 enum class driverShootModes {
 	automatic,
 	manual
@@ -16,28 +10,51 @@ enum class driverShootModes {
 
 driverShootModes driverShootMode = driverShootModes::automatic;
 
+static okapi::ControllerButton manualTrigger = j_Main[ControllerDigital::down];
+
+static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
+static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
+
+static double targetAngle = 0;
+
+
 void driverControl()
 {
 	/**
 	* Intake Control
 	*/
-	if(j_Digital(R2))
-	{
+	if(j_Digital(R2)) {
 		intakeState = IntakeController::intakeBall;
-	}
-	else if(j_Digital(R1))
-	{
+	} else if(j_Digital(R1)) {
 		intakeState = IntakeController::outIntake;
-	}
-	else
-	{
+	} else {
 		intakeState = IntakeController::off;
 	}
 
-	if(intakeState != lastIntakeState)
-	{
+	if(intakeState != lastIntakeState) {
 		robot.intake->setState(intakeState);
 		lastIntakeState = intakeState;
+	}
+
+
+	/**
+	* Switches Shooting Mode
+	* Turns on flywheel
+	*/
+	if(manualTrigger.changedToPressed()) {
+		if(robot.flywheel->getTargetRpm() == 0) {
+			robot.flywheel->setRpm(globalFlywheelRPM);
+			robot.arm->setState(ArmController::unfold); //for testing
+		} else {
+			if(driverShootMode == driverShootModes::automatic) {
+				driverShootMode = driverShootModes::manual;
+			} else {
+				driverShootMode = driverShootModes::automatic;
+			}
+		}
+		shootMacro = ShootController::shootMacros::off;
+		lastShootMacro = ShootController::shootMacros::off;
+		robot.shooter->doJob(ShootController::off);
 	}
 
 	/**
@@ -119,7 +136,6 @@ void driverControl()
 	*/
 	else
 	{
-
 		/**
 		* Shoot Controller
 		* Manual Angling
@@ -142,22 +158,6 @@ void driverControl()
 			robot.shooter->doMacroLoop(shootMacro);
 			lastShootMacro = shootMacro;
 		}
-	}
-
-
-	/**
-	* Flywheel Control
-	* Flywheel Toggle
-	* Angling Abort
-	*/
-	if(flywheelTrigger.changedToPressed()) {
-		if(robot.flywheel->getTargetRpm() == 0) {
-			robot.flywheel->setRpm(globalFlywheelRPM);
-		} else {
-			robot.flywheel->setRpm(0);
-		}
-		robot.shooter->doJob(ShootController::off);
-		robot.arm->setState(ArmController::unfold); //for testing
 	}
 
 }
