@@ -1,6 +1,6 @@
 #include "ArmController.hpp"
 
-ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, double ifoldAngle, IterativePosPidController* ipid) :
+ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, double ifoldAngle, IterativePosPIDController* ipid) :
 arm(iarm), armSensor(iarmSensor), foldAngle(ifoldAngle), pid(ipid),
 armTask(task, this)
 {
@@ -11,7 +11,7 @@ void ArmController::setState(armStates state) {
   armState = state;
 }
 
-double getArmAngle() {
+double ArmController::getArmAngle() {
   return (armSensor->get_value() / 4095.0 * 265.0) - foldAngle;
 }
 

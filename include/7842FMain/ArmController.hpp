@@ -18,12 +18,12 @@ public:
   Motor* arm = nullptr;
   pros::ADIPotentiometer* armSensor = nullptr;
   double foldAngle = 0;
-  IterativePosPidController* pid = nullptr;
+  IterativePosPIDController* pid = nullptr;
   pros::Task armTask;
 
   armStates armState = off;
 
-  ArmController(Motor*, pros::ADIPotentiometer*, double, IterativePosPidController*);
+  ArmController(Motor*, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 
   void setState(armStates);
   double getArmAngle();

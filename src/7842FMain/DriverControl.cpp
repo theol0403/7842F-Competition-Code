@@ -132,6 +132,7 @@ void driverControl()
 			robot.flywheel->setRpm(0);
 		}
 		robot.shooter->doJob(ShootController::off);
+		robot.arm->setState(ArmController::unfold);
 	}
 
 }
