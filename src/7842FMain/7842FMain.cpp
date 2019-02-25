@@ -85,6 +85,7 @@ void disabled()
   #ifndef TEST_ROBOT
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
+  robot.flywheel->resetSlew();
   #endif
   robot.model->stop();
 }
