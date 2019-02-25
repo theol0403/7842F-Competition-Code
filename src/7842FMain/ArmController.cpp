@@ -1,69 +1,48 @@
-#include "IntakeController.hpp"
+#include "ArmController.hpp"
 
-IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma) :
-intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
-intakeTask(task, this)
+ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, double ifoldAngle) :
+arm(iarm), armSensor(iarmSensor), foldAngle(ifoldAngle)
+armTask(task, this)
 {
-  intake->setBrakeMode(AbstractMotor::brakeMode::brake);
-  //indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
-  lineSensor->calibrate();
+  arm->setBrakeMode(AbstractMotor::brakeMode::brake);
 }
 
-void IntakeController::setState(intakeStates state) {
-  intakeState = state;
+void ArmController::setState(armStates state) {
+  armState = state;
 }
 
-IntakeController::intakeStates IntakeController::getState() {
-  return intakeState;
-}
-
-void IntakeController::disable() {
-  if(!disabled) {
-    intake->moveVelocity(0);
-    indexer->moveVelocity(0);
-  }
-  disabled = true;
-}
-
-void IntakeController::enable() {
-  disabled = false;
+double getArmAngle() {
+  return (armSensor->get_value() / 4095.0 * 265.0) - foldAngle;
 }
 
 
-void IntakeController::run()
+void ArmController::run()
 {
 
   while(true)
   {
-    double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
-    //std::cout << "Sensor: " << filteredSensor << std::endl;
-    hasBall = filteredSensor < 50;
 
-    if(!disabled)
-    {
-      switch(intakeState) {
+    switch(armState) {
 
-        case intakeStates::off:
-        intake->moveVelocity(0);
+      case armStates::off:
+      intake->moveVelocity(0);
+      indexerSlave = true;
+      break;
+
+      case armStates::intakeBall:
+      intake->moveVelocity(200);
+      if(hasBall) {
         indexerSlave = true;
-        break;
-
-        case intakeStates::intakeBall:
-        intake->moveVelocity(200);
-        if(hasBall) {
-          indexerSlave = true;
-        } else {
-          indexerSlave = false;
-          indexer->moveVelocity(80);
-        }
-        break;
-
-        case intakeStates::outIntake:
-        intake->moveVelocity(-200);
-        indexerSlave = true;
-        break;
-
+      } else {
+        indexerSlave = false;
+        indexer->moveVelocity(80);
       }
+      break;
+
+      case armStates::outIntake:
+      intake->moveVelocity(-200);
+      indexerSlave = true;
+      break;
 
     }
 
@@ -72,8 +51,8 @@ void IntakeController::run()
 }
 
 
-void IntakeController::task(void* input)
+void ArmController::task(void* input)
 {
-  IntakeController* that = static_cast<IntakeController*>(input);
+  ArmController* that = static_cast<ArmController*>(input);
   that->run();
 }

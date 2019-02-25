@@ -1,35 +1,31 @@
 #pragma once
 #include "main.h"
 
-class IntakeController
+class ArmController
 {
 
 public:
 
-  enum intakeStates
+  enum armStates
   {
-    off,
-    intakeBall, //runs intake and indexer until ball then indexer stops
-    outIntake
+    off, //motors off
+    unfold, //brings it to out position
+    out, //holds in out position
+    down, //presses down to cap position
+    up //brings up to descore position but allows upwards movement
   };
 
-  Motor* intake = nullptr;
-  Motor* indexer = nullptr;
-  pros::ADILineSensor* lineSensor = nullptr;
-  okapi::EmaFilter sensorFilter;
-  pros::Task intakeTask;
+  Motor* arm = nullptr;
+  pros::ADIPotentiometer* armSensor = nullptr;
+  double foldAngle = 0;
+  pros::Task armTask;
 
-  intakeStates intakeState = off;
-  bool hasBall = false;
-  bool disabled = false;
-  bool indexerSlave = true;
+  armStates armState = off;
 
-  IntakeController(Motor*, Motor*, pros::ADILineSensor*, double);
+  ArmController(Motor*, pros::ADIPotentiometer*, double);
 
-  void setState(intakeStates);
-  intakeStates getState();
-  void disable();
-  void enable();
+  void setState(armStates);
+  double getArmAngle();
 
   void run();
 
