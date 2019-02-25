@@ -1,7 +1,7 @@
 #include "ArmController.hpp"
 
-ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, double ifoldAngle) :
-arm(iarm), armSensor(iarmSensor), foldAngle(ifoldAngle)
+ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, double ifoldAngle, IterativePosPidController* ipid) :
+arm(iarm), armSensor(iarmSensor), foldAngle(ifoldAngle), pid(ipid),
 armTask(task, this)
 {
   arm->setBrakeMode(AbstractMotor::brakeMode::brake);
@@ -21,27 +21,36 @@ void ArmController::run()
 
   while(true)
   {
+    double outPos = 0;
+    double downPos = 40;
+    double upPos = -20;
 
     switch(armState) {
 
-      case armStates::off:
-      intake->moveVelocity(0);
-      indexerSlave = true;
+      case off:
+      arm->move(0);
       break;
 
-      case armStates::intakeBall:
-      intake->moveVelocity(200);
-      if(hasBall) {
-        indexerSlave = true;
-      } else {
-        indexerSlave = false;
-        indexer->moveVelocity(80);
-      }
+      case unfold:
+      arm->move(127);
+      if(getArmAngle() > 20) armState = out;
       break;
 
-      case armStates::outIntake:
-      intake->moveVelocity(-200);
-      indexerSlave = true;
+      case out:
+      pid->setTarget(outPos);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
+      case down:
+      pid->setTarget(downPos);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
+      case up:
+      pid->setTarget(upPos);
+      double motorPower = pid->step(getArmAngle());
+      if(motorPower < 0) arm->move(motorPower * 127); //does not allow arm to fall down but can be picked up
+      else arm->move(0);
       break;
 
     }

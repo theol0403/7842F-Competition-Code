@@ -43,12 +43,12 @@ void IntakeController::run()
     {
       switch(intakeState) {
 
-        case intakeStates::off:
+        case off:
         intake->moveVelocity(0);
         indexerSlave = true;
         break;
 
-        case intakeStates::intakeBall:
+        case intakeBall:
         intake->moveVelocity(200);
         if(hasBall) {
           indexerSlave = true;
@@ -58,7 +58,7 @@ void IntakeController::run()
         }
         break;
 
-        case intakeStates::outIntake:
+        case outIntake:
         intake->moveVelocity(-200);
         indexerSlave = true;
         break;
