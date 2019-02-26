@@ -3,22 +3,13 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static ArmController::armStates armState = ArmController::out;
-static ArmController::armStates lastArmState = ArmController::out;
+static ArmController::armStates armState = ArmController::off;
+static ArmController::armStates lastArmState = ArmController::off;
 
-enum class driverShootModes {
-	automatic,
-	manual
-};
-
-driverShootModes driverShootMode = driverShootModes::automatic;
-
-static okapi::ControllerButton manualTrigger = j_Main[ControllerDigital::down];
+static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
-
-static double targetAngle = 0;
 
 
 void driverControl()
@@ -40,42 +31,38 @@ void driverControl()
 	}
 
 
-	// if(j_Digital(B)) {
-	// 	armState = ArmController::down;
-	// } else if(j_Digital(Y)) {
-	// 	armState = ArmController::out;
-	// } else if(j_Digital(X)) {
-	// 	armState = ArmController::up;
-	// } else {
-	// 	//armState = ArmController::out;
-	// }
+	if(j_Digital(B)) {
+		armState = ArmController::down;
+	} else if(j_Digital(Y)) {
+		armState = ArmController::out;
+	} else if(j_Digital(X)) {
+		armState = ArmController::up;
+	}
 
 	if(armState != lastArmState) {
 		robot.arm->setState(armState);
 		lastArmState = armState;
 	}
 
+
 	/**
-	* Switches Shooting Mode
-	* Turns on flywheel
+	* Flywheel Toggle
+	* Angling Abort
+	* Arm Abort
 	*/
-	if(manualTrigger.changedToPressed()) {
+	if(flywheelTrigger.changedToPressed()) {
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
-			robot.arm->setState(ArmController::unfold); //for testing
 		} else {
-			if(driverShootMode == driverShootModes::automatic) {
-				driverShootMode = driverShootModes::manual;
-			} else {
-				driverShootMode = driverShootModes::automatic;
-			}
-			robot.arm->setState(ArmController::off);
-			armState = ArmController::off;
-			lastArmState = ArmController::off;
+			robot.flywheel->setRpm(0);
 		}
 		shootMacro = ShootController::shootMacros::off;
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
+
+		robot.arm->setState(ArmController::off);
+		armState = ArmController::off;
+		lastArmState = ArmController::off;
 	}
 
 	/**
@@ -84,99 +71,69 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(driverShootMode == driverShootModes::automatic)
-	{
-		/**
-		* Shoot Control
-		*/
-		/*if(j_Digital(L2) && j_Digital(L1)) {
-			shootMacro = ShootController::shootMacros::shootBothFlags;
-		} else */if(j_Digital(L2)) {
-			shootMacro = ShootController::shootMacros::shootMiddleFlag;
-		} else if(j_Digital(L1)) {
-			//shootMacro = ShootController::shootMacros::shootTopFlag;
-			shootMacro = ShootController::shootMacros::shootTarget;
-		} else {
-			shootMacro = ShootController::shootMacros::off;
-		}
-
-		if(shootMacro != lastShootMacro)
-		{
-			if(shootMacro == ShootController::shootMacros::shootTarget) std::cout << "Shot at Y : " << robot.tracker->state.y.convert(foot) << " at Angle : " << targetAngle << std::endl;
-			if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
-			lastShootMacro = shootMacro;
-		}
-
-
-		/**
-		* Angle Control
-		*/
-		if(j_Digital(Y))
-		{
-			targetAngle -= 0.1;
-			robot.shooter->setTarget(targetAngle);
-			std::cout << "Target Angle: " << targetAngle << std::endl;
-		}
-		else if(j_Digital(X))
-		{
-			targetAngle += 0.1;
-			robot.shooter->setTarget(targetAngle);
-			std::cout << "Target Angle: " << targetAngle << std::endl;
-		}
-
-		if(j_Digital(B)) {
-			robot.tracker->setState({0_ft, 7_ft, 0_deg});
-		}
-
-
-		if(j_Digital(left))
-		{
-			robot.tracker->setY(9_ft);
-			robot.tracker->setTheta(0_deg);
-		}
-		else if(j_Digital(up))
-		{
-			robot.tracker->setY(6_ft);
-			robot.tracker->setTheta(0_deg);
-		}
-		else if(j_Digital(right))
-		{
-			robot.tracker->setY(0_ft);
-			robot.tracker->setTheta(0_deg);
-		}
-
-		robot.shooter->setDistanceToFlag(11_ft - robot.tracker->state.y);
+	/**
+	* Shoot Control
+	*/
+	if(j_Digital(L2)) {
+		shootMacro = ShootController::shootMacros::shootMiddleFlag;
+	} else if(j_Digital(L1)) {
+		//shootMacro = ShootController::shootMacros::shootTopFlag;
+		shootMacro = ShootController::shootMacros::shootTarget;
+	} else {
+		shootMacro = ShootController::shootMacros::off;
 	}
+
+	if(shootMacro != lastShootMacro)
+	{
+		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+		lastShootMacro = shootMacro;
+	}
+
 
 	/**
-	* Manual Control
-	* L1 Controls angle
-	* L2 Shoots
+	* Angle Control
 	*/
-	else
+	if(j_Digital(left))
 	{
-		/**
-		* Shoot Controller
-		* Manual Angling
-		*/
-		if(j_Digital(L2))
-		{
-			shootMacro = ShootController::shootMacros::shoot;
-		}
-		else if(j_Digital(L1))
-		{
-			shootMacro = ShootController::shootMacros::angleManual;
-		}
-		else
-		{
-			shootMacro = ShootController::shootMacros::off;
-		}
-
-		if(shootMacro != lastShootMacro)
-		{
-			robot.shooter->doMacroLoop(shootMacro);
-			lastShootMacro = shootMacro;
-		}
+		robot.tracker->setY(9_ft);
+		robot.tracker->setTheta(0_deg);
 	}
+	else if(j_Digital(up))
+	{
+		robot.tracker->setY(6_ft);
+		robot.tracker->setTheta(0_deg);
+	}
+	else if(j_Digital(right))
+	{
+		robot.tracker->setY(0_ft);
+		robot.tracker->setTheta(0_deg);
+	}
+
+	if(j_Digital(B)) {
+		robot.tracker->setState({0_ft, 7_ft, 0_deg});
+	}
+
+	robot.shooter->setDistanceToFlag(11_ft - robot.tracker->state.y);
+
+
+	// if(j_Digital(L2))
+	// {
+	// 	shootMacro = ShootController::shootMacros::shoot;
+	// }
+	// else if(j_Digital(L1))
+	// {
+	// 	shootMacro = ShootController::shootMacros::angleManual;
+	// }
+	// else
+	// {
+	// 	shootMacro = ShootController::shootMacros::off;
+	// }
+	//
+	// if(shootMacro != lastShootMacro)
+	// {
+	// 	robot.shooter->doMacroLoop(shootMacro);
+	// 	lastShootMacro = shootMacro;
+	// }
+
 
 }
