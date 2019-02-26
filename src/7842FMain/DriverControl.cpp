@@ -31,6 +31,9 @@ void driverControl()
 	}
 
 
+	/**
+	* Arm Control
+	*/
 	if(j_Digital(B)) {
 		armState = ArmController::down;
 	} else if(j_Digital(Y)) {
@@ -77,15 +80,14 @@ void driverControl()
 	if(j_Digital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddleFlag;
 	} else if(j_Digital(L1)) {
-		//shootMacro = ShootController::shootMacros::shootTopFlag;
-		shootMacro = ShootController::shootMacros::shootTarget;
+		shootMacro = ShootController::shootMacros::shootTopFlag;
 	} else {
 		shootMacro = ShootController::shootMacros::off;
 	}
 
 	if(shootMacro != lastShootMacro)
 	{
-		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+		//if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
 
