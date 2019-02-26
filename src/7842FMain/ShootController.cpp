@@ -44,19 +44,19 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootTopFlag :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, angleTop});
     break;
 
     case shootMacros::shootMiddleFlag :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle});
+    addJobs({shootIndexer, waitForFlywheel, angleMiddle});
     break;
 
     case shootMacros::shootTarget :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleTarget});
+    addJobs({shootIndexer, waitForFlywheel, angleTarget});
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, waitForFlywheel, waitForBall, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, waitForFlywheel, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -267,7 +267,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(300);
+      pros::delay(200);
       intake->enable();
       completeJob();
       break;
