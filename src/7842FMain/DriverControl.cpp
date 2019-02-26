@@ -3,6 +3,9 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
+static ArmController::armStates armState = ArmController::out;
+static ArmController::armStates lastArmState = ArmController::out;
+
 enum class driverShootModes {
 	automatic,
 	manual
@@ -37,6 +40,21 @@ void driverControl()
 	}
 
 
+	if(j_Digital(B)) {
+		armState = ArmController::down;
+	} else if(j_Digital(Y)) {
+		armState = ArmController::out;
+	} else if(j_Digital(X)) {
+		armState = ArmController::up;
+	} else {
+		//armState = ArmController::out;
+	}
+
+	if(armState != lastArmState) {
+		robot.arm->setState(armState);
+		lastArmState = armState;
+	}
+
 	/**
 	* Switches Shooting Mode
 	* Turns on flywheel
@@ -55,6 +73,7 @@ void driverControl()
 		shootMacro = ShootController::shootMacros::off;
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
+		robot.arm->setState(ArmController::off);
 	}
 
 	/**
@@ -90,18 +109,19 @@ void driverControl()
 		/**
 		* Angle Control
 		*/
-		if(j_Digital(Y))
-		{
-			targetAngle -= 1;
-			robot.shooter->setTarget(targetAngle);
-			std::cout << "Target Angle: " << targetAngle << std::endl;
-		}
-		else if(j_Digital(X))
-		{
-			targetAngle += 1;
-			robot.shooter->setTarget(targetAngle);
-			std::cout << "Target Angle: " << targetAngle << std::endl;
-		}
+		// if(j_Digital(Y))
+		// {
+		// 	targetAngle -= 1;
+		// 	robot.shooter->setTarget(targetAngle);
+		// 	std::cout << "Target Angle: " << targetAngle << std::endl;
+		// }
+		// else if(j_Digital(X))
+		// {
+		// 	targetAngle += 1;
+		// 	robot.shooter->setTarget(targetAngle);
+		// 	std::cout << "Target Angle: " << targetAngle << std::endl;
+		// }
+
 
 		if(j_Digital(left))
 		{

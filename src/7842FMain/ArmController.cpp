@@ -4,7 +4,7 @@ ArmController::ArmController(Motor* iarm, pros::ADIPotentiometer* iarmSensor, do
 arm(iarm), armSensor(iarmSensor), foldAngle(ifoldAngle), pid(ipid),
 armTask(task, this)
 {
-  arm->setBrakeMode(AbstractMotor::brakeMode::brake);
+  arm->setBrakeMode(AbstractMotor::brakeMode::coast);
 }
 
 void ArmController::setState(armStates state) {
