@@ -69,11 +69,13 @@ void driverControl()
 			} else {
 				driverShootMode = driverShootModes::automatic;
 			}
+			robot.arm->setState(ArmController::off);
+			armState = ArmController::off;
+			lastArmState = ArmController::off;
 		}
 		shootMacro = ShootController::shootMacros::off;
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
-		robot.arm->setState(ArmController::off);
 	}
 
 	/**
