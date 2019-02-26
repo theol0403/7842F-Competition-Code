@@ -40,15 +40,15 @@ void driverControl()
 	}
 
 
-	if(j_Digital(B)) {
-		armState = ArmController::down;
-	} else if(j_Digital(Y)) {
-		armState = ArmController::out;
-	} else if(j_Digital(X)) {
-		armState = ArmController::up;
-	} else {
-		//armState = ArmController::out;
-	}
+	// if(j_Digital(B)) {
+	// 	armState = ArmController::down;
+	// } else if(j_Digital(Y)) {
+	// 	armState = ArmController::out;
+	// } else if(j_Digital(X)) {
+	// 	armState = ArmController::up;
+	// } else {
+	// 	//armState = ArmController::out;
+	// }
 
 	if(armState != lastArmState) {
 		robot.arm->setState(armState);
@@ -89,9 +89,9 @@ void driverControl()
 		/**
 		* Shoot Control
 		*/
-		if(j_Digital(L2) && j_Digital(L1)) {
+		/*if(j_Digital(L2) && j_Digital(L1)) {
 			shootMacro = ShootController::shootMacros::shootBothFlags;
-		} else if(j_Digital(L2)) {
+		} else */if(j_Digital(L2)) {
 			shootMacro = ShootController::shootMacros::shootMiddleFlag;
 		} else if(j_Digital(L1)) {
 			//shootMacro = ShootController::shootMacros::shootTopFlag;
@@ -111,18 +111,22 @@ void driverControl()
 		/**
 		* Angle Control
 		*/
-		// if(j_Digital(Y))
-		// {
-		// 	targetAngle -= 1;
-		// 	robot.shooter->setTarget(targetAngle);
-		// 	std::cout << "Target Angle: " << targetAngle << std::endl;
-		// }
-		// else if(j_Digital(X))
-		// {
-		// 	targetAngle += 1;
-		// 	robot.shooter->setTarget(targetAngle);
-		// 	std::cout << "Target Angle: " << targetAngle << std::endl;
-		// }
+		if(j_Digital(Y))
+		{
+			targetAngle -= 0.1;
+			robot.shooter->setTarget(targetAngle);
+			std::cout << "Target Angle: " << targetAngle << std::endl;
+		}
+		else if(j_Digital(X))
+		{
+			targetAngle += 0.1;
+			robot.shooter->setTarget(targetAngle);
+			std::cout << "Target Angle: " << targetAngle << std::endl;
+		}
+
+		if(j_Digital(B)) {
+			robot.tracker->setState({0_ft, 7_ft, 0_deg});
+		}
 
 
 		if(j_Digital(left))

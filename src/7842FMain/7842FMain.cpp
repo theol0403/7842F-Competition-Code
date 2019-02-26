@@ -126,11 +126,11 @@ void opcontrol()
 
     if(j_Digital(A)) autonomous();
 
-    // if(j_Digital(B)) {
-    //   robot.tracker->resetState();
-    //   robot.tracker->resetSensors();
-    //   robot.tracker->resetState();
-    // }
+    if(j_Digital(B)) {
+      // robot.tracker->resetState();
+      // robot.tracker->resetSensors();
+      // robot.tracker->resetState();
+    }
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);

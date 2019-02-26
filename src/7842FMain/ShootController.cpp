@@ -44,19 +44,19 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootTopFlag :
-    addJobs({shootIndexer, waitForFlywheel, angleTop});
+    addJobs({shootIndexer, angleTop});
     break;
 
     case shootMacros::shootMiddleFlag :
-    addJobs({shootIndexer, waitForFlywheel, angleMiddle});
+    addJobs({shootIndexer, angleMiddle});
     break;
 
     case shootMacros::shootTarget :
-    addJobs({shootIndexer, waitForFlywheel, angleTarget});
+    addJobs({shootIndexer, angleTarget});
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, waitForFlywheel, angleTop});
+    addJobs({shootIndexer, waitForBall, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -109,6 +109,15 @@ double ShootController::getHoodAngle() {
 double ShootController::getTopFlagAngle() {
   switch((int) distanceToFlag.convert(foot))
   {
+//     closest Shot at Y : 7.78903 at Angle : 0
+// Shot at Y : 6.96717 at Angle : 0
+// Shot at Y : 7.03629 at Angle : 0
+// Shot at Y : 6.26576 at Angle : 5.8
+// Shot at Y : 5.27931 at Angle : 8.3
+// Shot at Y : 5.25532 at Angle : 7.9
+// Shot at Y : 5.0475 at Angle : 3.7
+// Shot at Y : 4.13207 at Angle : 7
+// Shot at Y : 3.6893 at Angle : 8.3
     case 0 ... 1 : return 0; break;
     case 2 ... 3 : return 5; break;
     case 4 ... 5 : return 15; break;
@@ -267,7 +276,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(200);
+      pros::delay(300);
       intake->enable();
       completeJob();
       break;
