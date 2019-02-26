@@ -87,7 +87,7 @@ void driverControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		//if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
 
