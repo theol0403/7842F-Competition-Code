@@ -27,7 +27,7 @@ void checkBaseStatus()
 const int8_t mFlywheel = -1;
 const int8_t mIntake = -9;
 const int8_t mIndexer = 10;
-const int8_t mArm = 2;
+const int8_t mArm = -8;
 
 const int8_t mRightFront = -19;
 const int8_t mRightBack = -20;
@@ -72,11 +72,11 @@ void initializeDevices()
 {
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
-	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel), 15, new lib7842::velPID(0.4, 0.05, 0.044, 0.9), new lib7842::emaFilter(0.15), 0.7);
+	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel), 15, new lib7842::velPID(0.35, 0.05, 0.045, 0.9), new lib7842::emaFilter(0.15), 0.7);
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 144);
 
-	robot.arm = new ArmController(new okapi::Motor(mArm), new pros::ADIPotentiometer('B'), 100, new IterativePosPIDController(0.001, 0, 0, 0, TimeUtilFactory::create()));
+	robot.arm = new ArmController(new okapi::Motor(mArm), new pros::ADIPotentiometer('A'), 26, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 }
 
 

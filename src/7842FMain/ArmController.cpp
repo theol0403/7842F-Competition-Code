@@ -21,9 +21,9 @@ void ArmController::run()
 
   while(true)
   {
-    double outPos = 0;
-    double downPos = 40;
-    double upPos = -20;
+    double outPos = 117;
+    double downPos = 170;
+    double upPos = 68;
 
     switch(armState) {
 
@@ -33,7 +33,7 @@ void ArmController::run()
 
       case unfold:
       arm->move(127);
-      if(getArmAngle() > 20) armState = out;
+      if(getArmAngle() > outPos) armState = out;
       break;
 
       case out:
@@ -55,6 +55,7 @@ void ArmController::run()
 
     }
 
+    //std::cout << "Arm: " << getArmAngle() << std::endl;
     pros::delay(10);
   }
 }
