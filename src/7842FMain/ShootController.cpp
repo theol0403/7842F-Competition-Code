@@ -56,7 +56,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForBall, angleMiddle, shootIndexer, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -107,38 +107,37 @@ double ShootController::getHoodAngle() {
 
 // range is about 60 deg
 double ShootController::getTopFlagAngle() {
-  switch((int) distanceToFlag.convert(foot))
-  {
-//     closest Shot at Y : 7.78903 at Angle : 0
-// Shot at Y : 6.96717 at Angle : 0
-// Shot at Y : 7.03629 at Angle : 0
-// Shot at Y : 6.26576 at Angle : 5.8
-// Shot at Y : 5.27931 at Angle : 8.3
-// Shot at Y : 5.25532 at Angle : 7.9
-// Shot at Y : 5.0475 at Angle : 3.7
-// Shot at Y : 4.13207 at Angle : 7
-// Shot at Y : 3.6893 at Angle : 8.3
-    case 0 ... 1 : return 0; break;
-    case 2 ... 3 : return 5; break;
-    case 4 ... 5 : return 15; break;
-    case 6 ... 7 : return 25; break;
-    case 8 ... 9 : return 35; break;
-    default : return 0; break;
-  }
-  return 0;
+  double x = distanceToFlag.convert(foot);
+  // switch((int)x)
+  // {
+  //   case 0 ... 1 : return 0; break;
+  //   case 2 ... 3 : return 5; break;
+  //   case 4 ... 5 : return 15; break;
+  //   case 6 ... 7 : return 25; break;
+  //   case 8 ... 9 : return 35; break;
+  //   default : return 0; break;
+  // }
+  double y = -0.0974*std::pow(x, 2) + 1.8549*x - 1.9294;
+  if(x < 3.2 || x > 10) y = 0;
+  if(y < 0 || y > 40) y = 0;
+  return y;
 }
 
 double ShootController::getMiddleFlagAngle() {
-  switch((int) distanceToFlag.convert(foot))
-  {
-    case 0 ... 1 : return 0; break;
-    case 2 ... 3 : return 15; break;
-    case 4 ... 5 : return 25; break;
-    case 6 ... 7 : return 35; break;
-    case 8 ... 9 : return 45; break;
-    default : return 20; break;
-  }
-  return 20;
+  double x = distanceToFlag.convert(foot);
+  // switch((int) distanceToFlag.convert(foot))
+  // {
+  //   case 0 ... 1 : return 0; break;
+  //   case 2 ... 3 : return 15; break;
+  //   case 4 ... 5 : return 25; break;
+  //   case 6 ... 7 : return 35; break;
+  //   case 8 ... 9 : return 45; break;
+  //   default : return 20; break;
+  // }
+  double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
+  if(x < 3) y = 20;
+  if(y < 0 || y > 40) y = 0;
+  return y;
 }
 
 
@@ -153,7 +152,7 @@ void ShootController::setDistanceToFlag(QLength distance) {
 
 void ShootController::run()
 {
-  const double angleThresh = 6;
+  const double angleThresh = 5;
   const double angleSpeed = -50;
 
   while(true)
