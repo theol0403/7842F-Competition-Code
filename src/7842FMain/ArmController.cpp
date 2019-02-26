@@ -21,9 +21,9 @@ void ArmController::run()
 
   while(true)
   {
-    double outPos = 117;
+    double outPos = 90;
     double downPos = 170;
-    double upPos = 68;
+    double upPos = 75;
 
     switch(armState) {
 

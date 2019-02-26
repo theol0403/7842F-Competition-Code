@@ -86,6 +86,7 @@ void disabled()
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   robot.flywheel->resetSlew();
+  robot.arm->setState(ArmController::off);
   #endif
   robot.model->stop();
 }
@@ -119,6 +120,7 @@ void opcontrol()
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.intake->setState(IntakeController::off);
+  robot.arm->setState(ArmController::off);
   #endif
 
   while(true)
