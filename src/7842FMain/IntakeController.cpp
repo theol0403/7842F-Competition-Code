@@ -19,8 +19,8 @@ IntakeController::intakeStates IntakeController::getState() {
 
 void IntakeController::disable() {
   if(!disabled) {
-    intake->moveVelocity(0);
-    indexer->moveVelocity(0);
+    intake->move(0);
+    indexer->move(0);
   }
   disabled = true;
 }
