@@ -43,14 +43,14 @@ void initializeBase()
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mRightFront, mRightBack})),
 		std::make_shared<ADIEncoder>('H', 'G'),
 		std::make_shared<ADIEncoder>('F', 'E'),
-		100,
+		120,
 		12000
 	);
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
 		6.4375_in, 2.75_in, 360,
-		lib7842::OdomTracker::aTracking
+		lib7842::OdomTracker::mTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
