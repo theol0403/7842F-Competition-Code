@@ -152,7 +152,7 @@ void ShootController::setDistanceToFlag(QLength distance) {
 
 void ShootController::run()
 {
-  const double angleThresh = 5;
+  const double angleThresh = 4;
   const double angleSpeed = -50;
 
   while(true)
