@@ -34,18 +34,18 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(j_Digital(B)) {
-		armState = ArmController::down;
-	} else if(j_Digital(Y)) {
-		armState = ArmController::out;
-	} else if(j_Digital(X)) {
-		armState = ArmController::up;
-	}
-
-	if(armState != lastArmState) {
-		robot.arm->setState(armState);
-		lastArmState = armState;
-	}
+	// if(j_Digital(B)) {
+	// 	armState = ArmController::down;
+	// } else if(j_Digital(Y)) {
+	// 	armState = ArmController::out;
+	// } else if(j_Digital(X)) {
+	// 	armState = ArmController::up;
+	// }
+	//
+	// if(armState != lastArmState) {
+	// 	robot.arm->setState(armState);
+	// 	lastArmState = armState;
+	// }
 
 
 	/**
@@ -63,7 +63,7 @@ void driverControl()
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
 
-		robot.arm->setState(ArmController::off);
+		//robot.arm->setState(ArmController::off);
 		armState = ArmController::off;
 		lastArmState = ArmController::off;
 	}

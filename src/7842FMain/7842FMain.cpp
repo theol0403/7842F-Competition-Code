@@ -86,7 +86,7 @@ void disabled()
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   robot.flywheel->resetSlew();
-  robot.arm->setState(ArmController::off);
+  //robot.arm->setState(ArmController::off);
   #endif
   robot.model->stop();
 }
@@ -120,7 +120,7 @@ void opcontrol()
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.intake->setState(IntakeController::off);
-  robot.arm->setState(ArmController::off);
+  //robot.arm->setState(ArmController::off);
   #endif
 
   while(true)
@@ -173,7 +173,7 @@ void autonomous()
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.flywheel->setRpm(globalFlywheelRPM);
-  robot.arm->setState(ArmController::unfold);
+  //robot.arm->setState(ArmController::unfold);
   #endif
 
   SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());

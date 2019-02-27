@@ -20,7 +20,7 @@ struct robot_t
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
   ShootController* shooter = nullptr;
-  ArmController* arm = nullptr;
+  //ArmController* arm = nullptr;
 };
 
 extern robot_t robot;

@@ -76,7 +76,7 @@ void initializeDevices()
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 144);
 
-	robot.arm = new ArmController(new okapi::Motor(mArm), new pros::ADIPotentiometer('A'), 26, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
+	//robot.arm = new ArmController(new okapi::Motor(mArm), new pros::ADIPotentiometer('A'), 26, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 }
 
 
