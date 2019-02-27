@@ -24,6 +24,7 @@ namespace lib7842
 
     std::shared_ptr<okapi::SkidSteerModel> model;
     const QLength m_chassisWidth;
+    const QLength m_wheelDiam;
     const double m_degToInch;
 
     std::function<void(OdomTracker*)> m_trackerFunc;

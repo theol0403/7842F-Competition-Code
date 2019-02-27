@@ -11,6 +11,7 @@ namespace lib7842
   ):
   model(imodel),
   m_chassisWidth(chassisWidth),
+  m_wheelDiam(wheelDiam),
   m_degToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
   m_trackerFunc(trackerFunc),
   m_trackerTask(odometryTask, this)
