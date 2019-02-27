@@ -10,11 +10,6 @@
 #include "7842FMain/IntakeController.hpp"
 #include "7842FMain/FlywheelController.hpp"
 
-/**
-* Points
-*/
-extern qPoint leftFlag;
-extern qPoint rightFlag;
-
+#include "AutoPoints.hpp"
 
 #include "AutonFunctions.hpp"
