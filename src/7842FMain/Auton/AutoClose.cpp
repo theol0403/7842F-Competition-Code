@@ -11,10 +11,10 @@ void AutonClose(void* input)
   QLength topShootDistance = 7_ft;
 
   chassis->driveToPoint({4.5_ft, 7_ft});                  //Move to ball under cap
-  chassis->driveToPoint({1_ft, topShootDistance}); //Move to behind shooting position
+  chassis->driveToPoint({1_ft, 7_ft}); //Move to behind shooting position
   chassis->turnToPoint(sideFlagShoot);                         //turn to flag
 
-  robot.shooter->setDistanceToFlag(topShootDistance);
+  robot.shooter->setDistanceToFlag(7_ft);
   robot.shooter->doMacro(ShootController::shootMacros::shootBothFlags);
   while(robot.shooter->getCurrentJob() != ShootController::standby) pros::delay(5);
 

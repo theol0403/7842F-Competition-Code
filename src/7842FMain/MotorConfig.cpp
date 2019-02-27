@@ -43,20 +43,20 @@ void initializeBase()
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mRightFront, mRightBack})),
 		std::make_shared<ADIEncoder>('H', 'G'),
 		std::make_shared<ADIEncoder>('F', 'E'),
-		200,
+		100,
 		12000
 	);
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
 		6.4375_in, 2.75_in, 360,
-		lib7842::OdomTracker::mdTracking
+		lib7842::OdomTracker::aTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
 		new IterativePosPIDController(0.0016, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
-		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(10, 5, 100_ms), std::make_unique<AverageFilter<5>>()), //Angle PID - To Degree
+		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms), std::make_unique<AverageFilter<5>>()), //Angle PID - To Degree
 		new IterativePosPIDController(0.006, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms), std::make_unique<AverageFilter<5>>()) //Turn PID - To Degree
 	);
 
