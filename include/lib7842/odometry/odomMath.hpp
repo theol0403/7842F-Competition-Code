@@ -55,6 +55,7 @@ namespace lib7842
   qPoint mirrorSide(qPoint, autonSides);
   QAngle mirrorSide(QAngle, autonSides);
   Path mirrorSide(Path, autonSides);
+  QLength mirrorSide(QLength, autonSides);
 
 }
 

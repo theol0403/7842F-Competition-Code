@@ -62,6 +62,13 @@ namespace lib7842
     return path;
   }
 
+  QLength mirrorSide(QLength x, autonSides side) {
+    if(side == autonSides::blue) {
+      x = 12_ft - x;
+    }
+    return x;
+  }
+
 }
 
 namespace lib7842::OdomMath

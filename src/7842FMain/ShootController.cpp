@@ -56,7 +56,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, angleTop});
+    addJobs({shootIndexer, shootIndexer, waitForFlywheel, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -264,8 +264,9 @@ void ShootController::run()
 
       case waitForFlywheel:
       flywheel->enable();
-      intake->disable();
+      intake->indexer->move(0);
       intake->indexerSlave = true;
+      intake->disable();
       if(flywheel->pid->getError() < 300) completeJob();
       break;
 

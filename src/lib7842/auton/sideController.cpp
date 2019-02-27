@@ -9,6 +9,10 @@ namespace lib7842
     controller->tracker->setState(mirrorSide(point, side));
   }
 
+  void SideController::setX(QLength x) {
+    controller->tracker->setX(mirrorSide(x, side));
+  }
+
   QAngle SideController::computeAngleToPoint(qPoint point) {
     return controller->computeAngleToPoint(mirrorSide(point, side));
   }

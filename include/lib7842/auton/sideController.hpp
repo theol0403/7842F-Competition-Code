@@ -21,7 +21,8 @@ namespace lib7842
     SideController(OdomController*, autonSides);
 
     void setState(qPoint);
-    
+    void setX(QLength);
+
     QAngle computeAngleToPoint(qPoint);
     QLength computeDistanceToPoint(qPoint);
 

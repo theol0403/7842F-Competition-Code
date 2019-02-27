@@ -8,20 +8,17 @@ void AutonClose(void* input)
   chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   robot.intake->setState(IntakeController::intakeBall);
 
-  QLength topShootDistance = 7_ft;
-
-  chassis->driveToPoint({4.5_ft, 7_ft}, 1, makeSettle(3_in));                  //Move to ball under cap
+  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in));                  //Move to ball under cap
   chassis->driveToPoint({1_ft, 7_ft}, 1, makeSettle(3_in)); //Move to behind shooting position
-  chassis->turnToPoint(sideFlagPost);                         //turn to flag
+  chassis->turnToPoint(sideFlagShoot);                         //turn to flag
 
-  robot.shooter->setDistanceToFlag(5_ft);
+  robot.shooter->setDistanceToFlag(2_ft);
   robot.shooter->doMacro(ShootController::shootMacros::shootBothFlags);
   while(robot.shooter->getCurrentJob() != ShootController::standby) pros::delay(5);
 
-  chassis->driveToPoint({1_ft, 12_ft}); // Move forward towards flags and push bottom flag
-
-  chassis->driveToPoint({0.5_ft, 10.5_ft}); //Push Bottom Flag
-  chassis->driveToPoint({0.4_ft, 8.6_ft});  //Move back
+robot.tracker->setX(1_ft); 
+  chassis->driveToPoint({1_ft, 10_ft}); // Move forward towards flags and push bottom flag
+  //chassis->driveToPoint({0.4_ft, 8.6_ft});  //Move back
 
 
   //   setIntakeMode(intakeModes::loading);
