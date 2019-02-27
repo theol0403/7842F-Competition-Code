@@ -6,7 +6,7 @@ static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 static ArmController::armStates armState = ArmController::off;
 static ArmController::armStates lastArmState = ArmController::off;
 
-static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::down];
+static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
@@ -99,9 +99,13 @@ void driverControl()
 	* Angle Control
 	*/
 
-	if(j_Digital(left))
+		if(j_Digital(down))
 	{
 		distanceToFlag = 2_ft;
+	}
+	else if(j_Digital(left))
+	{
+		distanceToFlag = 4_ft;
 	}
 	else if(j_Digital(up))
 	{

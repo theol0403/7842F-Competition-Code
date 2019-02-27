@@ -15,8 +15,18 @@ namespace lib7842
   tracker(itracker),
   distancePid(idistancePid),
   anglePid(ianglePid),
-  turnPid(iturnPid)
-  {};
+  turnPid(iturnPid),
+  	okapiChassis(std::make_shared<ChassisControllerPID>(
+		TimeUtilFactory::create(),
+		tracker->model,
+		std::make_unique<IterativePosPIDController>(*idistancePid), //Distance PID - To mm
+		std::make_unique<IterativePosPIDController>(*ianglePid), //Angle PID - To Degree
+		std::make_unique<IterativePosPIDController>(*iturnPid), //Turn PID - To Degree
+		AbstractMotor::gearset::green,
+		ChassisScales{tracker->m_wheelDiam, tracker->m_chassisWidth}))
+  {
+   okapiChassis->startThread();
+  };
 
 
   /**
@@ -33,10 +43,12 @@ namespace lib7842
   double OdomController::filterVelocity() { return m_velFilter.filter(getActualVelocity()); }
   double OdomController::getFilteredVelocity() { return m_velFilter.getOutput(); }
 
-  void OdomController::resetEmergencyAbort() { resetVelocityMax();
+  void OdomController::resetEmergencyAbort() { 
+    resetVelocityMax();
     turnPid->reset();
     distancePid->reset();
     anglePid->reset();
+    okapiChassis->stop();
   }
   bool OdomController::emergencyAbort() {
     if(std::abs(filterVelocity()) < 5) {
