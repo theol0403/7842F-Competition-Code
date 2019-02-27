@@ -29,6 +29,11 @@ namespace lib7842
       state.y.convert(inch),
       state.theta.convert(degree)
     );
+    printf (
+      "left: %d, right: %d\n",
+      model->getSensorVals()[0],
+      model->getSensorVals()[1]
+    );
   }
 
 

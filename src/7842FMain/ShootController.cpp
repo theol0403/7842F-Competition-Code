@@ -56,7 +56,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, waitForFlywheel, angleMiddle, shootIndexer, angleTop});
+    addJobs({shootIndexer, waitForFlywheel, waitForBall, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
