@@ -63,6 +63,11 @@ void IntakeController::run()
         indexerSlave = true;
         break;
 
+        case outSlow:
+        intake->moveVelocity(-50);
+        indexerSlave = true;
+        break;
+
       }
 
     }

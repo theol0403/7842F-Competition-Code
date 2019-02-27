@@ -18,7 +18,9 @@ void driverControl()
 	/**
 	* Intake Control
 	*/
-	if(j_Digital(R2)) {
+	if(j_Digital(R2) && j_Digital(R1)) {
+		intakeState = IntakeController::outSlow;
+	} else if(j_Digital(R2)) {
 		intakeState = IntakeController::intakeBall;
 	} else if(j_Digital(R1)) {
 		intakeState = IntakeController::outIntake;

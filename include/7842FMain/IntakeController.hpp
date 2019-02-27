@@ -10,7 +10,8 @@ public:
   {
     off,
     intakeBall, //runs intake and indexer until ball then indexer stops
-    outIntake
+    outIntake,
+    outSlow
   };
 
   Motor* intake = nullptr;
