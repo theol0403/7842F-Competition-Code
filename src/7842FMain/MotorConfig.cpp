@@ -55,8 +55,8 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new IterativePosPIDController(0.001, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
-		new IterativePosPIDController(0.002, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms), std::make_unique<AverageFilter<5>>()), //Angle PID - To Degree
+		new IterativePosPIDController(0.0016, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
+		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(10, 5, 100_ms), std::make_unique<AverageFilter<5>>()), //Angle PID - To Degree
 		new IterativePosPIDController(0.003, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms), std::make_unique<AverageFilter<5>>()) //Turn PID - To Degree
 	);
 
