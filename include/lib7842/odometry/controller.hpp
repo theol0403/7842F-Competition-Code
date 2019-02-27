@@ -74,17 +74,17 @@ namespace lib7842
     void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
-    void driveDistanceAtAngle(QLength, angleCalc_t, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveDistanceAtAngle(QLength, angleCalc_t, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveForTime(int, double, AsyncActionList = {});
-    void driveForTimeAtAngle(int, double, angleCalc_t, double = 3, AsyncActionList = {});
+    void driveForTimeAtAngle(int, double, angleCalc_t, double = 1, AsyncActionList = {});
     void allignToAngle(QAngle, double, double);
 
-    void driveToPoint(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveToPointSimple(qPoint, double = 3, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
 
-    void drivePath(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-    void drivePathSimple(Path, double = 3, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+    void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+    void drivePathSimple(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
   };
 

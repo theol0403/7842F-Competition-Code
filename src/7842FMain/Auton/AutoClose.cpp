@@ -16,7 +16,7 @@ void AutonClose(void* input)
   robot.shooter->doMacro(ShootController::shootMacros::shootBothFlags);
   while(robot.shooter->getCurrentJob() != ShootController::standby) pros::delay(5);
 
-robot.tracker->setX(1_ft); 
+robot.tracker->setX(1_ft);
   chassis->driveToPoint({1_ft, 10_ft}); // Move forward towards flags and push bottom flag
   //chassis->driveToPoint({0.4_ft, 8.6_ft});  //Move back
 
