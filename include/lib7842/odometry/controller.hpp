@@ -83,10 +83,10 @@ namespace lib7842
     void allignToAngle(QAngle, double, double);
 
     void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveToPointSimple(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPoint2(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
 
     void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-    void drivePathSimple(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
+    void drivePath2(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
 
     void turnAngleOkapi(QAngle);
     void turnToAngleOkapi(QAngle);

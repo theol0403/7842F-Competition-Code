@@ -81,36 +81,50 @@ namespace lib7842
   void SideController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
     controller->driveToPoint(mirrorSide(targetPoint, side), turnScale, settleFunc, actions);
   }
-  void SideController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
-    controller->driveToPointSimple(mirrorSide(targetPoint, side), turnScale, settleFunc, actions);
+  void SideController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
+    controller->driveToPoint2(mirrorSide(targetPoint, side), turnScale, settleFunc, actions);
   }
 
   void SideController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
     controller->drivePath(mirrorSide(path, side), turnScale, moveOnSettle, finalSettle, actions);
   }
-  void SideController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
-    controller->drivePathSimple(mirrorSide(path, side), turnScale, moveOnSettle, finalSettle, actions);
+  void SideController::drivePath2(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions) {
+    controller->drivePath2(mirrorSide(path, side), turnScale, moveOnSettle, finalSettle, actions);
   }
 
-  void SideController::turnAngleOkapi(QAngle angle)
+  void SideController::driveToPointSimple(qPoint point, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    controller->turnAngleOkapi(mirrorSide(angle, side));
-  }
-  void SideController::turnToAngleOkapi(QAngle angle)
-  {
-    controller->turnToAngleOkapi(mirrorSide(angle, side));
-  }
-  void SideController::turnToPointOkapi(qPoint point)
-  {
-    controller->turnToPointOkapi(mirrorSide(point, side));
+    int direction = 1;
+    QAngle wantedAngle = computeAngleToPoint(point);
+    if (wantedAngle.abs() > 90_deg)
+    {
+      wantedAngle -= 180_deg * sgn(wantedAngle.convert(degree));
+      direction = -1;
+    }
+    controller->turnAngle(wantedAngle);
+
+    controller->driveDistance(computeDistanceToPoint(point) * direction, settleFunc, actions);
   }
 
-  void SideController::driveDistanceOkapi(QLength distance)
-  {
-    controller->driveDistanceOkapi(distance);
-  }
-  void SideController::driveToPointOkapi(qPoint) point
-  {
-    controller->driveToPointOkapi(mirrorSide(point, side));
-  }
+    void SideController::turnAngleOkapi(QAngle angle)
+    {
+      controller->turnAngleOkapi(mirrorSide(angle, side));
+    }
+    void SideController::turnToAngleOkapi(QAngle angle)
+    {
+      controller->turnToAngleOkapi(mirrorSide(angle, side));
+    }
+    void SideController::turnToPointOkapi(qPoint point)
+    {
+      controller->turnToPointOkapi(mirrorSide(point, side));
+    }
+
+    void SideController::driveDistanceOkapi(QLength distance)
+    {
+      controller->driveDistanceOkapi(distance);
+    }
+    void SideController::driveToPointOkapi(qPoint) point
+    {
+      controller->driveToPointOkapi(mirrorSide(point, side));
+    }
 }

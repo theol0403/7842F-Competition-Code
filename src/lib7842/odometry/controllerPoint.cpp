@@ -46,7 +46,7 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPointSimple(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetEmergencyAbort();
     settleFunc_t exitFunc = makeSettle(tracker->m_chassisWidth);
@@ -84,13 +84,13 @@ namespace lib7842
     driveToPoint(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
-  void OdomController::drivePathSimple(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
+  void OdomController::drivePath2(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
     for(qPoint &point : path.wayPoints)
     {
-      driveToPointSimple(point, turnScale, moveOnSettle, actions);
+      driveToPoint2(point, turnScale, moveOnSettle, actions);
     }
-    driveToPointSimple(path.wayPoints.back(), turnScale, finalSettle, actions);
+    driveToPoint2(path.wayPoints.back(), turnScale, finalSettle, actions);
   }
 
 

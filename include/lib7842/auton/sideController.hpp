@@ -49,10 +49,10 @@ namespace lib7842
     void allignToAngle(QAngle, double, double);
 
     void driveToPoint(qPoint, double = 3, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
-    void driveToPointSimple(qPoint, double = 3, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPoint2(qPoint, double = 3, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
     void drivePath(Path, double = 3, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
-    void drivePathSimple(Path, double = 3, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void drivePath2(Path, double = 3, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
     void turnAngleOkapi(QAngle);
     void turnToAngleOkapi(QAngle);
