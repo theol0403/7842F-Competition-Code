@@ -90,10 +90,10 @@ namespace lib7842
 
     void turnAngleOkapi(QAngle);
     void turnToAngleOkapi(QAngle);
-            void turnToPointOkapi(qPoint);
+    void turnToPointOkapi(qPoint);
 
     void driveDistanceOkapi(QLength);
-void driveToPointOkapi(qPoint);
+    void driveToPointOkapi(qPoint);
 
   };
 

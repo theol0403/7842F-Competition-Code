@@ -54,6 +54,12 @@ namespace lib7842
     void drivePath(Path, double = 3, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
     void drivePathSimple(Path, double = 3, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
+    void turnAngleOkapi(QAngle);
+    void turnToAngleOkapi(QAngle);
+    void turnToPointOkapi(qPoint);
+
+    void driveDistanceOkapi(QLength);
+    void driveToPointOkapi(qPoint);
 
     #ifdef CONTROLLER_NAME_FOR_SHORTCUTS
     #define computeAngleToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeAngleToPoint
