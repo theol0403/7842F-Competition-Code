@@ -9,23 +9,21 @@ public:
   enum armStates
   {
     off, //motors off
-    unfold, //brings it to out position
-    out, //holds in out position
     down, //presses down to cap position
-    up //brings up to descore position but allows upwards movement
+    back //brings up to descore position but allows upwards movement
   };
 
   Motor* arm = nullptr;
-  pros::ADIPotentiometer* armSensor = nullptr;
-  double foldAngle = 0;
+  double startAngle = 0;
   IterativePosPIDController* pid = nullptr;
   pros::Task armTask;
 
   armStates armState = off;
 
-  ArmController(Motor*, pros::ADIPotentiometer*, double, IterativePosPIDController*);
+  ArmController(Motor*, IterativePosPIDController*);
 
   void setState(armStates);
+  armStates getState();
   double getArmAngle();
 
   void run();

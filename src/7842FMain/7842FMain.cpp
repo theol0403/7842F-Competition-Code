@@ -86,7 +86,7 @@ void disabled()
   robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   robot.flywheel->resetSlew();
-  //robot.arm->setState(ArmController::off);
+  robot.arm->setState(ArmController::off);
   #endif
   robot.model->stop();
 }
@@ -120,19 +120,13 @@ void opcontrol()
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.intake->setState(IntakeController::off);
-  //robot.arm->setState(ArmController::off);
+  robot.arm->setState(ArmController::off);
   #endif
 
   while(true)
   {
 
     if(j_Digital(A)) autonomous();
-
-    // if(j_Digital(B)) {
-    //   robot.tracker->resetState();
-    //   robot.tracker->resetSensors();
-    //   robot.tracker->resetState();
-    // }
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);

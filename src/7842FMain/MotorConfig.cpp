@@ -57,7 +57,7 @@ void initializeBase()
 		robot.tracker,
 		new IterativePosPIDController(0.003, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
 		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.01, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms)) //Turn PID - To Degree
+		new IterativePosPIDController(0.004, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms)) //Turn PID - To Degree
 	);
 
 
@@ -82,7 +82,7 @@ void initializeDevices()
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 138.1);
 
-	//robot.arm = new ArmController(new okapi::Motor(mArm), new pros::ADIPotentiometer('A'), 26, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
+	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.1, 0, 0, 0, TimeUtilFactory::create()));
 }
 
 

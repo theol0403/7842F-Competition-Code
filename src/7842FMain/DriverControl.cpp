@@ -3,8 +3,7 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static ArmController::armStates armState = ArmController::off;
-static ArmController::armStates lastArmState = ArmController::off;
+static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::Y];
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
@@ -37,18 +36,13 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	// if(j_Digital(B)) {
-	// 	armState = ArmController::down;
-	// } else if(j_Digital(Y)) {
-	// 	armState = ArmController::out;
-	// } else if(j_Digital(X)) {
-	// 	armState = ArmController::up;
-	// }
-	//
-	// if(armState != lastArmState) {
-	// 	robot.arm->setState(armState);
-	// 	lastArmState = armState;
-	// }
+	if(armTrigger.changedToPressed()) {
+		if(robot.arm->getState() != ArmController::down) {
+		robot.arm->setState(ArmController::down);	
+		} else {
+			robot.arm->setState(ArmController::back);	
+		}
+	}
 
 
 	/**
@@ -67,8 +61,7 @@ void driverControl()
 		robot.shooter->doJob(ShootController::off);
 
 		//robot.arm->setState(ArmController::off);
-		armState = ArmController::off;
-		lastArmState = ArmController::off;
+		robot.arm->setState(ArmController::off);	
 	}
 
 	/**
