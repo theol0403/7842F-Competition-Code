@@ -135,7 +135,7 @@ double ShootController::getMiddleFlagAngle() {
   //   default : return 20; break;
   // }
   double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
-  if(x < 3) y = 14;
+  if(x < 3) y = 10;
   if(y < 0 || y > 40) y = 0;
   return y;
 }
