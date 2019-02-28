@@ -9,7 +9,7 @@ void OdomController::turnAngleOkapi(QAngle angle)
 }
 void OdomController::turnToAngleOkapi(QAngle angle)
 {
-  okapiChassis->turnAngle(rollAngle180(angle - tracker->state.theta);
+  okapiChassis->turnAngle(rollAngle180(angle - tracker->state.theta));
 }
 void OdomController::turnToPointOkapi(qPoint point)
 {

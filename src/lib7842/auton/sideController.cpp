@@ -123,7 +123,7 @@ namespace lib7842
     {
       controller->driveDistanceOkapi(distance);
     }
-    void SideController::driveToPointOkapi(qPoint) point
+    void SideController::driveToPointOkapi(qPoint point)
     {
       controller->driveToPointOkapi(mirrorSide(point, side));
     }

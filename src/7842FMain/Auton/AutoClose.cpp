@@ -8,22 +8,21 @@ void AutonClose(void* input)
   chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
 
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 1.5_ft;))
+  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(2_in), {intake});                  //Move to ball under cap
-  chassis->driveToPoint({1_ft, 7_ft}, 1, makeSettle(3_in)); //Move to behind shooting position
-  chassis->turnToAngle(20_deg);                         //turn to flag
+  chassis->driveDistanceAtAngle(3_ft, angleCalc(90_deg), 0.5, makeSettle(2_in), {intake});                  //Move to ball under cap
+  chassis->driveDistanceAtAngle(-3_ft, angleCalc(90_deg), 0.5); //Move to behind shooting position
+  chassis->turnToPoint(sideFlagShoot);                         //turn to flag
 
-  robot.shooter->setDistanceToFlag(2_ft);
+  robot.shooter->setDistanceToFlag(0_ft);
   robot.shooter->doMacro(ShootController::shootMacros::shootBothFlags);
   while(robot.shooter->getCurrentJob() != ShootController::standby) pros::delay(5);
 
-  robot.tracker->setX(1_ft);
-  chassis->driveToPoint({1.5_ft, 10.2_ft}); // Move forward towards flags and push bottom flag
-  chassis->driveDistance(-2_ft);
+  chassis->driveToPointSimple({1.5_ft, 10.2_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
+  chassis->driveDistance(-2_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
-  chassis->driveToPoint({4_ft, 8_ft});  //Move back
+  chassis->driveToPoint({4_ft, 6_ft});  //Move back
 
 
   //   setIntakeMode(intakeModes::loading);
