@@ -1,49 +1,79 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 
-
-void AutonClose(void* input)
+void AutonClose(void *input)
 {
   pros::delay(200);
-  SideController* chassis = static_cast<SideController*>(input);
+  SideController *chassis = static_cast<SideController *>(input);
 
   chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
-  robot.arm->setState(ArmController::out);
 
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
-  .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
+                           .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
+                           .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake});                  //Move to ball under cap
-  chassis->driveToPoint({1_ft, 6.7_ft}, 1); //Move to behind shooting position
+  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); //Move to ball under cap
+  chassis->driveToPoint({1_ft, 6.7_ft}, 1);                           //Move to behind shooting position
   // chassis->allignToAngle(90_deg, -50, 20);
   // chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
   // chassis->driveDistance(1_ft);
-  chassis->turnToPoint(sideFlagShoot);                         //turn to flag
 
-  robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  if (chassis->side == autonSides::red)
+  {
+
+    chassis->turnToPoint(sideFlagShoot); //turn to flag
+
+    robot.shooter->setTarget(0);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
     robot.shooter->setTarget(18);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-pros::delay(700);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(700);
 
-  chassis->driveToPointSimple({1.2_ft, 10.1_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
-  chassis->driveDistance(-1_ft, makeSettle(2_in));
-  chassis->turnToAngle(90_deg);
+    chassis->driveToPointSimple({1.2_ft, 19.7_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
+    chassis->driveDistance(-1_ft, makeSettle(2_in));
+    chassis->turnToAngle(90_deg);
 
-   chassis->driveToPointSimple({2_ft, 9_ft}, makeSettle(2_in));
-   robot.arm->setState(ArmController::down);
+    chassis->driveToPointSimple({2_ft, 9_ft}, makeSettle(2_in));
+    robot.arm->setState(ArmController::down);
     chassis->driveDistance(-2_in);
 
-  chassis->turnToPoint(middleFlagPost);  
+    chassis->turnToPoint(middleFlagPost);
     robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
     robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-pros::delay(500);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
+  }
+  else
+  {
 
+    robot.tracker->state.theta -= 5_deg;
+    chassis->turnToPoint(sideFlagShoot); //turn to flag
 
+    robot.shooter->setTarget(0);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
+    robot.shooter->setTarget(18);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(700);
+
+    chassis->driveToPointSimple({1_ft, 10_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
+    chassis->driveDistance(-1_ft, makeSettle(2_in));
+    chassis->turnToAngle(90_deg);
+
+    chassis->driveToPointSimple({2_ft, 9_ft}, makeSettle(2_in));
+    robot.arm->setState(ArmController::down);
+    chassis->driveDistance(-2_in);
+
+    chassis->turnToPoint(middleFlagPost);
+    robot.shooter->setTarget(0);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
+    robot.shooter->setTarget(20);
+    robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+    pros::delay(500);
+  }
 
   //   setIntakeMode(intakeModes::loading);
   //
@@ -114,5 +144,4 @@ pros::delay(500);
   //     setIntakeMode(intakeModes::shootIndexer);
   //     pros::delay(200);
   //   }
-
 }
