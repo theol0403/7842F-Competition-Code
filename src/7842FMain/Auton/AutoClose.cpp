@@ -7,6 +7,7 @@ void AutonClose(void* input)
   SideController* chassis = static_cast<SideController*>(input);
 
   chassis->setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
+  robot.arm->setState(ArmController::out);
 
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
@@ -29,9 +30,10 @@ pros::delay(700);
   chassis->driveToPointSimple({1.2_ft, 10.1_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
   chassis->driveDistance(-1_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
-  robot.intake->setState(IntakeController::outIntake);
-  chassis->driveDistance(1.8_ft, makeSettle(2_in));  //Move back
-  robot.intake->setState(IntakeController::intakeBall);
+
+   chassis->driveToPointSimple({2_ft, 9_ft}, makeSettle(2_in));
+   robot.arm->setState(ArmController::down);
+    chassis->driveDistance(-2_in);
 
   chassis->turnToPoint(middleFlagPost);  
     robot.shooter->setTarget(0);

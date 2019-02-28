@@ -10,6 +10,7 @@ public:
   {
     off, //motors off
     down, //presses down to cap position
+    out,
     back //brings up to descore position but allows upwards movement
   };
 
