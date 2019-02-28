@@ -75,9 +75,9 @@ namespace lib7842
   {
     OdomTracker* that = static_cast<OdomTracker*>(input);
     	pros::delay(500);
-	robot.tracker->resetState();
-	robot.tracker->resetSensors();
-		robot.tracker->resetState();
+	that->resetState();
+	that->resetSensors();
+		that->resetState();
     std::cout << "Begin Tracking" << std::endl;
 
     int count = 0;

@@ -274,6 +274,7 @@ void ShootController::run()
       case shootIndexer:
       flywheel->enable();
       intake->disable();
+      pros::delay(10);
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);

@@ -13,20 +13,34 @@ void AutonClose(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake});                  //Move to ball under cap
-  chassis->driveToPoint({1_ft, 7_ft}, 1); //Move to behind shooting position
-  chassis->allignToAngle(90_deg, -50, 20);
-  chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
-  chassis->driveDistance(1_ft);
+  chassis->driveToPoint({1_ft, 6.7_ft}, 1); //Move to behind shooting position
+  // chassis->allignToAngle(90_deg, -50, 20);
+  // chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
+  // chassis->driveDistance(1_ft);
   chassis->turnToPoint(sideFlagShoot);                         //turn to flag
 
-  robot.shooter->setDistanceToFlag(0_ft);
-  robot.shooter->doMacro(ShootController::shootMacros::shootBothFlags);
-  while(robot.shooter->getCurrentJob() != ShootController::standby) pros::delay(5);
+  robot.shooter->setTarget(0);
+  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+  pros::delay(500);
+    robot.shooter->setTarget(18);
+  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+pros::delay(700);
 
-  chassis->driveToPointSimple({1.5_ft, 10.2_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
-  chassis->driveDistance(-2_ft, makeSettle(2_in));
+  chassis->driveToPointSimple({1.2_ft, 10.1_ft}, makeSettle(2_in)); // Move forward towards flags and push bottom flag
+  chassis->driveDistance(-1_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
-  chassis->driveToPoint({4_ft, 6_ft});  //Move back
+  robot.intake->setState(IntakeController::outIntake);
+  chassis->driveDistance(1.8_ft, makeSettle(2_in));  //Move back
+  robot.intake->setState(IntakeController::intakeBall);
+
+  chassis->turnToPoint(middleFlagPost);  
+    robot.shooter->setTarget(0);
+  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+  pros::delay(500);
+    robot.shooter->setTarget(20);
+  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
+pros::delay(500);
+
 
 
   //   setIntakeMode(intakeModes::loading);

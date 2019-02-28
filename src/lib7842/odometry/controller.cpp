@@ -51,7 +51,7 @@ namespace lib7842
     //okapiChassis->stop();
   }
   bool OdomController::emergencyAbort() {
-    if(std::abs(filterVelocity()) < 5) {
+    if(std::abs(filterVelocity()) < 10) {
       std::cout << "EMERGENCY ABORT" << std::endl;
       return true;
     }

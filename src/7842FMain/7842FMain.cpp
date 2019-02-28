@@ -45,7 +45,7 @@ void initialize()
 {
   pros::delay(500); //Give the legacy ports time to start up
 
-  autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Close", AutonClose}});
+  autonSelector = new lib7842::AutonSelector(lv_scr_act(), {{"Close", AutonClose}, {"Test", AutonTest}});
 
   initializeBase();
   initializeDevices();
