@@ -19,9 +19,9 @@ namespace lib7842
   	okapiChassis(std::make_shared<ChassisControllerPID>(
 		TimeUtilFactory::create(),
 		tracker->model,
-		std::make_unique<IterativePosPIDController>(*idistancePid), //Distance PID - To mm
-		std::make_unique<IterativePosPIDController>(*ianglePid), //Angle PID - To Degree
-		std::make_unique<IterativePosPIDController>(*iturnPid), //Turn PID - To Degree
+		std::make_unique<IterativePosPIDController>(std::move(*idistancePid)), //Distance PID - To mm
+		std::make_unique<IterativePosPIDController>(std::move(*ianglePid)), //Angle PID - To Degree
+		std::make_unique<IterativePosPIDController>(std::move(*iturnPid)), //Turn PID - To Degree
 		AbstractMotor::gearset::green,
 		ChassisScales{tracker->m_wheelDiam, tracker->m_chassisWidth}))
   {
