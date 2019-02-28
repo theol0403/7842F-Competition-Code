@@ -60,6 +60,12 @@ void initializeBase()
 		new IterativePosPIDController(0.01, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(0.1, 0, 250_ms)) //Turn PID - To Degree
 	);
 
+
+	pros::delay(200);
+	robot.tracker->resetState();
+	robot.tracker->resetSensors();
+		robot.tracker->resetState();
+
 	// new lib7842::PID(0.002, 0.01, 1, 40, 5, 250_ms), //Distance PID - To mm
 	// new lib7842::PID(0.004, 0.00, 1, 3, 1, 100_ms), //Angle PID - To Degree
 	// new lib7842::PID(0.008, 0.01, 1, 0.1, 0, 250_ms) //Turn PID - To Degree
