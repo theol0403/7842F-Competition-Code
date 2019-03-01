@@ -11,18 +11,14 @@ void AutonClose(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
-  chassis->driveToPoint({1_ft, 6.7_ft}, 1); // Move to behind shooting position
-
-  // chassis->allignToAngle(90_deg, -50, 20);
-  // chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
-  // chassis->driveDistance(1_ft);
+  chassis->driveToPoint({1_ft, 7.2_ft}); // Move to behind shooting position -- was 6.7
 
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
-  robot.shooter->setTarget(18);
+  robot.shooter->setTarget(20);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(700);
 

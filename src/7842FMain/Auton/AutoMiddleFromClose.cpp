@@ -18,7 +18,7 @@ void AutonMiddleFromClose(void* input)
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
-  robot.shooter->setTarget(5);
+  robot.shooter->setTarget(20);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(700);
 
