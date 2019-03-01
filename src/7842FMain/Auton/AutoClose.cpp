@@ -27,11 +27,12 @@ void AutonClose(void* input)
   chassis->driveDistance(-1_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
 
-  chassis->driveToPointSimple({2_ft, 9_ft}, makeSettle(2_in));
+  chassis->driveToPointSimple({1.8_ft, 9_ft}, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
-  chassis->driveDistance(-2_in);
+  chassis->driveDistance(-3_in);
 
   chassis->turnToPoint(middleFlagPost);
+  chassis->turnAngle(40_deg); // turn to flag
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
