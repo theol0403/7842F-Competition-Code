@@ -8,3 +8,5 @@ extern qPoint middleFlagShoot;
 extern qPoint middleFlagPost;
 
 extern qPoint closeFlatCap;
+
+extern qPoint sidePlatform;

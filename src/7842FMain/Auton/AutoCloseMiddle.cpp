@@ -2,22 +2,21 @@
 
 void AutonCloseMiddle(void* input)
 {
-  pros::delay(200);
   SideController* chassis = static_cast<SideController*>(input);
 
   chassis->setState({ 1_ft, 7_ft, 90_deg }); // Robot is facing cap
 
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({ 4_ft, 7_ft }) < 2_ft;))
+  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint({ 4_ft, 7_ft }, 1, makeSettle(3_in), { intake }); // Move to ball under cap
-  chassis->driveToPoint({ 1_ft, 6.8_ft }, 1); // Move to behind shooting position
+  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis->driveToPoint({1_ft, 6.8_ft}, 1); // Move to behind shooting position
 
   // chassis->allignToAngle(90_deg, -50, 20);
   // chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
   // chassis->driveDistance(1_ft);
-  
+
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);

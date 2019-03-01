@@ -12,3 +12,5 @@ qPoint middleFlagShoot {5.8_ft, 11.2_ft};
 qPoint middleFlagPost {6_ft, 11_ft};
 
 qPoint closeFlatCap {3_ft, 9_ft};
+
+qPoint sidePlatform {4.2_ft, 5_ft};
