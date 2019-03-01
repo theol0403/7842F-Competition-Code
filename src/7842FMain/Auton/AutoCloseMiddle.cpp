@@ -1,23 +1,23 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 
-void AutonClose(void* input)
+void AutonCloseMiddle(void* input)
 {
   pros::delay(200);
   SideController* chassis = static_cast<SideController*>(input);
 
   chassis->setState({ 1_ft, 7_ft, 90_deg }); // Robot is facing cap
-  
+
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint({ 4_ft, 7_ft }) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({ 4_ft, 7_ft }, 1, makeSettle(3_in), { intake }); // Move to ball under cap
-  chassis->driveToPoint({ 1_ft, 6.7_ft }, 1); // Move to behind shooting position
+  chassis->driveToPoint({ 1_ft, 6.8_ft }, 1); // Move to behind shooting position
 
   // chassis->allignToAngle(90_deg, -50, 20);
   // chassis->setState({0_ft, 7_ft, 90_deg}); //Robot is facing cap
   // chassis->driveDistance(1_ft);
-
+  
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
@@ -27,14 +27,9 @@ void AutonClose(void* input)
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(700);
 
-  // Move forward towards flags and push bottom flag
-  chassis->driveToPointSimple({ 1_ft, 10_ft }, makeSettle(2_in));
-  chassis->driveDistance(-1_ft, makeSettle(2_in));
-  chassis->turnToAngle(90_deg);
-
-  chassis->driveToPointSimple({ 2_ft, 9_ft }, makeSettle(2_in));
+  chassis->driveToPointSimple(closeFlatCap, makeSettle(3_in));
   robot.arm->setState(ArmController::down);
-  chassis->driveDistance(-2_in);
+  chassis->driveDistance(-4_in);
 
   chassis->turnToPoint(middleFlagPost);
   robot.shooter->setTarget(0);

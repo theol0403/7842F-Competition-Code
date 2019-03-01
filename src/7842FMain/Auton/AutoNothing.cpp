@@ -8,7 +8,7 @@ void AutonTest(void* input)
 {
   SideController* chassis = static_cast<SideController*>(input);
 
-    robot.shooter->setTarget(5);
+  robot.shooter->setTarget(5);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
 
