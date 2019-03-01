@@ -60,7 +60,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shoot :
-    addJobs({shootIndexer, waitForFlywheel, waitForBall});
+    addJobs({shootIndexer});
     break;
 
     case shootMacros::angleManual :
