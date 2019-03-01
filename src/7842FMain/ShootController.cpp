@@ -118,7 +118,7 @@ double ShootController::getTopFlagAngle() {
   //   default : return 0; break;
   // }
   double y = -0.0974*std::pow(x, 2) + 1.8549*x - 1.9294;
-  if(x < 3.2 || x > 10) y = 0;
+  if(x < 3.2) y = 0;
   if(y < 0 || y > 40) y = 0;
   return y;
 }
@@ -135,7 +135,8 @@ double ShootController::getMiddleFlagAngle() {
   //   default : return 20; break;
   // }
   double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
-  if(x < 3) y = 10;
+  if(x <= 2) y = 20;
+  if(x >= 10) y = 8;
   if(y < 0 || y > 40) y = 0;
   return y;
 }
@@ -304,7 +305,7 @@ void ShootController::run()
       break;
 
     }
-    //std::cout << "Hood: " << getHoodAngle() << std::endl;
+  //  std::cout << "Hood: " << getHoodAngle() << std::endl;
     pros::delay(10);
   }
 

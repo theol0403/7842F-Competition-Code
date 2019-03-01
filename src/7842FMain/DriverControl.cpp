@@ -3,7 +3,7 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::Y];
+static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
