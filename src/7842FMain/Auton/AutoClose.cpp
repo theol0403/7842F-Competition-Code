@@ -32,7 +32,7 @@ void AutonClose(void* input)
   chassis->driveDistance(-3_in);
 
   chassis->turnToPoint(middleFlagPost);
-  chassis->turnAngle(40_deg); // turn to flag
+  chassis->turnAngle(50_deg); // turn to flag
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
