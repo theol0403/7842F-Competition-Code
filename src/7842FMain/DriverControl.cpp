@@ -10,8 +10,6 @@ static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
-QLength distanceToFlag = 0_ft;
-
 void driverControl()
 {
 	/**
@@ -94,22 +92,20 @@ void driverControl()
 
 	if(j_Digital(down))
 	{
-		distanceToFlag = 2_ft;
+		robot.shooter->setDistanceToFlag(2_ft);
 	}
 	else if(j_Digital(left))
 	{
-		distanceToFlag = 4_ft;
+		robot.shooter->setDistanceToFlag(4_ft);
 	}
 	else if(j_Digital(up))
 	{
-		distanceToFlag = 5_ft;
+		robot.shooter->setDistanceToFlag(5_ft);
 	}
 	else if(j_Digital(right))
 	{
-		distanceToFlag = 11_ft;
+		robot.shooter->setDistanceToFlag(11_ft);
 	}
-
-	robot.shooter->setDistanceToFlag(distanceToFlag);
 
 
 	// if(j_Digital(L2))
