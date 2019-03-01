@@ -1,4 +1,4 @@
-BasedOnStyle: LLVM
+BasedOnStyle: Webkit
 AccessModifierOffset: 0
 AllowAllParametersOfDeclarationOnNextLine: false
 AlwaysBreakAfterReturnType: None
@@ -9,7 +9,7 @@ AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
-ColumnLimit: 100
+
 ContinuationIndentWidth: 2
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2

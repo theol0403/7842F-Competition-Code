@@ -35,5 +35,4 @@ public:
   void run();
 
   static void task(void*);
-
 };

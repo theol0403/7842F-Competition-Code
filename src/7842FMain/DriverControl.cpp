@@ -38,9 +38,9 @@ void driverControl()
 	*/
 	if(armTrigger.changedToPressed()) {
 		if(robot.arm->getState() != ArmController::down) {
-		robot.arm->setState(ArmController::down);	
+			robot.arm->setState(ArmController::down);
 		} else {
-			robot.arm->setState(ArmController::back);	
+			robot.arm->setState(ArmController::back);
 		}
 	}
 
@@ -61,7 +61,7 @@ void driverControl()
 		robot.shooter->doJob(ShootController::off);
 
 		//robot.arm->setState(ArmController::off);
-		robot.arm->setState(ArmController::off);	
+		robot.arm->setState(ArmController::off);
 	}
 
 	/**
@@ -92,7 +92,7 @@ void driverControl()
 	* Angle Control
 	*/
 
-		if(j_Digital(down))
+	if(j_Digital(down))
 	{
 		distanceToFlag = 2_ft;
 	}

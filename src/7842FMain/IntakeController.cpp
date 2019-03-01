@@ -32,7 +32,6 @@ void IntakeController::enable() {
 
 void IntakeController::run()
 {
-
   while(true)
   {
     double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
@@ -67,11 +66,8 @@ void IntakeController::run()
         intake->moveVelocity(-50);
         indexerSlave = true;
         break;
-
       }
-
     }
-
     pros::delay(10);
   }
 }

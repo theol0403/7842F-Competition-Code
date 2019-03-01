@@ -112,10 +112,10 @@ void disabled()
 */
 void opcontrol()
 {
-  checkBaseStatus();
+  checkBaseStatus(); //Make sure the base has been initialized properly
   robot.model->stop();
 
-  #ifndef TEST_ROBOT
+  #ifndef TEST_ROBOT //This resets all the subsystems
   robot.shooter->clearQueue();
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
@@ -123,20 +123,16 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
-  while(true)
-  {
-
-    if(j_Digital(A)) autonomous();
+  while(true) {
+    if(j_Digital(A)) autonomous(); //For testing
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);
-
     robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
 
     #ifndef TEST_ROBOT
     driverControl();
     #endif
-
     pros::delay(20);
   }
 }
@@ -170,6 +166,7 @@ void autonomous()
   //robot.arm->setState(ArmController::unfold);
   #endif
 
+  //Create a new chassis that automatically mirrors side and send it to the autonomous code
   SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());
   autonSelector->getSelectedAuton().autonFunc(sideChassis);
   delete sideChassis;
