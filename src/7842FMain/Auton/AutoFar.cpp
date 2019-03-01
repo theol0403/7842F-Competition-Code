@@ -1,6 +1,6 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 
-void AutonMiddleFromFar(void* input)
+void AutonFar(void* input)
 {
   SideController* chassis = static_cast<SideController*>(input);
 
