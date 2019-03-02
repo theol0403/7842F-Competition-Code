@@ -22,7 +22,7 @@ void AutonClose(void* input)
 
   // Move forward towards flags and push bottom flag
   chassis->turnToAngle(0_deg);
-  chassis->driveDistance(3.5_ft, makeSettle(2_in));
+  chassis->driveDistance(3.8_ft, makeSettle(2_in));
   chassis->driveDistance(-1_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
 
