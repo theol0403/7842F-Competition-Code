@@ -34,7 +34,9 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(armTrigger.changedToPressed()) {
+	if(j_Digital(A)) {
+		robot.arm->setState(ArmController::out);
+	} else if(armTrigger.changedToPressed()) {
 		if(robot.arm->getState() != ArmController::down) {
 			robot.arm->setState(ArmController::down);
 		} else {

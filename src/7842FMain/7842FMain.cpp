@@ -47,7 +47,7 @@ void initialize()
 
   autonSelector = new lib7842::AutonSelector(lv_scr_act(), {
     {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar}, 
+    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
 
@@ -128,7 +128,7 @@ void opcontrol()
   #endif
 
   while(true) {
-    if(j_Digital(A)) autonomous(); //For testing
+    //if(j_Digital(A)) autonomous(); //For testing
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);

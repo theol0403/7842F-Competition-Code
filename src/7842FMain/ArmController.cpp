@@ -28,6 +28,7 @@ void ArmController::run()
   {
     double downPos = 19.4;
     double upPos = 3.7;
+    double outPos = 13;
 
     switch(armState) {
 
@@ -42,6 +43,11 @@ void ArmController::run()
 
       case up:
       pid->setTarget(upPos);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
+      case out:
+      pid->setTarget(outPos);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
