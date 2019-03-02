@@ -16,11 +16,9 @@ void AutonCloseMiddle(void* input)
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
   robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(700);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   chassis->driveToPointSimple(closeFlatCap, makeSettle(3_in));
   robot.arm->setState(ArmController::down);
@@ -28,11 +26,9 @@ void AutonCloseMiddle(void* input)
 
   chassis->turnToPoint(middleFlagPost);
   robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
   robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   //   setIntakeMode(intakeModes::loading);
   //

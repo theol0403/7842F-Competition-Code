@@ -16,10 +16,8 @@ void AutonMiddleFromClose(void* input)
   chassis->turnToPoint(middleFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
   robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(700);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
 }

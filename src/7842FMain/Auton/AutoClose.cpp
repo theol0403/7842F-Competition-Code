@@ -32,11 +32,9 @@ void AutonClose(void* input)
 
   chassis->turnToPoint(middleFlagShoot);
   robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(2000);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
   robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   //   setIntakeMode(intakeModes::loading);
   //
