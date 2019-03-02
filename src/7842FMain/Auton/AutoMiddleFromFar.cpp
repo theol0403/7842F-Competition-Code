@@ -14,6 +14,7 @@ void AutonMiddleFromFar(void* input)
   chassis->driveToPoint({1_ft, 3_ft}, 1, makeSettle(2_in)); // Move to shooting position
 
   chassis->turnToPoint(middleFlagShoot); // turn to flag
+  pros::delay(2000);
 
   robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);

@@ -285,7 +285,7 @@ void ShootController::run()
       intake->indexerSlave = false;
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
-      pros::delay(300);
+      pros::delay(250);
       intake->enable();
       completeJob();
       break;
