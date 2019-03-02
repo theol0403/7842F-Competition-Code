@@ -16,11 +16,9 @@ void AutonClose(void* input)
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(1000);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
   robot.shooter->setTarget(20);
-  robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(700);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   // Move forward towards flags and push bottom flag
   chassis->turnToAngle(0_deg);
