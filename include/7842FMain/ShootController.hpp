@@ -23,6 +23,7 @@ public:
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
     shootBoth, //shoot both
+    reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
   };
@@ -51,6 +52,7 @@ public:
   shootMacros currentMacro = shootMacros::off;
   double targetAngle = 0;
   QLength distanceToFlag = 0_in;
+  bool macroCompleted = false;
 
   ShootController(IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
 
@@ -69,6 +71,7 @@ public:
   void doJobLoop(shootStates);
   void doMacro(shootMacros);
   void doMacroLoop(shootMacros);
+  void doMacroBlocking(shootMacros); 
 
   double getHoodAngle();
   double getTopFlagAngle();

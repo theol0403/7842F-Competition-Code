@@ -44,19 +44,19 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootTopFlag :
-    addJobs({shootIndexer, angleTop});
+    addJobs({reportDone, shootIndexer, angleTop});
     break;
 
     case shootMacros::shootMiddleFlag :
-    addJobs({shootIndexer, angleMiddle});
+    addJobs({reportDone, shootIndexer, angleMiddle});
     break;
 
     case shootMacros::shootTarget :
-    addJobs({shootIndexer, angleTarget});
+    addJobs({reportDone, shootIndexer, angleTarget});
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({shootIndexer, shootIndexer, angleMiddle, shootIndexer, angleTop});
+    addJobs({reportDone, shootIndexer, shootIndexer, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -98,6 +98,12 @@ void ShootController::doMacro(shootMacros macro) {
 void ShootController::doMacroLoop(shootMacros macro) {
   clearQueue();
   addMacroLoop(macro);
+}
+
+void ShootController::doMacroBlocking(shootMacros macro) {
+  macroCompleted = false;
+  doMacro(macro);
+  while(!macroCompleted) pros::delay(20);
 }
 
 
@@ -267,7 +273,7 @@ void ShootController::run()
       flywheel->enable();
       intake->indexer->move(0);
       intake->disable();
-            intake->indexerSlave = true;
+      intake->indexerSlave = true;
       if(flywheel->pid->getError() < 300) completeJob();
       break;
 
@@ -296,6 +302,11 @@ void ShootController::run()
       completeJob();
       break;
 
+      case reportDone:
+      macroCompleted = true;
+      completeJob();
+      break;
+
       case loopJob:
       addJob(currentJob);
       break;
@@ -305,7 +316,7 @@ void ShootController::run()
       break;
 
     }
-  //  std::cout << "Hood: " << getHoodAngle() << std::endl;
+    //  std::cout << "Hood: " << getHoodAngle() << std::endl;
     pros::delay(10);
   }
 
