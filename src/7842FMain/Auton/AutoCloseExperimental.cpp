@@ -21,6 +21,7 @@ void AutonCloseExperimental(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   chassis->turnToPoint(closeFlatCap);
+  chassis->driveDistance(3_in);
   robot.arm->setState(ArmController::down);
   chassis->driveDistance(-3_in);
 
