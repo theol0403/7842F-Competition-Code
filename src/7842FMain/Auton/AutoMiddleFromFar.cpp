@@ -17,7 +17,7 @@ void AutonMiddleFromFar(void* input)
 
   robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
   robot.shooter->doMacro(ShootController::shootMacros::shootTopFlag);
-  pros::delay(500);
+  pros::delay(700);
   robot.shooter->doMacro(ShootController::shootMacros::shootMiddleFlag);
   pros::delay(700);
 

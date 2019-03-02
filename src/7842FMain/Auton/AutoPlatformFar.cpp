@@ -12,10 +12,10 @@ void AutonPlatformFar(void* input)
 
   chassis->driveToPoint({4_ft, 3_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
 
-  chassis->driveToPoint({3.5_ft, 2_ft});
+  chassis->driveToPoint({3.93_ft, 2.5_ft});
 
   chassis->turnToAngle(180_deg);
 
-  chassis->driveForTime(3000, -1);
+  chassis->driveForTime(1600, -1);
 
 }

@@ -15,3 +15,5 @@ void AutonMiddleFromClose(void*);
 void AutonMiddleFromFar(void*);
 
 void AutonPlatformFar(void*);
+
+void AutonTest(void*);

@@ -43,7 +43,7 @@ namespace lib7842
   double OdomController::filterVelocity() { return m_velFilter.filter(getActualVelocity()); }
   double OdomController::getFilteredVelocity() { return m_velFilter.getOutput(); }
 
-  void OdomController::resetEmergencyAbort() { 
+  void OdomController::resetEmergencyAbort() {
     resetVelocityMax();
     turnPid->reset();
     distancePid->reset();
@@ -53,7 +53,8 @@ namespace lib7842
   bool OdomController::emergencyAbort() {
     if(std::abs(filterVelocity()) < 10) {
       std::cout << "EMERGENCY ABORT" << std::endl;
-      return true;
+      //return true;
+      return false;
     }
     return false;
   }

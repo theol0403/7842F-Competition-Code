@@ -11,31 +11,31 @@ void AutonClose(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
-  chassis->driveToPoint({1_ft, 7.2_ft}); // Move to behind shooting position -- was 6.7
+  chassis->driveToPoint({1_ft, 7_ft}); // Move to behind shooting position -- was 6.7
 
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  pros::delay(1000);
   robot.shooter->setTarget(20);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(700);
 
   // Move forward towards flags and push bottom flag
-  chassis->driveToPointSimple({1_ft, 10_ft}, makeSettle(2_in));
+  chassis->turnToAngle(0_deg);
+  chassis->driveDistance(3.5_ft, makeSettle(2_in));
   chassis->driveDistance(-1_ft, makeSettle(2_in));
   chassis->turnToAngle(90_deg);
 
-  chassis->driveToPointSimple({1.8_ft, 9_ft}, makeSettle(2_in));
+  chassis->driveToPointSimple({1.6_ft, 8.9_ft}, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
   chassis->driveDistance(-3_in);
 
-  chassis->turnToPoint(middleFlagPost);
-  chassis->turnAngle(50_deg); // turn to flag
+  chassis->turnToPoint(middleFlagShoot);
   robot.shooter->setTarget(0);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
-  pros::delay(500);
+  pros::delay(2000);
   robot.shooter->setTarget(20);
   robot.shooter->doMacro(ShootController::shootMacros::shootTarget);
   pros::delay(500);
