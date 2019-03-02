@@ -15,5 +15,5 @@ qPoint closeFlatCap {3_ft, 9_ft};
 
 qPoint sidePlatform {4.2_ft, 5_ft};
 
-qPoint closeCapDrive {3.8_ft, 7_ft};
-qPoint farCapDrive {3.8_ft, 3_ft};
+qPoint closeCapDrive {3.9_ft, 7_ft};
+qPoint farCapDrive {3.9_ft, 3_ft};
