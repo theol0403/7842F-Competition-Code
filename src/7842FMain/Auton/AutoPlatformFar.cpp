@@ -7,10 +7,10 @@ void AutonPlatformFar(void* input)
   chassis->setState({1_ft, 3_ft, 90_deg});
 
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 3_ft}) < 2_ft;))
+  .withTrigger(makeTrigger(return computeDistanceToPoint(farCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint({4_ft, 3_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis->driveToPoint(farCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
 
   chassis->driveToPoint({3.93_ft, 2.5_ft});
 

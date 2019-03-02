@@ -7,10 +7,10 @@ void AutonCloseWithoutPush(void* input)
   chassis->setState({1_ft, 7_ft, 90_deg}); // Robot is facing cap
 
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
+  .withTrigger(makeTrigger(return computeDistanceToPoint(closeCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis->driveToPoint(closeCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
   chassis->driveToPoint({1_ft, 7.2_ft}); // Move to behind shooting position -- was 6.7
 
   chassis->turnToPoint(sideFlagShoot); // turn to flag
