@@ -25,7 +25,7 @@ void AutonCloseExperimental(void* input)
   robot.arm->setState(ArmController::down);
   chassis->driveDistance(-3_in);
 
-  chassis->driveToPoint({1_ft, 7_ft}, 1, makeSettle(3_in)); // Move to behind shooting position
+  chassis->driveToPoint({1_ft, 7.2_ft}, 1, makeSettle(3_in)); // Move to behind shooting position
   chassis->turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setTarget(0);
