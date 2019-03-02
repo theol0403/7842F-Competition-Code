@@ -167,7 +167,8 @@ void autonomous()
   #endif
 
   //Create a new chassis that automatically mirrors side and send it to the autonomous code
-  SideController* sideChassis = new SideController(robot.chassis, autonSelector->getSelectedSide());
+  SideController* sideChassis = new SideController
+  (robot.chassis, autonSelector->getSelectedSide());
   autonSelector->getSelectedAuton().autonFunc(sideChassis);
   delete sideChassis;
   std::cout << "Exit Auton" << std::endl;
