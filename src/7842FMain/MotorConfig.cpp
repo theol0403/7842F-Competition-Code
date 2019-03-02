@@ -43,7 +43,7 @@ void initializeBase()
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mRightFront, mRightBack})),
 		std::make_shared<ADIEncoder>('H', 'G'),
 		std::make_shared<ADIEncoder>('F', 'E'),
-		120,
+		140,
 		12000
 	);
 

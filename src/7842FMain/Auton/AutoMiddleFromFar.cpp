@@ -11,7 +11,7 @@ void AutonMiddleFromFar(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({4_ft, 3_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
-  chassis->driveToPoint({3_ft, 2_ft}); // Move to shooting position
+  chassis->driveToPoint({3_ft, 2_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
 
   chassis->turnToPoint(middleFlagShoot); // turn to flag
 
