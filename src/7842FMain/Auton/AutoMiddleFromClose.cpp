@@ -11,7 +11,7 @@ void AutonMiddleFromClose(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis->driveToPoint({4_ft, 7_ft}, 1, makeSettle(3_in), {intake}); // Move to ball under cap
-  chassis->driveToPoint({3_ft, 8_ft}); // Move to behind shooting position
+  chassis->driveToPoint({3_ft, 9_ft}); // Move to shooting position
 
   chassis->turnToPoint(middleFlagShoot); // turn to flag
 
