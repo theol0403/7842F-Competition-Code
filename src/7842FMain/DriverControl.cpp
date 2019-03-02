@@ -38,7 +38,7 @@ void driverControl()
 		if(robot.arm->getState() != ArmController::down) {
 			robot.arm->setState(ArmController::down);
 		} else {
-			robot.arm->setState(ArmController::back);
+			robot.arm->setState(ArmController::up);
 		}
 	}
 
