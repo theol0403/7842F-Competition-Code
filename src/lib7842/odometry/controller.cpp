@@ -16,16 +16,16 @@ namespace lib7842
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid)
-  	// okapiChassis(std::make_shared<ChassisControllerPID>(
-		// TimeUtilFactory::create(),
-		// tracker->model,
-		// std::make_unique<IterativePosPIDController>(std::move(*idistancePid)), //Distance PID - To mm
-		// std::make_unique<IterativePosPIDController>(std::move(*ianglePid)), //Angle PID - To Degree
-		// std::make_unique<IterativePosPIDController>(std::move(*iturnPid)), //Turn PID - To Degree
-		// AbstractMotor::gearset::green,
-		// ChassisScales{tracker->m_wheelDiam, tracker->m_chassisWidth}))
+  // okapiChassis(std::make_shared<ChassisControllerPID>(
+  // TimeUtilFactory::create(),
+  // tracker->model,
+  // std::make_unique<IterativePosPIDController>(std::move(*idistancePid)), //Distance PID - To mm
+  // std::make_unique<IterativePosPIDController>(std::move(*ianglePid)), //Angle PID - To Degree
+  // std::make_unique<IterativePosPIDController>(std::move(*iturnPid)), //Turn PID - To Degree
+  // AbstractMotor::gearset::green,
+  // ChassisScales{tracker->m_wheelDiam, tracker->m_chassisWidth}))
   {
-   //okapiChassis->startThread();
+    //okapiChassis->startThread();
   };
 
 
@@ -52,7 +52,7 @@ namespace lib7842
   }
   bool OdomController::emergencyAbort() {
     if(std::abs(filterVelocity()) < 10) {
-      std::cout << "EMERGENCY ABORT" << std::endl;
+      //std::cout << "EMERGENCY ABORT" << std::endl;
       //return true;
       return false;
     }
