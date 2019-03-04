@@ -106,25 +106,4 @@ namespace lib7842
     controller->driveDistance(computeDistanceToPoint(point) * direction, settleFunc, actions);
   }
 
-    void SideController::turnAngleOkapi(QAngle angle)
-    {
-      controller->turnAngleOkapi(mirrorSide(angle, side));
-    }
-    void SideController::turnToAngleOkapi(QAngle angle)
-    {
-      controller->turnToAngleOkapi(mirrorSide(angle, side));
-    }
-    void SideController::turnToPointOkapi(qPoint point)
-    {
-      controller->turnToPointOkapi(mirrorSide(point, side));
-    }
-
-    void SideController::driveDistanceOkapi(QLength distance)
-    {
-      controller->driveDistanceOkapi(distance);
-    }
-    void SideController::driveToPointOkapi(qPoint point)
-    {
-      controller->driveToPointOkapi(mirrorSide(point, side));
-    }
 }

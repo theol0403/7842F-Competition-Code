@@ -31,12 +31,10 @@ namespace lib7842
     IterativePosPIDController *anglePid = nullptr;
     IterativePosPIDController *turnPid = nullptr;
 
-    std::shared_ptr<ChassisControllerPID> okapiChassis = nullptr;
-
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
-    #define velFilterSize 20
+    #define velFilterSize 30
     AverageFilter<velFilterSize> m_velFilter;
 
 
@@ -87,13 +85,6 @@ namespace lib7842
 
     void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePath2(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
-
-    void turnAngleOkapi(QAngle);
-    void turnToAngleOkapi(QAngle);
-    void turnToPointOkapi(qPoint);
-
-    void driveDistanceOkapi(QLength);
-    void driveToPointOkapi(qPoint);
 
   };
 
