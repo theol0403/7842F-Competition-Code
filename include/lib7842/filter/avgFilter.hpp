@@ -21,5 +21,8 @@ namespace lib7842
     double filter(double);
     double getOutput();
 
+    void resetTo(double);
+    void reset();
+
   };
 }

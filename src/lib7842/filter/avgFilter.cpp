@@ -12,16 +12,28 @@ namespace lib7842
     }
 
     output = 0.0;
-    for(size_t i = 0; i < size; i++)
-    output += data.at(i);
+    for(size_t i = 0; i < size; i++) {
+      output += data.at(i);
+    }
+
     output /= (double) size;
 
     return output;
   }
-
+  
 
   double avgFilter::getOutput() {
     return output;
+  }
+
+  void avgFilter::resetTo(double input) {
+    for(double &num : data) {
+      num = input;
+    }
+  }
+
+  void avgFilter::reset() {
+    resetTo(0);
   }
 
 }

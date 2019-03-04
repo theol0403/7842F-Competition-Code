@@ -24,7 +24,7 @@ namespace lib7842
   /**
   * Velocity calculations, used for emergency abort
   */
-  void OdomController::resetVelocity(double vel) { for(int i = 0; i < velFilterSize; i++) { m_velFilter.filter(vel); } }
+  void OdomController::resetVelocity(double vel) { m_velFilter.resetTo(vel); }
   void OdomController::resetVelocityActual() { resetVelocity(getActualVelocity()); }
   void OdomController::resetVelocityMax() { resetVelocity(200); }
 
