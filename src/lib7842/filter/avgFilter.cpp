@@ -20,7 +20,7 @@ namespace lib7842
 
     return output;
   }
-  
+
 
   double avgFilter::getOutput() {
     return output;
@@ -30,6 +30,7 @@ namespace lib7842
     for(double &num : data) {
       num = input;
     }
+    if(filter(input) != input) std::cout << "AvgFilter Not Reset" << std::endl; 
   }
 
   void avgFilter::reset() {
