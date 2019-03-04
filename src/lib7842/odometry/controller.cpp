@@ -15,7 +15,8 @@ namespace lib7842
   tracker(itracker),
   distancePid(idistancePid),
   anglePid(ianglePid),
-  turnPid(iturnPid)
+  turnPid(iturnPid),
+  m_velFilter(30)
   {
   };
 

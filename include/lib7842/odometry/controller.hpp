@@ -5,6 +5,7 @@
 #include "asyncAction.hpp"
 #include "lib7842/pid/pidSystem.hpp"
 #include "lib7842/auton/autonSelector.hpp"
+#include "lib7842/filter/avgFilter.hpp"
 
 namespace lib7842
 {
@@ -34,9 +35,7 @@ namespace lib7842
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
-    #define velFilterSize 30
-    AverageFilter<velFilterSize> m_velFilter;
-
+    avgFilter m_velFilter;
 
     OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*);
 
