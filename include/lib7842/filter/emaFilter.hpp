@@ -18,6 +18,5 @@ namespace lib7842
     double filter(double, double);
     void setGains(double);
 
-
   };
 }

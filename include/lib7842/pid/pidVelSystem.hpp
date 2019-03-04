@@ -17,9 +17,8 @@ namespace lib7842
 		double m_Error = 0;
 		double m_lastError = 0;
 		double m_derivative = 0;
-		
-		emaFilter m_dFilter;
 
+		emaFilter m_dFilter;
 
 	public:
 
@@ -27,9 +26,6 @@ namespace lib7842
 		double calculate(double, double);
 		void setGains(double, double, double, double);
 		double getError();
-
-
-
 
 	};
 }

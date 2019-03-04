@@ -3,11 +3,7 @@
 namespace lib7842
 {
 
-  emaFilter::emaFilter(double alpha)
-  :
-	m_alpha(alpha)
-	{
-	}
+  emaFilter::emaFilter(double alpha) : m_alpha(alpha) {}
 
 	double emaFilter::filter(double readIn)
 	{
@@ -22,9 +18,6 @@ namespace lib7842
 		return filter(readIn);
 	}
 
-	void emaFilter::setGains(double alpha)
-	{
-		m_alpha = alpha;
-	}
+	void emaFilter::setGains(double alpha) { m_alpha = alpha; }
 
 }
