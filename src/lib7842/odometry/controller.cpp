@@ -35,7 +35,7 @@ namespace lib7842
   double OdomController::filterVelocity() { return m_velFilter.filter(getActualVelocity()); }
   double OdomController::getFilteredVelocity() { return m_velFilter.getOutput(); }
 
-  void OdomController::resetEmergencyAbort() {
+  void OdomController::reset() {
     resetVelocityMax();
     turnPid->reset();
     distancePid->reset();

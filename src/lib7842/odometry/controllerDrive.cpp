@@ -5,7 +5,7 @@ namespace lib7842
 
   void OdomController::driveDistanceAtAngle(QLength distance, angleCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    resetEmergencyAbort();
+    reset();
     std::valarray<int32_t> lastTicks = tracker->model->getSensorVals();
 
     do {

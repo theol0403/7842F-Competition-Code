@@ -5,7 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    resetEmergencyAbort();
+    reset();
     QAngle lastTarget = tracker->state.theta;
     do
     {
@@ -48,7 +48,7 @@ namespace lib7842
 
   void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    resetEmergencyAbort();
+    reset();
     settleFunc_t exitFunc = makeSettle(tracker->m_chassisWidth);
     distancePid->reset();
     anglePid->reset();

@@ -45,7 +45,7 @@ namespace lib7842
     double getActualVelocity();
     double filterVelocity();
     double getFilteredVelocity();
-    void resetEmergencyAbort();
+    void reset();
     bool emergencyAbort();
 
     void driveVector(double, double);

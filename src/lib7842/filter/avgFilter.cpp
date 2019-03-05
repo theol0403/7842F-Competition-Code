@@ -27,10 +27,10 @@ namespace lib7842
   }
 
   void avgFilter::resetTo(double input) {
-    for(double &num : data) {
-      num = input;
+    for(double &val : data) {
+      val = input;
     }
-    if(filter(input) != input) std::cout << "AvgFilter Not Reset" << std::endl; 
+    if(filter(input) != input) std::cout << "AvgFilter Not Reset" << std::endl;
   }
 
   void avgFilter::reset() {
