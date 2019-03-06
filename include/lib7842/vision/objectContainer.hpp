@@ -4,76 +4,55 @@
 namespace lib7842
 {
 
-  struct simpleObjects_t
-  {
-    int objSig = VISION_OBJECT_ERR_SIG;
-    double objX = 0;
-    double objY = 0;
-    double objWidth = 0;
-    double objHeight = 0;
-    double objArea = 0; // Avg of width and height
-    double objCenterX = 0;
-    double objCenterY = 0;
-    bool discardObject = false;
-  };
-
-  enum objMode_t
-  {
-    objSig,
-    objX,
-    objY,
-    objWidth,
-    objHeight,
-    objArea,
-    objCenterX,
-    objCenterY
-  };
-
-
   class ObjectContainer
   {
-  private:
-
-    static const simpleObjects_t emptyObject;
 
   public:
 
-    const int arrayLength;
-    std::vector<simpleObjects_t> objectArray;
+    struct visionObj
+    {
+      int objSig = VISION_OBJECT_ERR_SIG;
+      double objX = 0;
+      double objY = 0;
+      double objWidth = 0;
+      double objHeight = 0;
+      double objArea = 0; // Avg of width and height
+      double objCenterX = 0;
+      double objCenterY = 0;
+    };
 
-    std::vector<lv_obj_t*> screenArray;
-    std::array<lv_style_t, NUM_SIGNATURES+1> styleArray;
+    enum class objAttr
+    {
+      objSig,
+      objX,
+      objY,
+      objWidth,
+      objHeight,
+      objArea,
+      objCenterX,
+      objCenterY
+    };
 
-    int currentCount = 0;
+    typedef typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
+    std::vector<visionObj> objects;
 
-    ObjectContainer(int);
-    ObjectContainer(int, lib7842::ObjectDrawing&);
+    ObjectContainer();
 
-    ~ObjectContainer();
+    visionObj getObjectByIndex(int);
+    visionObj getObjectBySigIndex(int, int);
 
-    void setContainerStyle(lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
-    void setSigStyle(int, lv_color_t, lv_color_t = LV_COLOR_YELLOW, lv_opa_t = LV_OPA_100);
+    double getObjAttrByIndex(objAttr, int);
+    sortFunc_t createSort(objAttr, bool = true);
+    void sort(sortFunc_t);
 
-    simpleObjects_t getObject(int);
-    simpleObjects_t getObject(int, int);
-    double getObjValue(objMode_t, int);
-
-    void discardObjects();
-
-    void sortBy(objMode_t, bool = true);
-    void removeRange(objMode_t, double, double, bool = true);
-    void removeWith(objMode_t, double, bool = true);
-    void shrinkTo(int);
-
-    void filterAvgArea(double, bool = true); //Example 0.5
-    void filterProp(double, double, bool = true); //Width:Height = 1:x Example 0.3, 0.8
+    void removeObjWith(objAttr, double, double);
+    void removeObjWith(objAttr, double);
+    void resize(int);
+    void reset();
 
     void debugObjects(int);
     void debugErrorSig();
-
-
-    static void copyObjects(ObjectContainer&, ObjectContainer&, int = -1);
 
   };
 }
