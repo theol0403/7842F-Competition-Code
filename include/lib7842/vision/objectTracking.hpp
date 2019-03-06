@@ -1,4 +1,3 @@
-
 #pragma once
 #ifndef TRACKING_EMULATOR
 #include "main.h"
@@ -15,17 +14,9 @@ namespace pros {void delay(int);}
 #include "lvgl/lvgl.h"
 #endif
 
-
-#define NUM_SIGNATURES 20
 #include <vector>
 #include <array>
-
-namespace lib7842
-{
-  class ObjectContainer;
-  class ObjectDrawing;
-}
-
+#include <functional>
 
 #ifndef TRACKING_EMULATOR
 #include "objectReading.hpp"
@@ -34,4 +25,3 @@ namespace lib7842
 #include "objectSmoothing.hpp"
 #include "objectDrawing.hpp"
 #include "objectContainer.hpp"
-//#include "ObjectRecorder.hpp"

@@ -16,7 +16,7 @@ namespace lib7842
       double objY = 0;
       double objWidth = 0;
       double objHeight = 0;
-      double objArea = 0; // Avg of width and height
+      double objArea = 0;
       double objCenterX = 0;
       double objCenterY = 0;
     };
@@ -35,9 +35,12 @@ namespace lib7842
 
     typedef typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
-    std::vector<visionObj> objects;
+    std::vector<visionObj> objects = {};
 
     ObjectContainer();
+
+    void addObj(visionObj);
+    void addObj(std::vector<visionObj>)
 
     visionObj getObjectByIndex(int);
     visionObj getObjectBySigIndex(int, int);

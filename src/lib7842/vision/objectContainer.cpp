@@ -2,12 +2,9 @@
 
 namespace lib7842
 {
-  const simpleObjects_t ObjectContainer::emptyObject;
 
-  ObjectContainer::ObjectContainer(int objectCount)
-  : arrayLength(objectCount)
+  ObjectContainer::ObjectContainer()
   {
-    objectArray.resize(arrayLength);
   }
 
   ObjectContainer::ObjectContainer(int objectCount, ObjectDrawing& screenParent)
