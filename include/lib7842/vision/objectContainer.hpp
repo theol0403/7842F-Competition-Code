@@ -34,7 +34,7 @@ namespace lib7842
       double objCenterY = 0;
     };
 
-    typedef typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
+    typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
     std::vector<visionObj> objects = {};
 

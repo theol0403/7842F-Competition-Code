@@ -155,69 +155,69 @@ namespace lib7842
   // }
 
 
-
-  void ObjectContainer::debugObjects(int objectCount)
-  {
-    debugErrorSig();
-    if(objectCount > arrayLength) objectCount = arrayLength; //Bounds Checking
-
-    std::cout << std::endl << "Length:" << arrayLength << " | " << "Count:" << currentCount << "\n";
-    for(int objectNum = 0; objectNum < objectCount; objectNum++)
-    {
-      std::cout << "Object:" << objectNum << " | ";
-      std::cout << "Sig:" << objectArray.at(objectNum).objSig << " | ";
-      std::cout << "Width:" << objectArray.at(objectNum).objWidth << " | ";
-      std::cout << "Height:" << objectArray.at(objectNum).objHeight << " | ";
-      std::cout << "X:" << objectArray.at(objectNum).objX << " | ";
-      std::cout << "Y:" << objectArray.at(objectNum).objY << " | ";
-      std::cout << "Area:" << objectArray.at(objectNum).objArea << " | ";
-      std::cout << "CenterX:" << objectArray.at(objectNum).objCenterX << " | ";
-      std::cout << "CenterY:" << objectArray.at(objectNum).objCenterY << " | ";
-      std::cout << "Discard:" << objectArray.at(objectNum).discardObject;
-      std::cout << std::endl;
-    }
-  }
-
-  void ObjectContainer::debugErrorSig()
-  {
-    for(int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      if(objectArray.at(objectNum).objSig == VISION_OBJECT_ERR_SIG)
-      {
-        std::cout << "ERROR: ERR_SIG IN OBJECT " << objectNum << "\n";
-      }
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-  void ObjectContainer::copyObjects(lib7842::ObjectContainer& sourceContainer, lib7842::ObjectContainer& destContainer, int copyNum)
-  {
-    int transferCount = 0;
-
-    if(copyNum < 0)
-    {
-      transferCount = sourceContainer.currentCount > destContainer.arrayLength ? destContainer.arrayLength : sourceContainer.currentCount;
-    }
-    else
-    {
-      transferCount = copyNum > destContainer.arrayLength ? destContainer.arrayLength : copyNum;
-    }
-
-    for(int objectNum = 0; objectNum < transferCount; objectNum++)
-    {
-      destContainer.objectArray.at(objectNum) = sourceContainer.objectArray.at(objectNum);
-    }
-    destContainer.currentCount = transferCount;
-  }
+  //
+  // void ObjectContainer::debugObjects(int objectCount)
+  // {
+  //   debugErrorSig();
+  //   if(objectCount > arrayLength) objectCount = arrayLength; //Bounds Checking
+  //
+  //   std::cout << std::endl << "Length:" << arrayLength << " | " << "Count:" << currentCount << "\n";
+  //   for(int objectNum = 0; objectNum < objectCount; objectNum++)
+  //   {
+  //     std::cout << "Object:" << objectNum << " | ";
+  //     std::cout << "Sig:" << objectArray.at(objectNum).objSig << " | ";
+  //     std::cout << "Width:" << objectArray.at(objectNum).objWidth << " | ";
+  //     std::cout << "Height:" << objectArray.at(objectNum).objHeight << " | ";
+  //     std::cout << "X:" << objectArray.at(objectNum).objX << " | ";
+  //     std::cout << "Y:" << objectArray.at(objectNum).objY << " | ";
+  //     std::cout << "Area:" << objectArray.at(objectNum).objArea << " | ";
+  //     std::cout << "CenterX:" << objectArray.at(objectNum).objCenterX << " | ";
+  //     std::cout << "CenterY:" << objectArray.at(objectNum).objCenterY << " | ";
+  //     std::cout << "Discard:" << objectArray.at(objectNum).discardObject;
+  //     std::cout << std::endl;
+  //   }
+  // }
+  //
+  // void ObjectContainer::debugErrorSig()
+  // {
+  //   for(int objectNum = 0; objectNum < currentCount; objectNum++)
+  //   {
+  //     if(objectArray.at(objectNum).objSig == VISION_OBJECT_ERR_SIG)
+  //     {
+  //       std::cout << "ERROR: ERR_SIG IN OBJECT " << objectNum << "\n";
+  //     }
+  //   }
+  // }
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  // void ObjectContainer::copyObjects(lib7842::ObjectContainer& sourceContainer, lib7842::ObjectContainer& destContainer, int copyNum)
+  // {
+  //   int transferCount = 0;
+  //
+  //   if(copyNum < 0)
+  //   {
+  //     transferCount = sourceContainer.currentCount > destContainer.arrayLength ? destContainer.arrayLength : sourceContainer.currentCount;
+  //   }
+  //   else
+  //   {
+  //     transferCount = copyNum > destContainer.arrayLength ? destContainer.arrayLength : copyNum;
+  //   }
+  //
+  //   for(int objectNum = 0; objectNum < transferCount; objectNum++)
+  //   {
+  //     destContainer.objectArray.at(objectNum) = sourceContainer.objectArray.at(objectNum);
+  //   }
+  //   destContainer.currentCount = transferCount;
+  // }
 
 
 
