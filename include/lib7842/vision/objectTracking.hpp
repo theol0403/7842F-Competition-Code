@@ -18,6 +18,7 @@ namespace pros {void delay(int);}
 #include <array>
 #include <functional>
 #include <algorithm>
+#include <numeric>
 
 #ifndef TRACKING_EMULATOR
 //#include "objectReading.hpp"

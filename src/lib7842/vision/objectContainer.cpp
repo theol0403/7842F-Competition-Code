@@ -106,7 +106,7 @@ namespace lib7842
   }
 
   double ObjectContainer::getTotalAttr(objAttr attr) {
-    return getObjAttr(attr, std::accumulate(objects.begin(), objects.end(), 0.0));
+    return getObjAttr(attr, std::accumulate(objects.begin(), objects.end(), visionObj{}));
   }
 
   double ObjectContainer::getAvgAttr(objAttr attr) {
