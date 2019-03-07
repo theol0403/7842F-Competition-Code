@@ -31,27 +31,26 @@ namespace lib7842
   }
 
   ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int, int) {
-
+    
   }
 
 
   double ObjectContainer::getObjAttr(objAttr attr, visionObj obj) {
-      double value = 0;
-      switch (attr) {
-        case objAttr::objSig: value = obj.objSig; break;
-        case objAttr::objX: value = obj.objX; break;
-        case objAttr::objY: value = obj.objY; break;
-        case objAttr::objWidth: value = obj.objWidth; break;
-        case objAttr::objHeight: value = obj.objHeight; break;
-        case objAttr::objArea: value = obj.objArea; break;
-        case objAttr::objCenterX: value = obj.objCenterX; break;
-        case objAttr::objCenterY: value = obj.objCenterY; break;
-      }
-      return value;
+    switch (attr) {
+      case objAttr::objSig: return obj.objSig; break;
+      case objAttr::objX: return obj.objX; break;
+      case objAttr::objY: return obj.objY; break;
+      case objAttr::objWidth: return obj.objWidth; break;
+      case objAttr::objHeight: return obj.objHeight; break;
+      case objAttr::objArea: return obj.objArea; break;
+      case objAttr::objCenterX: return obj.objCenterX; break;
+      case objAttr::objCenterY: return obj.objCenterY; break;
+    }
+    std::cerr << "GetObjAttr: Invalid Attr\n";
   }
 
-  double ObjectContainer::getObjAttr(objAttr, int) {
-
+  double ObjectContainer::getObjAttr(objAttr attr, int index) {
+    return getObjAttr(attr, objects.at(index));
   }
 
 
