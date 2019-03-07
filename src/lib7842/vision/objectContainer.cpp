@@ -47,7 +47,7 @@ namespace lib7842
     return *this;
   }
 
-  const double ObjectContainer::visionObj::getAttr(objAttr attr) {
+  double ObjectContainer::visionObj::getAttr(objAttr attr) const {
     switch (attr) {
       case objAttr::objSig: return objSig; break;
       case objAttr::objX: return objX; break;
@@ -150,7 +150,7 @@ namespace lib7842
       if(decending) {
         return first.getAttr(attr) > second.getAttr(attr);
       } else {
-        //return getObjAttr(attr, first) < getObjAttr(attr, second);
+        return first.getAttr(attr) < second.getAttr(attr);
       }
     };
   }

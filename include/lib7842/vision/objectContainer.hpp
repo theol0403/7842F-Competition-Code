@@ -38,7 +38,7 @@ namespace lib7842
       visionObj operator*(visionObj);
       visionObj operator/(visionObj);
 
-      const double getAttr(objAttr);
+      double getAttr(objAttr) const;
     };
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
