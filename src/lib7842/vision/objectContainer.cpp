@@ -3,64 +3,69 @@
 namespace lib7842
 {
 
-  ObjectContainer::ObjectContainer()
-  {
+  ObjectContainer::ObjectContainer() {}
+
+  void ObjectContainer::addObj(visionObj obj) {
+    objects.push_back(obj);
   }
 
-  ObjectContainer::ObjectContainer(int objectCount, ObjectDrawing& screenParent)
-  :
-  arrayLength(objectCount)
-  {
-    objectArray.resize(arrayLength);
-
-    screenArray.resize(arrayLength);
-    for(int objectNum = 0; objectNum < arrayLength; objectNum++)
-    {
-      screenArray.at(objectNum) = lv_obj_create(screenParent.m_drawingContainer, NULL);
-      lv_obj_set_style(screenArray.at(objectNum), &screenParent.m_defaultObjectStyle);
-      lv_obj_set_hidden(screenArray.at(objectNum), true);
-    }
-
-    for (lv_style_t &sigStyle : styleArray)
-    {
-      lv_style_copy(&sigStyle, &screenParent.m_defaultObjectStyle);
-    }
+  void ObjectContainer::addObj(std::vector<visionObj> objs) {
+    for(visionObj &obj : objs) addObj(obj);
   }
 
-  ObjectContainer::~ObjectContainer() {} //Delete stuff TODO
-
-
-  void ObjectContainer::setContainerStyle(lv_color_t bodyColor, lv_color_t borderColor, lv_opa_t opaNum)
-  {
-    for (lv_style_t &sigStyle : styleArray)
-    {
-      sigStyle.body.main_color = bodyColor;
-      sigStyle.body.grad_color = bodyColor;
-      sigStyle.body.border.color = borderColor;
-      sigStyle.body.opa = opaNum;
-    }
+  void ObjectContainer::resize(int size) {
+    objects.resize(size);
   }
 
-  void ObjectContainer::setSigStyle(int sigNum, lv_color_t bodyColor, lv_color_t borderColor, lv_opa_t opaNum)
-  {
-    styleArray.at(sigNum).body.main_color = bodyColor;
-    styleArray.at(sigNum).body.grad_color = bodyColor;
-    styleArray.at(sigNum).body.border.color = borderColor;
-    styleArray.at(sigNum).body.opa = opaNum;
+  void ObjectContainer::reset() {
+    resize(0);
   }
 
 
-  simpleObjects_t ObjectContainer::getObject(int sizeNum)
-  {
-    if(sizeNum < currentCount)
-    {
-      return objectArray.at(sizeNum);
-    }
-    else
-    {
-      return emptyObject;
+  void ObjectContainer::removeObjIndex(int index) {
+    try {
+      objects.erase(objects.begin() + index);
+    } catch(std::out_of_range) {
+      std::cerr << "RemoveObjIndex: Invalid Index\n";
     }
   }
+
+  void ObjectContainer::removeObjWith(objAttr attr, double val) {
+    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+      if(getObjAttr(attr, *it) == val) {
+        objects.erase(it);
+      }
+    }
+  }
+
+  void ObjectContainer::removeObjWithout(objAttr attr, double val) {
+    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+      if(getObjAttr(attr, *it) != val) {
+        objects.erase(it);
+      }
+    }
+  }
+
+  void ObjectContainer::removeObjWith(objAttr attr, double min, double max) {
+    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+      if(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max) {
+        objects.erase(it);
+      }
+    }
+  }
+
+  void ObjectContainer::removeObjWithout(objAttr attr, double min, double max) {
+    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+      if(!(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max)) {
+        objects.erase(it);
+      }
+    }
+  }
+
+
+
+
+
 
   simpleObjects_t ObjectContainer::getObject(int sizeNum, int wantedSig)
   {

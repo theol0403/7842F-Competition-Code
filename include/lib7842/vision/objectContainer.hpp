@@ -40,19 +40,24 @@ namespace lib7842
     ObjectContainer();
 
     void addObj(visionObj);
-    void addObj(std::vector<visionObj>)
+    void addObj(std::vector<visionObj>);
+
+    void resize(int);
+    void reset();
+
+    void removeObjIndex(int);
+    void removeObjWith(objAttr, double);
+    void removeObjWithout(objAttr, double);
+    void removeObjWith(objAttr, double, double);
+    void removeObjWithout(objAttr, double, double);
 
     visionObj getObjectByIndex(int);
     visionObj getObjectBySigIndex(int, int);
 
-    double getObjAttrByIndex(objAttr, int);
+    double getObjAttr(objAttr, int);
+    double getObjAttr(objAttr, visionObj);
     sortFunc_t createSort(objAttr, bool = true);
-    void sort(sortFunc_t);
-
-    void removeObjWith(objAttr, double, double);
-    void removeObjWith(objAttr, double);
-    void resize(int);
-    void reset();
+    void sortBy(sortFunc_t);
 
     void debugObjects(int);
     void debugErrorSig();
