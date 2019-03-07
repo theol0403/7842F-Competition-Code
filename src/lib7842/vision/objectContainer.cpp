@@ -35,11 +35,22 @@ namespace lib7842
   }
 
 
-  double ObjectContainer::getObjAttr(objAttr, int) {
-
+  double ObjectContainer::getObjAttr(objAttr attr, visionObj obj) {
+      double value = 0;
+      switch (attr) {
+        case objAttr::objSig: value = obj.objSig; break;
+        case objAttr::objX: value = obj.objX; break;
+        case objAttr::objY: value = obj.objY; break;
+        case objAttr::objWidth: value = obj.objWidth; break;
+        case objAttr::objHeight: value = obj.objHeight; break;
+        case objAttr::objArea: value = obj.objArea; break;
+        case objAttr::objCenterX: value = obj.objCenterX; break;
+        case objAttr::objCenterY: value = obj.objCenterY; break;
+      }
+      return value;
   }
 
-  double ObjectContainer::getObjAttr(objAttr, visionObj) {
+  double ObjectContainer::getObjAttr(objAttr, int) {
 
   }
 
@@ -129,43 +140,6 @@ namespace lib7842
   }
 
 
-  double ObjectContainer::getObjValue(objMode_t objMode, int objIndex)
-  {
-    if(objIndex >= currentCount) objIndex = currentCount-1;
-    if(objIndex < 0) objIndex = 0;
-
-    double objValue = 0;
-    switch (objMode)
-    {
-      case objMode_t::objSig:
-      objValue = objectArray.at(objIndex).objSig;
-      break;
-      case objMode_t::objX:
-      objValue = objectArray.at(objIndex).objX;
-      break;
-      case objMode_t::objY:
-      objValue = objectArray.at(objIndex).objY;
-      break;
-      case objMode_t::objWidth:
-      objValue = objectArray.at(objIndex).objWidth;
-      break;
-      case objMode_t::objHeight:
-      objValue = objectArray.at(objIndex).objHeight;
-      break;
-      case objMode_t::objArea:
-      objValue = objectArray.at(objIndex).objArea;
-      break;
-      case objMode_t::objCenterX:
-      objValue = objectArray.at(objIndex).objCenterX;
-      break;
-      case objMode_t::objCenterY:
-      objValue = objectArray.at(objIndex).objCenterY;
-      break;
-    }
-    return objValue;
-  }
-
-
 
 
   void ObjectContainer::discardObjects()
@@ -200,7 +174,7 @@ namespace lib7842
 
 
 
-  void ObjectContainer::sortBy(objMode_t sortMode, bool largeToSmall)
+  void ObjectContainer::sortBy(objAttr sortMode, bool largeToSmall)
   {
     // Loop through each object looking to swap the largest object to the right
     // except the last one, which will already be sorted by the time we get there
@@ -235,14 +209,14 @@ namespace lib7842
   }
 
 
-  void ObjectContainer::removeRange(objMode_t objMode, double lowRange, double highRange, bool discard)
+  void ObjectContainer::removeRange(objAttr objMode, double lowRange, double highRange, bool discard)
   {
     // loop through objects, look for size, and mark to discard
     for (int objectNum = 0; objectNum < currentCount; objectNum++)
     {
-      double objValue = getObjValue(objMode, objectNum);
+      double value = getObjValue(objMode, objectNum);
 
-      if(objValue >= lowRange && objValue <= highRange)
+      if(value >= lowRange && value <= highRange)
       {
         objectArray.at(objectNum).discardObject = true;
       }
@@ -253,14 +227,14 @@ namespace lib7842
     }
   }
 
-  void ObjectContainer::removeWith(objMode_t objMode, double removeNum, bool discard)
+  void ObjectContainer::removeWith(objAttr objMode, double removeNum, bool discard)
   {
     // loop through objects, look for size, and mark to discard
     for (int objectNum = 0; objectNum < currentCount; objectNum++)
     {
-      double objValue = getObjValue(objMode, objectNum);
+      double value = getObjValue(objMode, objectNum);
 
-      if(objValue == removeNum)
+      if(value == removeNum)
       {
         objectArray.at(objectNum).discardObject = true;
       }

@@ -48,8 +48,8 @@ namespace lib7842
     visionObj getObjByIndex(int);
     visionObj getObjBySigIndex(int, int);
 
-    double getObjAttr(objAttr, int);
     double getObjAttr(objAttr, visionObj);
+    double getObjAttr(objAttr, int);
 
     void removeObjIndex(int);
     void removeObjWith(objAttr, double);
