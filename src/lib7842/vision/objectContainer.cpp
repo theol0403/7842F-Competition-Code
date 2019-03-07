@@ -27,11 +27,18 @@ namespace lib7842
       return objects.at(index);
     } catch(std::out_of_range) {
       std::cerr << "GetObjByIndex: Invalid Index\n";
+      return {};
     }
   }
 
-  ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int, int) {
-    
+  ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int sig, int index) {
+    for(visionObj &obj : objects) {
+      if(getObjAttr(objAttr::objSig, obj) == sig) {
+        if(index <= 0) { return obj; }
+        index--;
+      }
+    }
+    return {};
   }
 
 
@@ -99,80 +106,6 @@ namespace lib7842
 
 
 
-  simpleObjects_t ObjectContainer::getObject(int sizeNum, int wantedSig)
-  {
-    int searchIndex = 0; //Variable to point at final location
-
-    // Search for first location with proper sig to point at
-    bool sigFound = false; //Exit looping once first point found
-    for(int objectNum = 0; objectNum < currentCount && !sigFound; objectNum++)
-    {
-      if(objectArray.at(objectNum).objSig == wantedSig)
-      {
-        searchIndex = objectNum;
-        sigFound = true;
-      }
-    }
-
-    // Skip x (sizeNum) points until match found with sizeNum 0
-    bool matchFound = false; //Exit looping once final point has been found
-    for(int objectNum = searchIndex; objectNum < currentCount && !matchFound; objectNum++)
-    {
-      if(objectArray.at(objectNum).objSig == wantedSig)
-      {
-        if(sizeNum <= 0)
-        {
-          searchIndex = objectNum;
-          matchFound = true;
-        }
-        sizeNum--;
-      }
-    }
-
-    //If either searches were not able to find something, return an object
-    if(!sigFound || !matchFound)
-    {
-      return emptyObject;
-    }
-
-    return objectArray.at(searchIndex);
-  }
-
-
-
-
-  void ObjectContainer::discardObjects()
-  {
-    int destNum = 0;
-
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      if(objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG && !objectArray.at(objectNum).discardObject)
-      {
-        objectArray.at(destNum).objSig = objectArray.at(objectNum).objSig;
-        objectArray.at(destNum).objX = objectArray.at(objectNum).objX;
-        objectArray.at(destNum).objY = objectArray.at(objectNum).objY;
-        objectArray.at(destNum).objWidth = objectArray.at(objectNum).objWidth;
-        objectArray.at(destNum).objHeight = objectArray.at(objectNum).objHeight;
-        objectArray.at(destNum).objArea = objectArray.at(objectNum).objArea;
-        objectArray.at(destNum).objCenterX = objectArray.at(objectNum).objCenterX;
-        objectArray.at(destNum).objCenterY = objectArray.at(objectNum).objCenterY;
-        objectArray.at(destNum).discardObject = false;
-        destNum++;
-      }
-    }
-    // for(int objectNum = destNum; objectNum < arrayLength; objectNum++) //Cleans the rest of the objects
-    // {
-    //   resetObject(objectNum);
-    // }
-    currentCount = destNum;
-    debugErrorSig();
-  }
-
-
-
-
-
   void ObjectContainer::sortBy(objAttr sortMode, bool largeToSmall)
   {
     // Loop through each object looking to swap the largest object to the right
@@ -206,124 +139,6 @@ namespace lib7842
       if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
     }
   }
-
-
-  void ObjectContainer::removeRange(objAttr objMode, double lowRange, double highRange, bool discard)
-  {
-    // loop through objects, look for size, and mark to discard
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      double value = getObjValue(objMode, objectNum);
-
-      if(value >= lowRange && value <= highRange)
-      {
-        objectArray.at(objectNum).discardObject = true;
-      }
-    }
-    if(discard)
-    {
-      discardObjects();
-    }
-  }
-
-  void ObjectContainer::removeWith(objAttr objMode, double removeNum, bool discard)
-  {
-    // loop through objects, look for size, and mark to discard
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      double value = getObjValue(objMode, objectNum);
-
-      if(value == removeNum)
-      {
-        objectArray.at(objectNum).discardObject = true;
-      }
-    }
-    if(discard)
-    {
-      discardObjects();
-    }
-  }
-
-
-  void ObjectContainer::shrinkTo(int newCount)
-  {
-    // count = count > currentCount ? currentCount : count;
-    // currentCount = count;
-    currentCount = newCount;
-  }
-
-
-
-
-
-
-  void ObjectContainer::filterAvgArea(double thresholdPercent, bool discard)
-  {
-    int avgCount = 0;
-    double avgArea = 0;
-    for(int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      if(!objectArray.at(objectNum).discardObject)
-      {
-        avgCount++;
-        avgArea += objectArray.at(objectNum).objArea;
-      }
-    }
-    avgArea /= avgCount;
-
-    // upper and lower ranges for size threshold
-    double heightLow = avgArea - (avgArea * thresholdPercent);
-    double heightHigh = avgArea + (avgArea * thresholdPercent);
-
-    // loop through objects, look for size, and mark to discard
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      if(objectArray.at(objectNum).objArea > heightHigh || objectArray.at(objectNum).objArea < heightLow)
-      {
-        objectArray.at(objectNum).discardObject = true;
-      }
-    }
-
-    if(discard)
-    {
-      discardObjects();
-    }
-  }
-
-
-  // Filters object proportions
-  void ObjectContainer::filterProp(double thresholdPercent, double wantedProp, bool discard)
-  {
-    double objectWidth;
-    double objectHeight;
-
-    double heightLow;
-    double heightHigh;
-
-    // loop through objects, look for proportion, and fill into new array
-    for (int objectNum = 0; objectNum < currentCount; objectNum++)
-    {
-      objectWidth = objectArray.at(objectNum).objWidth;
-      objectHeight = objectArray.at(objectNum).objHeight;
-
-      heightLow = (objectWidth * wantedProp) - (objectWidth * thresholdPercent);
-      heightHigh = (objectWidth * wantedProp) + (objectWidth * thresholdPercent);
-
-      if(objectHeight < heightLow || objectHeight > heightHigh)
-      {
-        objectArray.at(objectNum).discardObject = true;
-      }
-    }
-
-    if(discard)
-    {
-      discardObjects();
-    }
-  }
-
-
-
-
 
 
 
