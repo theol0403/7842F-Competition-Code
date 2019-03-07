@@ -37,13 +37,13 @@ namespace lib7842
       visionObj operator-(visionObj);
       visionObj operator*(visionObj);
       visionObj operator/(visionObj);
+
+      const double getAttr(objAttr);
     };
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
     std::vector<visionObj> objects = {};
-
-    ObjectContainer();
 
     void resize(int);
     void reset();
@@ -54,7 +54,6 @@ namespace lib7842
     visionObj getObjByIndex(int);
     visionObj getObjBySigIndex(int, int);
 
-    double getObjAttr(objAttr, visionObj);
     double getObjAttr(objAttr, int);
     double getTotalAttr(objAttr);
     double getAvgAttr(objAttr);
