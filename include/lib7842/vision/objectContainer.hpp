@@ -4,6 +4,19 @@
 namespace lib7842
 {
 
+  enum class objAttr
+  {
+    objSig,
+    objX,
+    objY,
+    objWidth,
+    objHeight,
+    objArea,
+    objCenterX,
+    objCenterY
+  };
+
+
   class ObjectContainer
   {
 
@@ -19,18 +32,6 @@ namespace lib7842
       double objArea = 0;
       double objCenterX = 0;
       double objCenterY = 0;
-    };
-
-    enum class objAttr
-    {
-      objSig,
-      objX,
-      objY,
-      objWidth,
-      objHeight,
-      objArea,
-      objCenterX,
-      objCenterY
     };
 
     typedef typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
