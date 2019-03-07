@@ -125,33 +125,25 @@ namespace lib7842
 
   void ObjectContainer::removeObjWith(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(getObjAttr(attr, *it) == val) {
-        objects.erase(it);
-      }
+      if(getObjAttr(attr, *it) == val) { objects.erase(it); }
     }
   }
 
   void ObjectContainer::removeObjWithout(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(getObjAttr(attr, *it) != val) {
-        objects.erase(it);
-      }
+      if(getObjAttr(attr, *it) != val) { objects.erase(it); }
     }
   }
 
   void ObjectContainer::removeObjWith(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max) {
-        objects.erase(it);
-      }
+      if(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max) { objects.erase(it); }
     }
   }
 
   void ObjectContainer::removeObjWithout(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(!(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max)) {
-        objects.erase(it);
-      }
+      if(!(min < getObjAttr(attr, *it) || getObjAttr(attr, *it) > max)) { objects.erase(it); }
     }
   }
 
