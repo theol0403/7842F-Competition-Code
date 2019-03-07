@@ -5,6 +5,15 @@ namespace lib7842
 
   ObjectContainer::ObjectContainer() {}
 
+
+  void ObjectContainer::resize(int size) {
+    objects.resize(size);
+  }
+
+  void ObjectContainer::reset() {
+    resize(0);
+  }
+
   void ObjectContainer::addObj(visionObj obj) {
     objects.push_back(obj);
   }
@@ -13,12 +22,25 @@ namespace lib7842
     for(visionObj &obj : objs) addObj(obj);
   }
 
-  void ObjectContainer::resize(int size) {
-    objects.resize(size);
+  ObjectContainer::visionObj ObjectContainer::getObjByIndex(int index) {
+    try {
+      return objects.at(index);
+    } catch(std::out_of_range) {
+      std::cerr << "GetObjByIndex: Invalid Index\n";
+    }
   }
 
-  void ObjectContainer::reset() {
-    resize(0);
+  ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int, int) {
+
+  }
+
+
+  double ObjectContainer::getObjAttr(objAttr, int) {
+
+  }
+
+  double ObjectContainer::getObjAttr(objAttr, visionObj) {
+
   }
 
 
