@@ -32,6 +32,11 @@ namespace lib7842
       double objArea = 0;
       double objCenterX = 0;
       double objCenterY = 0;
+
+      visionObj operator+(visionObj);
+      visionObj operator-(visionObj);
+      visionObj operator*(visionObj);
+      visionObj operator/(visionObj);
     };
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
@@ -51,6 +56,8 @@ namespace lib7842
 
     double getObjAttr(objAttr, visionObj);
     double getObjAttr(objAttr, int);
+    double getTotalAttr(objAttr);
+    double getAvgAttr(objAttr);
 
     void removeObjIndex(int);
     void removeObjWith(objAttr, double);

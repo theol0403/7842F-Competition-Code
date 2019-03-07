@@ -3,6 +3,51 @@
 namespace lib7842
 {
 
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator+(ObjectContainer::visionObj rhs){
+    objX = objX + rhs.objX;
+    objY = objY + rhs.objY;
+    objWidth = objWidth + rhs.objWidth;
+    objHeight = objHeight + rhs.objHeight;
+    objArea = objArea + rhs.objArea;
+    objCenterX = objCenterX + rhs.objCenterX;
+    objCenterY = objCenterY + rhs.objCenterY;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator-(ObjectContainer::visionObj rhs){
+    objX = objX - rhs.objX;
+    objY = objY - rhs.objY;
+    objWidth = objWidth - rhs.objWidth;
+    objHeight = objHeight - rhs.objHeight;
+    objArea = objArea + rhs.objArea;
+    objCenterX = objCenterX - rhs.objCenterX;
+    objCenterY = objCenterY - rhs.objCenterY;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator*(ObjectContainer::visionObj rhs){
+    objX = objX * rhs.objX;
+    objY = objY * rhs.objY;
+    objWidth = objWidth * rhs.objWidth;
+    objHeight = objHeight * rhs.objHeight;
+    objArea = objArea * rhs.objArea;
+    objCenterX = objCenterX * rhs.objCenterX;
+    objCenterY = objCenterY * rhs.objCenterY;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator/(ObjectContainer::visionObj rhs){
+    objX = objX / rhs.objX;
+    objY = objY / rhs.objY;
+    objWidth = objWidth / rhs.objWidth;
+    objHeight = objHeight / rhs.objHeight;
+    objArea = objArea / rhs.objArea;
+    objCenterX = objCenterX / rhs.objCenterX;
+    objCenterY = objCenterY / rhs.objCenterY;
+    return *this;
+  }
+
+
   ObjectContainer::ObjectContainer() {}
 
 
@@ -59,6 +104,15 @@ namespace lib7842
   double ObjectContainer::getObjAttr(objAttr attr, int index) {
     return getObjAttr(attr, objects.at(index));
   }
+
+  double ObjectContainer::getTotalAttr(objAttr attr) {
+    return getObjAttr(attr, std::accumulate(objects.begin(), objects.end(), 0.0));
+  }
+
+  double ObjectContainer::getAvgAttr(objAttr attr) {
+    return getTotalAttr(attr) / objects.size();
+  }
+
 
 
   void ObjectContainer::removeObjIndex(int index) {
@@ -119,6 +173,12 @@ namespace lib7842
   void ObjectContainer::sortBy(sortFunc_t sortFunc) {
     std::stable_sort(objects.begin(), objects.end(), sortFunc);
   }
+
+
+
+
+
+
 
   // void ObjectContainer::debugObjects(int objectCount)
   // {
