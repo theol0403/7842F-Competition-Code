@@ -102,7 +102,7 @@ namespace lib7842
   }
 
 
-  ObjectContainer::sortFunc_t ObjectContainer::createSort(objAttr attr, bool decending) {
+  ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
     return [=](const visionObj& first, const visionObj& second) {
       if(decending) {
         return getObjAttr(attr, first) > getObjAttr(attr, second);
@@ -112,50 +112,14 @@ namespace lib7842
     };
   }
 
-
-  void ObjectContainer::sortBy(sortFunc_t sortFunc) {
-    std::sort(objects.begin(), objects.end(), sortFunc);
+  void ObjectContainer::sortBy(objAttr attr, bool decending) {
+    sortBy(makeSort(attr, decending));
   }
 
-  //
-  //
-  //
-  // void ObjectContainer::sortBy(objAttr sortMode, bool largeToSmall)
-  // {
-  //   // Loop through each object looking to swap the largest object to the right
-  //   // except the last one, which will already be sorted by the time we get there
-  //   for (int startIndex = 0; startIndex < currentCount - 1; startIndex++)
-  //   {
-  //     int greatestIndex = startIndex; //Assume current posision to swap
-  //     bool swapNeeded = false;
-  //     // Loop between current and end looking for greatest object
-  //     for (int currentIndex = startIndex + 1; currentIndex < currentCount; currentIndex++)
-  //     {
-  //       double firstCompare = getObjValue(sortMode, currentIndex);
-  //       double secondCompare = getObjValue(sortMode, greatestIndex);
-  //
-  //       bool sortFound = false;
-  //       if(largeToSmall)
-  //       {
-  //         sortFound = firstCompare > secondCompare;
-  //       }
-  //       else
-  //       {
-  //         sortFound = firstCompare < secondCompare;
-  //       }
-  //       //If current object is greater than greatest object
-  //       if (sortFound)
-  //       {
-  //         greatestIndex = currentIndex;
-  //         swapNeeded = true;
-  //       }
-  //     }
-  //     if(swapNeeded) std::swap(objectArray.at(startIndex), objectArray.at(greatestIndex)); //Swap with the greatest
-  //   }
-  // }
+  void ObjectContainer::sortBy(sortFunc_t sortFunc) {
+    std::stable_sort(objects.begin(), objects.end(), sortFunc);
+  }
 
-
-  //
   // void ObjectContainer::debugObjects(int objectCount)
   // {
   //   debugErrorSig();

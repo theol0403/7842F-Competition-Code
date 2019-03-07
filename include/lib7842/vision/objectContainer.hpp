@@ -58,7 +58,8 @@ namespace lib7842
     void removeObjWith(objAttr, double, double);
     void removeObjWithout(objAttr, double, double);
 
-    sortFunc_t createSort(objAttr, bool = true);
+    sortFunc_t makeSort(objAttr, bool = true);
+    void sortBy(objAttr, bool = true);
     void sortBy(sortFunc_t);
 
     void debugObjects(int);
