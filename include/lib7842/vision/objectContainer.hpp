@@ -41,6 +41,7 @@ namespace lib7842
     void sortBy(sortFunc_t);
 
     void print();
+    void checkErrSig();
 
   };
 }

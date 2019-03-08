@@ -124,47 +124,34 @@ namespace lib7842
   }
 
 
-  //
-  // void ObjectContainer::checkForErrSig()
-  // {
-  //   for(int objectNum = 0; objectNum < currentCount; objectNum++)
-  //   {
-  //     if(objectArray.at(objectNum).objSig == VISION_OBJECT_ERR_SIG)
-  //     {
-  //       std::cout << "ERROR: ERR_SIG IN OBJECT " << objectNum << "\n";
-  //     }
-  //   }
-  // }
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  // void ObjectContainer::copyObjects(lib7842::ObjectContainer& sourceContainer, lib7842::ObjectContainer& destContainer, int copyNum)
-  // {
-  //   int transferCount = 0;
-  //
-  //   if(copyNum < 0)
-  //   {
-  //     transferCount = sourceContainer.currentCount > destContainer.arrayLength ? destContainer.arrayLength : sourceContainer.currentCount;
-  //   }
-  //   else
-  //   {
-  //     transferCount = copyNum > destContainer.arrayLength ? destContainer.arrayLength : copyNum;
-  //   }
-  //
-  //   for(int objectNum = 0; objectNum < transferCount; objectNum++)
-  //   {
-  //     destContainer.objectArray.at(objectNum) = sourceContainer.objectArray.at(objectNum);
-  //   }
-  //   destContainer.currentCount = transferCount;
-  // }
+
+  void ObjectContainer::checkErrSig() {
+    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+      if(it->objSig == VISION_OBJECT_ERR_SIG) {
+        std::cout << "checkErrSig: ERR_SIG in object" << it - objects.begin() << std::endl;
+      }
+    }
+  }
+
+// void ObjectContainer::copyObjects(lib7842::ObjectContainer& sourceContainer, lib7842::ObjectContainer& destContainer, int copyNum)
+// {
+//   int transferCount = 0;
+//
+//   if(copyNum < 0)
+//   {
+//     transferCount = sourceContainer.currentCount > destContainer.arrayLength ? destContainer.arrayLength : sourceContainer.currentCount;
+//   }
+//   else
+//   {
+//     transferCount = copyNum > destContainer.arrayLength ? destContainer.arrayLength : copyNum;
+//   }
+//
+//   for(int objectNum = 0; objectNum < transferCount; objectNum++)
+//   {
+//     destContainer.objectArray.at(objectNum) = sourceContainer.objectArray.at(objectNum);
+//   }
+//   destContainer.currentCount = transferCount;
+// }
 
 
 
