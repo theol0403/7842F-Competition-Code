@@ -163,7 +163,7 @@ void ShootController::run()
   const double anglePower = -60;
   const double cycleVel = -60;
 
-  const double extendPos = 40;
+  const double extendPos = 45;
 
   while(true)
   {
