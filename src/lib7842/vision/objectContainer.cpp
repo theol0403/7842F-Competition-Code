@@ -119,27 +119,11 @@ namespace lib7842
   }
 
 
-  void ObjectContainer::printObject(visionObj obj) {
-    std::cout << "Sig:" << obj.objSig << " | ";
-    std::cout << "Width:" << obj.objWidth << " | ";
-    std::cout << "Height:" << obj.objHeight << " | ";
-    std::cout << "X:" << obj.objX << " | ";
-    std::cout << "Y:" << obj.objY << " | ";
-    std::cout << "Area:" << obj.objArea << " | ";
-    std::cout << "CenterX:" << obj.objCenterX << " | ";
-    std::cout << "CenterY:" << obj.objCenterY << " | ";
-    std::cout << std::endl;
+  void ObjectContainer::print() {
+    for(visionObj &obj : objects) obj.print();
   }
-  
-  void ObjectContainer::printObjects(int startIndex, int endIndex) {
-    for(std::vector<visionObj>::iterator it = objects.begin() + startIndex; it != objects.begin() + startIndex + 1; it++) {
-      try {
-        printObject(*it);
-      } catch(std::out_of_range) {
-        std::cerr << "printObjects: Invalid Index\n";
-      }
-    }
-  }
+
+
   //
   // void ObjectContainer::checkForErrSig()
   // {

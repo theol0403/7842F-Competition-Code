@@ -40,8 +40,7 @@ namespace lib7842
     void sortBy(objAttr, bool = true);
     void sortBy(sortFunc_t);
 
-    void printObject(visionObj);
-    void printObjects(int, int);
+    void print();
 
   };
 }

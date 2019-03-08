@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator+(ObjectContainer::visionObj rhs){
+  visionObj visionObj::operator+(visionObj rhs){
     objX = objX + rhs.objX;
     objY = objY + rhs.objY;
     objWidth = objWidth + rhs.objWidth;
@@ -14,7 +14,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator-(ObjectContainer::visionObj rhs){
+  visionObj visionObj::operator-(visionObj rhs){
     objX = objX - rhs.objX;
     objY = objY - rhs.objY;
     objWidth = objWidth - rhs.objWidth;
@@ -25,7 +25,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator*(ObjectContainer::visionObj rhs){
+  visionObj visionObj::operator*(visionObj rhs){
     objX = objX * rhs.objX;
     objY = objY * rhs.objY;
     objWidth = objWidth * rhs.objWidth;
@@ -36,7 +36,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator/(ObjectContainer::visionObj rhs){
+  visionObj visionObj::operator/(visionObj rhs){
     objX = objX / rhs.objX;
     objY = objY / rhs.objY;
     objWidth = objWidth / rhs.objWidth;
@@ -47,7 +47,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator+(double rhs){
+  visionObj visionObj::operator+(double rhs){
     objX = objX + rhs;
     objY = objY + rhs;
     objWidth = objWidth + rhs;
@@ -58,7 +58,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator-(double rhs){
+  visionObj visionObj::operator-(double rhs){
     objX = objX - rhs;
     objY = objY - rhs;
     objWidth = objWidth - rhs;
@@ -69,7 +69,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator*(double rhs){
+  visionObj visionObj::operator*(double rhs){
     objX = objX * rhs;
     objY = objY * rhs;
     objWidth = objWidth * rhs;
@@ -80,7 +80,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer::visionObj ObjectContainer::visionObj::operator/(double rhs){
+  visionObj visionObj::operator/(double rhs){
     objX = objX / rhs;
     objY = objY / rhs;
     objWidth = objWidth / rhs;
@@ -91,7 +91,7 @@ namespace lib7842
     return *this;
   }
 
-  double ObjectContainer::visionObj::getAttr(objAttr attr) const {
+  double visionObj::getAttr(objAttr attr) const {
     switch (attr) {
       case objAttr::objSig: return objSig; break;
       case objAttr::objX: return objX; break;
@@ -103,6 +103,19 @@ namespace lib7842
       case objAttr::objCenterY: return objCenterY; break;
     }
     std::cerr << "GetAttr: Invalid Attr\n";
+  }
+
+
+  void visionObj::print() {
+    std::cout << "Sig:" << objSig << " | ";
+    std::cout << "Width:" << objWidth << " | ";
+    std::cout << "Height:" << objHeight << " | ";
+    std::cout << "X:" << objX << " | ";
+    std::cout << "Y:" << objY << " | ";
+    std::cout << "Area:" << objArea << " | ";
+    std::cout << "CenterX:" << objCenterX << " | ";
+    std::cout << "CenterY:" << objCenterY << " | ";
+    std::cout << std::endl;
   }
 
 }

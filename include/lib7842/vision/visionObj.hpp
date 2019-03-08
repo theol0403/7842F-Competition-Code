@@ -38,6 +38,7 @@ namespace lib7842
     visionObj operator/(double);
 
     double getAttr(objAttr) const;
+    void print();
   };
 
 }
