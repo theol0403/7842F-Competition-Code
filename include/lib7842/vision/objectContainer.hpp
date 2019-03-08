@@ -33,35 +33,35 @@ namespace lib7842
     ObjList findIndexRange(int, int);
     ObjList findSigIndex(int, int);
     ObjList findSigIndexRange(int, int, int);
-    ObjList findWithAttr(objAttr, double);
-    ObjList findWithoutAttr(objAttr, double);
-    ObjList findWithAttrRange(objAttr, double, double);
-    ObjList findWithoutAttrRange(objAttr, double, double);
+    ObjList findWith(objAttr, double);
+    ObjList findWithout(objAttr, double);
+    ObjList findWithRange(objAttr, double, double);
+    ObjList findWithoutRange(objAttr, double, double);
 
     visionObj getIndex(int);
     visionObj getSigIndex(int, int);
-    visionObj getWithAttr(objAttr, double);
-    visionObj getWithoutAttr(objAttr, double);
-    visionObj getWithAttrRange(objAttr, double, double);
-    visionObj getWithoutAttrRange(objAttr, double, double);
+    visionObj getWith(objAttr, double);
+    visionObj getWithout(objAttr, double);
+    visionObj getWithRange(objAttr, double, double);
+    visionObj getWithoutRange(objAttr, double, double);
 
-    ObjList removeIndex(int);
-    ObjList removeIndexRange(int, int);
-    ObjList removeSigIndex(int, int);
-    ObjList removeSigIndexRange(int, int, int);
-    ObjList removeWithAttr(objAttr, double);
-    ObjList removeWithoutAttr(objAttr, double);
-    ObjList removeWithAttrRange(objAttr, double, double);
-    ObjList removeWithoutAttrRange(objAttr, double, double);
+    void removeIndex(int);
+    void removeIndexRange(int, int);
+    void removeSigIndex(int, int);
+    void removeSigIndexRange(int, int, int);
+    void removeWith(objAttr, double);
+    void removeWithout(objAttr, double);
+    void removeWithRange(objAttr, double, double);
+    void removeWithoutRange(objAttr, double, double);
 
     ObjectContainer extractIndex(int);
     ObjectContainer extractIndexRange(int, int);
     ObjectContainer extractSigIndex(int, int);
     ObjectContainer extractSigIndexRange(int, int, int);
-    ObjectContainer extractWithAttr(objAttr, double);
-    ObjectContainer extractWithoutAttr(objAttr, double);
-    ObjectContainer extractWithAttrRange(objAttr, double, double);
-    ObjectContainer extractWithoutAttrRange(objAttr, double, double);
+    ObjectContainer extractWith(objAttr, double);
+    ObjectContainer extractWithout(objAttr, double);
+    ObjectContainer extractWithRange(objAttr, double, double);
+    ObjectContainer extractWithoutRange(objAttr, double, double);
 
     sortFunc_t makeSort(objAttr, bool = true);
     void sortBy(objAttr, bool = true);
