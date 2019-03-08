@@ -64,7 +64,7 @@ void FlywheelController::run()
     }
     else //If no motors are available, approximate how much the flywheel slows down
     {
-      lastPower = lastPower <= 0 ? 0 : lastPower - 0.24;
+      //lastPower = lastPower <= 0 ? 0 : lastPower - 0.24;
       motorPower = 0;
     }
 

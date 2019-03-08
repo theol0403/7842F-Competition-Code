@@ -164,7 +164,7 @@ double ShootController::computeHoodPower(double target) {
     std::cerr << "Reverse PID \n";
   }
   if(output > 90) output = 90;
-  if(output < 30) output = 30;
+  if(output < 40) output = 40;
   return output;
 }
 
@@ -173,7 +173,7 @@ void ShootController::run()
   const double angleThresh = 4;
   const double cycleVel = -60;
 
-  const double extendPos = 48;
+  const double extendPos = 46;
 
   while(true)
   {
@@ -219,7 +219,7 @@ void ShootController::run()
       intake->enable();
       flywheel->disable();
       flywheel->flywheel->moveVelocity(cycleVel);
-      if(getHoodAngle() < extendPos) {
+      if(getHoodAngle() <= extendPos) {
         flywheel->enable();
         completeJob();
       }
@@ -314,6 +314,7 @@ void ShootController::run()
       intake->indexer->moveVelocity(200);
       pros::delay(250);
       intake->enable();
+      intake->setState(IntakeController::intakeBall);
       completeJob();
       break;
 
