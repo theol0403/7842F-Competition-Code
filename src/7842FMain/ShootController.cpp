@@ -111,18 +111,8 @@ double ShootController::getHoodAngle() {
   return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle;
 }
 
-// range is about 60 deg
 double ShootController::getTopFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  // switch((int)x)
-  // {
-  //   case 0 ... 1 : return 0; break;
-  //   case 2 ... 3 : return 5; break;
-  //   case 4 ... 5 : return 15; break;
-  //   case 6 ... 7 : return 25; break;
-  //   case 8 ... 9 : return 35; break;
-  //   default : return 0; break;
-  // }
   double y = -0.0974*std::pow(x, 2) + 1.8549*x - 1.9294;
   if(x < 3.2) y = 0;
   if(y < 0 || y > 40) y = 0;
@@ -131,15 +121,6 @@ double ShootController::getTopFlagAngle() {
 
 double ShootController::getMiddleFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  // switch((int) distanceToFlag.convert(foot))
-  // {
-  //   case 0 ... 1 : return 0; break;
-  //   case 2 ... 3 : return 15; break;
-  //   case 4 ... 5 : return 25; break;
-  //   case 6 ... 7 : return 35; break;
-  //   case 8 ... 9 : return 45; break;
-  //   default : return 20; break;
-  // }
   double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
   if(x <= 2) y = 20;
   if(x >= 10) y = 15;
@@ -163,14 +144,14 @@ double ShootController::computeHoodPower(double target) {
     output = 0;
     std::cerr << "Reverse PID \n";
   }
-  if(output > 90) output = 90;
+  //if(output > 100) output = 100;
   if(output < 40) output = 40;
   return output;
 }
 
 void ShootController::run()
 {
-  const double angleThresh = 4;
+  const double angleThresh = 3;
   const double cycleVel = -60;
 
   const double extendPos = 46;
@@ -284,14 +265,12 @@ void ShootController::run()
 
       case waitForBall:
       flywheel->enable();
-      intake->disable();
+      intake->enable();
       intake->indexerSlave = false;
       if(intake->hasBall) {
-        intake->enable();
         completeJob();
       } else {
-        intake->intake->moveVelocity(200);
-        intake->indexer->moveVelocity(80);
+        intake->setState(IntakeController::intakeBall);
       }
       break;
 
