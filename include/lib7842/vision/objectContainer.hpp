@@ -38,6 +38,11 @@ namespace lib7842
       visionObj operator*(visionObj);
       visionObj operator/(visionObj);
 
+      visionObj operator+(double);
+      visionObj operator-(double);
+      visionObj operator*(double);
+      visionObj operator/(double);
+
       double getAttr(objAttr) const;
     };
 
@@ -53,6 +58,8 @@ namespace lib7842
 
     visionObj getObjByIndex(int);
     visionObj getObjBySigIndex(int, int);
+    visionObj getTotalObj();
+    visionObj getAvgObj();
 
     double getObjAttr(objAttr, int);
     double getTotalAttr(objAttr);

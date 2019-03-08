@@ -47,6 +47,50 @@ namespace lib7842
     return *this;
   }
 
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator+(double rhs){
+    objX = objX + rhs;
+    objY = objY + rhs;
+    objWidth = objWidth + rhs;
+    objHeight = objHeight + rhs;
+    objArea = objArea + rhs;
+    objCenterX = objCenterX + rhs;
+    objCenterY = objCenterY + rhs;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator-(double rhs){
+    objX = objX - rhs;
+    objY = objY - rhs;
+    objWidth = objWidth - rhs;
+    objHeight = objHeight - rhs;
+    objArea = objArea + rhs;
+    objCenterX = objCenterX - rhs;
+    objCenterY = objCenterY - rhs;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator*(double rhs){
+    objX = objX * rhs;
+    objY = objY * rhs;
+    objWidth = objWidth * rhs;
+    objHeight = objHeight * rhs;
+    objArea = objArea * rhs;
+    objCenterX = objCenterX * rhs;
+    objCenterY = objCenterY * rhs;
+    return *this;
+  }
+
+  ObjectContainer::visionObj ObjectContainer::visionObj::operator/(double rhs){
+    objX = objX / rhs;
+    objY = objY / rhs;
+    objWidth = objWidth / rhs;
+    objHeight = objHeight / rhs;
+    objArea = objArea / rhs;
+    objCenterX = objCenterX / rhs;
+    objCenterY = objCenterY / rhs;
+    return *this;
+  }
+
   double ObjectContainer::visionObj::getAttr(objAttr attr) const {
     switch (attr) {
       case objAttr::objSig: return objSig; break;
@@ -90,24 +134,31 @@ namespace lib7842
   ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int sig, int index) {
     for(visionObj &obj : objects) {
       if(obj.getAttr(objAttr::objSig) == sig) {
-        if(index <= 0) { return obj; }
+        if(index <= 0) return obj;
         index--;
       }
     }
     return {};
   }
 
+  ObjectContainer::visionObj ObjectContainer::getTotalObj() {
+    return std::accumulate(objects.begin(), objects.end(), visionObj{});
+  }
+
+  ObjectContainer::visionObj ObjectContainer::getAvgObj() {
+    return getTotalObj() / objects.size();
+  }
 
   double ObjectContainer::getObjAttr(objAttr attr, int index) {
     return objects.at(index).getAttr(attr);
   }
 
   double ObjectContainer::getTotalAttr(objAttr attr) {
-    return std::accumulate(objects.begin(), objects.end(), visionObj{}).getAttr(attr);
+    return getTotalObj().getAttr(attr);
   }
 
   double ObjectContainer::getAvgAttr(objAttr attr) {
-    return getTotalAttr(attr) / objects.size();
+    return getAvgObj().getAttr(attr);
   }
 
 
@@ -122,25 +173,25 @@ namespace lib7842
 
   void ObjectContainer::removeObjWith(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(it->getAttr(attr) == val) { objects.erase(it); }
+      if(it->getAttr(attr) == val) objects.erase(it);
     }
   }
 
   void ObjectContainer::removeObjWithout(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(it->getAttr(attr) != val) { objects.erase(it); }
+      if(it->getAttr(attr) != val) objects.erase(it);
     }
   }
 
   void ObjectContainer::removeObjWith(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(min < it->getAttr(attr) || it->getAttr(attr) > max) { objects.erase(it); }
+      if(min < it->getAttr(attr) || it->getAttr(attr) > max) objects.erase(it);
     }
   }
 
   void ObjectContainer::removeObjWithout(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(!(min < it->getAttr(attr) || it->getAttr(attr) > max)) { objects.erase(it); }
+      if(!(min < it->getAttr(attr) || it->getAttr(attr) > max)) objects.erase(it);
     }
   }
 
