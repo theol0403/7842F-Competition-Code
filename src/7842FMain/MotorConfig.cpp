@@ -75,7 +75,7 @@ void initializeDevices()
 
 	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel), 15, new lib7842::velPID(0.35, 0.05, 0.045, 0.9), new lib7842::emaFilter(0.15), 0.7);
 
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 132.1);
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 31.5);
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 }
