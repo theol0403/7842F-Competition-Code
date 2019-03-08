@@ -277,7 +277,6 @@ void ShootController::run()
 
       case waitForFlywheel:
       flywheel->enable();
-      intake->indexer->move(0);
       intake->disable();
       intake->indexerSlave = true;
       if(flywheel->pid->getError() < 300) completeJob();
