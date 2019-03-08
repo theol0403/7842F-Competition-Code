@@ -56,7 +56,9 @@ public:
   QLength distanceToFlag = 0_in;
   bool macroCompleted = false;
 
-  ShootController(IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double);
+  IterativePosPIDController* hoodPid = nullptr;
+
+  ShootController(IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 
   void clearQueue();
   void completeJob();
@@ -81,6 +83,8 @@ public:
 
   void setTarget(double);
   void setDistanceToFlag(QLength);
+
+  double computeHoodPower(double);
 
   void run();
   static void task(void*);

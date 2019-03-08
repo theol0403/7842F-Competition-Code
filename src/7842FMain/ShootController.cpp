@@ -1,7 +1,7 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle) :
-intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle),
+ShootController::ShootController(IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle, IterativePosPIDController* ihoodPid) :
+intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle), hoodPid(ihoodPid),
 shootTask(task, this)
 {
 }
@@ -156,11 +156,20 @@ void ShootController::setDistanceToFlag(QLength distance) {
   distanceToFlag = distance;
 }
 
+double ShootController::computeHoodPower(double target) {
+  hoodPid->setTarget(target);
+  double output = hoodPid->step(getHoodAngle()) * 127;
+  if(output < 0) {
+    output = 0;
+    std::cerr << "Reverse PID \n";
+  }
+  if(output > 60) output = 60;
+  return output;
+}
 
 void ShootController::run()
 {
   const double angleThresh = 4;
-  const double anglePower = -60;
   const double cycleVel = -60;
 
   const double extendPos = 45;
@@ -187,7 +196,7 @@ void ShootController::run()
       case angling:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->move(anglePower);
+      flywheel->flywheel->move(-60);
       break;
 
       case cycle:
@@ -234,7 +243,7 @@ void ShootController::run()
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(anglePower);
+          flywheel->flywheel->move(-computeHoodPower(getTopFlagAngle()));
         }
       }
       break;
@@ -250,7 +259,7 @@ void ShootController::run()
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(anglePower);
+          flywheel->flywheel->move(-computeHoodPower(getMiddleFlagAngle()));
         }
       }
       break;
@@ -266,7 +275,7 @@ void ShootController::run()
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(anglePower);
+          flywheel->flywheel->move(-computeHoodPower(targetAngle));
         }
       }
       break;
