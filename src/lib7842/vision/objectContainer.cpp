@@ -4,9 +4,9 @@ namespace lib7842
 {
 
   /**
-   * @method ObjectContainer::resize
-   * @param  size
-   */
+  * @method ObjectContainer::resize
+  * @param  size
+  */
   void ObjectContainer::resize(int size) {
     objects.resize(size);
   }
@@ -31,7 +31,7 @@ namespace lib7842
     try {
       return objects.at(index);
     } catch(std::out_of_range) {
-      std::cerr << "GetObjByIndex: Invalid Index\n";
+      std::cerr << "getObjByIndex: Invalid Index\n";
       return {};
     }
   }
@@ -71,7 +71,7 @@ namespace lib7842
     try {
       objects.erase(objects.begin() + index);
     } catch(std::out_of_range) {
-      std::cerr << "RemoveObjIndex: Invalid Index\n";
+      std::cerr << "removeObjIndex: Invalid Index\n";
     }
   }
 
@@ -119,34 +119,29 @@ namespace lib7842
   }
 
 
-
-
-
-
-
-  // void ObjectContainer::debugObjects(int objectCount)
-  // {
-  //   debugErrorSig();
-  //   if(objectCount > arrayLength) objectCount = arrayLength; //Bounds Checking
+  void ObjectContainer::printObject(visionObj obj) {
+    std::cout << "Sig:" << obj.objSig << " | ";
+    std::cout << "Width:" << obj.objWidth << " | ";
+    std::cout << "Height:" << obj.objHeight << " | ";
+    std::cout << "X:" << obj.objX << " | ";
+    std::cout << "Y:" << obj.objY << " | ";
+    std::cout << "Area:" << obj.objArea << " | ";
+    std::cout << "CenterX:" << obj.objCenterX << " | ";
+    std::cout << "CenterY:" << obj.objCenterY << " | ";
+    std::cout << std::endl;
+  }
+  
+  void ObjectContainer::printObjects(int startIndex, int endIndex) {
+    for(std::vector<visionObj>::iterator it = objects.begin() + startIndex; it != objects.begin() + startIndex + 1; it++) {
+      try {
+        printObject(*it);
+      } catch(std::out_of_range) {
+        std::cerr << "printObjects: Invalid Index\n";
+      }
+    }
+  }
   //
-  //   std::cout << std::endl << "Length:" << arrayLength << " | " << "Count:" << currentCount << "\n";
-  //   for(int objectNum = 0; objectNum < objectCount; objectNum++)
-  //   {
-  //     std::cout << "Object:" << objectNum << " | ";
-  //     std::cout << "Sig:" << objectArray.at(objectNum).objSig << " | ";
-  //     std::cout << "Width:" << objectArray.at(objectNum).objWidth << " | ";
-  //     std::cout << "Height:" << objectArray.at(objectNum).objHeight << " | ";
-  //     std::cout << "X:" << objectArray.at(objectNum).objX << " | ";
-  //     std::cout << "Y:" << objectArray.at(objectNum).objY << " | ";
-  //     std::cout << "Area:" << objectArray.at(objectNum).objArea << " | ";
-  //     std::cout << "CenterX:" << objectArray.at(objectNum).objCenterX << " | ";
-  //     std::cout << "CenterY:" << objectArray.at(objectNum).objCenterY << " | ";
-  //     std::cout << "Discard:" << objectArray.at(objectNum).discardObject;
-  //     std::cout << std::endl;
-  //   }
-  // }
-  //
-  // void ObjectContainer::debugErrorSig()
+  // void ObjectContainer::checkForErrSig()
   // {
   //   for(int objectNum = 0; objectNum < currentCount; objectNum++)
   //   {
