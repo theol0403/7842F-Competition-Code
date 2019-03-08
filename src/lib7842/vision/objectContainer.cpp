@@ -3,10 +3,6 @@
 namespace lib7842
 {
 
-  /**
-  * @method ObjectContainer::resize
-  * @param  size
-  */
   void ObjectContainer::resize(int size) {
     objects.resize(size);
   }
@@ -120,9 +116,9 @@ namespace lib7842
 
 
   void ObjectContainer::print() {
+    std::cout << "Count:" << objects.size() << std::endl;
     for(visionObj &obj : objects) obj.print();
   }
-
 
 
   void ObjectContainer::checkErrSig() {
@@ -131,6 +127,12 @@ namespace lib7842
         std::cout << "checkErrSig: ERR_SIG in object" << it - objects.begin() << std::endl;
       }
     }
+  }
+
+
+  ObjectContainer ObjectContainer::operator+(ObjectContainer rhs) {
+    addObj(rhs.objects);
+    return *this;
   }
 
 }
