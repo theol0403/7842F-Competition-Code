@@ -159,10 +159,11 @@ void ShootController::setDistanceToFlag(QLength distance) {
 
 void ShootController::run()
 {
-  const double angleThresh = 3;
-  const double anglePower = -70;
+  const double angleThresh = 4;
+  const double anglePower = -60;
+  const double cycleVel = -60;
 
-  const double extendPos = 100;
+  const double extendPos = 40;
 
   while(true)
   {
@@ -176,7 +177,7 @@ void ShootController::run()
       break;
 
       case standby:
-      if(getHoodAngle() >= angleThresh) {
+      if(getHoodAngle() > angleThresh) {
         addJob(cycle);
       } else {
         doJob(off);
@@ -190,13 +191,14 @@ void ShootController::run()
       break;
 
       case cycle:
+      completeJob();
       addJobs({waitForRetract, waitForSlip, extend});
       break;
 
       case extend:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->move(anglePower);
+      flywheel->flywheel->moveVelocity(cycleVel);
       if(getHoodAngle() > extendPos) {
         flywheel->enable();
         completeJob();
@@ -206,7 +208,7 @@ void ShootController::run()
       case waitForSlip:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->move(anglePower);
+      flywheel->flywheel->moveVelocity(cycleVel);
       if(getHoodAngle() < extendPos) {
         flywheel->enable();
         completeJob();
@@ -216,7 +218,7 @@ void ShootController::run()
       case waitForRetract:
       intake->enable();
       flywheel->enable();
-      if(getHoodAngle() <= angleThresh) {
+      if(getHoodAngle() < angleThresh) {
         completeJob();
       }
       break;

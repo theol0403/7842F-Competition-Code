@@ -17,8 +17,8 @@ public:
     angling, //indefinite angling
     cycle, //head to back position
     extend, //move to extended position
-    waitForSlip, //wait until
-    waitForRetract,
+    waitForSlip, //wait until hood slips
+    waitForRetract, //wait until hood back to 0 pos
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     angleTarget, //drop hood to target angle
