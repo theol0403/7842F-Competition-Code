@@ -11,7 +11,7 @@ namespace lib7842
   public:
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
-    using ObjIt = std::vector<std::vector<visionObj>::iterator>;
+    using ObjList = std::vector<std::vector<visionObj>::iterator>;
 
     std::vector<visionObj> objects = {};
 
@@ -22,29 +22,46 @@ namespace lib7842
     void addObj(visionObj);
     void addObj(std::vector<visionObj>);
 
-    ObjIt findWithIndex(int);
-    ObjIt findWithIndex(int, int);
-    ObjIt findWithSigIndex(int, int);
-    ObjIt findWithAttr(objAttr, double);
-    ObjIt findWithoutAttr(objAttr, double);
-    ObjIt findWithAttr(objAttr, double, double);
-    ObjIt findWithoutAttr(objAttr, double, double);
-
-    visionObj getWithIndex(int);
-    visionObj getWithSigIndex(int, int);
     visionObj getTotalObj();
     visionObj getAvgObj();
-    
-    double getObjAttr(objAttr, int);
+
+    double getAttrIndex(objAttr, int);
     double getTotalAttr(objAttr);
     double getAvgAttr(objAttr);
 
-    void removeObjIndex(int);
-    void removeObjIndex(int, int);
-    void removeObjWith(objAttr, double);
-    void removeObjWithout(objAttr, double);
-    void removeObjWith(objAttr, double, double);
-    void removeObjWithout(objAttr, double, double);
+    ObjList findIndex(int);
+    ObjList findIndexRange(int, int);
+    ObjList findSigIndex(int, int);
+    ObjList findSigIndexRange(int, int, int);
+    ObjList findWithAttr(objAttr, double);
+    ObjList findWithoutAttr(objAttr, double);
+    ObjList findWithAttrRange(objAttr, double, double);
+    ObjList findWithoutAttrRange(objAttr, double, double);
+
+    visionObj getIndex(int);
+    visionObj getSigIndex(int, int);
+    visionObj getWithAttr(objAttr, double);
+    visionObj getWithoutAttr(objAttr, double);
+    visionObj getWithAttrRange(objAttr, double, double);
+    visionObj getWithoutAttrRange(objAttr, double, double);
+
+    ObjList removeIndex(int);
+    ObjList removeIndexRange(int, int);
+    ObjList removeSigIndex(int, int);
+    ObjList removeSigIndexRange(int, int, int);
+    ObjList removeWithAttr(objAttr, double);
+    ObjList removeWithoutAttr(objAttr, double);
+    ObjList removeWithAttrRange(objAttr, double, double);
+    ObjList removeWithoutAttrRange(objAttr, double, double);
+
+    ObjectContainer extractIndex(int);
+    ObjectContainer extractIndexRange(int, int);
+    ObjectContainer extractSigIndex(int, int);
+    ObjectContainer extractSigIndexRange(int, int, int);
+    ObjectContainer extractWithAttr(objAttr, double);
+    ObjectContainer extractWithoutAttr(objAttr, double);
+    ObjectContainer extractWithAttrRange(objAttr, double, double);
+    ObjectContainer extractWithoutAttrRange(objAttr, double, double);
 
     sortFunc_t makeSort(objAttr, bool = true);
     void sortBy(objAttr, bool = true);
@@ -54,12 +71,6 @@ namespace lib7842
     void checkErrSig();
 
     ObjectContainer operator+(ObjectContainer);
-    ObjectContainer extractIndex(int);
-    ObjectContainer extractIndex(int, int);
-    ObjectContainer extractWith(objAttr, double);
-    ObjectContainer extractWithout(objAttr, double);
-    void removeObjWith(objAttr, double, double);
-    void removeObjWithout(objAttr, double, double);
 
   };
 }
