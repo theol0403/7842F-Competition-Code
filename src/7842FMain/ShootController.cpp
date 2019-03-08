@@ -163,7 +163,8 @@ double ShootController::computeHoodPower(double target) {
     output = 0;
     std::cerr << "Reverse PID \n";
   }
-  if(output > 60) output = 60;
+  if(output > 80) output = 80;
+  if(output < 40) output = 40;
   return output;
 }
 
