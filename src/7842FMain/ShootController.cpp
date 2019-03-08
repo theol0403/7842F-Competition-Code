@@ -63,7 +63,7 @@ void ShootController::addMacro(shootMacros macro) {
     addJobs({shootIndexer});
     break;
 
-    case shootMacros::angleManual :
+    case shootMacros::angle :
     addJobs({angling});
     break;
   }
@@ -159,8 +159,10 @@ void ShootController::setDistanceToFlag(QLength distance) {
 
 void ShootController::run()
 {
-  const double angleThresh = 4;
-  const double angleSpeed = -50;
+  const double angleThresh = 3;
+  const double anglePower = -70;
+
+  const double extendPos = 100;
 
   while(true)
   {
@@ -173,13 +175,6 @@ void ShootController::run()
       intake->enable();
       break;
 
-      case angling:
-      intake->enable();
-      flywheel->disable();
-      //flywheel->flywheel->moveVelocity(-30);
-      flywheel->flywheel->move(angleSpeed);
-      break;
-
       case standby:
       if(getHoodAngle() >= angleThresh) {
         addJob(cycle);
@@ -188,68 +183,88 @@ void ShootController::run()
       }
       break;
 
-      case cycle:
-      //std::cout << "Cycling!" << std::endl;
+      case angling:
       intake->enable();
       flywheel->disable();
-      flywheel->flywheel->moveVelocity(-30);
-      //If angle is within error of 0
-      if(getHoodAngle() <= angleThresh) {
+      flywheel->flywheel->move(anglePower);
+      break;
+
+      case cycle:
+      addJobs({waitForRetract, waitForSlip, extend});
+      break;
+
+      case extend:
+      intake->enable();
+      flywheel->disable();
+      flywheel->flywheel->move(anglePower);
+      if(getHoodAngle() > extendPos) {
         flywheel->enable();
+        completeJob();
+      }
+      break;
+
+      case waitForSlip:
+      intake->enable();
+      flywheel->disable();
+      flywheel->flywheel->move(anglePower);
+      if(getHoodAngle() < extendPos) {
+        flywheel->enable();
+        completeJob();
+      }
+      break;
+
+      case waitForRetract:
+      intake->enable();
+      flywheel->enable();
+      if(getHoodAngle() <= angleThresh) {
         completeJob();
       }
       break;
 
 
       case angleTop:
-      //std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
-          //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(angleSpeed);
+          flywheel->flywheel->move(anglePower);
         }
       }
       break;
 
 
       case angleMiddle:
-      //std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
-          //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(angleSpeed);
+          flywheel->flywheel->move(anglePower);
         }
       }
       break;
 
 
       case angleTarget:
-      //std::cout << "Angling!" << std::endl;
       if(getHoodAngle() > targetAngle + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= targetAngle - angleThresh) {
-          //std::cout << "Exit!" << std::endl;
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(angleSpeed);
+          flywheel->flywheel->move(anglePower);
         }
       }
       break;
@@ -286,18 +301,6 @@ void ShootController::run()
       intake->intake->moveVelocity(0);
       intake->indexer->moveVelocity(200);
       pros::delay(250);
-      intake->enable();
-      completeJob();
-      break;
-
-
-      case shootBoth:
-      flywheel->enable();
-      intake->disable();
-      intake->indexerSlave = false;
-      intake->intake->moveVelocity(200);
-      intake->indexer->moveVelocity(200);
-      pros::delay(300);
       intake->enable();
       completeJob();
       break;

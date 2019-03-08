@@ -13,16 +13,18 @@ public:
   enum shootStates
   {
     off, //control to flywheel and intake
-    angling, //indefinite angling
     standby, //back position, control to flywheel
+    angling, //indefinite angling
     cycle, //head to back position
+    extend, //move to extended position
+    waitForSlip, //wait until
+    waitForRetract,
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     angleTarget, //drop hood to target angle
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     shootIndexer, //shoot indexer
-    shootBoth, //shoot both
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
@@ -36,7 +38,7 @@ public:
     shootBothFlags,
     shootTarget,
     shoot,
-    angleManual
+    angle
   };
 
   IntakeController* intake = nullptr;
@@ -71,7 +73,7 @@ public:
   void doJobLoop(shootStates);
   void doMacro(shootMacros);
   void doMacroLoop(shootMacros);
-  void doMacroBlocking(shootMacros); 
+  void doMacroBlocking(shootMacros);
 
   double getHoodAngle();
   double getTopFlagAngle();
