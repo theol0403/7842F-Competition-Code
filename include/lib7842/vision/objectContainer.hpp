@@ -11,6 +11,7 @@ namespace lib7842
   public:
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
+    using ObjIt = std::vector<std::vector<visionObj>::iterator>;
 
     std::vector<visionObj> objects = {};
 
@@ -21,16 +22,25 @@ namespace lib7842
     void addObj(visionObj);
     void addObj(std::vector<visionObj>);
 
-    visionObj getObjByIndex(int);
-    visionObj getObjBySigIndex(int, int);
+    ObjIt findWithIndex(int);
+    ObjIt findWithIndex(int, int);
+    ObjIt findWithSigIndex(int, int);
+    ObjIt findWithAttr(objAttr, double);
+    ObjIt findWithoutAttr(objAttr, double);
+    ObjIt findWithAttr(objAttr, double, double);
+    ObjIt findWithoutAttr(objAttr, double, double);
+
+    visionObj getWithIndex(int);
+    visionObj getWithSigIndex(int, int);
     visionObj getTotalObj();
     visionObj getAvgObj();
-
+    
     double getObjAttr(objAttr, int);
     double getTotalAttr(objAttr);
     double getAvgAttr(objAttr);
 
     void removeObjIndex(int);
+    void removeObjIndex(int, int);
     void removeObjWith(objAttr, double);
     void removeObjWithout(objAttr, double);
     void removeObjWith(objAttr, double, double);
@@ -44,6 +54,12 @@ namespace lib7842
     void checkErrSig();
 
     ObjectContainer operator+(ObjectContainer);
+    ObjectContainer extractIndex(int);
+    ObjectContainer extractIndex(int, int);
+    ObjectContainer extractWith(objAttr, double);
+    ObjectContainer extractWithout(objAttr, double);
+    void removeObjWith(objAttr, double, double);
+    void removeObjWithout(objAttr, double, double);
 
   };
 }
