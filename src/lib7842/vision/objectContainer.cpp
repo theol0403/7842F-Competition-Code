@@ -27,7 +27,7 @@ namespace lib7842
     for(visionObj &obj : objs) addObj(obj);
   }
 
-  ObjectContainer::visionObj ObjectContainer::getObjByIndex(int index) {
+  visionObj ObjectContainer::getObjByIndex(int index) {
     try {
       return objects.at(index);
     } catch(std::out_of_range) {
@@ -36,7 +36,7 @@ namespace lib7842
     }
   }
 
-  ObjectContainer::visionObj ObjectContainer::getObjBySigIndex(int sig, int index) {
+  visionObj ObjectContainer::getObjBySigIndex(int sig, int index) {
     for(visionObj &obj : objects) {
       if(obj.getAttr(objAttr::objSig) == sig) {
         if(index <= 0) return obj;
@@ -46,11 +46,11 @@ namespace lib7842
     return {};
   }
 
-  ObjectContainer::visionObj ObjectContainer::getTotalObj() {
+  visionObj ObjectContainer::getTotalObj() {
     return std::accumulate(objects.begin(), objects.end(), visionObj{});
   }
 
-  ObjectContainer::visionObj ObjectContainer::getAvgObj() {
+  visionObj ObjectContainer::getAvgObj() {
     return getTotalObj() / objects.size();
   }
 

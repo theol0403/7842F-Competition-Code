@@ -1,5 +1,6 @@
 #pragma once
 #include "objectTracking.hpp"
+#include "visionObj.hpp"
 
 namespace lib7842
 {

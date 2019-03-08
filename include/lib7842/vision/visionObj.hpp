@@ -4,6 +4,18 @@
 namespace lib7842
 {
 
+  enum class objAttr
+  {
+    objSig,
+    objX,
+    objY,
+    objWidth,
+    objHeight,
+    objArea,
+    objCenterX,
+    objCenterY
+  };
+
   struct visionObj
   {
     int objSig = VISION_OBJECT_ERR_SIG;
@@ -14,18 +26,6 @@ namespace lib7842
     double objArea = 0;
     double objCenterX = 0;
     double objCenterY = 0;
-
-    enum class objAttr
-    {
-      objSig,
-      objX,
-      objY,
-      objWidth,
-      objHeight,
-      objArea,
-      objCenterX,
-      objCenterY
-    };
 
     visionObj operator+(visionObj);
     visionObj operator-(visionObj);
