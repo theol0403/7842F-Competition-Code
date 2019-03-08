@@ -9,8 +9,11 @@ void AutonTest(void* input)
   SideController* chassis = static_cast<SideController*>(input);
 
   //chassis->turnToAngle(180_deg);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
+  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
+  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
+  ObjectContainer cont;
+  ObjectContainer yeet;
+  yeet = cont;
 
   //chassis->turnToAngle(90_deg);
   //chassis->setState({0_ft, 0_ft, 0_deg});

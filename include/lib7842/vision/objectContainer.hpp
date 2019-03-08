@@ -43,5 +43,7 @@ namespace lib7842
     void print();
     void checkErrSig();
 
+    ObjectContainer operator+(ObjectContainer);
+
   };
 }
