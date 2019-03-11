@@ -30,8 +30,8 @@ namespace lib7842
     ObjectContainer &remove(int, int);
     ObjectContainer &removeWith(objAttr, double);
     ObjectContainer &removeWithout(objAttr, double);
-    ObjectContainer &removeWithRange(objAttr, double, double);
-    ObjectContainer &removeWithoutRange(objAttr, double, double);
+    ObjectContainer &removeWith(objAttr, double, double);
+    ObjectContainer &removeWithout(objAttr, double, double);
 
     ObjectContainer &sortBy(objAttr, bool = true);
 

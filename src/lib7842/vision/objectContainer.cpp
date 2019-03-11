@@ -44,45 +44,58 @@ namespace lib7842
     return *this;
   }
 
-  void ObjectContainer::reset() {
-    resize(0);
-  }
 
 
-
-
-  void ObjectContainer::removeObjIndex(int index) {
+  ObjectContainer &ObjectContainer::remove(int index) {
     try {
       objects.erase(objects.begin() + index);
     } catch(std::out_of_range) {
-      std::cerr << "removeObjIndex: Invalid Index\n";
+      std::cerr << "remove: Invalid Index\n";
     }
+    return *this;
   }
 
-  void ObjectContainer::removeObjWith(objAttr attr, double val) {
+  ObjectContainer &ObjectContainer::remove(int start, int end) {
+    try {
+      objects.erase(objects.begin() + start, objects.begin() + end);
+    } catch(std::out_of_range) {
+      std::cerr << "remove: Invalid Indexes\n";
+    }
+    return *this;
+  }
+
+  ObjectContainer &ObjectContainer::removeWith(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
       if(it->getAttr(attr) == val) objects.erase(it);
     }
+    return *this;
   }
 
-  void ObjectContainer::removeObjWithout(objAttr attr, double val) {
+  ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double val) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
       if(it->getAttr(attr) != val) objects.erase(it);
     }
+    return *this;
   }
 
-  void ObjectContainer::removeObjWith(objAttr attr, double min, double max) {
+  ObjectContainer &ObjectContainer::removeWith(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
       if(min < it->getAttr(attr) || it->getAttr(attr) > max) objects.erase(it);
     }
+    return *this;
   }
 
-  void ObjectContainer::removeObjWithout(objAttr attr, double min, double max) {
+  ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double min, double max) {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
       if(!(min < it->getAttr(attr) || it->getAttr(attr) > max)) objects.erase(it);
     }
+    return *this;
   }
 
+  ObjectContainer &ObjectContainer::sortBy(objAttr attr, bool decending) {
+    sortBy(makeSort(attr, decending));
+    return *this;
+  }
 
   ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
     return [=](const visionObj& first, const visionObj& second) {
@@ -94,12 +107,13 @@ namespace lib7842
     };
   }
 
-  void ObjectContainer::sortBy(objAttr attr, bool decending) {
-    sortBy(makeSort(attr, decending));
-  }
-
   void ObjectContainer::sortBy(sortFunc_t sortFunc) {
     std::stable_sort(objects.begin(), objects.end(), sortFunc);
+  }
+
+
+  void ObjectContainer::reset() {
+    resize(0);
   }
 
 
