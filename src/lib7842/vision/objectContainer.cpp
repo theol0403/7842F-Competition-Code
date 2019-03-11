@@ -3,18 +3,6 @@
 namespace lib7842
 {
 
-  void ObjectContainer::resize(int size) {
-    objects.resize(size);
-  }
-
-  void ObjectContainer::shrinkTo(int size) {
-    if(size < objects.size()) resize(size);
-  }
-
-  void ObjectContainer::reset() {
-    resize(0);
-  }
-
   void ObjectContainer::addObj(visionObj obj) {
     objects.push_back(obj);
   }
@@ -23,44 +11,44 @@ namespace lib7842
     for(visionObj &obj : objs) addObj(obj);
   }
 
-  visionObj ObjectContainer::getObjByIndex(int index) {
+  visionObj ObjectContainer::get(int index) {
     try {
       return objects.at(index);
     } catch(std::out_of_range) {
-      std::cerr << "getObjByIndex: Invalid Index\n";
+      std::cerr << "get: Invalid Index\n";
       return {};
     }
   }
 
-  visionObj ObjectContainer::getObjBySigIndex(int sig, int index) {
-    for(visionObj &obj : objects) {
-      if(obj.getAttr(objAttr::objSig) == sig) {
-        if(index <= 0) return obj;
-        index--;
-      }
-    }
-    return {};
-  }
-
-  visionObj ObjectContainer::getTotalObj() {
+  visionObj ObjectContainer::getTotal() {
     return std::accumulate(objects.begin(), objects.end(), visionObj{});
   }
 
-  visionObj ObjectContainer::getAvgObj() {
-    return getTotalObj() / objects.size();
+  visionObj ObjectContainer::getAvg() {
+    return getTotal() / objects.size();
   }
 
-  double ObjectContainer::getObjAttr(objAttr attr, int index) {
-    return objects.at(index).getAttr(attr);
+
+  ObjectContainer ObjectContainer::copy() {
+    return *this;
   }
 
-  double ObjectContainer::getTotalAttr(objAttr attr) {
-    return getTotalObj().getAttr(attr);
+
+  ObjectContainer &ObjectContainer::resize(int size) {
+    objects.resize(size);
+    return *this;
   }
 
-  double ObjectContainer::getAvgAttr(objAttr attr) {
-    return getAvgObj().getAttr(attr);
+  ObjectContainer &ObjectContainer::shrinkTo(int size) {
+    if(size < objects.size()) resize(size);
+    return *this;
   }
+
+  void ObjectContainer::reset() {
+    resize(0);
+  }
+
+
 
 
   void ObjectContainer::removeObjIndex(int index) {

@@ -21,7 +21,7 @@ namespace lib7842
     visionObj getTotal();
     visionObj getAvg();
 
-    ObjectContainer &copy();
+    ObjectContainer copy();
 
     ObjectContainer &resize(int);
     ObjectContainer &trim(int);
