@@ -4,117 +4,117 @@ namespace lib7842
 {
 
   visionObj visionObj::operator+(visionObj rhs){
-    objX = objX + rhs.objX;
-    objY = objY + rhs.objY;
-    objWidth = objWidth + rhs.objWidth;
-    objHeight = objHeight + rhs.objHeight;
-    objArea = objArea + rhs.objArea;
-    objCenterX = objCenterX + rhs.objCenterX;
-    objCenterY = objCenterY + rhs.objCenterY;
+    x = x + rhs.x;
+    y = y + rhs.y;
+    width = width + rhs.width;
+    height = height + rhs.height;
+    area = area + rhs.area;
+    centerX = centerX + rhs.centerX;
+    centerY = centerY + rhs.centerY;
     return *this;
   }
 
   visionObj visionObj::operator-(visionObj rhs){
-    objX = objX - rhs.objX;
-    objY = objY - rhs.objY;
-    objWidth = objWidth - rhs.objWidth;
-    objHeight = objHeight - rhs.objHeight;
-    objArea = objArea + rhs.objArea;
-    objCenterX = objCenterX - rhs.objCenterX;
-    objCenterY = objCenterY - rhs.objCenterY;
+    x = x - rhs.x;
+    y = y - rhs.y;
+    width = width - rhs.width;
+    height = height - rhs.height;
+    area = area + rhs.area;
+    centerX = centerX - rhs.centerX;
+    centerY = centerY - rhs.centerY;
     return *this;
   }
 
   visionObj visionObj::operator*(visionObj rhs){
-    objX = objX * rhs.objX;
-    objY = objY * rhs.objY;
-    objWidth = objWidth * rhs.objWidth;
-    objHeight = objHeight * rhs.objHeight;
-    objArea = objArea * rhs.objArea;
-    objCenterX = objCenterX * rhs.objCenterX;
-    objCenterY = objCenterY * rhs.objCenterY;
+    x = x * rhs.x;
+    y = y * rhs.y;
+    width = width * rhs.width;
+    height = height * rhs.height;
+    area = area * rhs.area;
+    centerX = centerX * rhs.centerX;
+    centerY = centerY * rhs.centerY;
     return *this;
   }
 
   visionObj visionObj::operator/(visionObj rhs){
-    objX = objX / rhs.objX;
-    objY = objY / rhs.objY;
-    objWidth = objWidth / rhs.objWidth;
-    objHeight = objHeight / rhs.objHeight;
-    objArea = objArea / rhs.objArea;
-    objCenterX = objCenterX / rhs.objCenterX;
-    objCenterY = objCenterY / rhs.objCenterY;
+    x = x / rhs.x;
+    y = y / rhs.y;
+    width = width / rhs.width;
+    height = height / rhs.height;
+    area = area / rhs.area;
+    centerX = centerX / rhs.centerX;
+    centerY = centerY / rhs.centerY;
     return *this;
   }
 
   visionObj visionObj::operator+(double rhs){
-    objX = objX + rhs;
-    objY = objY + rhs;
-    objWidth = objWidth + rhs;
-    objHeight = objHeight + rhs;
-    objArea = objArea + rhs;
-    objCenterX = objCenterX + rhs;
-    objCenterY = objCenterY + rhs;
+    x = x + rhs;
+    y = y + rhs;
+    width = width + rhs;
+    height = height + rhs;
+    area = area + rhs;
+    centerX = centerX + rhs;
+    centerY = centerY + rhs;
     return *this;
   }
 
   visionObj visionObj::operator-(double rhs){
-    objX = objX - rhs;
-    objY = objY - rhs;
-    objWidth = objWidth - rhs;
-    objHeight = objHeight - rhs;
-    objArea = objArea + rhs;
-    objCenterX = objCenterX - rhs;
-    objCenterY = objCenterY - rhs;
+    x = x - rhs;
+    y = y - rhs;
+    width = width - rhs;
+    height = height - rhs;
+    area = area + rhs;
+    centerX = centerX - rhs;
+    centerY = centerY - rhs;
     return *this;
   }
 
   visionObj visionObj::operator*(double rhs){
-    objX = objX * rhs;
-    objY = objY * rhs;
-    objWidth = objWidth * rhs;
-    objHeight = objHeight * rhs;
-    objArea = objArea * rhs;
-    objCenterX = objCenterX * rhs;
-    objCenterY = objCenterY * rhs;
+    x = x * rhs;
+    y = y * rhs;
+    width = width * rhs;
+    height = height * rhs;
+    area = area * rhs;
+    centerX = centerX * rhs;
+    centerY = centerY * rhs;
     return *this;
   }
 
   visionObj visionObj::operator/(double rhs){
-    objX = objX / rhs;
-    objY = objY / rhs;
-    objWidth = objWidth / rhs;
-    objHeight = objHeight / rhs;
-    objArea = objArea / rhs;
-    objCenterX = objCenterX / rhs;
-    objCenterY = objCenterY / rhs;
+    x = x / rhs;
+    y = y / rhs;
+    width = width / rhs;
+    height = height / rhs;
+    area = area / rhs;
+    centerX = centerX / rhs;
+    centerY = centerY / rhs;
     return *this;
   }
 
   double visionObj::getAttr(objAttr attr) const {
     switch (attr) {
-      case objAttr::objSig: return objSig; break;
-      case objAttr::objX: return objX; break;
-      case objAttr::objY: return objY; break;
-      case objAttr::objWidth: return objWidth; break;
-      case objAttr::objHeight: return objHeight; break;
-      case objAttr::objArea: return objArea; break;
-      case objAttr::objCenterX: return objCenterX; break;
-      case objAttr::objCenterY: return objCenterY; break;
+      case objAttr::sig: return sig; break;
+      case objAttr::x: return x; break;
+      case objAttr::y: return y; break;
+      case objAttr::width: return width; break;
+      case objAttr::height: return height; break;
+      case objAttr::area: return area; break;
+      case objAttr::centerX: return centerX; break;
+      case objAttr::centerY: return centerY; break;
     }
     std::cerr << "GetAttr: Invalid Attr\n";
   }
 
 
   void visionObj::print() {
-    std::cout << "Sig:" << objSig << " | ";
-    std::cout << "Width:" << objWidth << " | ";
-    std::cout << "Height:" << objHeight << " | ";
-    std::cout << "X:" << objX << " | ";
-    std::cout << "Y:" << objY << " | ";
-    std::cout << "Area:" << objArea << " | ";
-    std::cout << "CenterX:" << objCenterX << " | ";
-    std::cout << "CenterY:" << objCenterY << " | ";
+    std::cout << "Sig:" << sig << " | ";
+    std::cout << "Width:" << width << " | ";
+    std::cout << "Height:" << height << " | ";
+    std::cout << "X:" << x << " | ";
+    std::cout << "Y:" << y << " | ";
+    std::cout << "Area:" << area << " | ";
+    std::cout << "CenterX:" << centerX << " | ";
+    std::cout << "CenterY:" << centerY << " | ";
     std::cout << std::endl;
   }
 
