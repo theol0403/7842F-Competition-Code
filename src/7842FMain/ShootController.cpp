@@ -288,7 +288,7 @@ void ShootController::run()
       intake->disable();
       pros::delay(10);
       intake->indexerSlave = false;
-      intake->intake->moveVelocity(0);
+      intake->intake->moveVelocity(200);
       intake->indexer->moveVelocity(200);
       pros::delay(250);
       intake->enable();
