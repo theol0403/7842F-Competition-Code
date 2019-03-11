@@ -12,7 +12,7 @@ void AutonTest(void* input)
   // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
   // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
   ObjectContainer container;
-  container.copy().removeWith(objAttr::area, 0, 20).sortBy(objAttr::sig).getAvg().getAttr(objAttr::area);
+  double a = container.copy().removeWith(objAttr::x, 0, 100).removeWith(objAttr::x, 300, 400).sortBy(objAttr::area).get(0).area;
 
   //chassis->turnToAngle(90_deg);
   //chassis->setState({0_ft, 0_ft, 0_deg});

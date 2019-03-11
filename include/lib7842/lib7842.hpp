@@ -15,6 +15,7 @@
 #include "lib7842/auton/sideController.hpp"
 #include "lib7842/auton/autonSelector.hpp"
 
-#include "lib7842/vision/ObjectContainer.hpp"
+#include "lib7842/vision/objectContainer.hpp"
+#include "lib7842/vision/objectReading.hpp"
 
 using namespace lib7842;

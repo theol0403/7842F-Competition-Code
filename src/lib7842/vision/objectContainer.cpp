@@ -125,7 +125,7 @@ namespace lib7842
 
   void ObjectContainer::checkErrSig() {
     for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(it->objSig == VISION_OBJECT_ERR_SIG) {
+      if(it->sig == VISION_OBJECT_ERR_SIG) {
         std::cout << "checkErrSig: ERR_SIG in object" << it - objects.begin() << std::endl;
       }
     }
