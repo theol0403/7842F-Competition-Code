@@ -74,7 +74,6 @@ namespace lib7842
 
 
     PIDScreenTuner(int, int, int);
-    ~PIDScreenTuner();
 
     double m_buttonMultiplier = 1;
     void initButton(int, double*, const char*, int, buttonType_t = buttonAdd, int = 1);

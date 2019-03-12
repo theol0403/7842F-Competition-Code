@@ -117,27 +117,21 @@ void disabled()
 void opcontrol()
 {
 
+  PIDScreenTuner::pidTune_t flywheelPIDParams = {0.38, 0.0, 0.05, 0.045, 0.15, 0.9};
+  //kP, kI, kD, kF, readingEma, derivativeEma
+  double wantedFlywheelRPM = 0;
 
-pidTune_t flywheelPIDParams = {0.4, 0.0, 0.05, 0.044, 0.15, 0.9};
-PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
+  PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
   tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
   tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
   tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
   tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
   tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
-  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, buttonIncrement, 500);
-  tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, buttonMultiply, 10);
+  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 500);
+  tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
   lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
   lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
-lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, -127, 127);
-
-flywheelPID.setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
-rpmEma.setGains(flywheelPIDParams.readingEma);
-
-lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
-lv_gauge_set_value(rpmGauge, 1, flywheelRPM);
-lv_gauge_set_value(errorGauge, 0, flywheelPID.getError());
-lv_gauge_set_value(powerGauge, 0, motorPower);
+  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, -127, 127);
 
 
   checkBaseStatus(); //Make sure the base has been initialized properly
@@ -161,6 +155,18 @@ lv_gauge_set_value(powerGauge, 0, motorPower);
     #ifndef TEST_ROBOT
     driverControl();
     #endif
+
+    robot.flywheel->pid->setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
+    robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
+
+    lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
+    lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRPM);
+    lv_gauge_set_value(errorGauge, 0, robot.flywheel->pid->getError());
+    lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
+
+    robot.flywheel->setRpm(wantedFlywheelRPM);
+
+
     pros::delay(20);
   }
 }

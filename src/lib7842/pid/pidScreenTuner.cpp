@@ -63,11 +63,6 @@ namespace lib7842
     m_needleColors[3] = LV_COLOR_PURPLE;
   }
 
-  PIDScreenTuner::~PIDScreenTuner()
-  {
-
-  }
-
 
   void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* variableName, int charLength, buttonType_t buttonType, int incrementAmount)
   {
