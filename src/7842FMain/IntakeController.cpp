@@ -53,7 +53,7 @@ void IntakeController::run()
           indexerSlave = true;
         } else {
           indexerSlave = false;
-          indexer->moveVelocity(80);
+          indexer->moveVelocity(60);
         }
         break;
 

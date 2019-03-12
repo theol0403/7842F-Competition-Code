@@ -56,7 +56,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({reportDone, shootIndexer, shootIndexer, angleMiddle, shootIndexer, angleTop});
+    addJobs({reportDone, shootIndexer, angleMiddle, shootIndexer, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -154,7 +154,7 @@ void ShootController::run()
   const double angleThresh = 3;
   const double cycleVel = -60;
 
-  const double extendPos = 46;
+  const double extendPos = 47;
 
   while(true)
   {

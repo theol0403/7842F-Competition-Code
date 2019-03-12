@@ -60,7 +60,6 @@ void driverControl()
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
 
-		//robot.arm->setState(ArmController::off);
 		robot.arm->setState(ArmController::off);
 	}
 
@@ -73,7 +72,9 @@ void driverControl()
 	/**
 	* Shoot Control
 	*/
-	if(j_Digital(L2)) {
+	if(j_Digital(L2) && j_Digital(L1)) {
+		shootMacro = ShootController::shootMacros::shootBothFlags;
+	} else if(j_Digital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddleFlag;
 	} else if(j_Digital(L1)) {
 		shootMacro = ShootController::shootMacros::shootTopFlag;
@@ -83,7 +84,8 @@ void driverControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off);
+		robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 	}
 
