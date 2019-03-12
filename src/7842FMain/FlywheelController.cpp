@@ -62,7 +62,7 @@ void FlywheelController::run()
       motorPower = 0;
     }
 
-    std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
+    std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
     pros::delay(20);
   }
 }
