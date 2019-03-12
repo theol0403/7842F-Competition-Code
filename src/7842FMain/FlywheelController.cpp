@@ -1,8 +1,7 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, double iflywheelRatio, lib7842::velPID* ipid, lib7842::emaFilter* irpmFilter, double imotorSlew) :
-intake(iintake), flywheel(iflywheel), flywheelRatio(iflywheelRatio), pid(ipid),
-rpmFilter(irpmFilter), motorSlew(imotorSlew),
+FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::velPID* ipid, double imotorSlew) :
+intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), pid(ipid), motorSlew(imotorSlew),
 flywheelTask(task, this) {}
 
 void FlywheelController::setRpm(double rpm)
@@ -38,14 +37,7 @@ void FlywheelController::run()
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
-      if(!disabled) //main motor is available for rpm reading
-      {
-        currentRPM = rpmFilter->filter(flywheel->getActualVelocity() * flywheelRatio);
-      }
-      else //indexer needs to supply rpm
-      {
-        currentRPM = rpmFilter->filter(-intake->indexer->getActualVelocity() * flywheelRatio);
-      }
+      currentRPM = velMath->step(sensor->get()).convert(rpm);
 
       motorPower = pid->calculate(targetRPM, currentRPM);
 

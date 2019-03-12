@@ -164,9 +164,6 @@ void opcontrol()
     lv_gauge_set_value(errorGauge, 0, robot.flywheel->pid->getError());
     lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
 
-    robot.flywheel->setRpm(wantedFlywheelRPM);
-
-
     pros::delay(20);
   }
 }
