@@ -157,7 +157,7 @@ void opcontrol()
     #endif
 
     robot.flywheel->pid->setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
-    robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
+    //robot.flywheel->velMath->filter->setGains(flywheelPIDParams.readingEma);
 
     lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
     lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRPM);

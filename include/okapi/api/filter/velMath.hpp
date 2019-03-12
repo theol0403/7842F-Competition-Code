@@ -74,6 +74,8 @@ class VelMath {
    */
   virtual QAngularAcceleration getAccel() const;
 
+  std::shared_ptr<Filter> filter;
+
   protected:
   Logger *logger;
   QAngularSpeed vel;
@@ -84,6 +86,5 @@ class VelMath {
 
   QTime sampleTime;
   std::unique_ptr<AbstractTimer> loopDtTimer;
-  std::shared_ptr<Filter> filter;
 };
 } // namespace okapi
