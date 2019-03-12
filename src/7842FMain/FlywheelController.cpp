@@ -6,28 +6,20 @@ flywheelTask(task, this) {
   sensor->reset();
 }
 
-void FlywheelController::setRpm(double rpm)
-{
-  targetRPM = rpm;
-}
+void FlywheelController::setRpm(double rpm) { targetRPM = rpm; }
 
-double FlywheelController::getTargetRpm() {
-  return targetRPM;
-}
+double FlywheelController::getTargetRpm() { return targetRPM; }
 
-void FlywheelController::disable()
-{
+void FlywheelController::disable() {
   if(!disabled) flywheel->moveVoltage(0);
   disabled = true;
 }
 
-void FlywheelController::enable()
-{
+void FlywheelController::enable() {
   disabled = false;
 }
 
-void FlywheelController::resetSlew()
-{
+void FlywheelController::resetSlew() {
   lastPower = 0;
   motorPower = 0;
 }
@@ -35,6 +27,7 @@ void FlywheelController::resetSlew()
 
 void FlywheelController::run()
 {
+  pros::delay(500);
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
@@ -59,7 +52,7 @@ void FlywheelController::run()
     else //If no motors are available, approximate how much the flywheel slows down
     {
       //lastPower = lastPower <= 0 ? 0 : lastPower - 0.24;
-      motorPower = 0;
+      //motorPower = 0;
     }
 
     std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";

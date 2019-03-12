@@ -74,10 +74,10 @@ namespace lib7842
   void OdomTracker::odometryTask(void* input)
   {
     OdomTracker* that = static_cast<OdomTracker*>(input);
-    	pros::delay(500);
-	that->resetState();
-	that->resetSensors();
-		that->resetState();
+    pros::delay(500);
+    that->resetState();
+    that->resetSensors();
+    that->resetState();
     std::cout << "Begin Tracking" << std::endl;
 
     int count = 0;
