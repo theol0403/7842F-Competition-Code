@@ -6,6 +6,7 @@
 #include "lib7842/other/rpmSystem.hpp"
 
 #include "lib7842/pid/pidVelSystem.hpp"
+#include "lib7842/pid/pidScreenTuner.hpp"
 
 #include "lib7842/odometry/odomMath.hpp"
 #include "lib7842/odometry/tracker.hpp"
