@@ -43,7 +43,7 @@ void initializeBase()
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mRightFront, mRightBack})),
 		std::make_shared<ADIEncoder>('H', 'G'),
 		std::make_shared<ADIEncoder>('F', 'E'),
-		140,
+		200,
 		12000
 	);
 
@@ -73,7 +73,9 @@ void initializeDevices()
 {
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
-	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel), new ADIEncoder('A', 'B', false), new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<2>>(), 10_ms, std::make_unique<Timer>()), new EmaFilter(0.15), new lib7842::velPID(0.38, 0.05, 0.045, 0.9), 0.8);
+	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel),
+	new ADIEncoder('A', 'B', false), new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<3>>(), 10_ms, std::make_unique<Timer>()), new EmaFilter(0.15),
+	new lib7842::velPID(0.38, 0.05, 0.045, 0.9), 0.8);
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 33.65, new IterativePosPIDController(0.025, 0, 0, 0, TimeUtilFactory::create()));
 

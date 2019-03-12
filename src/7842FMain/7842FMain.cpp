@@ -127,7 +127,7 @@ void opcontrol()
   tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
   tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
   tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
-  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 500);
+  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
   tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
   lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
   lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, 50, -50);

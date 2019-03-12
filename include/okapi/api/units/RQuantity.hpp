@@ -69,7 +69,7 @@ class RQuantity {
   }
 
   //private:
-  double value;
+  double value; //TODO: test this theo
 };
 
 // Predefined (physical unit) quantity types:
