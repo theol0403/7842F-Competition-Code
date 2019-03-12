@@ -12,6 +12,7 @@ public:
   Motor* flywheel = nullptr;
   ADIEncoder* sensor = nullptr;
   VelMath* velMath = nullptr;
+  EmaFilter* rpmFilter = nullptr;
   lib7842::velPID* pid = nullptr;
   double motorSlew;
 
@@ -25,7 +26,7 @@ public:
 
   bool disabled = false;
 
-  FlywheelController(IntakeController*, Motor*, ADIEncoder*, VelMath*, lib7842::velPID*, double);
+  FlywheelController(IntakeController*, Motor*, ADIEncoder*, VelMath*, EmaFilter*, lib7842::velPID*, double);
 
   void setRpm(double);
   double getTargetRpm();

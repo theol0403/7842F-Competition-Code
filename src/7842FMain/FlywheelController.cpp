@@ -1,8 +1,10 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::velPID* ipid, double imotorSlew) :
-intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), pid(ipid), motorSlew(imotorSlew),
-flywheelTask(task, this) {}
+FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, EmaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
+intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
+flywheelTask(task, this) {
+  sensor->reset();
+}
 
 void FlywheelController::setRpm(double rpm)
 {
@@ -37,7 +39,7 @@ void FlywheelController::run()
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
-      currentRPM = velMath->step(sensor->get()).convert(rpm);
+      currentRPM = rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
 
       motorPower = pid->calculate(targetRPM, currentRPM);
 
@@ -60,7 +62,7 @@ void FlywheelController::run()
       motorPower = 0;
     }
 
-    //std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< flywheelPID.getError() << "\n";
+    std::cout << "RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
     pros::delay(20);
   }
 }

@@ -27,6 +27,6 @@ class Filter {
    */
   virtual double getOutput() const = 0;
 
-  virtual void setGains(double);
+
 };
 } // namespace okapi

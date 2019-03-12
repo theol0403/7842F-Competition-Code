@@ -157,12 +157,14 @@ void opcontrol()
     #endif
 
     robot.flywheel->pid->setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
-    //robot.flywheel->velMath->filter->setGains(flywheelPIDParams.readingEma);
+    robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
 
     lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
     lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRPM);
     lv_gauge_set_value(errorGauge, 0, robot.flywheel->pid->getError());
     lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
+
+    robot.flywheel->setRpm(wantedFlywheelRPM);
 
     pros::delay(20);
   }
