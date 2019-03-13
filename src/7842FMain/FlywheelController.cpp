@@ -27,7 +27,8 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  jay::util::CSVwrite flywheelLogger("/usd/flywheel.csv");
+  jay::util::CSVwrite flywheelLogger("/ser/sout");
+  flywheelLogger.WriteField("Time", false);
   flywheelLogger.WriteField("Target", false);
   flywheelLogger.WriteField("RPM", false);
   flywheelLogger.WriteField("Power", false);
@@ -60,8 +61,8 @@ void FlywheelController::run()
       //motorPower = 0;
     }
 
-    std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
-    flywheelLogger.WriteRecord({std::to_string(targetRPM), std::to_string(currentRPM), std::to_string(motorPower), std::to_string(pid->getD())}, true);
+    //std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
+    flywheelLogger.WriteRecord({std::to_string(pros::millis()), std::to_string(targetRPM), std::to_string(currentRPM), std::to_string(motorPower), std::to_string(pid->getD())}, true);
     pros::delay(20);
   }
 }

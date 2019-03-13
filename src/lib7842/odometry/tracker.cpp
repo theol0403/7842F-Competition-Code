@@ -78,12 +78,12 @@ namespace lib7842
     that->resetState();
     that->resetSensors();
     that->resetState();
-    std::cout << "Begin Tracking" << std::endl;
+    //std::cout << "Begin Tracking" << std::endl;
 
     int count = 0;
     while(true) {
       count++;
-      if(count >= 50) { that->debug(); count = 0; }
+      //if(count >= 50) { that->debug(); count = 0; }
 
       that->m_trackerFunc(that);
       pros::delay(10);
