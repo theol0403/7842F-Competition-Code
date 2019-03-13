@@ -64,7 +64,7 @@ void FlywheelController::run()
 
     //std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
     flywheelLogger.WriteRecord({std::to_string(pros::millis()), std::to_string(targetRPM/4), std::to_string(currentRPM/4), std::to_string((velMath->getAccel() * 4_in * 1_pi).convert(meter / second)), std::to_string(motorPower), std::to_string(pid->getD())}, true);
-    pros::delay(20);
+    pros::delay(10);
   }
 }
 

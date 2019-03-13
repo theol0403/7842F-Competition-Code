@@ -117,7 +117,7 @@ void disabled()
 void opcontrol()
 {
 
-  PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.9};
+  PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.5};
   //kP, kI, kD, kF, readingEma, derivativeEma
   double wantedFlywheelRPM = 0;
 
