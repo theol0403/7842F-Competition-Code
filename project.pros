@@ -246,6 +246,41 @@
                 "target": "v5",
                 "user_files": [],
                 "version": "3.3.12"
+            },
+            "plog": {
+                "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\plog@1.0.0",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "plog",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.1.6",
+                "system_files": [
+                    "include\\plog\\Formatters\\FuncMessageFormatter.h",
+                    "include\\plog\\Util.h",
+                    "include\\plog\\Record.h",
+                    "include\\plog\\Logger.h",
+                    "include\\plog\\Converters\\UTF8Converter.h",
+                    "include\\plog\\Severity.h",
+                    "include\\plog\\Converters\\NativeEOLConverter.h",
+                    "include\\plog\\Appenders\\IAppender.h",
+                    "include\\plog\\Log.h",
+                    "include\\plog\\Formatters\\MessageOnlyFormatter.h",
+                    "include\\plog\\WinApi.h",
+                    "include\\plog\\Appenders\\DebugOutputAppender.h",
+                    "include\\plog\\Appenders\\ColorConsoleAppender.h",
+                    "include\\plog\\Appenders\\RollingFileAppender.h",
+                    "include\\plog\\Appenders\\EventLogAppender.h",
+                    "include\\plog\\Formatters\\TxtFormatter.h",
+                    "include\\plog\\Appenders\\AndroidAppender.h",
+                    "firmware\\plog.a",
+                    "include\\plog\\Init.h",
+                    "include\\plog\\Formatters\\CsvFormatter.h",
+                    "include\\plog\\Appenders\\ConsoleAppender.h"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "1.0.0"
             }
         },
         "upload_options": {}
