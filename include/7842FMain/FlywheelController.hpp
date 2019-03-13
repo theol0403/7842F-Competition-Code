@@ -19,8 +19,8 @@ public:
 
   pros::Task flywheelTask;
 
-  double targetRPM = 0;
-  double currentRPM = 0;
+  double targetRpm = 0;
+  double currentRpm = 0;
 
   double lastPower = 0;
   double motorPower = 0;
