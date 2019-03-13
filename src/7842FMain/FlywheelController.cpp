@@ -27,7 +27,6 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  pros::delay(500);
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available

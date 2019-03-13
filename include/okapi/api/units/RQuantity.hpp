@@ -68,8 +68,8 @@ class RQuantity {
     return RQuantity<MassDim, LengthDim, TimeDim, AngleDim>(std::fabs(value));
   }
 
-  //private:
-  double value; //TODO: test this theo
+  private:
+  double value;
 };
 
 // Predefined (physical unit) quantity types:
