@@ -160,7 +160,7 @@ void opcontrol()
     robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
 
     lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
-    lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRPM);
+    lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRpm);
     lv_gauge_set_value(errorGauge, 0, robot.flywheel->pid->getError());
     lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
 
