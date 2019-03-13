@@ -29,8 +29,9 @@ void FlywheelController::run()
 {
   jay::util::CSVwrite flywheelLogger("/ser/sout");
   flywheelLogger.WriteField("Time", false);
-  flywheelLogger.WriteField("Target", false);
-  flywheelLogger.WriteField("RPM", false);
+  flywheelLogger.WriteField("Target/4", false);
+  flywheelLogger.WriteField("RPM/4", false);
+  flywheelLogger.WriteField("Accel(m/s)", false);
   flywheelLogger.WriteField("Power", false);
   flywheelLogger.WriteField("D", true);
 
@@ -62,7 +63,7 @@ void FlywheelController::run()
     }
 
     //std::cout << "Target: " << targetRPM << " RPM: " << currentRPM << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
-    flywheelLogger.WriteRecord({std::to_string(pros::millis()), std::to_string(targetRPM), std::to_string(currentRPM), std::to_string(motorPower), std::to_string(pid->getD())}, true);
+    flywheelLogger.WriteRecord({std::to_string(pros::millis()), std::to_string(targetRPM/4), std::to_string(currentRPM/4), std::to_string((velMath->getAccel() * 4_in * 1_pi).convert(meter / second)), std::to_string(motorPower), std::to_string(pid->getD())}, true);
     pros::delay(20);
   }
 }
