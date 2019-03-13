@@ -26,6 +26,7 @@ namespace lib7842
 		double calculate(double, double);
 		void setGains(double, double, double, double);
 		double getError();
+		double getD();
 
 	};
 }

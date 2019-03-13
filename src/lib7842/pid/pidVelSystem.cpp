@@ -38,5 +38,6 @@ namespace lib7842
 	}
 
 	double velPID::getError() { return m_Error; }
+	double velPID::getD() { return m_derivative; }
 
 }
