@@ -26,7 +26,5 @@ class Filter {
    * @return the previous output from filter
    */
   virtual double getOutput() const = 0;
-
-
 };
 } // namespace okapi
