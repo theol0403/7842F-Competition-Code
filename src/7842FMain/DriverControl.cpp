@@ -12,38 +12,6 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 
 void driverControl()
 {
-	/**
-	* Intake Control
-	*/
-	if(j_Digital(R2) && j_Digital(R1)) {
-		intakeState = IntakeController::outSlow;
-	} else if(j_Digital(R2)) {
-		intakeState = IntakeController::intakeBall;
-	} else if(j_Digital(R1)) {
-		intakeState = IntakeController::outIntake;
-	} else {
-		intakeState = IntakeController::off;
-	}
-
-	if(intakeState != lastIntakeState) {
-		robot.intake->setState(intakeState);
-		lastIntakeState = intakeState;
-	}
-
-
-	/**
-	* Arm Control
-	*/
-	if(j_Digital(A)) {
-		robot.arm->setState(ArmController::out);
-	} else if(armTrigger.changedToPressed()) {
-		if(robot.arm->getState() != ArmController::down) {
-			robot.arm->setState(ArmController::down);
-		} else {
-			robot.arm->setState(ArmController::up);
-		}
-	}
-
 
 	/**
 	* Flywheel Toggle
@@ -64,13 +32,10 @@ void driverControl()
 	}
 
 	/**
-	* Automatic Control
+	* Automatic Shoot Control
 	* Arrow buttons set odom y
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
-	*/
-	/**
-	* Shoot Control
 	*/
 	if(j_Digital(L2) && j_Digital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBothFlags;
@@ -93,7 +58,6 @@ void driverControl()
 	/**
 	* Angle Control
 	*/
-
 	if(j_Digital(down))
 	{
 		robot.shooter->setDistanceToFlag(2_ft);
@@ -130,6 +94,39 @@ void driverControl()
 	// 	robot.shooter->doMacroLoop(shootMacro);
 	// 	lastShootMacro = shootMacro;
 	// }
+
+	
+	/**
+	* Intake Control
+	*/
+	if(j_Digital(R2) && j_Digital(R1)) {
+		intakeState = IntakeController::outSlow;
+	} else if(j_Digital(R2)) {
+		intakeState = IntakeController::intakeBall;
+	} else if(j_Digital(R1)) {
+		intakeState = IntakeController::outIntake;
+	} else {
+		intakeState = IntakeController::off;
+	}
+
+	if(intakeState != lastIntakeState) {
+		robot.intake->setState(intakeState);
+		lastIntakeState = intakeState;
+	}
+
+
+	/**
+	* Arm Control
+	*/
+	if(j_Digital(A)) {
+		robot.arm->setState(ArmController::out);
+	} else if(armTrigger.changedToPressed()) {
+		if(robot.arm->getState() != ArmController::down) {
+			robot.arm->setState(ArmController::down);
+		} else {
+			robot.arm->setState(ArmController::up);
+		}
+	}
 
 
 }
