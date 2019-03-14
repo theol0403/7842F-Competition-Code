@@ -135,10 +135,13 @@ void opcontrol()
 
 
   jay::util::CSVwrite shootLogger("/ser/sout");
+  shootLogger.WriteField("Flag", false);
   shootLogger.WriteField("Distance", false);
   shootLogger.WriteField("Angle", false);
   shootLogger.WriteField("Rpm", false);
-  shootLogger.WriteField("Flag", true);
+  shootLogger.WriteField("Battery", false);
+  shootLogger.WriteField("Temp", true);
+
 
   double targetAngle = 0;
   bool topFlag = true;
@@ -216,6 +219,8 @@ void opcontrol()
   		robot.shooter->doJob(ShootController::angleTarget);
   	} else if(printTrigger.changedToPressed()) {
   		//print angle and distance
+      shootLogger.WriteRecord({topFlag ? "Top" : "Bottom", std::to_string((11_ft - robot.tracker->state.y).convert(foot)), std::to_string(targetAngle), std::to_string(shotRpm),
+      std::to_string(pros::battery::get_capacity()), std::to_string(robot.flywheel->flywheel->getTemperature())}, true);
   	}
 
     pros::delay(10);
