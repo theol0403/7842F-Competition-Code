@@ -130,8 +130,8 @@ void opcontrol()
   tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
   tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
   lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
-  lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, 50, -50);
-  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, -127, 127);
+  lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
+  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
 
 
   checkBaseStatus(); //Make sure the base has been initialized properly
@@ -161,7 +161,7 @@ void opcontrol()
 
     lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
     lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRpm);
-    lv_gauge_set_value(errorGauge, 0, robot.flywheel->pid->getError());
+    lv_gauge_set_value(errorGauge, 0, -robot.flywheel->pid->getError());
     lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
 
     robot.flywheel->setRpm(wantedFlywheelRPM);
