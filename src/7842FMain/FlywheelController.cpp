@@ -26,13 +26,13 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  jay::util::CSVwrite flywheelLogger("/ser/sout");
-  flywheelLogger.WriteField("Time", false);
-  flywheelLogger.WriteField("Target/4", false);
-  flywheelLogger.WriteField("Rpm/4", false);
-  flywheelLogger.WriteField("Accel(rpm/s)", false);
-  flywheelLogger.WriteField("Power", false);
-  flywheelLogger.WriteField("D", true);
+  // jay::util::CSVwrite flywheelLogger("/ser/sout");
+  // flywheelLogger.WriteField("Time", false);
+  // flywheelLogger.WriteField("Target/4", false);
+  // flywheelLogger.WriteField("Rpm/4", false);
+  // flywheelLogger.WriteField("Accel(rpm/s)", false);
+  // flywheelLogger.WriteField("Power", false);
+  // flywheelLogger.WriteField("D", true);
 
   sensor->reset();
 

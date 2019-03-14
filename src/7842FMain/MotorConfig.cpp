@@ -77,7 +77,7 @@ void initializeDevices()
 	new ADIEncoder('A', 'B', false), new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()), new EmaFilter(0.15),
 	new lib7842::velPID(0.38, 0.05, 0.045, 0.9), 0.4);
 
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 33.65, new IterativePosPIDController(0.025, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 34.49, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 }

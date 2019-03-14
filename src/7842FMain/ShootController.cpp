@@ -22,7 +22,6 @@ ShootController::shootStates ShootController::getCurrentJob() {
 }
 
 void ShootController::addJob(shootStates state) {
-  currentJob = state;
   stateQueue.push_back(state);
 }
 
@@ -31,12 +30,12 @@ void ShootController::addJobs(std::vector<shootStates> states) {
 }
 
 void ShootController::addJobLoop(shootStates state) {
+  currentJob = state;
   addJob(loopJob);
   addJob(state);
 }
 
 void ShootController::addMacro(shootMacros macro) {
-  currentMacro = macro;
   switch(macro) //these need to be reversed because the last one gets done first
   {
     case shootMacros::off :
@@ -70,6 +69,7 @@ void ShootController::addMacro(shootMacros macro) {
 }
 
 void ShootController::addMacroLoop(shootMacros macro) {
+  currentMacro = macro;
   addJob(loopMacro);
   addMacro(macro);
 }
@@ -145,13 +145,13 @@ double ShootController::computeHoodPower(double target) {
     std::cerr << "Reverse PID \n";
   }
   //if(output > 100) output = 100;
-  if(output < 40) output = 40;
+  if(output < 30) output = 30;
   return output;
 }
 
 void ShootController::run()
 {
-  const double angleThresh = 3;
+  const double angleThresh = 2;
   const double cycleVel = -60;
 
   const double extendPos = 47;
@@ -209,7 +209,7 @@ void ShootController::run()
       case waitForRetract:
       intake->enable();
       flywheel->enable();
-      if(getHoodAngle() < angleThresh) {
+      if(getHoodAngle() < 5) {
         completeJob();
       }
       break;
