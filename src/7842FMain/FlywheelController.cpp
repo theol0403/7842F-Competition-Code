@@ -3,7 +3,6 @@
 FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, EmaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
 intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
 flywheelTask(task, this) {
-  sensor->reset();
 }
 
 void FlywheelController::setRpm(double rpm) { targetRpm = rpm; }
@@ -34,6 +33,8 @@ void FlywheelController::run()
   flywheelLogger.WriteField("Accel(m/s)", false);
   flywheelLogger.WriteField("Power", false);
   flywheelLogger.WriteField("D", true);
+
+  sensor->reset();
 
   while(true)
   {
@@ -72,6 +73,7 @@ void FlywheelController::run()
 
 void FlywheelController::task(void* input)
 {
+  //pros::delay(500);
   FlywheelController* that = static_cast<FlywheelController*>(input);
   that->run();
 }
