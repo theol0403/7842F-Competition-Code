@@ -1,14 +1,16 @@
 #include "DriverControl.hpp"
 
+static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
+
+static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
+static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
+
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
 static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
-static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
-
-static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
-static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
+double targetAngle = 0;
 
 void driverControl()
 {
@@ -37,45 +39,63 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(L2) && j_Digital(L1)) {
-		shootMacro = ShootController::shootMacros::shootBothFlags;
-	} else if(j_Digital(L2)) {
-		shootMacro = ShootController::shootMacros::shootMiddleFlag;
-	} else if(j_Digital(L1)) {
-		shootMacro = ShootController::shootMacros::shootTopFlag;
-	} else {
-		shootMacro = ShootController::shootMacros::off;
-	}
+	// if(j_Digital(L2) && j_Digital(L1)) {
+	// 	shootMacro = ShootController::shootMacros::shootBothFlags;
+	// } else if(j_Digital(L2)) {
+	// 	shootMacro = ShootController::shootMacros::shootMiddleFlag;
+	// } else if(j_Digital(L1)) {
+	// 	shootMacro = ShootController::shootMacros::shootTopFlag;
+	// } else {
+	// 	shootMacro = ShootController::shootMacros::off;
+	// }
+	//
+	// if(shootMacro != lastShootMacro)
+	// {
+	// 	robot.shooter->doMacro(shootMacro);
+	// 	lastShootMacro = shootMacro;
+	//
+	// 	if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off); //turn off intake
+	// }
 
-	if(shootMacro != lastShootMacro)
+	if(j_Digital(Y))
 	{
-		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off);
-		robot.shooter->doMacro(shootMacro);
-		lastShootMacro = shootMacro;
+		targetAngle -= 0.1;
+		std::cout << "Target Angle: " << targetAngle << std::endl;
+		robot.shooter->setTarget(targetAngle);
+		robot.shooter->doJob(ShootController::angleTarget);
 	}
+	else if(j_Digital(X))
+	{
+		targetAngle += 0.1;
+		std::cout << "Target Angle: " << targetAngle << std::endl;
+		robot.shooter->setTarget(targetAngle);
+		robot.shooter->doJob(ShootController::angleTarget);
+	} else
 
 
 	/**
 	* Angle Control
 	*/
-	if(j_Digital(down))
-	{
-		robot.shooter->setDistanceToFlag(2_ft);
-	}
-	else if(j_Digital(left))
-	{
-		robot.shooter->setDistanceToFlag(3_ft);
-	}
-	else if(j_Digital(up))
-	{
-		robot.shooter->setDistanceToFlag(4.5_ft);
-	}
-	else if(j_Digital(right))
-	{
-		robot.shooter->setDistanceToFlag(11_ft);
-	}
+	// if(j_Digital(down))
+	// {
+	// 	robot.shooter->setDistanceToFlag(2_ft);
+	// }
+	// else if(j_Digital(left))
+	// {
+	// 	robot.shooter->setDistanceToFlag(3_ft);
+	// }
+	// else if(j_Digital(up))
+	// {
+	// 	robot.shooter->setDistanceToFlag(4.5_ft);
+	// }
+	// else if(j_Digital(right))
+	// {
+	// 	robot.shooter->setDistanceToFlag(11_ft);
+	// }
 
-
+	/**
+	* Angle Control
+	*/
 	// if(j_Digital(L2))
 	// {
 	// 	shootMacro = ShootController::shootMacros::shoot;
@@ -95,7 +115,7 @@ void driverControl()
 	// 	lastShootMacro = shootMacro;
 	// }
 
-	
+
 	/**
 	* Intake Control
 	*/
