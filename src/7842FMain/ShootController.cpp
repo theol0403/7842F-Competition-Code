@@ -152,9 +152,9 @@ double ShootController::computeHoodPower(double target) {
 void ShootController::run()
 {
   const double angleThresh = 2;
-  const double cycleVel = -60;
+  const double cycleVel = -50;
 
-  const double extendPos = 47;
+  const double extendPos = 46;
 
   while(true)
   {
