@@ -117,37 +117,39 @@ void disabled()
 void opcontrol()
 {
 
-  PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.1};
-  //kP, kI, kD, kF, readingEma, derivativeEma
-  double wantedFlywheelRPM = 0;
-
-  PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
-  tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
-  tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
-  tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
-  tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
-  tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
-  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
-  tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
-  lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
-  lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
-  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
-
-  jay::util::CSVwrite shootLogger("/ser/sout");
-  shootLogger.WriteField("Flag", false);
-  shootLogger.WriteField("Distance", false);
-  shootLogger.WriteField("Angle", false);
-  shootLogger.WriteField("Rpm", false);
-  shootLogger.WriteField("Battery", false);
-  shootLogger.WriteField("Temp", true);
-
-
-  double targetAngle = 0;
-  bool topFlag = true;
-  double shotRpm = 0;
-  okapi::ControllerButton printTrigger = j_Main[ControllerDigital::A];
-  ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
-  ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
+  // PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.1};
+  // //kP, kI, kD, kF, readingEma, derivativeEma
+  // double wantedFlywheelRPM = 0;
+  //
+  // PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
+  // tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
+  // tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
+  // tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
+  // tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
+  // tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
+  // tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
+  // tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
+  // lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
+  // lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
+  // lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
+  //
+  // jay::util::CSVwrite shootLogger("/usd/test.csv");
+  // if( shootLogger.error ) { std::cout << "LOGGER FAIL" << std::endl; }
+  //
+  // shootLogger.WriteField("Flag", false);
+  // shootLogger.WriteField("Distance", false);
+  // shootLogger.WriteField("Angle", false);
+  // shootLogger.WriteField("Rpm", false);
+  // shootLogger.WriteField("Battery", false);
+  // shootLogger.WriteField("Temp", true);
+  //
+  //
+  // double targetAngle = 0;
+  // bool topFlag = true;
+  // double shotRpm = 0;
+  // okapi::ControllerButton printTrigger = j_Main[ControllerDigital::A];
+  // ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
+  // ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
 
   checkBaseStatus(); //Make sure the base has been initialized properly
@@ -172,64 +174,65 @@ void opcontrol()
     driverControl();
     #endif
 
-    robot.flywheel->pid->setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
-    robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
+    // robot.flywheel->pid->setGains(flywheelPIDParams.kP, flywheelPIDParams.kD, flywheelPIDParams.kF, flywheelPIDParams.derivativeEma);
+    // robot.flywheel->rpmFilter->setGains(flywheelPIDParams.readingEma);
+    //
+    // lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
+    // lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRpm);
+    // lv_gauge_set_value(errorGauge, 0, -robot.flywheel->pid->getError());
+    // lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
+    //
+    // robot.flywheel->setRpm(wantedFlywheelRPM);
 
-    lv_gauge_set_value(rpmGauge, 0, wantedFlywheelRPM);
-    lv_gauge_set_value(rpmGauge, 1, robot.flywheel->currentRpm);
-    lv_gauge_set_value(errorGauge, 0, -robot.flywheel->pid->getError());
-    lv_gauge_set_value(powerGauge, 0, robot.flywheel->motorPower);
-
-    robot.flywheel->setRpm(wantedFlywheelRPM);
-
-
-    if(j_Digital(L2)) {
-      shootMacro = ShootController::shootMacros::shootTarget;
-      topFlag = false;
-      shotRpm = robot.flywheel->currentRpm;
-    } else if(j_Digital(L1)) {
-      shootMacro = ShootController::shootMacros::shootTarget;
-      topFlag = true;
-      shotRpm = robot.flywheel->currentRpm;
-    } else {
-      shootMacro = ShootController::shootMacros::off;
-    }
-
-    if(shootMacro != lastShootMacro)
-    {
-      if(shootMacro == ShootController::shootMacros::shootTarget)
-      std::cout << "" << (11_ft - robot.tracker->state.y).convert(foot) << ", " << targetAngle << std::endl;
-      if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
-      lastShootMacro = shootMacro;
-    }
-
-    if(j_Digital(Y))
-    {
-      targetAngle -= 0.1;
-      std::cout << "Target Angle: " << targetAngle << std::endl;
-      robot.shooter->setTarget(targetAngle);
-    }
-    else if(j_Digital(X))
-    {
-      targetAngle += 0.1;
-      std::cout << "Target Angle: " << targetAngle << std::endl;
-      robot.shooter->setTarget(targetAngle);
-    }
-    else if(j_Digital(B)) {
-      robot.shooter->doJobLoop(ShootController::angleTarget);
-    }
-    else if(printTrigger.changedToPressed())
-    {
-      //print angle and distance
-      shootLogger.WriteRecord({
-        topFlag ? "Top" : "Middle",
-        std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
-        std::to_string(targetAngle),
-        std::to_string(shotRpm),
-        std::to_string(pros::battery::get_capacity()),
-        std::to_string(robot.flywheel->flywheel->getTemperature())
-      }, true);
-    }
+    //
+    // if(j_Digital(L2)) {
+    //   shootMacro = ShootController::shootMacros::shootTarget;
+    //   topFlag = false;
+    //   shotRpm = robot.flywheel->currentRpm;
+    // } else if(j_Digital(L1)) {
+    //   shootMacro = ShootController::shootMacros::shootTarget;
+    //   topFlag = true;
+    //   shotRpm = robot.flywheel->currentRpm;
+    // } else {
+    //   shootMacro = ShootController::shootMacros::off;
+    // }
+    //
+    // if(shootMacro != lastShootMacro)
+    // {
+    //   if(shootMacro == ShootController::shootMacros::shootTarget)
+    //   std::cout << "" << (11_ft - robot.tracker->state.y).convert(foot) << ", " << targetAngle << std::endl;
+    //   if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+    //   lastShootMacro = shootMacro;
+    // }
+    //
+    // if(j_Digital(Y))
+    // {
+    //   targetAngle -= 0.1;
+    //   std::cout << "Target Angle: " << targetAngle << std::endl;
+    //   robot.shooter->setTarget(targetAngle);
+    // }
+    // else if(j_Digital(X))
+    // {
+    //   targetAngle += 0.1;
+    //   std::cout << "Target Angle: " << targetAngle << std::endl;
+    //   robot.shooter->setTarget(targetAngle);
+    // }
+    // else if(printTrigger.changedToPressed())
+    // {
+    //   //print angle and distance
+    //   shootLogger.WriteRecord({
+    //     topFlag ? "Top" : "Middle",
+    //     std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
+    //     std::to_string(targetAngle),
+    //     std::to_string(shotRpm),
+    //     std::to_string(pros::battery::get_capacity()),
+    //     std::to_string(robot.flywheel->flywheel->getTemperature())
+    //   }, true);
+    // }
+    //
+    // if(j_Digital(B)) {
+    //   robot.shooter->doJobLoop(ShootController::angleTarget);
+    // }
 
     pros::delay(10);
   }

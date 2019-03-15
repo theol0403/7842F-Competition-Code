@@ -75,7 +75,9 @@ void initializeDevices()
 
 	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel),
 	new ADIEncoder('A', 'B', false), new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()), new EmaFilter(0.15),
-	new lib7842::velPID(0.38, 0.05, 0.045, 0.9), 0.4);
+	new lib7842::velPID(0.073, 0.105, 0.039, 0.2), 0.4);
+	// PIDScreenTuner::pidTune_t flywheelPIDParams = {0.073, 0.0, 0.105, 0.039, 0.15, 0.2};
+	//kP, kI, kD, kF, readingEma, derivativeEma
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 34.49, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 

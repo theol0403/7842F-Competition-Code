@@ -145,13 +145,13 @@ double ShootController::computeHoodPower(double target) {
     std::cerr << "Reverse PID \n";
   }
   //if(output > 100) output = 100;
-  if(output < 30) output = 30;
+  if(output < 40) output = 40;
   return output;
 }
 
 void ShootController::run()
 {
-  const double angleThresh = 2;
+  const double angleThresh = 3;
   const double cycleVel = -50;
 
   const double extendPos = 46;

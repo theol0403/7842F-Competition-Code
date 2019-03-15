@@ -37,43 +37,43 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	// if(j_Digital(L2) && j_Digital(L1)) {
-	// 	shootMacro = ShootController::shootMacros::shootBothFlags;
-	// } else if(j_Digital(L2)) {
-	// 	shootMacro = ShootController::shootMacros::shootMiddleFlag;
-	// } else if(j_Digital(L1)) {
-	// 	shootMacro = ShootController::shootMacros::shootTopFlag;
-	// } else {
-	// 	shootMacro = ShootController::shootMacros::off;
-	// }
-	//
-	// if(shootMacro != lastShootMacro)
-	// {
-	// 	robot.shooter->doMacro(shootMacro);
-	// 	lastShootMacro = shootMacro;
-	//
-	// 	if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off); //turn off intake
-	// }
+	if(j_Digital(L2) && j_Digital(L1)) {
+		shootMacro = ShootController::shootMacros::shootBothFlags;
+	} else if(j_Digital(L2)) {
+		shootMacro = ShootController::shootMacros::shootMiddleFlag;
+	} else if(j_Digital(L1)) {
+		shootMacro = ShootController::shootMacros::shootTopFlag;
+	} else {
+		shootMacro = ShootController::shootMacros::off;
+	}
+
+	if(shootMacro != lastShootMacro)
+	{
+		robot.shooter->doMacro(shootMacro);
+		lastShootMacro = shootMacro;
+
+		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off); //turn off intake
+	}
 
 	/**
 	* Angle Control
 	*/
-	// if(j_Digital(down))
-	// {
-	// 	robot.shooter->setDistanceToFlag(2_ft);
-	// }
-	// else if(j_Digital(left))
-	// {
-	// 	robot.shooter->setDistanceToFlag(3_ft);
-	// }
-	// else if(j_Digital(up))
-	// {
-	// 	robot.shooter->setDistanceToFlag(4.5_ft);
-	// }
-	// else if(j_Digital(right))
-	// {
-	// 	robot.shooter->setDistanceToFlag(11_ft);
-	// }
+	if(j_Digital(down))
+	{
+		robot.shooter->setDistanceToFlag(2_ft);
+	}
+	else if(j_Digital(left))
+	{
+		robot.shooter->setDistanceToFlag(3_ft);
+	}
+	else if(j_Digital(up))
+	{
+		robot.shooter->setDistanceToFlag(4.5_ft);
+	}
+	else if(j_Digital(right))
+	{
+		robot.shooter->setDistanceToFlag(11_ft);
+	}
 
 	/**
 	* Manual Control
