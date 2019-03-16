@@ -8,26 +8,17 @@ namespace lib7842
 
   void ObjectReading::getAll()
   {
-    pros::vision_object* temp = new pros::vision_object[maxCount];
+    std::vector<pros::vision_object> temp;
+    temp.resize(maxCount);
 
-    int count = vision.read_by_size(0, maxCount, temp);
+    int count = vision.read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
     for (int objectNum = 0; objectNum < count; objectNum++) {
-      visionObj newObj;
-      newObj.sig = temp[objectNum].signature;
-      newObj.x = temp[objectNum].left_coord;
-      newObj.y = temp[objectNum].top_coord;
-      newObj.width = temp[objectNum].width;
-      newObj.height = temp[objectNum].height;
-      newObj.area = temp[objectNum].width * temp[objectNum].height;
-      newObj.centerX = temp[objectNum].x_middle_coord;
-      newObj.centerY = temp[objectNum].y_middle_coord;
-      addObj(newObj);
+      addObj(temp.at(objectNum));
     }
-    delete[] temp;
   }
-
+  
 
   // void ObjectReading::getAll()
   // {

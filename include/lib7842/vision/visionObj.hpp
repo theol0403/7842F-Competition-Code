@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "objectTracking.hpp"
 
 namespace lib7842
@@ -39,6 +40,9 @@ namespace lib7842
 
     double getAttr(objAttr) const;
     void print();
+
+    visionObj() = default;
+    visionObj(pros::vision_object);
   };
 
 }

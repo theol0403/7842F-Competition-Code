@@ -3,7 +3,7 @@
 namespace lib7842
 {
 
-  visionObj visionObj::operator+(visionObj rhs){
+  visionObj visionObj::operator+(visionObj rhs) {
     x = x + rhs.x;
     y = y + rhs.y;
     width = width + rhs.width;
@@ -14,7 +14,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator-(visionObj rhs){
+  visionObj visionObj::operator-(visionObj rhs) {
     x = x - rhs.x;
     y = y - rhs.y;
     width = width - rhs.width;
@@ -25,7 +25,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator*(visionObj rhs){
+  visionObj visionObj::operator*(visionObj rhs) {
     x = x * rhs.x;
     y = y * rhs.y;
     width = width * rhs.width;
@@ -36,7 +36,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator/(visionObj rhs){
+  visionObj visionObj::operator/(visionObj rhs) {
     x = x / rhs.x;
     y = y / rhs.y;
     width = width / rhs.width;
@@ -47,7 +47,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator+(double rhs){
+  visionObj visionObj::operator+(double rhs) {
     x = x + rhs;
     y = y + rhs;
     width = width + rhs;
@@ -58,7 +58,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator-(double rhs){
+  visionObj visionObj::operator-(double rhs) {
     x = x - rhs;
     y = y - rhs;
     width = width - rhs;
@@ -69,7 +69,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator*(double rhs){
+  visionObj visionObj::operator*(double rhs) {
     x = x * rhs;
     y = y * rhs;
     width = width * rhs;
@@ -80,7 +80,7 @@ namespace lib7842
     return *this;
   }
 
-  visionObj visionObj::operator/(double rhs){
+  visionObj visionObj::operator/(double rhs) {
     x = x / rhs;
     y = y / rhs;
     width = width / rhs;
@@ -116,6 +116,21 @@ namespace lib7842
     std::cout << "CenterX:" << centerX << " | ";
     std::cout << "CenterY:" << centerY << " | ";
     std::cout << std::endl;
+  }
+
+
+  visionObj::visionObj(pros::vision_object obj) {
+    sig = obj.signature;
+    x = obj.left_coord;
+    y = obj.top_coord;
+    width = obj.width;
+    height = obj.height;
+    area = obj.width * obj.height;
+    centerX = obj.x_middle_coord;
+    centerY = obj.y_middle_coord;
+
+    assert(centerX == x + (width/2));
+    assert(centerY == y + (height/2));
   }
 
 }
