@@ -10,6 +10,7 @@ namespace lib7842
   private:
 
     pros::Vision vision;
+    const int maxCount;
 
   public:
 
