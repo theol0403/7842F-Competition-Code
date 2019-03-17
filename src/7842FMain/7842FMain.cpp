@@ -151,6 +151,8 @@ void opcontrol()
   // ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
   // ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
+  pros::Vision vision(4);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -2137, -1661, -1899, 3099, 4065, 3582, 5.400, 0); vision.set_signature(1, &SIG_1); 
 
   checkBaseStatus(); //Make sure the base has been initialized properly
   robot.model->stop();
