@@ -25,6 +25,7 @@ namespace lib7842
     //visionObj getLargest();
 
     removeFunc_t makeRemove(objAttr, std::function<bool(double, double)>, double);
+    removeFunc_t makeRemove(objAttr, bool, double, double);
     void removeBy(removeFunc_t);
 
     sortFunc_t makeSort(objAttr, bool = true);

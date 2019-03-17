@@ -35,6 +35,12 @@ namespace lib7842
     };
   }
 
+  ObjectContainer::removeFunc_t ObjectContainer::makeRemove(objAttr attr, bool inRange, double min, double max) {
+    return [=](const visionObj& obj) {
+      return (min < obj.getAttr(attr) || obj.getAttr(attr) > max) == inRange;
+    };
+  }
+
   void ObjectContainer::removeBy(removeFunc_t removeFunc) {
     objects.erase(std::remove_if(objects.begin(), objects.end(), removeFunc), objects.end());
   }
@@ -106,18 +112,15 @@ namespace lib7842
   }
 
   ObjectContainer &ObjectContainer::removeWith(objAttr attr, double min, double max) {
-    for(it = objects.begin(); it != objects.end(); it++) {
-      if(min < it->getAttr(attr) || it->getAttr(attr) > max) objects.erase(it);
-    }
+    removeBy(makeRemove(attr, true, min, max));
     return *this;
   }
 
   ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double min, double max) {
-    for(it = objects.begin(); it != objects.end(); it++) {
-      if(!(min < it->getAttr(attr) || it->getAttr(attr) > max)) objects.erase(it);
-    }
+    removeBy(makeRemove(attr, false, min, max));
     return *this;
   }
+
 
   ObjectContainer &ObjectContainer::sortBy(objAttr attr, bool decending) {
     sortBy(makeSort(attr, decending));
