@@ -1,5 +1,7 @@
 #include "VisionController.hpp"
 
+using namespace lib7842;
+
 VisionController::VisionController(pros::Vision* isensor) :
 sensor(isensor), reader(sensor),
 visionTask(task, this)
@@ -17,8 +19,10 @@ void VisionController::run()
   while(true)
   {
     reader.reset();
-    reader.getSig({1, 2});
-    reader.print();
+    reader.getAll();
+    lib7842::ObjectContainer sorter = reader;
+    // sorter = sorter.copy().removeWithout(objAttr::sig, 1) + sorter.copy().removeWithout(objAttr::sig, 2);
+    sorter.print();
     pros::delay(100);
   }
 }

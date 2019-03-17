@@ -128,7 +128,7 @@ namespace lib7842
     centerX = obj.x_middle_coord;
     centerY = obj.y_middle_coord;
 
-    std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
+    //std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
     assert(sig != VISION_OBJECT_ERR_SIG);
     assert((int)centerX == (int)x + ((int)width/2));
     assert((int)centerY == (int)y - ((int)height/2));
