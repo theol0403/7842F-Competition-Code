@@ -16,9 +16,12 @@ namespace lib7842
 
     pros::Vision* vision == nullptr;
 
+    ObjectReading(pros::Vision*);
+    ObjectReading(pros::Vision&);
     ObjectReading(int);
 
     void getAll();
+    void getSig(int);
     void getSig(std::initializer_list<int>);
 
   };

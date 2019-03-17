@@ -3,28 +3,36 @@
 namespace lib7842
 {
 
-  ObjectReading::ObjectReading(int port) : vision(port), maxCount(20) {
+  ObjectReading::ObjectReading(pros::Vision* ivision) : vision(ivision), maxCount(20) {
     temp.resize(maxCount);
   }
 
+  ObjectReading::ObjectReading(pros::Vision& ivision) : ObjectReading(&ivision) {}
+
+  ObjectReading::ObjectReading(int port) : ObjectReading(new pros::Vision(port)) {}
+
+
   void ObjectReading::getAll()
   {
-    int count = vision.read_by_size(0, maxCount, temp.data());
+    int count = vision->read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
     for (int i = 0; i < count; i++) addObj(temp.at(i));
   }
 
+  void ObjectReading::getSig(int sig) {
+    int count = vision->read_by_sig(0, sig, maxCount, temp.data());
+    if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
+
+    for (int i = 0; i < count; i++) addObj(temp.at(i));
+  }
 
   void ObjectReading::getSig(std::initializer_list<int> sigs)
   {
-    for(const int &sig : sigs) {
-    int count = vision.read_by_size(0, maxCount, temp.data());
-    if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
+    for(const int &sig : sigs) getSig(sig);
+  }
 
-    for (int i = 0; i < count; i++) addObj(temp.at(i));
-  }
-  }
+
 
   //
   // void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<int> wantedSignatures)
