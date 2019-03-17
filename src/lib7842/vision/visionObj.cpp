@@ -131,8 +131,8 @@ namespace lib7842
     centerX = obj.x_middle_coord;
     centerY = obj.y_middle_coord;
 
-    assert(centerX == x + (width/2));
-    assert(centerY == y + (height/2));
+    assert((int)centerX == (int)x + ((int)width/2));
+    assert((int)centerY == (int)y - ((int)height/2));
   }
 
 }
