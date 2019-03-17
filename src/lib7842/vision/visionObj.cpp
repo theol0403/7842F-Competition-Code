@@ -120,6 +120,8 @@ namespace lib7842
 
 
   visionObj::visionObj(pros::vision_object obj) {
+    assert(obj.signature != VISION_OBJECT_ERR_SIG);
+
     sig = obj.signature;
     x = obj.left_coord;
     y = obj.top_coord;

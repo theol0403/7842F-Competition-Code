@@ -14,11 +14,9 @@ namespace lib7842
     int count = vision.read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
-    for (int objectNum = 0; objectNum < count; objectNum++) {
-      addObj(temp.at(objectNum));
-    }
+    for (int i = 0; i < count; i++) addObj(temp.at(i));
   }
-  
+
 
   // void ObjectReading::getAll()
   // {
@@ -28,16 +26,16 @@ namespace lib7842
   //   int count = vision.read_by_size(0, maxCount, temp);
   //   if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
   //
-  //   for (int objectNum = 0; objectNum < count; objectNum++) {
+  //   for (int i = 0; i < count; i++) {
   //     visionObj newObj;
-  //     newObj.sig = temp[objectNum].signature;
-  //     newObj.x = temp[objectNum].left_coord;
-  //     newObj.y = temp[objectNum].top_coord;
-  //     newObj.width = temp[objectNum].width;
-  //     newObj.height = temp[objectNum].height;
-  //     newObj.area = temp[objectNum].width * temp[objectNum].height;
-  //     newObj.centerX = temp[objectNum].x_middle_coord;
-  //     newObj.centerY = temp[objectNum].y_middle_coord;
+  //     newObj.sig = temp[i].signature;
+  //     newObj.x = temp[i].left_coord;
+  //     newObj.y = temp[i].top_coord;
+  //     newObj.width = temp[i].width;
+  //     newObj.height = temp[i].height;
+  //     newObj.area = temp[i].width * temp[i].height;
+  //     newObj.centerX = temp[i].x_middle_coord;
+  //     newObj.centerY = temp[i].y_middle_coord;
   //     addObj(newObj);
   //   }
   //   delete[] temp;
@@ -55,20 +53,20 @@ namespace lib7842
   //
   //     int goodCount = 0;
   //
-  //     for (int objectNum = 0; objectNum < readCount; objectNum++)
+  //     for (int i = 0; i < readCount; i++)
   //     {
-  //       if(temp[objectNum].signature != VISION_OBJECT_ERR_SIG)
+  //       if(temp[i].signature != VISION_OBJECT_ERR_SIG)
   //       {
-  //         if(temp[objectNum].signature != wantedSig) { std::cout << "REEEE: " << temp[objectNum].signature << "\n"; }
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = temp[objectNum].signature;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = temp[objectNum].left_coord;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = temp[objectNum].top_coord;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = temp[objectNum].width;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = temp[objectNum].height;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = temp[objectNum].height * temp[objectNum].width;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = temp[objectNum].x_middle_coord;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = temp[objectNum].y_middle_coord;
-  //         destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+  //         if(temp[i].signature != wantedSig) { std::cout << "REEEE: " << temp[i].signature << "\n"; }
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objSig = temp[i].signature;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objX = temp[i].left_coord;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objY = temp[i].top_coord;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objWidth = temp[i].width;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objHeight = temp[i].height;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objArea = temp[i].height * temp[i].width;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objCenterX = temp[i].x_middle_coord;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).objCenterY = temp[i].y_middle_coord;
+  //         destContainer.objectArray.at(i + destContainer.currentCount).discardObject = false;
   //         goodCount++;
   //       }
   //     }
@@ -86,17 +84,17 @@ namespace lib7842
   //     int count = m_thisVision->read_by_code(0, wantedCode.colorCode, destContainer.arrayLength, temp);
   //     if(count > destContainer.arrayLength) count = 0; //If there are no objects pros returns a huge number
   //
-  //     for (int objectNum = 0; objectNum < count; objectNum++)
+  //     for (int i = 0; i < count; i++)
   //     {
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objSig = wantedCode.destSig;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objX = temp[objectNum].left_coord;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objY = temp[objectNum].top_coord;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objWidth = temp[objectNum].width;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objHeight = temp[objectNum].height;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objArea = temp[objectNum].height * temp[objectNum].width;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterX = temp[objectNum].x_middle_coord;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).objCenterY = temp[objectNum].y_middle_coord;
-  //       destContainer.objectArray.at(objectNum + destContainer.currentCount).discardObject = false;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objSig = wantedCode.destSig;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objX = temp[i].left_coord;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objY = temp[i].top_coord;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objWidth = temp[i].width;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objHeight = temp[i].height;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objArea = temp[i].height * temp[i].width;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objCenterX = temp[i].x_middle_coord;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).objCenterY = temp[i].y_middle_coord;
+  //       destContainer.objectArray.at(i + destContainer.currentCount).discardObject = false;
   //     }
   //     destContainer.currentCount += count;
   //   }
