@@ -1,14 +1,16 @@
 #pragma once
 #include "main.h"
+#include "lib7842/vision/objectReading.hpp"
 
 class VisionController
 {
 
 public:
 
-  ObjectReading* vision;
+  pros::Task visionTask;
+  lib7842::ObjectReading* vision;
 
-  VisionController(ObjectReading*);
+  VisionController(lib7842::ObjectReading*);
 
   void run();
   static void task(void*);

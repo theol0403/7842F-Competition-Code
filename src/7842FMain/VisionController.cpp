@@ -1,8 +1,8 @@
 #include "VisionController.hpp"
 
-VisionController::VisionController(ObjectReading* ivision) :
+VisionController::VisionController(lib7842::ObjectReading* ivision) :
 vision(ivision),
-intakeTask(task, this)
+visionTask(task, this)
 {
 }
 
