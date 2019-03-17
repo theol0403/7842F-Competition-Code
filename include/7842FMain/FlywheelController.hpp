@@ -36,7 +36,6 @@ public:
   void resetSlew();
 
   void run();
-
   static void task(void*);
 
 };

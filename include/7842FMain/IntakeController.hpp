@@ -33,6 +33,6 @@ public:
   void enable();
 
   void run();
-
   static void task(void*);
+  
 };

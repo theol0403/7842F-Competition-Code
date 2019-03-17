@@ -29,6 +29,6 @@ public:
   double getArmAngle();
 
   void run();
-
   static void task(void*);
+  
 };
