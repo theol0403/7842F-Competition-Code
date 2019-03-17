@@ -8,7 +8,7 @@ class VisionController
 public:
 
   pros::Vision* sensor = nullptr;
-  lib7842::ObjectReading vision;
+  lib7842::VisionReader reader;
   pros::Task visionTask;
 
   VisionController(pros::Vision*);

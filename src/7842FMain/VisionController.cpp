@@ -1,7 +1,7 @@
 #include "VisionController.hpp"
 
 VisionController::VisionController(pros::Vision* isensor) :
-sensor(isensor), vision(sensor),
+sensor(isensor), reader(sensor),
 visionTask(task, this)
 {
 }
@@ -14,9 +14,9 @@ void VisionController::run()
 
   while(true)
   {
-    vision.reset();
-    vision.getAll();
-    vision.print();
+    reader.reset();
+    reader.getAll();
+    reader.print();
     pros::delay(100);
   }
 }
