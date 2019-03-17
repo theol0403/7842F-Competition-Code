@@ -17,7 +17,7 @@ void VisionController::run()
   while(true)
   {
     reader.reset();
-    reader.getAll();
+    reader.getSig({1, 2});
     reader.print();
     pros::delay(100);
   }

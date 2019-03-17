@@ -107,21 +107,18 @@ namespace lib7842
 
 
   void visionObj::print() {
-    std::cout << "Sig:" << sig << " | ";
-    std::cout << "Width:" << width << " | ";
-    std::cout << "Height:" << height << " | ";
-    std::cout << "X:" << x << " | ";
-    std::cout << "Y:" << y << " | ";
-    std::cout << "Area:" << area << " | ";
-    std::cout << "CenterX:" << centerX << " | ";
-    std::cout << "CenterY:" << centerY << " | ";
-    std::cout << std::endl;
+    std::cout << "Sig: " << sig << " | ";
+    std::cout << "Width: " << width << " | ";
+    std::cout << "Height: " << height << " | ";
+    std::cout << "X: " << x << " | ";
+    std::cout << "Y: " << y << " | ";
+    std::cout << "Area: " << area << " | ";
+    std::cout << "CenterX: " << centerX << " | ";
+    std::cout << "CenterY: " << centerY << std::endl;
   }
 
 
   visionObj::visionObj(pros::vision_object obj) {
-    assert(obj.signature != VISION_OBJECT_ERR_SIG);
-
     sig = obj.signature;
     x = obj.left_coord;
     y = obj.top_coord;
@@ -131,6 +128,8 @@ namespace lib7842
     centerX = obj.x_middle_coord;
     centerY = obj.y_middle_coord;
 
+    std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
+    assert(sig != VISION_OBJECT_ERR_SIG);
     assert((int)centerX == (int)x + ((int)width/2));
     assert((int)centerY == (int)y - ((int)height/2));
   }
