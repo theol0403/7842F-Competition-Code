@@ -1,6 +1,7 @@
 #pragma once
 #include "objectTracking.hpp"
 #include "visionObj.hpp"
+#include <functional>
 
 namespace lib7842
 {
@@ -11,9 +12,9 @@ namespace lib7842
   public:
 
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
+    typedef std::function<bool(const visionObj&)> removeFunc_t;
 
     std::vector<visionObj> objects = {};
-    std::vector<visionObj>::iterator it = {};
 
     void addObj(visionObj);
     void addObj(std::vector<visionObj>);
@@ -22,22 +23,26 @@ namespace lib7842
     visionObj getTotal();
     visionObj getAvg();
 
+    removeFunc_t makeRemove(objAttr, std::function<bool(double, double)>, double);
+    void removeBy(removeFunc_t);
+
+    sortFunc_t makeSort(objAttr, bool = true);
+    void sortBy(sortFunc_t);
+
     ObjectContainer copy();
 
     ObjectContainer &resize(int);
     ObjectContainer &trim(int);
-
     ObjectContainer &remove(int);
     ObjectContainer &remove(int, int);
+
+    ObjectContainer &removeBy(objAttr, std::function<bool(double, double)>, double);
     ObjectContainer &removeWith(objAttr, double);
     ObjectContainer &removeWithout(objAttr, double);
     ObjectContainer &removeWith(objAttr, double, double);
     ObjectContainer &removeWithout(objAttr, double, double);
 
     ObjectContainer &sortBy(objAttr, bool = true);
-
-    sortFunc_t makeSort(objAttr, bool = true);
-    void sortBy(sortFunc_t);
 
     void reset();
     void print();
