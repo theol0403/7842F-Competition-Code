@@ -13,6 +13,7 @@ namespace lib7842
     typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
     std::vector<visionObj> objects = {};
+    std::vector<visionObj>::iterator it = {};
 
     void addObj(visionObj);
     void addObj(std::vector<visionObj>);

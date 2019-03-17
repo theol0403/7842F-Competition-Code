@@ -14,7 +14,7 @@ namespace lib7842
 
   public:
 
-    pros::Vision* vision == nullptr;
+    pros::Vision* vision = nullptr;
 
     ObjectReading(pros::Vision*);
     ObjectReading(pros::Vision&);

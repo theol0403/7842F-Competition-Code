@@ -65,28 +65,28 @@ namespace lib7842
   }
 
   ObjectContainer &ObjectContainer::removeWith(objAttr attr, double val) {
-    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+    for(it = objects.begin(); it != objects.end(); it++) {
       if(it->getAttr(attr) == val) objects.erase(it);
     }
     return *this;
   }
 
   ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double val) {
-    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+    for(it = objects.begin(); it != objects.end(); it++) {
       if(it->getAttr(attr) != val) objects.erase(it);
     }
     return *this;
   }
 
   ObjectContainer &ObjectContainer::removeWith(objAttr attr, double min, double max) {
-    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+    for(it = objects.begin(); it != objects.end(); it++) {
       if(min < it->getAttr(attr) || it->getAttr(attr) > max) objects.erase(it);
     }
     return *this;
   }
 
   ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double min, double max) {
-    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
+    for(it = objects.begin(); it != objects.end(); it++) {
       if(!(min < it->getAttr(attr) || it->getAttr(attr) > max)) objects.erase(it);
     }
     return *this;
@@ -124,10 +124,8 @@ namespace lib7842
 
 
   void ObjectContainer::checkErrSig() {
-    for(std::vector<visionObj>::iterator it = objects.begin(); it != objects.end(); it++) {
-      if(it->sig == VISION_OBJECT_ERR_SIG) {
-        std::cout << "checkErrSig: ERR_SIG in object" << it - objects.begin() << std::endl;
-      }
+    for(visionObj &obj : objects) {
+      assert(obj.sig != VISION_OBJECT_ERR_SIG);
     }
   }
 
