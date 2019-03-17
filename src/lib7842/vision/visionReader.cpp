@@ -1,15 +1,15 @@
-#include "objectReading.hpp"
+#include "visionReader.hpp"
 
 namespace lib7842
 {
 
-  ObjectReading::ObjectReading(pros::Vision* ivision) :
+  VisionReader::VisionReader(pros::Vision* ivision) :
   vision(ivision), maxCount(20) {
     temp.resize(maxCount);
   }
 
 
-  void ObjectReading::getAll()
+  void VisionReader::getAll()
   {
     int count = vision->read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
@@ -17,7 +17,7 @@ namespace lib7842
     for (int i = 0; i < count; i++) addObj(temp.at(i));
   }
 
-  void ObjectReading::getSig(int sig) {
+  void VisionReader::getSig(int sig) {
     int count = vision->read_by_sig(0, sig, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
@@ -27,13 +27,13 @@ namespace lib7842
     }
   }
 
-  void ObjectReading::getSig(std::initializer_list<int> sigs)
+  void VisionReader::getSig(std::initializer_list<int> sigs)
   {
     for(const int &sig : sigs) getSig(sig);
   }
 
 
-  // void ObjectReading::getCodeObjects(lib7842::ObjectContainer &destContainer, std::vector<codeSig_t> wantedCodes)
+  // void VisionReader::getCodeObjects(lib7842::ObjectContainer &destContainer, std::vector<codeSig_t> wantedCodes)
   // {
   //   pros::vision_object* temp = new pros::vision_object[destContainer.arrayLength];
   //
@@ -60,7 +60,7 @@ namespace lib7842
   // }
   //
   //
-  // codeSig_t ObjectReading::createCodeSig(int sig_id1, int sig_id2, int sig_id3, int sig_id4, int sig_id5)
+  // codeSig_t VisionReader::createCodeSig(int sig_id1, int sig_id2, int sig_id3, int sig_id4, int sig_id5)
   // {
   //   codeSig_t tempCode;
   //   tempCode.destSig = sig_id1 + (NUM_SIGNATURES/2);

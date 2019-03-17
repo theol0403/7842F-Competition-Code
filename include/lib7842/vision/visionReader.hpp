@@ -3,7 +3,7 @@
 
 namespace lib7842
 {
-  class ObjectReading : public ObjectContainer
+  class VisionReader : public ObjectContainer
   {
 
   private:
@@ -15,7 +15,7 @@ namespace lib7842
 
     pros::Vision* vision = nullptr;
 
-    ObjectReading(pros::Vision*);
+    VisionReader(pros::Vision*);
 
     void getAll();
     void getSig(int);
