@@ -3,14 +3,12 @@
 namespace lib7842
 {
 
-
-  ObjectReading::ObjectReading(int port) : vision(port), maxCount(20) {}
+  ObjectReading::ObjectReading(int port) : vision(port), maxCount(20) {
+    temp.resize(maxCount);
+  }
 
   void ObjectReading::getAll()
   {
-    std::vector<pros::vision_object> temp;
-    temp.resize(maxCount);
-
     int count = vision.read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
@@ -18,28 +16,15 @@ namespace lib7842
   }
 
 
-  // void ObjectReading::getAll()
-  // {
-  //   const int maxCount = 20;
-  //   pros::vision_object* temp = new pros::vision_object[maxCount];
-  //
-  //   int count = vision.read_by_size(0, maxCount, temp);
-  //   if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
-  //
-  //   for (int i = 0; i < count; i++) {
-  //     visionObj newObj;
-  //     newObj.sig = temp[i].signature;
-  //     newObj.x = temp[i].left_coord;
-  //     newObj.y = temp[i].top_coord;
-  //     newObj.width = temp[i].width;
-  //     newObj.height = temp[i].height;
-  //     newObj.area = temp[i].width * temp[i].height;
-  //     newObj.centerX = temp[i].x_middle_coord;
-  //     newObj.centerY = temp[i].y_middle_coord;
-  //     addObj(newObj);
-  //   }
-  //   delete[] temp;
-  // }
+  void ObjectReading::getSig(std::initializer_list<int> sigs)
+  {
+    for(const int &sig : sigs) {
+    int count = vision.read_by_size(0, maxCount, temp.data());
+    if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
+
+    for (int i = 0; i < count; i++) addObj(temp.at(i));
+  }
+  }
 
   //
   // void ObjectReading::getSigObjects(lib7842::ObjectContainer &destContainer, std::initializer_list<int> wantedSignatures)

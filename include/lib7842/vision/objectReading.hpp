@@ -9,10 +9,12 @@ namespace lib7842
 
   private:
 
-    pros::Vision vision;
     const int maxCount;
+    std::vector<pros::vision_object> temp = {};
 
   public:
+
+    pros::Vision* vision == nullptr;
 
     ObjectReading(int);
 
