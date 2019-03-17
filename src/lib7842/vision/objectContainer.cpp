@@ -38,7 +38,7 @@ namespace lib7842
   void ObjectContainer::removeBy(removeFunc_t removeFunc) {
     objects.erase(std::remove_if(objects.begin(), objects.end(), removeFunc), objects.end());
   }
-  
+
 
   ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
     return [=](const visionObj& first, const visionObj& second) {
@@ -71,7 +71,6 @@ namespace lib7842
     return *this;
   }
 
-
   ObjectContainer &ObjectContainer::remove(int index) {
     try {
       objects.erase(objects.begin() + index);
@@ -90,17 +89,19 @@ namespace lib7842
     return *this;
   }
 
+
+  ObjectContainer &ObjectContainer::removeBy(objAttr attr, std::function<bool(double, double)> compare, double val) {
+    removeBy(makeRemove(attr, compare, val));
+    return *this;
+  }
+
   ObjectContainer &ObjectContainer::removeWith(objAttr attr, double val) {
-    for(it = objects.begin(); it != objects.end(); it++) {
-      if(it->getAttr(attr) == val) objects.erase(it);
-    }
+    removeBy(makeRemove(attr, std::equal_to<>(), val));
     return *this;
   }
 
   ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double val) {
-    for(it = objects.begin(); it != objects.end(); it++) {
-      if(it->getAttr(attr) != val) objects.erase(it);
-    }
+    removeBy(makeRemove(attr, std::not_equal_to<>(), val));
     return *this;
   }
 
