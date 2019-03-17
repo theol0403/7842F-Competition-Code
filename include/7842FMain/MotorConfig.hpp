@@ -5,6 +5,7 @@
 #include "FlywheelController.hpp"
 #include "ShootController.hpp"
 #include "ArmController.hpp"
+#include "VisionController.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -21,6 +22,7 @@ struct robot_t
   FlywheelController* flywheel = nullptr;
   ShootController* shooter = nullptr;
   ArmController* arm = nullptr;
+  VisionController* vision = nullptr;
 };
 
 extern robot_t robot;
