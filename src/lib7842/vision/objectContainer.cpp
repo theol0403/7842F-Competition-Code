@@ -45,7 +45,6 @@ namespace lib7842
   }
 
 
-
   ObjectContainer &ObjectContainer::remove(int index) {
     try {
       objects.erase(objects.begin() + index);
