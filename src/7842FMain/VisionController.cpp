@@ -10,7 +10,9 @@ visionTask(task, this)
 void VisionController::run()
 {
 
-  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -2137, -1661, -1899, 3099, 4065, 3582, 5.400, 0); sensor->set_signature(1, &SIG_1);
+  sensor->set_exposure(84);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -2185, -1577, -1882, 991, 1395, 1192, 4.400, 0); sensor->set_signature(1, &SIG_1);
+  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 10067, 10571, 10318, -3227, -2823, -3024, 10.700, 0); sensor->set_signature(2, &SIG_2);
 
   while(true)
   {
