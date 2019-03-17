@@ -3,11 +3,10 @@
 namespace lib7842
 {
 
-  ObjectReading::ObjectReading(pros::Vision* ivision) : vision(ivision), maxCount(20) { temp.resize(maxCount); }
-
-  ObjectReading::ObjectReading(pros::Vision& ivision) : ObjectReading(&ivision) {}
-
-  ObjectReading::ObjectReading(int port) : ObjectReading(new pros::Vision(port)) {}
+  ObjectReading::ObjectReading(pros::Vision* ivision) :
+  vision(ivision), maxCount(20) {
+    temp.resize(maxCount);
+  }
 
 
   void ObjectReading::getAll()
