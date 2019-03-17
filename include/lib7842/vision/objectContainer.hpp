@@ -22,7 +22,6 @@ namespace lib7842
     visionObj get(int);
     visionObj getTotal();
     visionObj getAvg();
-    //visionObj getLargest();
 
     removeFunc_t makeRemove(objAttr, std::function<bool(double, double)>, double);
     removeFunc_t makeRemove(objAttr, bool, double, double);
