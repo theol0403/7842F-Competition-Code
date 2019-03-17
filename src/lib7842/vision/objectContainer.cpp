@@ -29,6 +29,33 @@ namespace lib7842
   }
 
 
+  ObjectContainer::removeFunc_t ObjectContainer::makeRemove(objAttr attr, std::function<bool(double, double)> compare, double val) {
+    return [=](const visionObj& obj) {
+      return compare(obj.getAttr(attr), val);
+    };
+  }
+
+  void ObjectContainer::removeBy(removeFunc_t removeFunc) {
+    objects.erase(std::remove_if(objects.begin(), objects.end(), removeFunc), objects.end());
+  }
+  
+
+  ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
+    return [=](const visionObj& first, const visionObj& second) {
+      if(decending) {
+        return first.getAttr(attr) > second.getAttr(attr);
+      } else {
+        return first.getAttr(attr) < second.getAttr(attr);
+      }
+    };
+  }
+
+  void ObjectContainer::sortBy(sortFunc_t sortFunc) {
+    std::stable_sort(objects.begin(), objects.end(), sortFunc);
+  }
+
+
+
   ObjectContainer ObjectContainer::copy() {
     return *this;
   }
@@ -94,20 +121,6 @@ namespace lib7842
   ObjectContainer &ObjectContainer::sortBy(objAttr attr, bool decending) {
     sortBy(makeSort(attr, decending));
     return *this;
-  }
-
-  ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
-    return [=](const visionObj& first, const visionObj& second) {
-      if(decending) {
-        return first.getAttr(attr) > second.getAttr(attr);
-      } else {
-        return first.getAttr(attr) < second.getAttr(attr);
-      }
-    };
-  }
-
-  void ObjectContainer::sortBy(sortFunc_t sortFunc) {
-    std::stable_sort(objects.begin(), objects.end(), sortFunc);
   }
 
 

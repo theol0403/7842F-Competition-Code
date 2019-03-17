@@ -11,8 +11,8 @@ namespace lib7842
 
   public:
 
-    typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
     typedef std::function<bool(const visionObj&)> removeFunc_t;
+    typedef std::function<bool(const visionObj&, const visionObj&)> sortFunc_t;
 
     std::vector<visionObj> objects = {};
 
@@ -22,6 +22,7 @@ namespace lib7842
     visionObj get(int);
     visionObj getTotal();
     visionObj getAvg();
+    //visionObj getLargest();
 
     removeFunc_t makeRemove(objAttr, std::function<bool(double, double)>, double);
     void removeBy(removeFunc_t);
