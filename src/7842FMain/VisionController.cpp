@@ -30,6 +30,7 @@ void VisionController::run()
 
 void VisionController::task(void* input)
 {
+  pros::delay(500);
   VisionController* that = static_cast<VisionController*>(input);
   that->run();
 }

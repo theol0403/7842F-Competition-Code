@@ -34,9 +34,7 @@ void FlywheelController::run()
   // flywheelLogger.WriteField("Power", false);
   // flywheelLogger.WriteField("D", true);
 
-  pros::delay(500);
   sensor->reset();
-  pros::delay(500);
 
   while(true)
   {
@@ -83,7 +81,7 @@ void FlywheelController::run()
 
 void FlywheelController::task(void* input)
 {
-  //pros::delay(500);
+  pros::delay(500);
   FlywheelController* that = static_cast<FlywheelController*>(input);
   that->run();
 }

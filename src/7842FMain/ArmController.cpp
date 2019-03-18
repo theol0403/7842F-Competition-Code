@@ -66,6 +66,7 @@ void ArmController::run()
 
 void ArmController::task(void* input)
 {
+  pros::delay(500);
   ArmController* that = static_cast<ArmController*>(input);
   that->run();
 }

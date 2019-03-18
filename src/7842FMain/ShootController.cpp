@@ -319,6 +319,7 @@ void ShootController::run()
 
 void ShootController::task(void* input)
 {
+  pros::delay(500);
   ShootController* that = static_cast<ShootController*>(input);
   that->run();
 }

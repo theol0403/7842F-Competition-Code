@@ -4,9 +4,6 @@ IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILin
 intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
 intakeTask(task, this)
 {
-  intake->setBrakeMode(AbstractMotor::brakeMode::brake);
-  //indexer->setBrakeMode(AbstractMotor::brakeMode::hold);
-  lineSensor->calibrate();
 }
 
 void IntakeController::setState(intakeStates state) {
@@ -32,6 +29,10 @@ void IntakeController::enable() {
 
 void IntakeController::run()
 {
+
+  intake->setBrakeMode(AbstractMotor::brakeMode::brake);
+  lineSensor->calibrate();
+
   while(true)
   {
     double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
@@ -75,6 +76,7 @@ void IntakeController::run()
 
 void IntakeController::task(void* input)
 {
+  pros::delay(500);
   IntakeController* that = static_cast<IntakeController*>(input);
   that->run();
 }
