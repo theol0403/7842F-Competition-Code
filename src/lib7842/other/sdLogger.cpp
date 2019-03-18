@@ -11,7 +11,7 @@ namespace lib7842
 
   bool SDLogger::fileExists(std::string name) {
     FILE *file;
-    if (file = fopen(name.c_str(), "r")){
+    if ((file = fopen(name.c_str(), "r"))){
       fclose(file);
       return 1;
     }
@@ -24,8 +24,10 @@ namespace lib7842
     do {
       path = "usd/" + folder + "/" + name + std::to_string(fileNum) + ".csv";
       fileNum++;
+      std::cout << "Trying: " << path << std::endl;
     }
-    while(!fileExists(path));
+    while(fileExists(path));
+    std::cout << "Using: " << path << std::endl;
     return path;
   }
 
