@@ -17,11 +17,12 @@ namespace lib7842
     return false;
   }
 
+
   std::string SDLogger::findPath(std::string folder, std::string name) {
     int fileNum = 0;
     std::string path;
     do {
-      path = "usd/" + name + std::to_string(fileNum) + ".csv";
+      path = "/usd/" + name + std::to_string(fileNum) + ".csv";
       fileNum++;
       std::cout << "Trying: " << path << std::endl;
     }
