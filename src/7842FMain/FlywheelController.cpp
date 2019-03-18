@@ -35,7 +35,8 @@ void FlywheelController::run()
   // flywheelLogger.WriteField("D", true);
 
   sensor->reset();
-
+  std::cout << "CurrentPower: " << flywheel->getVoltage() << std::endl; 
+pros::delay(1000);
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
@@ -63,8 +64,16 @@ void FlywheelController::run()
       //motorPower = 0;
     }
 
-    //std::cout << "Target: " << targetRpm << " Rpm: " << currentRpm << " Power: "<< motorPower << " Error: "<< pid->getError() << "\n";
-    //flywheelLogger.WriteRecord({std::to_string(pros::millis()), std::to_string(targetRpm/4), std::to_string(currentRpm/4), std::to_string((velMath->getAccel()).convert(rpm / second)), std::to_string(motorPower), std::to_string(pid->getD())}, true);
+    std::cout << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
+    // flywheelLogger.WriteRecord({
+    //   std::to_string(pros::millis()/1000.0),
+    //   std::to_string(targetRpm/4),
+    //   std::to_string(currentRpm/4),
+    //   std::to_string((velMath->getAccel()).convert(rpm / second)),
+    //   std::to_string(motorPower),
+    //   std::to_string(pid->getD())
+    // }, true);
+
     pros::delay(10);
   }
 }
