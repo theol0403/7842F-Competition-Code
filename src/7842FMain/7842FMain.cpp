@@ -142,8 +142,7 @@ void opcontrol()
   // shootLogger.WriteField("Rpm", false);
   // shootLogger.WriteField("Battery", false);
   // shootLogger.WriteField("Temp", true);
-  //
-  //
+
   // double targetAngle = 0;
   // bool topFlag = true;
   // double shotRpm = 0;

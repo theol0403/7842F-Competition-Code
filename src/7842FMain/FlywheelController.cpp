@@ -26,13 +26,16 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  // jay::util::CSVwrite flywheelLogger("/ser/sout");
-  // flywheelLogger.WriteField("Time", false);
-  // flywheelLogger.WriteField("Target/4", false);
-  // flywheelLogger.WriteField("Rpm/4", false);
-  // flywheelLogger.WriteField("Accel(rpm/s)", false);
-  // flywheelLogger.WriteField("Power", false);
-  // flywheelLogger.WriteField("D", true);
+  jay::util::CSVwrite flywheelLogger("/usd/flywheelLog.csv");
+  flywheelLogger.WriteField("Time", false);
+  flywheelLogger.WriteField("Target/4", false);
+  flywheelLogger.WriteField("Rpm/4", false);
+  flywheelLogger.WriteField("Accel(rpm/s)", false);
+  flywheelLogger.WriteField("Power", false);
+  flywheelLogger.WriteField("D", true);
+
+  Timer time;
+  time.placeMark();
 
   sensor->reset();
 
@@ -63,15 +66,22 @@ void FlywheelController::run()
       //motorPower = 0;
     }
 
-    std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
-    // flywheelLogger.WriteRecord({
-    //   std::to_string(pros::millis()/1000.0),
-    //   std::to_string(targetRpm/4),
-    //   std::to_string(currentRpm/4),
-    //   std::to_string((velMath->getAccel()).convert(rpm / second)),
-    //   std::to_string(motorPower),
-    //   std::to_string(pid->getD())
-    // }, true);
+    //std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
+    flywheelLogger.WriteRecord({
+      std::to_string(pros::millis()/1000.0),
+      std::to_string(targetRpm/4),
+      std::to_string(currentRpm/4),
+      std::to_string((velMath->getAccel()).convert(rpm / second)),
+      std::to_string(motorPower),
+      std::to_string(pid->getD())
+    }, true);
+
+    if(time.getDtFromMark() > 3_s) {
+      flywheelLogger.Close();
+      flywheelLogger.Open("/usd/flywheelLog.csv");
+      time.placeMark();
+      std::cout << "REOPEN" << std::endl;
+    }
 
     pros::delay(10);
   }
