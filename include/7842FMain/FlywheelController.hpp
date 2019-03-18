@@ -3,6 +3,7 @@
 #include "lib7842/pid/pidVelSystem.hpp"
 #include "IntakeController.hpp"
 #include "jaycsv/CSV.hpp"
+#include <iomanip>
 
 class FlywheelController
 {

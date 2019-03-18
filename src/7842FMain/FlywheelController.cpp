@@ -34,7 +34,9 @@ void FlywheelController::run()
   // flywheelLogger.WriteField("Power", false);
   // flywheelLogger.WriteField("D", true);
 
+  pros::delay(500);
   sensor->reset();
+  pros::delay(500);
 
   while(true)
   {
@@ -63,7 +65,7 @@ void FlywheelController::run()
       //motorPower = 0;
     }
 
-    std::cout << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
+    std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
     // flywheelLogger.WriteRecord({
     //   std::to_string(pros::millis()/1000.0),
     //   std::to_string(targetRpm/4),

@@ -88,8 +88,18 @@ void initializeDevices()
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('A'), 1);
 
+	VelMath* math = new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>());
+	assert(math->getVelocity().convert(rpm) == 0);
+
+	okapi::ADIEncoder* sensor = new ADIEncoder('C', 'D', false);
+	std::cout << "Sensor Before: " << sensor->get() << std::endl;
+	sensor->reset();
+	std::cout << "Sensor After: " << sensor->get() << std::endl;
+	// pros::delay(2000);
+	// std::cout << "Sensor After Delay: " << sensor->get() << std::endl;
+
 	robot.flywheel = new FlywheelController(robot.intake, new okapi::Motor(mFlywheel),
-	new ADIEncoder('C', 'D', false), new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()), new EmaFilter(0.15),
+	sensor, math, new EmaFilter(0.15),
 	new lib7842::velPID(0.073, 0.105, 0.039, 0.2), 0.4);
 	// PIDScreenTuner::pidTune_t flywheelPIDParams = {0.073, 0.0, 0.105, 0.039, 0.15, 0.2};
 	//kP, kI, kD, kF, readingEma, derivativeEma
