@@ -3,8 +3,8 @@
 namespace lib7842
 {
 
-  SDLogger::SDLogger(std::string name) :
-  path(findPath(name)), writer(path), refreshTime(3_s) {
+  SDLogger::SDLogger(std::string name, modes mode) :
+  path(findPath(name, mode)), writer(path), refreshTime(3_s) {
     timer.placeMark();
   }
 
@@ -18,15 +18,28 @@ namespace lib7842
   }
 
 
-  std::string SDLogger::findPath(std::string name) {
-    int fileNum = 0;
+  std::string SDLogger::findPath(std::string name, modes mode) {
     std::string path;
-    do {
-      path = "/usd/" + name + std::to_string(fileNum) + ".csv";
-      fileNum++;
-      std::cout << "Trying: " << path << std::endl;
+    switch(mode) {
+
+      case count: {
+        int fileNum = 0;
+        do {
+          path = "/usd/" + name + std::to_string(fileNum) + ".csv";
+          fileNum++;
+          std::cout << "Trying: " << path << std::endl;
+        }
+        while(fileExists(path));
+        break;
+      }
+
+      case time: {
+        //path = "/usd/" + name + std::to_string(fileNum) + ".csv";
+        break;
+      }
+
     }
-    while(fileExists(path));
+
     std::cout << "Using: " << path << std::endl;
     return path;
   }
