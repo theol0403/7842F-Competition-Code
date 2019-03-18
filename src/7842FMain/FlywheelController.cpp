@@ -35,8 +35,7 @@ void FlywheelController::run()
   // flywheelLogger.WriteField("D", true);
 
   sensor->reset();
-  std::cout << "CurrentPower: " << flywheel->getVoltage() << std::endl; 
-pros::delay(1000);
+
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
