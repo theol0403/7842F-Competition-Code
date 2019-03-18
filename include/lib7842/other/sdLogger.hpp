@@ -17,10 +17,10 @@ namespace lib7842
 
   public:
 
-    SDLogger(std::string, std::string);
+    SDLogger(std::string);
 
     bool fileExists(std::string);
-    std::string findPath(std::string, std::string);
+    std::string findPath(std::string);
 
     void writeFields(std::vector<std::string>);
     void writeLine(std::vector<std::string>);

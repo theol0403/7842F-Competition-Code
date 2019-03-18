@@ -3,8 +3,8 @@
 namespace lib7842
 {
 
-  SDLogger::SDLogger(std::string folder, std::string name) :
-  path(findPath(folder, name)), writer(path), refreshTime(3_s) {
+  SDLogger::SDLogger(std::string name) :
+  path(findPath(name)), writer(path), refreshTime(3_s) {
     timer.placeMark();
   }
 
@@ -18,7 +18,7 @@ namespace lib7842
   }
 
 
-  std::string SDLogger::findPath(std::string folder, std::string name) {
+  std::string SDLogger::findPath(std::string name) {
     int fileNum = 0;
     std::string path;
     do {
@@ -45,7 +45,7 @@ namespace lib7842
       writer.Close();
       writer.Open(path);
       timer.placeMark();
-      std::cout << "REOPEN" << std::endl;
+      //std::cout << "REOPEN" << std::endl;
     }
   }
 
