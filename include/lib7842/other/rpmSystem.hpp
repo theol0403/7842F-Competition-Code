@@ -1,12 +1,11 @@
 #pragma once
 #include "main.h"
 
-
- namespace lib7842
- {
-   class rpmMeasure
-   {
-   private:
+namespace lib7842
+{
+  class rpmMeasure
+  {
+  private:
 
     okapi::Timer m_timer;
     pros::ADIEncoder m_encoder;
@@ -18,17 +17,15 @@
     double m_deltaTime = 0;
     double m_deltaEncoder = 0;
 
-   	double m_lastTime = 0;
-   	double m_lastEncoder = 0;
+    double m_lastTime = 0;
+    double m_lastEncoder = 0;
 
-   	int m_RPM = 0;
+    int m_RPM = 0;
 
-   public:
+  public:
 
-   	rpmMeasure(int, bool, double, double);
+    rpmMeasure(int, bool, double, double);
     int calculate();
 
-
-
   };
- }
+}
