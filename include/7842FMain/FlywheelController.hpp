@@ -15,7 +15,7 @@ public:
   VelMath* velMath = nullptr;
   EmaFilter* rpmFilter = nullptr;
   lib7842::velPID* pid = nullptr;
-  double motorSlew = 127;
+  double motorSlew;
 
   pros::Task flywheelTask;
 
