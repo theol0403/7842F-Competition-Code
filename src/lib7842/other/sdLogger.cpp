@@ -26,21 +26,13 @@ namespace lib7842
         int fileNum = 0;
         if(fileExists(name)) {
           FILE* file = fopen(name.c_str(), "r");
-          fileNum = getw(file);
+          fscanf(file, "%d", &fileNum);
           fclose(file);
         } else {
-          std::cout << "Opening" << std::endl;
-          pros::delay(200);
           FILE* file = fopen(name.c_str(), "w");
-          std::cout << "Putting" << std::endl;
-          pros::delay(200);
-          putw(0, file);
-          std::cout << "Closing" << std::endl;
-          pros::delay(200);
+          fprintf(file, "%d", 0);
           fclose(file);
         }
-        std::cout << "Num: " << fileNum << std::endl;
-        pros::delay(1000);
         do {
           path = "/usd/" + name + std::to_string(fileNum) + ".csv";
           fileNum++;
@@ -48,7 +40,7 @@ namespace lib7842
         }
         while(fileExists(path));
         FILE* file = fopen(name.c_str(), "w");
-        putw(fileNum, file);
+        fprintf(file, "%d", fileNum);
         fclose(file);
         break;
       }
