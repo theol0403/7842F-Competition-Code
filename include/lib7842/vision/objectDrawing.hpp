@@ -1,33 +1,59 @@
 #pragma once
 #include "objectTracking.hpp"
+#include "objectContainer.hpp"
+#include <map>
 
 namespace lib7842
 {
 
-  class ObjectDrawing
+  class ObjRenderer
   {
   private:
 
-    const int m_widthScale;
-    const int m_heightScale;
+    static lv_style_t defaultObjStyle;
 
-    lv_obj_t* m_drawingContainer = nullptr;
-    lv_style_t m_drawingContainerStyle;
+    const int wScale;
+    const int hScale;
 
-    lv_style_t m_defaultObjectStyle;
-    lv_style_t m_discardObjectStyle;
+    lv_obj_t* parent = nullptr;
+    ObjectContainer* container = nullptr;
 
+    lv_style_t objStyle;
+    std::map<int, lv_style_t> objects = {};
+
+    std::vector<lv_obj_t*> objects = {};
 
   public:
 
-    ObjectDrawing(int, int);
-    ~ObjectDrawing();
+    ObjRenderer(lv_obj_t*, ObjectContainer*);
+    ~ObjRenderer();
+
+    ObjRenderer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
+    ObjRenderer &withStyle(int, lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
+
+    void draw();
+    void clear();
+
+  };
 
 
-    void drawSimpleObjects(lib7842::ObjectContainer&);
-    void clearSimpleObjects(lib7842::ObjectContainer&);
+  class ObjDrawer
+  {
+  private:
 
-    friend class lib7842::ObjectContainer;
+    lv_obj_t* container = nullptr;
+    lv_style_t style;
+
+    std::vector<ObjRenderer> layers = {};
+
+  public:
+
+    ObjDrawer(lv_obj_t*);
+    ~ObjDrawer();
+
+    ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
+
+    ObjRenderer &withLayer(ObjectContainer&);
 
   };
 

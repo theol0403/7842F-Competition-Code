@@ -1,23 +1,18 @@
 #pragma once
 #include "main.h"
 
-
-
 namespace lib7842
 {
 
-  enum class autonSides
-  {
+  enum class autonSides {
     blue,
     red
   };
 
-  struct autonPair
-  {
+  struct autonPair {
     std::string autonName;
     std::function<void(void*)> autonFunc;
   };
-
 
   class AutonSelector
   {
@@ -30,7 +25,6 @@ namespace lib7842
 
     int m_currentAutonIndex = 0;
     autonSides m_currentSide = autonSides::red;
-
 
   public:
 
