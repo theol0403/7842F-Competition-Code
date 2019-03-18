@@ -1,13 +1,10 @@
 #include "prosDate.hpp"
 
-namespace lib7842
-{
+typedef date_s_t date;
+typedef time_s_t time;
 
-  typedef date_s_t date;
-  typedef time_s_t time;
-
-  void vexGetdate(date*);
-  void vexGettime(time*);
+void vexGetdate(date*);
+void vexGettime(time*);
 
   date_s_t get_date(void) {
     date_s_t d;
@@ -20,5 +17,3 @@ namespace lib7842
     vexGettime((time*)(&t));
     return t;
   }
-
-}

@@ -1,9 +1,6 @@
 #pragma once
 #include "main.h"
 
-namespace lib7842
-{
-
   typedef struct {
     uint16_t year; // Year - 1980
     uint8_t day;
@@ -31,5 +28,3 @@ namespace lib7842
   * \return A time_s_t containing the Hour, Minute, Second, and Hundredth of Second.
   */
   time_s_t get_time(void);
-
-}

@@ -34,7 +34,9 @@ namespace lib7842
       }
 
       case time: {
-        //path = "/usd/" + name + std::to_string(fileNum) + ".csv";
+        date_s_t date = get_date();
+        time_s_t time = get_time();
+        path = "/usd/" + name + std::to_string(date.year) + "-" + std::to_string(date.month) + "-" + std::to_string(date.day) + "_" + std::to_string(time.hour) + "-" + std::to_string(time.min) + ".csv";
         break;
       }
 
