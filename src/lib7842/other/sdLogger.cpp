@@ -10,22 +10,26 @@ namespace lib7842
   }
 
   bool SDLogger::fileExists(std::string name) {
-    struct stat buffer;
-    return (stat (name.c_str(), &buffer) == 0);
+    FILE *file;
+    if (file = fopen(name.c_str(), "r")){
+      fclose(file);
+      return 1;
+    }
+    return 0;
   }
 
   std::string SDLogger::findPath(std::string folder, std::string name) {
     int fileNum = 0;
     std::string path;
     do {
-      path = folder + "/" + name + std::to_string(fileNum);
+      path = "usd/" + folder + "/" + name + std::to_string(fileNum) + ".csv";
       fileNum++;
     }
     while(!fileExists(path));
     return path;
   }
 
-  void SDLogger::writeField(std::vector<std::string> fields) {
+  void SDLogger::writeFields(std::vector<std::string> fields) {
     for(std::string &field : fields) {
       writer.WriteField(field, false);
     }

@@ -4,6 +4,7 @@
 
 #include "lib7842/other/miscUtils.hpp"
 #include "lib7842/other/rpmSystem.hpp"
+#include "lib7842/other/sdLogger.hpp"
 
 #include "lib7842/pid/pidVelSystem.hpp"
 #include "lib7842/pid/pidScreenTuner.hpp"
