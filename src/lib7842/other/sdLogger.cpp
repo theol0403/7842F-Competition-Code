@@ -23,23 +23,24 @@ namespace lib7842
     switch(mode) {
 
       case count: {
+        std::string indexFile = "/usd/" + name + ".txt";
         int fileNum = 0;
-        if(fileExists(name)) {
-          FILE* file = fopen(name.c_str(), "r");
+        if(fileExists(indexFile)) {
+          FILE* file = fopen(indexFile.c_str(), "r");
           fscanf(file, "%d", &fileNum);
           fclose(file);
         } else {
-          FILE* file = fopen(name.c_str(), "w");
+          FILE* file = fopen(indexFile.c_str(), "w");
           fprintf(file, "%d", 0);
           fclose(file);
         }
         do {
           path = "/usd/" + name + std::to_string(fileNum) + ".csv";
-          std::cout << "Trying: " << path << std::endl;
+          //std::cout << "Trying: " << path << std::endl;
           fileNum++;
         }
         while(fileExists(path));
-        FILE* file = fopen(name.c_str(), "w");
+        FILE* file = fopen(indexFile.c_str(), "w");
         fprintf(file, "%d", fileNum);
         fclose(file);
         break;
