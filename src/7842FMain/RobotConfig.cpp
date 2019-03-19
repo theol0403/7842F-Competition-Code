@@ -97,7 +97,11 @@ void initializeDevices()
 
 	robot.vision = new VisionController(new pros::Vision(4), robot.display->newTab("Vision"));
 
-	robot.display->newTab("Test");
+	lv_obj_t* par = robot.display->newTab("Test");
+	lv_obj_t* test = lv_obj_create(par, NULL);
+	lv_obj_set_width(test, lv_obj_get_width(par));
+	lv_obj_set_height(test, lv_obj_get_height(par));
+
 
 }
 
