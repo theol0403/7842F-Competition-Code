@@ -5,8 +5,6 @@ tabview(lv_tabview_create(parent, NULL))
 {
   lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
 
-  lv_tabview_set_sliding(tabview, true);
-
   lv_style_t* style_bg = new lv_style_t;
   lv_style_copy(style_bg, &lv_style_plain);
   style_bg->body.main_color = mainColor;
@@ -57,6 +55,10 @@ tabview(lv_tabview_create(parent, NULL))
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_PR, style_pr);
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_TGL_PR, style_pr);
 
+  lv_style_copy(&pageStyle, &lv_style_pretty_color);
+  pageStyle.body.padding.hor = 0;
+  pageStyle.body.padding.ver = -10;
+  pageStyle.body.padding.inner = 0;
 
 }
 
@@ -66,7 +68,9 @@ DisplayController::~DisplayController() {
 
 
 lv_obj_t* DisplayController::newTab(std::string name) {
-  lv_obj_t* tab = lv_tabview_add_tab(tabview, name.c_str());
-  lv_obj_align(tab, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
-  return tab;
+  lv_obj_t* page = lv_tabview_add_tab(tabview, name.c_str());
+  lv_page_set_sb_mode(page, LV_SB_MODE_OFF);
+  lv_page_set_style(page, LV_PAGE_STYLE_BG, &pageStyle);
+  //lv_obj_align(page, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
+  return page;
 }
