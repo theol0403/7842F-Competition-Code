@@ -15,10 +15,16 @@ namespace lib7842
   } ();
 
 
-  ObjRenderer::ObjRenderer(lv_obj_t* iparent, ObjContainer* icontainer) :
+  ObjRenderer::ObjRenderer(lv_obj_t* iparent, ObjContainer* ioContainer) :
   parent(iparent), wScale(lv_obj_get_width(parent)/VISION_FOV_WIDTH), hScale(lv_obj_get_height(parent)/VISION_FOV_HEIGHT),
-  container(icontainer), objStyle(defaultObjStyle)
+  oContainer(ioContainer), objStyle(defaultObjStyle)
   {
+    std::cout << "Width Parent: " << lv_obj_get_width(parent) << std::endl;
+    std::cout << "Height Parent: " << lv_obj_get_height(parent) << std::endl;
+    std::cout << "Width Vision: " << VISION_FOV_WIDTH << std::endl;
+    std::cout << "Height Vision: " << VISION_FOV_HEIGHT << std::endl;
+    std::cout << "Width Scale: " << wScale << std::endl;
+    std::cout << "Height Scale: " << hScale << std::endl;
   }
 
   ObjRenderer::~ObjRenderer() {
@@ -67,10 +73,10 @@ namespace lib7842
 
   void ObjRenderer::draw() {
 
-    expandTo(container->objects.size());
+    expandTo(oContainer->objects.size());
 
     int dIndex = 0;
-    for(visionObj &obj : container->objects) {
+    for(visionObj &obj : oContainer->objects) {
       lv_obj_set_hidden(dObjects.at(dIndex), false); // make visible
 
       auto search = sigStyles.find(obj.sig);
@@ -106,6 +112,8 @@ namespace lib7842
   ObjDrawer::ObjDrawer(lv_obj_t* parent) :
   dContainer(lv_obj_create(parent, NULL))
   {
+    lv_obj_set_size(dContainer, lv_obj_get_width(parent), lv_obj_get_height(parent));
+    lv_obj_align(dContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
     lv_style_copy(&style, &lv_style_plain_color);
     style.body.main_color = LV_COLOR_BLACK;
     style.body.grad_color = LV_COLOR_BLACK;
@@ -125,8 +133,8 @@ namespace lib7842
     return *this;
   }
 
-  ObjRenderer &ObjDrawer::withLayer(ObjContainer& container) {
-    layers.push_back(ObjRenderer(dContainer, &container));
+  ObjRenderer &ObjDrawer::withLayer(ObjContainer& oContainer) {
+    layers.push_back(ObjRenderer(dContainer, &oContainer));
     return layers.back();
   }
 

@@ -15,7 +15,7 @@ namespace lib7842
     lv_obj_t* parent = nullptr;
     const int wScale;
     const int hScale;
-    ObjContainer* container = nullptr;
+    ObjContainer* oContainer = nullptr;
     lv_style_t objStyle;
 
     std::map<int, lv_style_t> sigStyles = {};
@@ -30,8 +30,8 @@ namespace lib7842
     void formatObj(lv_obj_t*);
     void format();
 
-    ObjRenderer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
-    ObjRenderer &withStyle(int, lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
+    ObjRenderer &withStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
+    ObjRenderer &withStyle(int, lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
 
     void draw();
     void clear();
@@ -53,7 +53,7 @@ namespace lib7842
     ObjDrawer(lv_obj_t*);
     ~ObjDrawer();
 
-    ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
+    ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
     ObjRenderer &withLayer(ObjContainer&);
 
     void draw();
