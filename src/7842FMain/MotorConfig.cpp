@@ -83,7 +83,9 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	//robot.vision = new VisionController(new pros::Vision(4));
+	robot.display = new DisplayController(lv_scr_act());
+
+		robot.vision = new VisionController(new pros::Vision(4), robot.display->newTab("Vision"));
 }
 
 

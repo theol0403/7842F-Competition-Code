@@ -6,6 +6,7 @@
 #include "Controllers/ShootController.hpp"
 #include "Controllers/ArmController.hpp"
 #include "Controllers/VisionController.hpp"
+#include "Controllers/DisplayController.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -23,6 +24,7 @@ struct robot_t
   ShootController* shooter = nullptr;
   ArmController* arm = nullptr;
   VisionController* vision = nullptr;
+  DisplayController* display = nullptr;
 };
 
 extern robot_t robot;

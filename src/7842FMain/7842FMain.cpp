@@ -45,14 +45,14 @@ void initialize()
 {
   pros::delay(500); //Give the legacy ports time to start up
 
-  // autonSelector = new lib7842::AutonSelector(lv_scr_act(), {
-  //   {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-  //   {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-  //   {"F", AutonFar}, {"Pf", AutonPlatformFar}
-  // });
-
   initializeBase();
   initializeDevices();
+
+  autonSelector = new lib7842::AutonSelector(robot.display->newTab("Auton"), {
+    {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
+    {"F", AutonFar}, {"Pf", AutonPlatformFar}
+  });
 }
 
 /***

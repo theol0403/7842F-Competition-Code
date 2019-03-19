@@ -10,9 +10,10 @@ public:
 
   pros::Vision* sensor = nullptr;
   lib7842::VisionReader reader;
+  lv_obj_t* parent = nullptr;
   pros::Task visionTask;
 
-  VisionController(pros::Vision*);
+  VisionController(pros::Vision*, lv_obj_t*);
 
   void run();
   static void task(void*);
