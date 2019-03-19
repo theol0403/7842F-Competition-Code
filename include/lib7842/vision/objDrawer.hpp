@@ -19,8 +19,7 @@ namespace lib7842
     lv_style_t objStyle;
 
     std::map<int, lv_style_t> sigStyles = {};
-
-    std::vector<lv_obj_t*> objects = {};
+    std::vector<lv_obj_t*> dObjects = {};
 
   public:
 

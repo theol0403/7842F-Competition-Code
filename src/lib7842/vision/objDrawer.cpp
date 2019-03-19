@@ -26,11 +26,11 @@ namespace lib7842
   }
 
   void ObjRenderer::expandTo(int size) {
-    int diff = size - objects.size();
+    int diff = size - dObjects.size();
     for(int i = 0; i < diff; i++) {
       lv_obj_t* obj = lv_obj_create(parent, NULL);
       formatObj(obj);
-      objects.push_back(obj);
+      dObjects.push_back(obj);
     }
   }
 
@@ -40,7 +40,7 @@ namespace lib7842
   }
 
   void ObjRenderer::format() {
-    for(lv_obj_t* obj : objects) formatObj(obj);
+    for(lv_obj_t* obj : dObjects) formatObj(obj);
   }
 
 
@@ -66,34 +66,40 @@ namespace lib7842
 
 
   void ObjRenderer::draw() {
-    expandTo(container.objects)
+
+    expandTo(container->objects.size());
+
+    int dIndex = 0;
+    for(visionObj &obj : container->objects) {
+      lv_obj_set_hidden(dObjects.at(dIndex), false); // make visible
+
+      auto search = sigStyles.find(obj.sig);
+      if (search != sigStyles.end()) {
+        lv_obj_set_style(dObjects.at(dIndex), &search->second);
+      } else {
+        lv_obj_set_style(dObjects.at(dIndex), &objStyle);
+      }
+
+      lv_obj_set_x(dObjects.at(dIndex), obj.x * wScale);
+      lv_obj_set_y(dObjects.at(dIndex), obj.y * hScale);
+
+      lv_obj_set_width(dObjects.at(dIndex), obj.width * wScale);
+      lv_obj_set_height(dObjects.at(dIndex), obj.height * hScale);
+
+      dIndex++;
+    }
+
+    for(; dIndex < dObjects.size(); dIndex++) {
+      lv_obj_set_hidden(dObjects.at(dIndex), true);
+    }
   }
 
 
   void ObjRenderer::clear() {
-    for(lv_obj_t* obj : objects) {
+    for(lv_obj_t* obj : dObjects) {
       lv_obj_del(obj);
     }
-    objects.clear();
+    dObjects.clear();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
