@@ -16,8 +16,8 @@ namespace lib7842
     const int wScale;
     const int hScale;
     ObjContainer* container = nullptr;
-
     lv_style_t objStyle;
+
     std::map<int, lv_style_t> sigStyles = {};
 
     std::vector<lv_obj_t*> objects = {};

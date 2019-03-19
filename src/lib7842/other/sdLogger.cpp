@@ -81,7 +81,14 @@ namespace lib7842
 
   void SDLogger::writeLine(std::vector<std::string> records) {
     if(writer.error) return;
+
+    for(std::string &record : records) {
+      record.erase(record.find_last_not_of('0') + 1, std::string::npos);
+      record.erase(record.find_last_not_of('.') + 1, std::string::npos);
+    }
+
     writer.WriteRecord(records, true);
+
     if(timer.getDtFromMark() > refreshTime) {
       writer.Close();
       writer.Open(path);
