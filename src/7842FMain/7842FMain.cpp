@@ -136,6 +136,9 @@ void opcontrol()
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
   // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
 
+  lib7842::SDLogger shootLogger("testLog", lib7842::SDLogger::count);
+  shootLogger.writeFields({"Test"});
+
   // double targetAngle = 0;
   // bool topFlag = true;
   // double shotRpm = 0;
@@ -224,7 +227,7 @@ void opcontrol()
     // if(j_Digital(B)) {
     //   robot.shooter->doJobLoop(ShootController::angleTarget);
     // }
-
+    shootLogger.writeLine({"Yayyy"});
     pros::delay(10);
   }
 }
