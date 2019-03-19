@@ -27,7 +27,7 @@ void FlywheelController::resetSlew() {
 void FlywheelController::run()
 {
   lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
-  flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D"});
+  flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
 
   Timer time;
   time.placeMark();
@@ -68,7 +68,9 @@ void FlywheelController::run()
       std::to_string(currentRpm/4),
       std::to_string((velMath->getAccel()).convert(rpm / second)),
       std::to_string(motorPower),
-      std::to_string(pid->getD())
+      std::to_string(pid->getD()),
+      std::to_string(pros::battery::get_capacity()),
+      std::to_string(flywheel->getTemperature())
     });
 
     pros::delay(10);

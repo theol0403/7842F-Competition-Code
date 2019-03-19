@@ -132,16 +132,9 @@ void opcontrol()
   // lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
   // lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
   // lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
-  //
-  // jay::util::CSVwrite shootLogger("/usd/test.csv");
-  // if( shootLogger.error ) { std::cout << "LOGGER FAIL" << std::endl; }
-  //
-  // shootLogger.WriteField("Flag", false);
-  // shootLogger.WriteField("Distance", false);
-  // shootLogger.WriteField("Angle", false);
-  // shootLogger.WriteField("Rpm", false);
-  // shootLogger.WriteField("Battery", false);
-  // shootLogger.WriteField("Temp", true);
+
+  // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
+  // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
 
   // double targetAngle = 0;
   // bool topFlag = true;
@@ -218,14 +211,14 @@ void opcontrol()
     // else if(printTrigger.changedToPressed())
     // {
     //   //print angle and distance
-    //   shootLogger.WriteRecord({
-    //     topFlag ? "Top" : "Middle",
-    //     std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
-    //     std::to_string(targetAngle),
-    //     std::to_string(shotRpm),
-    //     std::to_string(pros::battery::get_capacity()),
-    //     std::to_string(robot.flywheel->flywheel->getTemperature())
-    //   }, true);
+    // shootLogger.writeLine({
+    //   topFlag ? "Top" : "Middle",
+    //   std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
+    //   std::to_string(targetAngle),
+    //   std::to_string(shotRpm),
+    //   std::to_string(pros::battery::get_capacity()),
+    //   std::to_string(robot.flywheel->flywheel->getTemperature())
+    // });
     // }
     //
     // if(j_Digital(B)) {

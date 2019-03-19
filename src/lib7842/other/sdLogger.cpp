@@ -4,8 +4,9 @@ namespace lib7842
 {
 
   SDLogger::SDLogger(std::string name, modes mode) :
-  path(findPath(name, mode)), writer(path), refreshTime(3_s) {
+  path(findPath(name, mode)), writer(path), refreshTime(2_s) {
     timer.placeMark();
+    if(writer.error) std::cout << name << " fail: " << writer.error_msg << std::endl;
   }
 
   bool SDLogger::fileExists(std::string name) {
@@ -23,7 +24,7 @@ namespace lib7842
     switch(mode) {
 
       case count: {
-        std::string indexFile = "/usd/" + name + ".txt";
+        std::string indexFile = "/usd/" + name + "_index.txt";
         int fileNum = 0;
         if(fileExists(indexFile)) {
           FILE* file = fopen(indexFile.c_str(), "r");
@@ -79,7 +80,6 @@ namespace lib7842
       writer.Close();
       writer.Open(path);
       timer.placeMark();
-      //std::cout << "REOPEN" << std::endl;
     }
   }
 
