@@ -87,21 +87,21 @@ void disabled()
 void opcontrol()
 {
 
-  // PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.1};
-  // //kP, kI, kD, kF, readingEma, derivativeEma
-  // double wantedFlywheelRPM = 0;
-  //
-  // PIDScreenTuner tuneFlywheel(LV_HOR_RES, LV_VER_RES, LV_VER_RES/3);
-  // tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
-  // tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
-  // tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
-  // tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
-  // tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
-  // tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
-  // tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
-  // lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
-  // lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
-  // lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
+  PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.1};
+  //kP, kI, kD, kF, readingEma, derivativeEma
+  double wantedFlywheelRPM = 0;
+
+  PIDScreenTuner tuneFlywheel(robot.display->newTab("Flywheel"));
+  tuneFlywheel.initButton(0, &flywheelPIDParams.kP, "kP", 5);
+  tuneFlywheel.initButton(65, &flywheelPIDParams.kD, "kD", 5);
+  tuneFlywheel.initButton(130, &flywheelPIDParams.kF, "kF", 5);
+  tuneFlywheel.initButton(195, &flywheelPIDParams.derivativeEma, "DE", 5);
+  tuneFlywheel.initButton(260, &flywheelPIDParams.readingEma, "RE", 5);
+  tuneFlywheel.initButton(325, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
+  tuneFlywheel.initButton(400, &tuneFlywheel.m_buttonMultiplier, "Multiplier", 6, PIDScreenTuner::buttonMultiply, 10);
+  lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0, "RPM", 2, 0, 3000);
+  lv_obj_t* errorGauge = tuneFlywheel.initGauge(160, "Error", 1, -50, 50);
+  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320, "MotorPower", 1, 0, 127);
 
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
   // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});

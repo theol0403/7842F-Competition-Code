@@ -73,7 +73,7 @@ namespace lib7842
     lv_color_t m_needleColors[5];
 
 
-    PIDScreenTuner(int, int, int);
+    PIDScreenTuner(lv_obj_t*);
 
     double m_buttonMultiplier = 1;
     void initButton(int, double*, const char*, int, buttonType_t = buttonAdd, int = 1);

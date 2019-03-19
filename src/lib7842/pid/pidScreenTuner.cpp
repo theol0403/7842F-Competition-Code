@@ -3,14 +3,13 @@
 namespace lib7842
 {
 
-  PIDScreenTuner::PIDScreenTuner(int tunerWidth, int tunerHeight, int buttonHeight)
-  :
-  m_tunerWidth(tunerWidth), m_tunerHeight(tunerHeight), m_buttonHeight(buttonHeight)
+  PIDScreenTuner::PIDScreenTuner(lv_obj_t* parent)
+  : m_tunerWidth(lv_obj_get_width(parent)), m_tunerHeight(lv_obj_get_height(parent)), m_buttonHeight((double)lv_obj_get_height(parent)/3)
   {
 
     //Screen Container
     //Object
-    m_screenContainer = lv_obj_create(lv_scr_act(), NULL);
+    m_screenContainer = lv_obj_create(parent, NULL);
     lv_obj_set_size(m_screenContainer, m_tunerWidth, m_tunerHeight);
     lv_obj_align(m_screenContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
     //Style
