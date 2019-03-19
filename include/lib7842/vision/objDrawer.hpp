@@ -43,7 +43,7 @@ namespace lib7842
   {
   private:
 
-    lv_obj_t* container = nullptr;
+    lv_obj_t* dContainer = nullptr;
     lv_style_t style;
 
     std::vector<ObjRenderer> layers = {};
@@ -54,8 +54,9 @@ namespace lib7842
     ~ObjDrawer();
 
     ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
-
     ObjRenderer &withLayer(ObjContainer&);
+
+    void draw();
 
   };
 
