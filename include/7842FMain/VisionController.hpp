@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "lib7842/vision/visionReader.hpp"
+#include "lib7842/vision/objDrawer.hpp"
 
 class VisionController
 {
