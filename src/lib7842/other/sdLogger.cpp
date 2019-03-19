@@ -18,10 +18,9 @@ namespace lib7842
     return false;
   }
 
-  std::string SDLogger::writeFail(std::string name) {
-    std::cout << name << ": SD Fail" << std::endl;
+  void SDLogger::writeFail(std::string name) {
+    std::cerr << name << ": SD Fail" << std::endl;
     writeError = true;
-    return "error";
   }
 
 
@@ -38,7 +37,7 @@ namespace lib7842
           fclose(file);
         } else {
           FILE* file = fopen(indexFile.c_str(), "w");
-          if(!file) return writeFail(name);
+          if(!file) return "error";
           fprintf(file, "%d", 0);
           fclose(file);
         }
@@ -49,7 +48,6 @@ namespace lib7842
         }
         while(fileExists(path));
         FILE* file = fopen(indexFile.c_str(), "w");
-        if(!file) return writeFail(name);
         fprintf(file, "%d", fileNum);
         fclose(file);
         break;

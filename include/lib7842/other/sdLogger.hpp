@@ -20,7 +20,7 @@ namespace lib7842
 
     bool fileExists(std::string);
     std::string findPath(std::string, modes);
-    std::string writeFail(std::string);
+    void writeFail(std::string);
 
     void writeFields(std::vector<std::string>);
     void writeLine(std::vector<std::string>);
