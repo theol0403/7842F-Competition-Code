@@ -31,7 +31,7 @@ void VisionController::run()
     reader.reset();
     reader.getAll();
     reader.removeWith(objAttr::area, 0, 300);
-    reader.print();
+    //reader.print();
     drawer.draw();
     pros::delay(100);
   }
