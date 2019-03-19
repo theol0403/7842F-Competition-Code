@@ -1,9 +1,9 @@
 #pragma once
-#include "objectContainer.hpp"
+#include "objContainer.hpp"
 
 namespace lib7842
 {
-  class VisionReader : public ObjectContainer
+  class VisionReader : public ObjContainer
   {
 
   private:

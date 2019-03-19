@@ -1,9 +1,9 @@
-// #include "objectDrawing.hpp"
+// #include "objDrawing.hpp"
 //
 // namespace lib7842
 // {
 //
-//   ObjectDrawing::ObjectDrawing(int containerWidth, int containerHeight)
+//   ObjDrawing::ObjDrawing(int containerWidth, int containerHeight)
 //   :
 //   m_widthScale{containerWidth/VISION_FOV_WIDTH},
 //   m_heightScale{containerHeight/VISION_FOV_HEIGHT}
@@ -34,52 +34,52 @@
 //     m_discardObjectStyle.body.border.color = LV_COLOR_YELLOW;
 //   }
 //
-//   ObjectDrawing::~ObjectDrawing()
+//   ObjDrawing::~ObjDrawing()
 //   {
 //   }
 //
 //
-//   void ObjectDrawing::drawSimpleObjects(ObjectContainer& objectContainer)
+//   void ObjDrawing::drawSimpleObjects(ObjContainer& objContainer)
 //   {
 //
-//     for (lv_obj_t* &screenObject : objectContainer.screenArray) //Hide all objects
+//     for (lv_obj_t* &screenObject : objContainer.screenArray) //Hide all objects
 //     {
 //       lv_obj_set_hidden(screenObject, true);
 //     }
 //
-//     for(int objectNum = 0; objectNum < objectContainer.currentCount; objectNum++)
+//     for(int objectNum = 0; objectNum < objContainer.currentCount; objectNum++)
 //     {
-//       if(objectContainer.objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG)
+//       if(objContainer.objectArray.at(objectNum).objSig != VISION_OBJECT_ERR_SIG)
 //       {
-//         lv_obj_set_hidden(objectContainer.screenArray.at(objectNum), false); // make visible
+//         lv_obj_set_hidden(objContainer.screenArray.at(objectNum), false); // make visible
 //
 //         //Set posisitons and size
-//         lv_obj_set_x(objectContainer.screenArray.at(objectNum), objectContainer.objectArray.at(objectNum).objX * m_widthScale);
-//         lv_obj_set_y(objectContainer.screenArray.at(objectNum), objectContainer.objectArray.at(objectNum).objY * m_heightScale);
+//         lv_obj_set_x(objContainer.screenArray.at(objectNum), objContainer.objectArray.at(objectNum).objX * m_widthScale);
+//         lv_obj_set_y(objContainer.screenArray.at(objectNum), objContainer.objectArray.at(objectNum).objY * m_heightScale);
 //
-//         lv_obj_set_width(objectContainer.screenArray.at(objectNum), objectContainer.objectArray.at(objectNum).objWidth * m_widthScale);
-//         lv_obj_set_height(objectContainer.screenArray.at(objectNum), objectContainer.objectArray.at(objectNum).objHeight * m_heightScale);
+//         lv_obj_set_width(objContainer.screenArray.at(objectNum), objContainer.objectArray.at(objectNum).objWidth * m_widthScale);
+//         lv_obj_set_height(objContainer.screenArray.at(objectNum), objContainer.objectArray.at(objectNum).objHeight * m_heightScale);
 //
-//         if(objectContainer.objectArray.at(objectNum).discardObject)
+//         if(objContainer.objectArray.at(objectNum).discardObject)
 //         {
-//           lv_obj_set_style(objectContainer.screenArray.at(objectNum), &m_discardObjectStyle);
+//           lv_obj_set_style(objContainer.screenArray.at(objectNum), &m_discardObjectStyle);
 //         }
 //         else
 //         {
-//           lv_obj_set_style(objectContainer.screenArray.at(objectNum), &objectContainer.styleArray.at(objectContainer.objectArray.at(objectNum).objSig));
+//           lv_obj_set_style(objContainer.screenArray.at(objectNum), &objContainer.styleArray.at(objContainer.objectArray.at(objectNum).objSig));
 //         }
 //       }
 //       else
 //       {
-//         lv_obj_set_hidden(objectContainer.screenArray.at(objectNum), true);
+//         lv_obj_set_hidden(objContainer.screenArray.at(objectNum), true);
 //       }
 //     }
 //   }
 //
 //
-//   void ObjectDrawing::clearSimpleObjects(ObjectContainer& objectContainer)
+//   void ObjDrawing::clearSimpleObjects(ObjContainer& objContainer)
 //   {
-//     for (lv_obj_t* &screenObject : objectContainer.screenArray) //Hide all objects
+//     for (lv_obj_t* &screenObject : objContainer.screenArray) //Hide all objects
 //     {
 //       lv_obj_set_hidden(screenObject, true);
 //     }

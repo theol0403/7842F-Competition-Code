@@ -20,7 +20,7 @@ void VisionController::run()
   {
     reader.reset();
     reader.getAll();
-    lib7842::ObjectContainer sorter = reader;
+    lib7842::ObjContainer sorter = reader;
     sorter = sorter.copy().removeWithout(objAttr::sig, 2).trim(4);
     sorter.print();
     pros::delay(100);

@@ -1,6 +1,6 @@
 #pragma once
 #include "objectTracking.hpp"
-#include "objectContainer.hpp"
+#include "objContainer.hpp"
 #include <map>
 
 namespace lib7842
@@ -16,7 +16,7 @@ namespace lib7842
     const int hScale;
 
     lv_obj_t* parent = nullptr;
-    ObjectContainer* container = nullptr;
+    ObjContainer* container = nullptr;
 
     lv_style_t objStyle;
     std::map<int, lv_style_t> objects = {};
@@ -25,7 +25,7 @@ namespace lib7842
 
   public:
 
-    ObjRenderer(lv_obj_t*, ObjectContainer*);
+    ObjRenderer(lv_obj_t*, ObjContainer*);
     ~ObjRenderer();
 
     ObjRenderer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
@@ -53,7 +53,7 @@ namespace lib7842
 
     ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_BLACK, lv_opa_t = LV_OPA_100);
 
-    ObjRenderer &withLayer(ObjectContainer&);
+    ObjRenderer &withLayer(ObjContainer&);
 
   };
 

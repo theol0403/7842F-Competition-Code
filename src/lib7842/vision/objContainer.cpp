@@ -1,17 +1,17 @@
-#include "objectContainer.hpp"
+#include "objContainer.hpp"
 
 namespace lib7842
 {
 
-  void ObjectContainer::addObj(visionObj obj) {
+  void ObjContainer::addObj(visionObj obj) {
     objects.push_back(obj);
   }
 
-  void ObjectContainer::addObj(std::vector<visionObj> objs) {
+  void ObjContainer::addObj(std::vector<visionObj> objs) {
     for(visionObj &obj : objs) addObj(obj);
   }
 
-  visionObj ObjectContainer::get(int index) {
+  visionObj ObjContainer::get(int index) {
     try {
       return objects.at(index);
     } catch(std::out_of_range) {
@@ -20,33 +20,33 @@ namespace lib7842
     }
   }
 
-  visionObj ObjectContainer::getTotal() {
+  visionObj ObjContainer::getTotal() {
     return std::accumulate(objects.begin(), objects.end(), visionObj{});
   }
 
-  visionObj ObjectContainer::getAvg() {
+  visionObj ObjContainer::getAvg() {
     return getTotal() / objects.size();
   }
 
 
-  ObjectContainer::removeFunc_t ObjectContainer::makeRemove(objAttr attr, std::function<bool(double, double)> compare, double val) {
+  ObjContainer::removeFunc_t ObjContainer::makeRemove(objAttr attr, std::function<bool(double, double)> compare, double val) {
     return [=](const visionObj& obj) {
       return compare(obj.getAttr(attr), val);
     };
   }
 
-  ObjectContainer::removeFunc_t ObjectContainer::makeRemove(objAttr attr, bool inRange, double min, double max) {
+  ObjContainer::removeFunc_t ObjContainer::makeRemove(objAttr attr, bool inRange, double min, double max) {
     return [=](const visionObj& obj) {
       return (min < obj.getAttr(attr) || obj.getAttr(attr) > max) == inRange;
     };
   }
 
-  void ObjectContainer::removeBy(removeFunc_t removeFunc) {
+  void ObjContainer::removeBy(removeFunc_t removeFunc) {
     objects.erase(std::remove_if(objects.begin(), objects.end(), removeFunc), objects.end());
   }
 
 
-  ObjectContainer::sortFunc_t ObjectContainer::makeSort(objAttr attr, bool decending) {
+  ObjContainer::sortFunc_t ObjContainer::makeSort(objAttr attr, bool decending) {
     return [=](const visionObj& first, const visionObj& second) {
       if(decending) {
         return first.getAttr(attr) > second.getAttr(attr);
@@ -56,28 +56,28 @@ namespace lib7842
     };
   }
 
-  void ObjectContainer::sortBy(sortFunc_t sortFunc) {
+  void ObjContainer::sortBy(sortFunc_t sortFunc) {
     std::stable_sort(objects.begin(), objects.end(), sortFunc);
   }
 
 
 
-  ObjectContainer ObjectContainer::copy() {
+  ObjContainer ObjContainer::copy() {
     return *this;
   }
 
 
-  ObjectContainer &ObjectContainer::resize(int size) {
+  ObjContainer &ObjContainer::resize(int size) {
     objects.resize(size);
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::trim(int size) {
+  ObjContainer &ObjContainer::trim(int size) {
     if(size < objects.size()) resize(size);
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::remove(int index) {
+  ObjContainer &ObjContainer::remove(int index) {
     try {
       objects.erase(objects.begin() + index);
     } catch(std::out_of_range) {
@@ -86,7 +86,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::remove(int start, int end) {
+  ObjContainer &ObjContainer::remove(int start, int end) {
     try {
       objects.erase(objects.begin() + start, objects.begin() + end);
     } catch(std::out_of_range) {
@@ -96,57 +96,57 @@ namespace lib7842
   }
 
 
-  ObjectContainer &ObjectContainer::removeBy(objAttr attr, std::function<bool(double, double)> compare, double val) {
+  ObjContainer &ObjContainer::removeBy(objAttr attr, std::function<bool(double, double)> compare, double val) {
     removeBy(makeRemove(attr, compare, val));
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::removeWith(objAttr attr, double val) {
+  ObjContainer &ObjContainer::removeWith(objAttr attr, double val) {
     removeBy(makeRemove(attr, std::equal_to<>(), val));
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double val) {
+  ObjContainer &ObjContainer::removeWithout(objAttr attr, double val) {
     removeBy(makeRemove(attr, std::not_equal_to<>(), val));
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::removeWith(objAttr attr, double min, double max) {
+  ObjContainer &ObjContainer::removeWith(objAttr attr, double min, double max) {
     removeBy(makeRemove(attr, true, min, max));
     return *this;
   }
 
-  ObjectContainer &ObjectContainer::removeWithout(objAttr attr, double min, double max) {
+  ObjContainer &ObjContainer::removeWithout(objAttr attr, double min, double max) {
     removeBy(makeRemove(attr, false, min, max));
     return *this;
   }
 
 
-  ObjectContainer &ObjectContainer::sortBy(objAttr attr, bool decending) {
+  ObjContainer &ObjContainer::sortBy(objAttr attr, bool decending) {
     sortBy(makeSort(attr, decending));
     return *this;
   }
 
 
-  void ObjectContainer::reset() {
+  void ObjContainer::reset() {
     resize(0);
   }
 
 
-  void ObjectContainer::print() {
+  void ObjContainer::print() {
     std::cout << "Count:" << objects.size() << std::endl;
     for(visionObj &obj : objects) obj.print();
   }
 
 
-  void ObjectContainer::checkErrSig() {
+  void ObjContainer::checkErrSig() {
     for(visionObj &obj : objects) {
       assert(obj.sig != VISION_OBJECT_ERR_SIG);
     }
   }
 
 
-  ObjectContainer ObjectContainer::operator+(ObjectContainer rhs) {
+  ObjContainer ObjContainer::operator+(ObjContainer rhs) {
     addObj(rhs.objects);
     return *this;
   }

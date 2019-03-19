@@ -5,7 +5,7 @@
 //
 //   ObjectSmoothing::ObjectSmoothing
 //   (
-//     ObjectContainer& sourceContainer, ObjectContainer& destContainer,
+//     ObjContainer& sourceContainer, ObjContainer& destContainer,
 //     std::initializer_list<sigMerge_t> sigReroutes,
 //     int lifeMax, int lifeThreshold, double lifeIncrement,
 //     double emaAlpha, double emaAlphaVel,
@@ -434,7 +434,7 @@
 //   *              |_|
 //   * Copy objects into destination container*/
 //   // TODO: NEEDS WORK
-//   void ObjectSmoothing::exportObjects(lib7842::ObjectContainer* destContainer, int minLife, int maxLife)
+//   void ObjectSmoothing::exportObjects(lib7842::ObjContainer* destContainer, int minLife, int maxLife)
 //   {
 //     int exportCount = 0;
 //     //for each object in master down to x life

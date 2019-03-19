@@ -33,7 +33,7 @@ namespace lib7842
   }
 
 
-  // void VisionReader::getCodeObjects(lib7842::ObjectContainer &destContainer, std::vector<codeSig_t> wantedCodes)
+  // void VisionReader::getCodeObjects(lib7842::ObjContainer &destContainer, std::vector<codeSig_t> wantedCodes)
   // {
   //   pros::vision_object* temp = new pros::vision_object[destContainer.arrayLength];
   //

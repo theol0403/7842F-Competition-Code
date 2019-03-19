@@ -40,8 +40,8 @@ namespace lib7842
 
   private:
 
-    lib7842::ObjectContainer* m_sourceContainer = nullptr;
-    lib7842::ObjectContainer* m_destContainer = nullptr;
+    lib7842::ObjContainer* m_sourceContainer = nullptr;
+    lib7842::ObjContainer* m_destContainer = nullptr;
 
     std::vector<sortedObjects_t> m_sourceObjects; //Source object container
     int m_sourceCount = 0; //Current amount of source objects. Not to exceed sourceCount
@@ -85,7 +85,7 @@ namespace lib7842
 
     ObjectSmoothing
     (
-      ObjectContainer&, ObjectContainer&,
+      ObjContainer&, ObjContainer&,
       std::initializer_list<sigMerge_t>,
       int, int, double,
       double, double,
@@ -95,7 +95,7 @@ namespace lib7842
 
     void smoothObjects(); //Automates Process
 
-    void exportObjects(lib7842::ObjectContainer*, int, int);
+    void exportObjects(lib7842::ObjContainer*, int, int);
 
   };
 }

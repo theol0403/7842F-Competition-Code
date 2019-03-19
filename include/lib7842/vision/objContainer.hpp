@@ -6,7 +6,7 @@
 namespace lib7842
 {
 
-  class ObjectContainer
+  class ObjContainer
   {
 
   public:
@@ -30,26 +30,26 @@ namespace lib7842
     sortFunc_t makeSort(objAttr, bool = true);
     void sortBy(sortFunc_t);
 
-    ObjectContainer copy();
+    ObjContainer copy();
 
-    ObjectContainer &resize(int);
-    ObjectContainer &trim(int);
-    ObjectContainer &remove(int);
-    ObjectContainer &remove(int, int);
+    ObjContainer &resize(int);
+    ObjContainer &trim(int);
+    ObjContainer &remove(int);
+    ObjContainer &remove(int, int);
 
-    ObjectContainer &removeBy(objAttr, std::function<bool(double, double)>, double);
-    ObjectContainer &removeWith(objAttr, double);
-    ObjectContainer &removeWithout(objAttr, double);
-    ObjectContainer &removeWith(objAttr, double, double);
-    ObjectContainer &removeWithout(objAttr, double, double);
+    ObjContainer &removeBy(objAttr, std::function<bool(double, double)>, double);
+    ObjContainer &removeWith(objAttr, double);
+    ObjContainer &removeWithout(objAttr, double);
+    ObjContainer &removeWith(objAttr, double, double);
+    ObjContainer &removeWithout(objAttr, double, double);
 
-    ObjectContainer &sortBy(objAttr, bool = true);
+    ObjContainer &sortBy(objAttr, bool = true);
 
     void reset();
     void print();
     void checkErrSig();
 
-    ObjectContainer operator+(ObjectContainer);
+    ObjContainer operator+(ObjContainer);
 
   };
 }
