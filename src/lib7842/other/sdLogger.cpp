@@ -6,7 +6,7 @@ namespace lib7842
   SDLogger::SDLogger(std::string name, modes mode) :
   path(findPath(name, mode)), writer(path), refreshTime(2_s) {
     timer.placeMark();
-    if(writer.error) std::cout << name << " fail: " << writer.error_msg << std::endl;
+    if(writer.error) writeFail(name);
   }
 
   bool SDLogger::fileExists(std::string name) {
@@ -16,6 +16,12 @@ namespace lib7842
       return true;
     }
     return false;
+  }
+
+  std::string SDLogger::writeFail(std::string name) {
+    std::cout << name << ": SD Fail" << std::endl;
+    writeError = true;
+    return "error";
   }
 
 
@@ -32,6 +38,7 @@ namespace lib7842
           fclose(file);
         } else {
           FILE* file = fopen(indexFile.c_str(), "w");
+          if(!file) return writeFail(name);
           fprintf(file, "%d", 0);
           fclose(file);
         }
@@ -42,6 +49,7 @@ namespace lib7842
         }
         while(fileExists(path));
         FILE* file = fopen(indexFile.c_str(), "w");
+        if(!file) return writeFail(name);
         fprintf(file, "%d", fileNum);
         fclose(file);
         break;
@@ -67,19 +75,23 @@ namespace lib7842
   }
 
   void SDLogger::writeFields(std::vector<std::string> fields) {
-    for(std::string &field : fields) {
-      writer.WriteField(field, false);
+    if(!writeError) {
+      for(std::string &field : fields) {
+        writer.WriteField(field, false);
+      }
+      writer.WriteTerminator();
     }
-    writer.WriteTerminator();
   }
 
   void SDLogger::writeLine(std::vector<std::string> records) {
-    writer.WriteRecord(records, true);
+    if(!writeError) {
+      writer.WriteRecord(records, true);
 
-    if(timer.getDtFromMark() > refreshTime) {
-      writer.Close();
-      writer.Open(path);
-      timer.placeMark();
+      if(timer.getDtFromMark() > refreshTime) {
+        writer.Close();
+        writer.Open(path);
+        timer.placeMark();
+      }
     }
   }
 
