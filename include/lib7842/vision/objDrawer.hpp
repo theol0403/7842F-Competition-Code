@@ -13,8 +13,8 @@ namespace lib7842
     static lv_style_t defaultObjStyle;
 
     lv_obj_t* parent = nullptr;
-    const int wScale;
-    const int hScale;
+    const double wScale;
+    const double hScale;
     ObjContainer* oContainer = nullptr;
     lv_style_t objStyle;
 

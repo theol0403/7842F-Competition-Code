@@ -16,7 +16,7 @@ namespace lib7842
 
 
   ObjRenderer::ObjRenderer(lv_obj_t* iparent, ObjContainer* ioContainer) :
-  parent(iparent), wScale(lv_obj_get_width(parent)/VISION_FOV_WIDTH), hScale(lv_obj_get_height(parent)/VISION_FOV_HEIGHT),
+  parent(iparent), wScale((double)lv_obj_get_width(parent)/VISION_FOV_WIDTH), hScale((double)lv_obj_get_height(parent)/VISION_FOV_HEIGHT),
   oContainer(ioContainer), objStyle(defaultObjStyle)
   {
     std::cout << "Width Parent: " << lv_obj_get_width(parent) << std::endl;
