@@ -4,30 +4,6 @@
 #include "MotorConfig.hpp"
 
 #include "DriverControl.hpp"
-#include "7842FMain/Auton/AutonFunctions.hpp"
-
-
-/***   _____         _
-*    |_   _|       | |
-*      | | __ _ ___| | _____
-*      | |/ _` / __| |/ / __|
-*      | | (_| \__ \   <\__ \
-*      \_/\__,_|___/_|\_\___/
-* Checks current task state and changes it if the state does not match the wanted state
-* @param taskPtr  pointer to the task
-* @param taskMode one of two options, TASK_STATE_SUSPENDED or TASK_STATE_RUNNING
-*/
-void setTaskState(pros::Task* taskPtr, pros::task_state_e_t taskMode) {
-  if(taskPtr != nullptr && taskPtr->get_state() != taskMode) { switch(taskMode) {
-    case TASK_STATE_SUSPENDED: taskPtr->suspend(); break;
-    case TASK_STATE_RUNNING: taskPtr->resume(); break;
-    default: {}
-  }}
-}
-
-
-lib7842::AutonSelector *autonSelector;
-
 
 /***
 *     _____      _ _   _       _ _
@@ -47,12 +23,6 @@ void initialize()
 
   initializeBase();
   initializeDevices();
-
-  autonSelector = new lib7842::AutonSelector(robot.display->newTab("Auton"), {
-    {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-    {"F", AutonFar}, {"Pf", AutonPlatformFar}
-  });
 }
 
 /***
@@ -135,9 +105,6 @@ void opcontrol()
 
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
   // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
-
-  lib7842::SDLogger shootLogger("testLog", lib7842::SDLogger::count);
-  shootLogger.writeFields({"Test"});
 
   // double targetAngle = 0;
   // bool topFlag = true;
@@ -227,7 +194,7 @@ void opcontrol()
     // if(j_Digital(B)) {
     //   robot.shooter->doJobLoop(ShootController::angleTarget);
     // }
-    shootLogger.writeLine({"Yayyy"});
+
     pros::delay(10);
   }
 }
@@ -263,8 +230,8 @@ void autonomous()
 
   //Create a new chassis that automatically mirrors side and send it to the autonomous code
   SideController* sideChassis = new SideController(
-    robot.chassis, autonSelector->getSelectedSide());
-    autonSelector->getSelectedAuton().autonFunc(sideChassis);
+    robot.chassis, robot.selector->getSelectedSide());
+    robot.selector->getSelectedAuton().autonFunc(sideChassis);
     delete sideChassis;
     std::cout << "Exit Auton" << std::endl;
   }
