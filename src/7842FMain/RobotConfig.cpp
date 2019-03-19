@@ -1,4 +1,4 @@
-#include "MotorConfig.hpp"
+#include "RobotConfig.hpp"
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 

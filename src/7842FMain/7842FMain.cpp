@@ -1,7 +1,7 @@
 #include "main.h"
 
 #include "lib7842/lib7842.hpp"
-#include "MotorConfig.hpp"
+#include "RobotConfig.hpp"
 
 #include "DriverControl.hpp"
 
