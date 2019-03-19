@@ -60,7 +60,7 @@ namespace lib7842
     style.body.grad_color = main;
     style.body.border.color = border;
     style.body.opa = opa;
-    sigStyles.insert_or_assign(sig, style);
+    styles.insert_or_assign(sig, style);
     return *this;
   }
 
@@ -73,8 +73,8 @@ namespace lib7842
     for(visionObj &obj : container->objects) {
       lv_obj_set_hidden(dObjects.at(dIndex), false); // make visible
 
-      auto search = sigStyles.find(obj.sig);
-      if (search != sigStyles.end()) {
+      auto search = styles.find(obj.sig);
+      if (search != styles.end()) {
         lv_obj_set_style(dObjects.at(dIndex), &search->second);
       } else {
         lv_obj_set_style(dObjects.at(dIndex), &objStyle);
@@ -101,5 +101,33 @@ namespace lib7842
     }
     dObjects.clear();
   }
+
+
+  ObjDrawer::ObjDrawer(lv_obj_t* parent) :
+  container(lv_obj_create(parent, NULL))
+  {
+    lv_style_copy(&style, &lv_style_plain_color);
+    style.body.main_color = LV_COLOR_BLACK;
+    style.body.grad_color = LV_COLOR_BLACK;
+    lv_obj_set_style(container, &style);
+  }
+
+  ObjDrawer::~ObjDrawer() {
+    lv_obj_del(container);
+  }
+
+  ObjDrawer &ObjDrawer::withStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
+    style.body.main_color = main;
+    style.body.grad_color = main;
+    style.body.border.color = border;
+    style.body.opa = opa;
+    return *this;
+  }
+
+
+
+
+
+
 
 }
