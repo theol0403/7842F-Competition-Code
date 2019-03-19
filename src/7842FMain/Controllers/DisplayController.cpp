@@ -12,7 +12,7 @@ tabview(lv_tabview_create(parent, NULL))
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BG, style_bg);
 
   lv_style_t* style_indic = new lv_style_t;
-  lv_style_copy(style_indic, &lv_style_plain);
+  lv_style_copy(style_indic, &lv_style_plain_color);
   style_indic->body.main_color = LV_COLOR_WHITE;
   style_indic->body.grad_color = LV_COLOR_WHITE;
   style_indic->body.padding.inner = 3;
@@ -22,20 +22,27 @@ tabview(lv_tabview_create(parent, NULL))
   lv_style_copy(style_btn_bg, &lv_style_transp);
   style_btn_bg->body.main_color = mainColor;
   style_btn_bg->body.grad_color = mainColor;
-  style_btn_bg->body.padding.ver = 5;
-  lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_INDIC, style_btn_bg);
+  style_btn_bg->body.padding.ver = 0;
+  style_btn_bg->body.padding.hor = 0;
+  lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_BG, style_btn_bg);
 
-  // lv_style_t* style_rel = new lv_style_t;
-  // lv_style_copy(style_rel, &lv_style_btn_tgl_rel);
-  // style_rel->body.main_color = mainColor;
-  // style_rel->body.grad_color = mainColor;
-  // style_rel->body.border.color = LV_COLOR_WHITE;
-  // style_rel->body.border.width = 3;
-  // style_rel->body.border.opa = LV_OPA_100;
-  // style_rel->body.radius = 15;
-  // style_rel->text.color = LV_COLOR_WHITE;
-  // lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_TGL_REL, style_rel);
-  //
+  lv_style_t* style_rel = new lv_style_t;
+  lv_style_copy(style_rel, &lv_style_btn_rel);
+  style_rel->body.main_color = mainColor;
+  style_rel->body.grad_color = mainColor;
+  style_rel->body.border.width = 0;
+  lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_REL, style_rel);
+
+  lv_style_t* style_tgl_rel = new lv_style_t;
+  lv_style_copy(style_tgl_rel, &lv_style_btn_tgl_rel);
+  style_tgl_rel->body.main_color = mainColor;
+  style_tgl_rel->body.grad_color = mainColor;
+  style_tgl_rel->body.border.color = LV_COLOR_WHITE;
+  style_tgl_rel->body.border.width = 3;
+  style_tgl_rel->body.radius = 0;
+  style_tgl_rel->text.color = LV_COLOR_WHITE;
+  lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_TGL_REL, style_tgl_rel);
+
   // lv_style_t* style_pr = new lv_style_t;
   // lv_style_copy(style_pr, style_rel);
   // style_pr->body.main_color = LV_COLOR_WHITE;
