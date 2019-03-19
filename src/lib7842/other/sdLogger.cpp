@@ -20,7 +20,6 @@ namespace lib7842
 
   void SDLogger::writeFail(std::string name) {
     std::cerr << name << ": SD Fail" << std::endl;
-    writeError = true;
   }
 
 
@@ -73,23 +72,20 @@ namespace lib7842
   }
 
   void SDLogger::writeFields(std::vector<std::string> fields) {
-    if(!writeError) {
-      for(std::string &field : fields) {
-        writer.WriteField(field, false);
-      }
-      writer.WriteTerminator();
+    if(writer.error) return;
+    for(std::string &field : fields) {
+      writer.WriteField(field, false);
     }
+    writer.WriteTerminator();
   }
 
   void SDLogger::writeLine(std::vector<std::string> records) {
-    if(!writeError) {
-      writer.WriteRecord(records, true);
-
-      if(timer.getDtFromMark() > refreshTime) {
-        writer.Close();
-        writer.Open(path);
-        timer.placeMark();
-      }
+    if(writer.error) return;
+    writer.WriteRecord(records, true);
+    if(timer.getDtFromMark() > refreshTime) {
+      writer.Close();
+      writer.Open(path);
+      timer.placeMark();
     }
   }
 

@@ -32,7 +32,6 @@ namespace lib7842
     const QTime refreshTime;
 
     Timer timer;
-    bool writeError = false;
 
   };
 }
