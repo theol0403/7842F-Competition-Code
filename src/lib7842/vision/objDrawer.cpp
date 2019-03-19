@@ -16,7 +16,7 @@ namespace lib7842
 
 
   ObjRenderer::ObjRenderer(lv_obj_t* iparent, ObjContainer* icontainer) :
-  parent(iparent), wScale{lv_obj_get_width(parent)/VISION_FOV_WIDTH}, hScale{lv_obj_get_height(parent)/VISION_FOV_HEIGHT},
+  parent(iparent), wScale(lv_obj_get_width(parent)/VISION_FOV_WIDTH), hScale(lv_obj_get_height(parent)/VISION_FOV_HEIGHT),
   container(icontainer), objStyle(defaultObjStyle)
   {
   }
@@ -65,10 +65,17 @@ namespace lib7842
   }
 
 
+  void ObjRenderer::draw() {
+    expandTo(container.objects)
+  }
 
 
-
-
+  void ObjRenderer::clear() {
+    for(lv_obj_t* obj : objects) {
+      lv_obj_del(obj);
+    }
+    objects.clear();
+  }
 
 
 
