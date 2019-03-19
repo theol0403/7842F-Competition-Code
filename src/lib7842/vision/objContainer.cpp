@@ -37,7 +37,7 @@ namespace lib7842
 
   ObjContainer::removeFunc_t ObjContainer::makeRemove(objAttr attr, bool inRange, double min, double max) {
     return [=](const visionObj& obj) {
-      return (min < obj.getAttr(attr) || obj.getAttr(attr) > max) == inRange;
+      return (min < obj.getAttr(attr) && obj.getAttr(attr) < max) == inRange;
     };
   }
 
