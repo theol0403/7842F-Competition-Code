@@ -10,7 +10,7 @@ public:
   lv_style_t style;
 
   DisplayController(lv_obj_t*);
-  //~DisplayController();
+  ~DisplayController();
 
   lv_obj_t* newTab(std::string);
 

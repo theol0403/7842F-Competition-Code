@@ -3,7 +3,10 @@
 DisplayController::DisplayController(lv_obj_t* parent) :
 tabview(lv_tabview_create(parent, NULL))
 {
+}
 
+DisplayController::~DisplayController() {
+  lv_obj_del(tabview);
 }
 
 
