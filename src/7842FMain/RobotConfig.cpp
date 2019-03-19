@@ -97,6 +97,8 @@ void initializeDevices()
 
 	robot.vision = new VisionController(new pros::Vision(4), robot.display->newTab("Vision"));
 
+	robot.display->newTab("Test");
+
 }
 
 

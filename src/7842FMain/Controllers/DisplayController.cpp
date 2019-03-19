@@ -56,9 +56,15 @@ tabview(lv_tabview_create(parent, NULL))
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_TGL_PR, style_pr);
 
   lv_style_copy(&pageStyle, &lv_style_pretty_color);
-  pageStyle.body.padding.hor = 0;
-  pageStyle.body.padding.ver = -10;
+  pageStyle.body.padding.ver = 0;
+  pageStyle.body.padding.hor = 1;
   pageStyle.body.padding.inner = 0;
+  pageStyle.body.main_color = mainColor;
+  pageStyle.body.grad_color = mainColor;
+  pageStyle.body.border.color = LV_COLOR_WHITE;
+  pageStyle.body.border.width = 2;
+  pageStyle.body.border.opa = LV_OPA_100;
+  pageStyle.body.radius = 0;
 
 }
 
