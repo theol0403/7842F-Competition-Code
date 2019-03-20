@@ -1,12 +1,16 @@
 #pragma once
 #include "main.h"
 #include "lib7842/lib7842.hpp"
+
 #include "Controllers/IntakeController.hpp"
 #include "Controllers/FlywheelController.hpp"
 #include "Controllers/ShootController.hpp"
 #include "Controllers/ArmController.hpp"
 #include "Controllers/VisionController.hpp"
+
 #include "Display/DisplayTab.hpp"
+#include "Display/FlywheelTuner.hpp"
+
 #include "7842FMain/Auton/AutonFunctions.hpp"
 
 extern okapi::Controller j_Main;
@@ -19,6 +23,7 @@ struct display_t
   DisplayTab* tabs = nullptr;
   AutonSelector* selector = nullptr;
   lib7842::PIDScreenTuner* flywheel = nullptr;
+  FlywheelTuner* newFlywheel = nullptr;
 };
 
 struct robot_t

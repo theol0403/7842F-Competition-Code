@@ -36,6 +36,8 @@ void initializeDisplay()
 		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
 		{"F", AutonFar}, {"Pf", AutonPlatformFar}
 	});
+
+	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("nFlywheel"));
 }
 
 
