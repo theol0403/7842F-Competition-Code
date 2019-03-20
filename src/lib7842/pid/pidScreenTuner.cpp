@@ -54,7 +54,7 @@ namespace lib7842
     m_gaugeStyle.body.padding.inner = 8 ;                    /*Scale label padding*/
     m_gaugeStyle.body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
     m_gaugeStyle.line.width = 2;
-    m_gaugeStyle.text.font = lv_font_dejavu_10;
+    m_gaugeStyle.text.font = &lv_font_dejavu_10;
     m_gaugeStyle.text.color = LV_COLOR_WHITE;
     m_gaugeStyle.line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
     //Needle Color
