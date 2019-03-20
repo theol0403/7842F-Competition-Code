@@ -25,8 +25,8 @@ namespace lib7842
     lv_obj_align(m_buttonsContainer, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
     //Style
     lv_style_copy(&m_buttonsContainerStyle, &lv_style_plain_color);
-    m_buttonsContainerStyle.body.main_color = LV_COLOR_BLUE;
-    m_buttonsContainerStyle.body.grad_color = LV_COLOR_BLUE;
+    m_buttonsContainerStyle.body.main_color = LV_COLOR_HEX(0xFF7F00);
+    m_buttonsContainerStyle.body.grad_color = LV_COLOR_HEX(0xFF7F00);
     lv_obj_set_style(m_buttonsContainer, &m_buttonsContainerStyle);
     //Text
     lv_style_copy(&m_buttonTextStyle, &lv_style_plain_color);
@@ -41,21 +41,22 @@ namespace lib7842
     lv_obj_align(m_infoContainer, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
     //Style
     lv_style_copy(&m_infoContainerStyle, &lv_style_plain_color);
-    m_infoContainerStyle.body.main_color = LV_COLOR_ORANGE;
-    m_infoContainerStyle.body.grad_color = LV_COLOR_ORANGE;
+    m_infoContainerStyle.body.main_color = LV_COLOR_HEX(0xFF7F00);
+    m_infoContainerStyle.body.grad_color = LV_COLOR_HEX(0xFF7F00);
     lv_obj_set_style(m_infoContainer, &m_infoContainerStyle);
 
 
     //Gauge
     lv_style_copy(&m_gaugeStyle, &lv_style_pretty_color);
-    m_gaugeStyle.body.main_color = LV_COLOR_HEX3(0x666);     /*Line color at the beginning*/
-    m_gaugeStyle.body.grad_color =  LV_COLOR_HEX3(0x666);    /*Line color at the end*/
+    m_gaugeStyle.body.main_color = LV_COLOR_WHITE;     /*Line color at the beginning*/
+    m_gaugeStyle.body.grad_color =  LV_COLOR_WHITE;    /*Line color at the end*/
     m_gaugeStyle.body.padding.hor = 10;                      /*Scale line length*/
     m_gaugeStyle.body.padding.inner = 8 ;                    /*Scale label padding*/
     m_gaugeStyle.body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
-    m_gaugeStyle.line.width = 3;
-    m_gaugeStyle.text.color = LV_COLOR_HEX3(0x333);
-    m_gaugeStyle.line.color = LV_COLOR_RED;                  /*Line color after the critical value*/
+    m_gaugeStyle.line.width = 2;
+    m_gaugeStyle.text.font = lv_font_dejavu_10;
+    m_gaugeStyle.text.color = LV_COLOR_WHITE;
+    m_gaugeStyle.line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
     //Needle Color
     m_needleColors[0] = LV_COLOR_BLUE;
     m_needleColors[1] = LV_COLOR_RED;
@@ -79,7 +80,7 @@ namespace lib7842
 
     //Minus Button
     tunerButtons->minusButton = lv_btn_create(m_buttonsContainer, NULL);
-    lv_obj_set_size(tunerButtons->minusButton, m_buttonHeight/1.3, m_buttonHeight/2);
+    lv_obj_set_size(tunerButtons->minusButton, m_buttonHeight, m_buttonHeight/2);
     lv_obj_align(tunerButtons->minusButton, m_buttonsContainer, LV_ALIGN_IN_BOTTOM_LEFT, xPos, -m_buttonHeight/2);
     //Label
     lv_obj_t * minusLabel = lv_label_create(tunerButtons->minusButton, NULL);
@@ -88,7 +89,7 @@ namespace lib7842
 
     //Plus Button
     tunerButtons->plusButton = lv_btn_create(m_buttonsContainer, NULL);
-    lv_obj_set_size(tunerButtons->plusButton, m_buttonHeight/1.3, m_buttonHeight/2);
+    lv_obj_set_size(tunerButtons->plusButton, m_buttonHeight, m_buttonHeight/2);
     lv_obj_align(tunerButtons->plusButton, m_buttonsContainer, LV_ALIGN_IN_BOTTOM_LEFT, xPos, -m_buttonHeight*2/2);
     //Label
     lv_obj_t * plusLabel = lv_label_create(tunerButtons->plusButton, NULL);
@@ -187,7 +188,7 @@ namespace lib7842
   {
     /*Create a gauge*/
     lv_obj_t* newGauge = lv_gauge_create(m_infoContainer, NULL);
-    lv_obj_set_size(newGauge, m_tunerHeight - m_buttonHeight, m_tunerHeight - m_buttonHeight);
+    lv_obj_set_size(newGauge, m_tunerHeight - m_buttonHeight + 10, m_tunerHeight - m_buttonHeight + 10);
     lv_gauge_set_range(newGauge, minReading, maxReading);
     lv_gauge_set_critical_value(newGauge, maxReading);
     lv_gauge_set_needle_count(newGauge, needleCount, m_needleColors);
