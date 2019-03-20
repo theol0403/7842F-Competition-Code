@@ -96,20 +96,51 @@ void FlywheelTuner::build() {
 
 
 lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
+  FlywheelTuner* that = static_cast<FlywheelTuner*>(lv_obj_get_free_ptr(btnm));
   std::string label = itxt;
-  //std::cout << label << std::endl;
+
   int labelPos = label.find_last_of({'+', '-'});
   bool sign = label.at(labelPos) == '+' ? true : false;
   label.erase(labelPos, std::string::npos);
-
-  FlywheelTuner* that = static_cast<FlywheelTuner*>(lv_obj_get_free_ptr(btnm));
 
   auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const std::pair<std::string, button_t> &button){ return button.first == label; });
   if (search == that->buttons.end()) {
     std::cerr << "FlywheelTuner::btnAction : no label found" << std::endl;
   }
 
-  std::cout << search->first << std::endl;
+  button_t &button = search->second;
+
+  switch(button.buttonType) {
+
+    case buttonAdd: {
+      if(sign) {
+        *button.variable += that->multiplier;
+      } else  {
+        *button.variable -= that->multiplier;
+      }
+      //Stops button from going smaller than 0
+      if(*button.variable <= 0) *button.variable = 0.00000;
+      break;
+    }
+
+    case buttonMultiply: {
+      if(sign) {
+        *button.variable *= button.modifier;
+      } else {
+        *button.variable /= button.modifier;
+      }
+      break;
+    }
+
+    case buttonIncrement: {
+      if(sign) {
+        *button.variable += button.modifier;
+      } else {
+        *button.variable -= button.modifier;
+      }
+      break;
+    }
+  }
 
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
