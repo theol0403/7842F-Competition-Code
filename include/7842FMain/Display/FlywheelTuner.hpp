@@ -23,6 +23,8 @@ public:
   lv_color_t mainColor;
   std::map<std::string, button_t> buttons = {};
 
+  std::vector<const char*> names = {};
+
   FlywheelTuner(lv_obj_t*);
 
   FlywheelTuner &withButton(std::string, double*, buttonType_t = buttonAdd, double = 1);

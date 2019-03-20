@@ -25,20 +25,18 @@ FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, but
   return *this;
 }
 
-  std::vector<const char*> names;
 
 void FlywheelTuner::build() {
 
-
   for(auto &button : buttons) {
-    names.push_back(button.first.c_str());
+    names.push_back("+");
   }
+  names.push_back("\n");
+  for(auto &button : buttons) {
+    names.push_back("-");
+  }
+
   names.push_back("");
-
-  for(const char* name : names) {
-    std::cout << name << std::endl;
-  }
-
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   lv_btnm_set_map(btnm, names.data());
 
@@ -65,14 +63,13 @@ void FlywheelTuner::build() {
   style_rel->body.border.opa = LV_OPA_100;
   style_rel->body.radius = 10;
   style_rel->text.color = LV_COLOR_WHITE;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_TGL_REL, style_rel);
+  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_REL, style_rel);
 
   lv_style_t* style_pr = new lv_style_t;
   lv_style_copy(style_pr, style_rel);
   style_pr->body.main_color = LV_COLOR_WHITE;
   style_pr->body.grad_color = LV_COLOR_WHITE;
   style_pr->text.color = mainColor;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_TGL_PR, style_pr);
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, style_pr);
 
   lv_style_t* style_ina = new lv_style_t;
@@ -82,6 +79,5 @@ void FlywheelTuner::build() {
   style_ina->body.border.width = 0;
   style_ina->text.color = LV_COLOR_WHITE;
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, style_ina);
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_REL, style_ina);
 
 }
