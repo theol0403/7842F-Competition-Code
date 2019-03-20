@@ -110,15 +110,14 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
   button_t &button = search->second;
 
-  switch(button.type) {
-
+  switch(button.type)
+  {
     case buttonAdd: {
       if(sign) {
         *button.variable += that->multiplier;
       } else  {
         *button.variable -= that->multiplier;
       }
-      //Stops button from going smaller than 0
       if(*button.variable <= 0) *button.variable = 0.00000;
       break;
     }
