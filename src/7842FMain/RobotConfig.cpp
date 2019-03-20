@@ -29,7 +29,7 @@ const int8_t mLeftBack = 11;
 
 void initializeDisplay()
 {
-	display.tabs = new DisplayController(lv_scr_act());
+	display.tabs = new DisplayTab(lv_scr_act());
 
 	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
 		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},

@@ -6,7 +6,7 @@
 #include "Controllers/ShootController.hpp"
 #include "Controllers/ArmController.hpp"
 #include "Controllers/VisionController.hpp"
-#include "Controllers/DisplayController.hpp"
+#include "Display/DisplayTab.hpp"
 #include "7842FMain/Auton/AutonFunctions.hpp"
 
 extern okapi::Controller j_Main;
@@ -16,7 +16,7 @@ extern okapi::Controller j_Main;
 
 struct display_t
 {
-  DisplayController* tabs = nullptr;
+  DisplayTab* tabs = nullptr;
   AutonSelector* selector = nullptr;
   lib7842::PIDScreenTuner* flywheel = nullptr;
 };

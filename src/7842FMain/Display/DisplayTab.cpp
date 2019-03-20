@@ -1,6 +1,6 @@
-#include "DisplayController.hpp"
+#include "DisplayTab.hpp"
 
-DisplayController::DisplayController(lv_obj_t* parent) :
+DisplayTab::DisplayTab(lv_obj_t* parent) :
 tabview(lv_tabview_create(parent, NULL))
 {
   lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
@@ -72,12 +72,12 @@ tabview(lv_tabview_create(parent, NULL))
 
 }
 
-DisplayController::~DisplayController() {
+DisplayTab::~DisplayTab() {
   lv_obj_del(tabview);
 }
 
 
-lv_obj_t* DisplayController::newTab(std::string name) {
+lv_obj_t* DisplayTab::newTab(std::string name) {
   lv_obj_t* page = lv_tabview_add_tab(tabview, name.c_str());
   lv_page_set_sb_mode(page, LV_SB_MODE_OFF);
   lv_page_set_style(page, LV_PAGE_STYLE_BG, &pageStyle);
