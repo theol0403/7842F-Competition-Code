@@ -97,7 +97,20 @@ void FlywheelTuner::build() {
 
 lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
   std::string label = itxt;
-  std::cout << label << std::endl;
+  //std::cout << label << std::endl;
+  int labelPos = label.find_last_of({'+', '-'});
+  bool sign = label.at(labelPos) == '+' ? true : false;
+  label.erase(labelPos, std::string::npos);
 
-  //if(label.ends_with('+'))
+  FlywheelTuner* that = static_cast<FlywheelTuner*>(lv_obj_get_free_ptr(btnm));
+
+  auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const std::pair<std::string, button_t> &button){ return button.first == label; });
+  if (search == that->buttons.end()) {
+    std::cerr << "FlywheelTuner::btnAction : no label found" << std::endl;
+  }
+
+  std::cout << search->first << std::endl;
+
+
+  return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
