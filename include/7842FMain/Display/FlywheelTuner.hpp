@@ -14,18 +14,18 @@ public:
   };
 
   struct button_t {
-    double* variable;
+    double* variable = nullptr;
     buttonType_t type = buttonAdd;
     double modifier = 1;
   };
 
-  std::map<std::string, button_t> buttons;
-
   lv_obj_t *container = nullptr;
+  lv_color_t mainColor;
+  std::map<std::string, button_t> buttons = {};
 
   FlywheelTuner(lv_obj_t*);
 
-  FlywheelTuner &withButton(std::string, double*, buttonType_t, double = 1);
+  FlywheelTuner &withButton(std::string, double*, buttonType_t = buttonAdd, double = 1);
   void build();
 
 };
