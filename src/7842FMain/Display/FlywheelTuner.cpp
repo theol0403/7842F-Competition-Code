@@ -25,20 +25,22 @@ FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, but
   return *this;
 }
 
+  std::vector<const char*> names;
+
 void FlywheelTuner::build() {
 
-  for(auto &button : buttons) {
-    names.push_back(button.first);
-  }
 
-  std::vector<const char*> cnames;
-  for(std::string &name : names) {
-    cnames.push_back(name.c_str());
+  for(auto &button : buttons) {
+    names.push_back(button.first.c_str());
   }
-  cnames.push_back("");
+  names.push_back("");
+
+  for(const char* name : names) {
+    std::cout << name << std::endl;
+  }
 
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
-  lv_btnm_set_map(btnm, cnames.data());
+  lv_btnm_set_map(btnm, names.data());
 
   lv_obj_set_size(btnm, lv_obj_get_width(container), lv_obj_get_height(container) / 3);
   lv_obj_align(container, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);

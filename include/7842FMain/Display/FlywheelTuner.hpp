@@ -22,7 +22,6 @@ public:
   lv_obj_t *container = nullptr;
   lv_color_t mainColor;
   std::map<std::string, button_t> buttons = {};
-  std::vector<std::string> names = {};
 
   FlywheelTuner(lv_obj_t*);
 
