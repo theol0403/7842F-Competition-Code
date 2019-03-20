@@ -2,16 +2,8 @@
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
+display_t display;
 robot_t robot;
-
-void checkBaseStatus()
-{
-	if(robot.model == nullptr)
-	{
-		std::cout << "USING BASE BEFORE INIT\n";
-		pros::delay(500);
-	}
-}
 
 /***
 *     _____                            _   _ _   _              ______      _           _
@@ -33,6 +25,18 @@ const int8_t mRightFront = -19;
 const int8_t mRightBack = -20;
 const int8_t mLeftFront = 12;
 const int8_t mLeftBack = 11;
+
+
+void initializeDisplay()
+{
+	display.tabs = new DisplayController(lv_scr_act());
+
+	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
+		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
+		{"F", AutonFar}, {"Pf", AutonPlatformFar}
+	});
+}
 
 
 void initializeBase()
@@ -71,7 +75,6 @@ const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {
-	robot.display = new DisplayController(lv_scr_act());
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
@@ -89,19 +92,7 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	robot.selector = new lib7842::AutonSelector(robot.display->newTab("Auton"), {
-		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-		{"F", AutonFar}, {"Pf", AutonPlatformFar}
-	});
-
-	robot.vision = new VisionController(new pros::Vision(4), robot.display->newTab("Vision"));
-
-	lv_obj_t* par = robot.display->newTab("Test");
-	lv_obj_t* test = lv_obj_create(par, NULL);
-	lv_obj_set_width(test, lv_obj_get_width(par));
-	lv_obj_set_height(test, lv_obj_get_height(par));
-
+	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
 
 }
 

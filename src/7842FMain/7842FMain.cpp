@@ -21,6 +21,7 @@ void initialize()
 {
   pros::delay(500); //Give the legacy ports time to start up
 
+  initializeDisplay();
   initializeBase();
   initializeDevices();
 }
@@ -91,7 +92,7 @@ void opcontrol()
   //kP, kI, kD, kF, readingEma, derivativeEma
   double wantedFlywheelRPM = 0;
 
-  PIDScreenTuner tuneFlywheel(robot.display->newTab("Flywheel"));
+  PIDScreenTuner tuneFlywheel(display.tabs->newTab("Flywheel"));
   tuneFlywheel.initButton(0 + 10, &flywheelPIDParams.kP, "kP", 5);
   tuneFlywheel.initButton(65 + 10, &flywheelPIDParams.kD, "kD", 5);
   tuneFlywheel.initButton(130 + 10, &flywheelPIDParams.kF, "kF", 5);
@@ -113,7 +114,6 @@ void opcontrol()
   // ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
   // ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
-  checkBaseStatus(); //Make sure the base has been initialized properly
   robot.model->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
@@ -230,8 +230,8 @@ void autonomous()
 
   //Create a new chassis that automatically mirrors side and send it to the autonomous code
   SideController* sideChassis = new SideController(
-    robot.chassis, robot.selector->getSelectedSide());
-    robot.selector->getSelectedAuton().autonFunc(sideChassis);
+    robot.chassis, display.selector->getSelectedSide());
+    display.selector->getSelectedAuton().autonFunc(sideChassis);
     delete sideChassis;
     std::cout << "Exit Auton" << std::endl;
   }
