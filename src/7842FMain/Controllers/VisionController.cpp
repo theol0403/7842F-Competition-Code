@@ -12,9 +12,9 @@ visionTask(task, this)
 void VisionController::run()
 {
 
-  sensor->set_exposure(83);
-  pros::vision_signature_s_t SIG_1 = {1, {1, 0, 0}, 7.700, -2657, -2461, -2559, 4939, 5765, 5352, 0, 0}; sensor->set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 5.800, 6425, 7147, 6786, -329, -103, -216, 0, 0}; sensor->set_signature(2, &SIG_2);
+  sensor->set_exposure(150);
+  pros::vision_signature_s_t SIG_1 = {1, {1, 0, 0}, 2.800, -2129, -1369, -1749, 3221, 4401, 3811, 0, 0}; sensor->set_signature(1, &SIG_1);
+  pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 7.600, 6823, 7385, 7104, -2009, -1543, -1776, 0, 0}; sensor->set_signature(2, &SIG_2);
 
   lib7842::VisionReader reader(sensor);
 
