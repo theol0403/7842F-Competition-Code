@@ -29,6 +29,13 @@ struct robot_t
   VisionController* vision = nullptr;
 };
 
+// struct display_t
+// {
+//   DisplayController* display = nullptr;
+//   AutonSelector* selector = nullptr;
+//   VisionController* vision = nullptr;
+// };
+
 extern robot_t robot;
 extern const int globalFlywheelRPM;
 

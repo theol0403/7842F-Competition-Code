@@ -86,7 +86,7 @@ namespace lib7842
       //if(count >= 50) { that->debug(); count = 0; }
 
       that->m_trackerFunc(that);
-      pros::delay(10);
+      pros::delay(4);
     }
   }
 
