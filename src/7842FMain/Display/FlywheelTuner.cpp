@@ -24,7 +24,7 @@ FlywheelTuner::~FlywheelTuner() {
 
 
 FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, buttonType_t type, double modifier) {
-  buttons.push_back(std::make_pair(name, button_t{variable, type, modifier}));
+  buttons.push_back(std::make_tuple(name, button_t{variable, type, modifier}, nullptr));
   return *this;
 }
 
@@ -35,13 +35,13 @@ void FlywheelTuner::build() {
 
   for(auto &button : buttons) {
     std::string* str = new std::string;
-    *str = button.first + "+";
+    *str = std::get<0>(button) + "+";
     btnLabels->push_back(str->c_str());
   }
   btnLabels->push_back("\n");
   for(auto &button : buttons) {
     std::string* str = new std::string;
-    *str = button.first + "-";
+    *str = std::get<0>(button) + "-";
     btnLabels->push_back(str->c_str());
   }
 
@@ -92,6 +92,22 @@ void FlywheelTuner::build() {
   style_ina->text.color = LV_COLOR_WHITE;
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, style_ina);
 
+  lv_style_t* style_label = new lv_style_t;
+  lv_style_copy(style_label, &lv_style_plain);
+  style_label->text.font = &lv_font_dejavu_20;
+  style_label->text.letter_space = 2;
+  style_label->text.color = LV_COLOR_BLACK;
+
+  double offset = 0.0;
+  for(auto &button : buttons) {
+    lv_obj_t* label = lv_label_create(container, NULL);
+    lv_label_set_text(label, std::to_string(*std::get<1>(button).variable).c_str());
+    offset += (double)lv_obj_get_width(container)/buttons.size();
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
+    lv_obj_set_style(label, style_label);
+    std::get<2>(button) = label;
+  }
+
 }
 
 
@@ -103,12 +119,12 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
   bool sign = label.at(labelPos) == '+' ? true : false;
   label.erase(labelPos, std::string::npos);
 
-  auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const std::pair<std::string, button_t> &button){ return button.first == label; });
+  auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const std::tuple<std::string, button_t, lv_obj_t*> &button){ return std::get<0>(button) == label; });
   if (search == that->buttons.end()) {
     std::cerr << "FlywheelTuner::btnAction : no label found" << std::endl;
   }
 
-  button_t &button = search->second;
+  button_t &button = std::get<1>(*search);
 
   switch(button.type)
   {

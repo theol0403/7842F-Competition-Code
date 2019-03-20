@@ -21,7 +21,7 @@ public:
 
   lv_obj_t *container = nullptr;
   lv_color_t mainColor;
-  std::vector<std::pair<std::string, button_t>> buttons = {};
+  std::vector<std::tuple<std::string, button_t, lv_obj_t*>> buttons = {};
   double multiplier = 1;
 
   FlywheelTuner(lv_obj_t*);
