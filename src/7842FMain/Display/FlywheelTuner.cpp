@@ -31,16 +31,18 @@ FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, but
 
 void FlywheelTuner::build() {
 
-  std::vector<std::string> names;
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
 
   for(auto &button : buttons) {
-    names.push_back(button.first);
-    btnLabels->push_back("+");
+    std::string* str = new std::string;
+    *str = button.first + "+";
+    btnLabels->push_back(str->c_str());
   }
   btnLabels->push_back("\n");
   for(auto &button : buttons) {
-    btnLabels->push_back("-");
+    std::string* str = new std::string;
+    *str = button.first + "-";
+    btnLabels->push_back(str->c_str());
   }
 
   btnLabels->push_back("");
@@ -90,25 +92,12 @@ void FlywheelTuner::build() {
   style_ina->text.color = LV_COLOR_WHITE;
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, style_ina);
 
-  lv_style_t* style_label = new lv_style_t;
-  lv_style_copy(style_label, &lv_style_plain);
-  style_label->text.font = &lv_font_dejavu_20;
-  style_label->text.letter_space = 2;
-  style_label->text.color = LV_COLOR_BLACK;
-
-  double offset = 0.0;
-  for(std::string &name : names) {
-    lv_obj_t* label = lv_label_create(container, NULL);
-    lv_label_set_text(label, name.c_str());
-    offset += (double)lv_obj_get_width(container)/names.size();
-    lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/names.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
-    lv_obj_set_style(label, style_label);
-  }
-
 }
 
 
 lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
-  std::string txt = itxt;
-  std::cout << txt << std::endl;
+  std::string label = itxt;
+  std::cout << label << std::endl;
+
+  //if(label.ends_with('+'))
 }
