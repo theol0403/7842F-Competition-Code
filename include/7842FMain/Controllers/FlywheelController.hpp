@@ -9,7 +9,7 @@ class FlywheelController
 
 public:
 
-  IntakeController* intake = nullptr;
+  IntakeController*& intake;
   Motor* flywheel = nullptr;
   ADIEncoder* sensor = nullptr;
   VelMath* velMath = nullptr;
@@ -27,7 +27,7 @@ public:
 
   bool disabled = false;
 
-  FlywheelController(IntakeController*, Motor*, ADIEncoder*, VelMath*, EmaFilter*, lib7842::velPID*, double);
+  FlywheelController(IntakeController*&, Motor*, ADIEncoder*, VelMath*, EmaFilter*, lib7842::velPID*, double);
 
   void setRpm(double);
   double getTargetRpm();

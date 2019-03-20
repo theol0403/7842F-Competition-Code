@@ -41,8 +41,8 @@ public:
     angle
   };
 
-  IntakeController* intake = nullptr;
-  FlywheelController* flywheel = nullptr;
+  IntakeController*& intake;
+  FlywheelController*& flywheel;
   pros::ADIPotentiometer* hoodSensor = nullptr;
   double backAngle = 0;
   pros::Task shootTask;
@@ -58,7 +58,7 @@ public:
 
   IterativePosPIDController* hoodPid = nullptr;
 
-  ShootController(IntakeController*, FlywheelController*, pros::ADIPotentiometer*, double, IterativePosPIDController*);
+  ShootController(IntakeController*&, FlywheelController*&, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 
   void clearQueue();
   void completeJob();

@@ -1,6 +1,6 @@
 #include "ShootController.hpp"
 
-ShootController::ShootController(IntakeController* iintake, FlywheelController* iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle, IterativePosPIDController* ihoodPid) :
+ShootController::ShootController(IntakeController*& iintake, FlywheelController*& iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle, IterativePosPIDController* ihoodPid) :
 intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle), hoodPid(ihoodPid),
 shootTask(task, this)
 {

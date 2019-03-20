@@ -1,6 +1,6 @@
 #include "FlywheelController.hpp"
 
-FlywheelController::FlywheelController(IntakeController* iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, EmaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
+FlywheelController::FlywheelController(IntakeController*& iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, EmaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
 intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
 flywheelTask(task, this) {
 }
@@ -26,7 +26,7 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::cout);
+  lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
 
   sensor->reset();
