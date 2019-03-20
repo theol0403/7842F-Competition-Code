@@ -26,13 +26,11 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
+  lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::cout);
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
 
-  Timer time;
-  time.placeMark();
-
   sensor->reset();
+  flywheel->move(0);
 
   while(true)
   {

@@ -4,7 +4,7 @@ namespace lib7842
 {
 
   SDLogger::SDLogger(std::string name, modes mode) :
-  path(findPath(name, mode)), writer(path), refreshTime(2_s) {
+  path(findPath(name, mode)), writer(path), refreshTime(5_s) {
     timer.placeMark();
     if(writer.error) writeFail(name);
   }
