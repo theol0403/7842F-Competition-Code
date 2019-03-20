@@ -16,12 +16,15 @@ container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
   cStyle->body.grad_color = mainColor;
   lv_obj_set_style(container, cStyle);
   lv_obj_set_style(container, cStyle);
+}
 
+FlywheelTuner::~FlywheelTuner() {
+  lv_obj_del(container);
 }
 
 
 FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, buttonType_t type, double modifier) {
-  buttons.insert_or_assign(name, button_t{variable, type, modifier});
+  buttons.push_back(std::make_pair(name, button_t{variable, type, modifier}));
   return *this;
 }
 
