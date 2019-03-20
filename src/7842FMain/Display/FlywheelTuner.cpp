@@ -110,7 +110,7 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
   button_t &button = search->second;
 
-  switch(button.buttonType) {
+  switch(button.type) {
 
     case buttonAdd: {
       if(sign) {

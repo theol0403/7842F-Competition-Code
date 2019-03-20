@@ -38,7 +38,7 @@ void initializeDisplay()
 	});
 
 	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("nFlywheel"));
-	display.newFlywheel->withButton("Test", nullptr).withButton("Two", nullptr).withButton("Ugg", nullptr).withButton("Yeet", nullptr).withButton("Ooof", nullptr).build();
+	display.newFlywheel->withButton("Test", new double).withButton("Two", new double).withButton("Ugg", new double).withButton("Yeet", new double).withButton("Ooof", new double).build();
 }
 
 

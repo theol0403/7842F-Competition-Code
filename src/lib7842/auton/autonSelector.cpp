@@ -48,6 +48,7 @@ namespace lib7842
     style_bg->body.border.color = LV_COLOR_WHITE;
     style_bg->body.border.width = 3;
     style_bg->body.radius = 0;
+    style_bg->body.padding.inner = 0;
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BG, style_bg);
 
     lv_style_t* style_rel = new lv_style_t;
@@ -57,7 +58,7 @@ namespace lib7842
     style_rel->body.border.color = LV_COLOR_WHITE;
     style_rel->body.border.width = 3;
     style_rel->body.border.opa = LV_OPA_100;
-    style_rel->body.radius = 10;
+    style_rel->body.radius = 5;
     style_rel->text.color = LV_COLOR_WHITE;
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_TGL_REL, style_rel);
 
@@ -71,8 +72,7 @@ namespace lib7842
 
     lv_style_t* style_ina = new lv_style_t;
     lv_style_copy(style_ina, &lv_style_btn_ina);
-    style_ina->body.main_color = mainColor;
-    style_ina->body.grad_color = mainColor;
+    style_ina->body.empty = true;
     style_ina->body.border.width = 0;
     style_ina->text.color = LV_COLOR_WHITE;
     lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_INA, style_ina);
