@@ -32,12 +32,12 @@ namespace lib7842
     buttonNames[autonCount] = "";
 
 
-    lv_obj_t* buttonMatrix = lv_btnm_create(m_screenContainer, NULL);
-    lv_btnm_set_map(buttonMatrix, buttonNames);
-    lv_obj_set_size(buttonMatrix, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent) / 2);
-    lv_btnm_set_toggle(buttonMatrix, true, m_currentAutonIndex);
-    lv_btnm_set_action(buttonMatrix, matrixAction);
-    lv_obj_set_free_ptr(buttonMatrix, this);
+    lv_obj_t* btnm = lv_btnm_create(m_screenContainer, NULL);
+    lv_btnm_set_map(btnm, buttonNames);
+    lv_obj_set_size(btnm, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent) / 2);
+    lv_btnm_set_toggle(btnm, true, m_currentAutonIndex);
+    lv_btnm_set_action(btnm, matrixAction);
+    lv_obj_set_free_ptr(btnm, this);
 
 
     /*Create a new style for the button matrix back ground*/
@@ -49,7 +49,7 @@ namespace lib7842
     style_bg->body.border.width = 3;
     style_bg->body.radius = 0;
     style_bg->body.padding.inner = 0;
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BG, style_bg);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BG, style_bg);
 
     lv_style_t* style_rel = new lv_style_t;
     lv_style_copy(style_rel, &lv_style_btn_tgl_rel);
@@ -60,23 +60,23 @@ namespace lib7842
     style_rel->body.border.opa = LV_OPA_100;
     style_rel->body.radius = 5;
     style_rel->text.color = LV_COLOR_WHITE;
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_TGL_REL, style_rel);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_TGL_REL, style_rel);
 
     lv_style_t* style_pr = new lv_style_t;
     lv_style_copy(style_pr, style_rel);
     style_pr->body.main_color = LV_COLOR_WHITE;
     style_pr->body.grad_color = LV_COLOR_WHITE;
     style_pr->text.color = mainColor;
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_TGL_PR, style_pr);
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_PR, style_pr);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_TGL_PR, style_pr);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, style_pr);
 
     lv_style_t* style_ina = new lv_style_t;
     lv_style_copy(style_ina, &lv_style_btn_ina);
     style_ina->body.empty = true;
     style_ina->body.border.width = 0;
     style_ina->text.color = LV_COLOR_WHITE;
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_INA, style_ina);
-    lv_btnm_set_style(buttonMatrix, LV_BTNM_STYLE_BTN_REL, style_ina);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, style_ina);
+    lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_REL, style_ina);
 
     //SWITCH
 
@@ -119,9 +119,9 @@ namespace lib7842
   }
 
 
-  lv_res_t AutonSelector::matrixAction(lv_obj_t* buttonMatrix, const char *txt)
+  lv_res_t AutonSelector::matrixAction(lv_obj_t* btnm, const char *txt)
   {
-    AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(buttonMatrix));
+    AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(btnm));
 
     for(int autonNum = 0; autonNum < that->m_autonPairs.size(); autonNum++)
     {
