@@ -29,4 +29,6 @@ public:
   FlywheelTuner &withButton(std::string, double*, buttonType_t = buttonAdd, double = 1);
   void build();
 
+  static lv_res_t btnAction(lv_obj_t*, const char*);
+
 };

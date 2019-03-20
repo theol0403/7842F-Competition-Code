@@ -49,8 +49,8 @@ void FlywheelTuner::build() {
 
   lv_obj_set_size(btnm, lv_obj_get_width(container), lv_obj_get_height(container) / 3);
   lv_obj_align(btnm, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
-  // lv_btnm_set_action(btnm, matrixAction);
-  // lv_obj_set_free_ptr(btnm, this);
+  lv_btnm_set_action(btnm, btnAction);
+  lv_obj_set_free_ptr(btnm, this);
 
   lv_style_t* style_bg = new lv_style_t;
   lv_style_copy(style_bg, &lv_style_plain);
@@ -105,4 +105,10 @@ void FlywheelTuner::build() {
     lv_obj_set_style(label, style_label);
   }
 
+}
+
+
+lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
+  std::string txt = itxt;
+  std::cout << txt << std::endl;
 }
