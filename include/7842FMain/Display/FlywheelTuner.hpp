@@ -20,8 +20,7 @@ public:
     btnType type = btnType::add;
     double modifier = 1;
   };
-
-  static std::vector<lv_color_t> needleColors;
+  
 
   lv_obj_t *container = nullptr;
   lv_color_t mainColor;

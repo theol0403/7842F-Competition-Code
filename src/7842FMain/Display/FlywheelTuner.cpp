@@ -1,14 +1,11 @@
 #include "FlywheelTuner.hpp"
 
-lv_style_t ObjRenderer::defaultObjStyle = [] () {
-  lv_style_copy(&defaultObjStyle, &lv_style_pretty_color);
-  defaultObjStyle.body.main_color = LV_COLOR_BLACK;
-  defaultObjStyle.body.grad_color = LV_COLOR_BLACK;
-  defaultObjStyle.body.radius = 5;
-  defaultObjStyle.body.border.color = LV_COLOR_WHITE;
-  defaultObjStyle.body.border.width = 2;
-  defaultObjStyle.body.border.opa = LV_OPA_100;
-  return defaultObjStyle;
+std::vector<lv_color_t> FlywheelTuner::needleColors = [] () {
+  needleColors.push_back(LV_COLOR_BLUE);
+  needleColors.push_back(LV_COLOR_RED);
+  needleColors.push_back(LV_COLOR_PURPLE);
+  needleColors.push_back(LV_COLOR_YELLOW);
+  return needleColors;
 } ();
 
 
@@ -43,7 +40,7 @@ FlywheelTuner &FlywheelTuner::withGauge(std::string name, std::vector<double*> v
   lv_obj_t* gauge = lv_gauge_create(container, NULL);
   lv_gauge_set_range(gauge, min, max);
   lv_gauge_set_critical_value(gauge, max);
-  lv_gauge_set_needle_count(gauge, variables.size(), m_needleColors);
+  lv_gauge_set_needle_count(gauge, variables.size(), needleColors);
   lv_gauge_set_style(gauge, &m_gaugeStyle);
   lv_obj_align(gauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
 
