@@ -1,5 +1,7 @@
 #include "FlywheelTuner.hpp"
 
+lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
+
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
 container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
 {
@@ -111,19 +113,20 @@ void FlywheelTuner::build() {
   }
   calcLabels();
 
-  double gaugeSize = lv_obj_get_height(container) - lv_obj_get_height(container)/5;
-  lv_color_t needleColors[] = {LV_COLOR_BLUE, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
   lv_style_t* style_gauge = new lv_style_t;
   lv_style_copy(style_gauge, &lv_style_pretty_color);
   style_gauge->body.main_color = LV_COLOR_WHITE;     /*Line color at the beginning*/
   style_gauge->body.grad_color =  LV_COLOR_WHITE;    /*Line color at the end*/
   style_gauge->body.padding.hor = 10;                      /*Scale line length*/
-  style_gauge->body.padding.inner = 8 ;                    /*Scale label padding*/
+  style_gauge->body.padding.inner = 8;                    /*Scale label padding*/
   style_gauge->body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
   style_gauge->line.width = 2;
-  style_gauge->text.font = &lv_font_dejavu_10;
+  style_gauge->text.font = gauges.size() > 3 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
+  style_gauge->text.letter_space = 1;
   style_gauge->text.color = LV_COLOR_WHITE;
   style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
+
+  double gaugeSize = std::min((double)lv_obj_get_width(container) / gauges.size(), lv_obj_get_height(container) - lv_obj_get_height(container)/5.0);
 
   double offset = 0.0;
   for(auto &gauge : gauges) {

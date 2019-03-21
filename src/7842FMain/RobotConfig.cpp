@@ -29,6 +29,8 @@ const int8_t mLeftBack = 11;
 
 void initializeDisplay()
 {
+	std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
+
 	display.tabs = new DisplayTab(lv_scr_act());
 
 	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
