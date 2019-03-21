@@ -104,7 +104,7 @@ void FlywheelTuner::build() {
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
   style_label->text.letter_space = 1;
-  style_label->text.color = LV_COLOR_HEX3(0x433);
+  style_label->text.color = LV_COLOR_BLACK;
 
   for(auto &button : buttons) {
     lv_obj_t* label = lv_label_create(container, NULL);
@@ -127,7 +127,7 @@ void FlywheelTuner::build() {
   style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
 
   lv_style_t* style_gauge_label = new lv_style_t;
-  lv_style_copy(style_gauge_label, style_pr);
+  lv_style_copy(style_gauge_label, style_rel);
   style_gauge_label->text.font = gauges.size() > 4 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
 
   double gaugeSize = std::min((double)lv_obj_get_width(container) / gauges.size(), lv_obj_get_height(container) - lv_obj_get_height(container)/5.0);

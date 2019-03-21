@@ -100,8 +100,6 @@ void initializeDevices()
 	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
 	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
-	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
-	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
