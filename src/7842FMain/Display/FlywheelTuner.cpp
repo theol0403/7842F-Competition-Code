@@ -111,7 +111,7 @@ void FlywheelTuner::build() {
   }
   calcLabels();
 
-  double gaugeSize = lv_obj_get_height(container) - lv_obj_get_height(container)/3;
+  double gaugeSize = lv_obj_get_height(container) - lv_obj_get_height(container)/5;
   lv_color_t needleColors[] = {LV_COLOR_BLUE, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
   lv_style_t* style_gauge = new lv_style_t;
   lv_style_copy(style_gauge, &lv_style_pretty_color);
@@ -132,12 +132,9 @@ void FlywheelTuner::build() {
     lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
     lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
     lv_gauge_set_style(lv_gauge, style_gauge);
-    // lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - (double)lv_obj_get_width(container)/gauges.size()/2.0, lv_obj_get_height(container)/2 + gaugeSize/2.0);
-    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 + ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
+    offset += (double)lv_obj_get_width(container)/gauges.size();
+    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
   }
-
-  std::cout << "gauges: " << gauges.size() << std::endl;
-  std::cout << "heap: " << xPortGetFreeHeapSize() << std::endl;
 
 
 }
