@@ -1,5 +1,16 @@
 #include "FlywheelTuner.hpp"
 
+lv_style_t ObjRenderer::defaultObjStyle = [] () {
+  lv_style_copy(&defaultObjStyle, &lv_style_pretty_color);
+  defaultObjStyle.body.main_color = LV_COLOR_BLACK;
+  defaultObjStyle.body.grad_color = LV_COLOR_BLACK;
+  defaultObjStyle.body.radius = 5;
+  defaultObjStyle.body.border.color = LV_COLOR_WHITE;
+  defaultObjStyle.body.border.width = 2;
+  defaultObjStyle.body.border.opa = LV_OPA_100;
+  return defaultObjStyle;
+} ();
+
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
 container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
@@ -25,6 +36,18 @@ FlywheelTuner::~FlywheelTuner() {
 
 FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, btnType type, double modifier) {
   buttons.push_back(std::make_tuple(name, button_t{variable, type, modifier}, nullptr));
+  return *this;
+}
+
+FlywheelTuner &FlywheelTuner::withGauge(std::string name, std::vector<double*> variables, int min, int max) {
+  lv_obj_t* gauge = lv_gauge_create(container, NULL);
+  lv_gauge_set_range(gauge, min, max);
+  lv_gauge_set_critical_value(gauge, max);
+  lv_gauge_set_needle_count(gauge, variables.size(), m_needleColors);
+  lv_gauge_set_style(gauge, &m_gaugeStyle);
+  lv_obj_align(gauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
+
+  gauges.push_back(std::make_tuple(name, variables, nullptr));
   return *this;
 }
 

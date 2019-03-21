@@ -44,7 +44,7 @@ void initializeDisplay()
 	.withButton("kD", new double(0))
 	.withButton("rEMA", new double(0))
 	.withButton("dEma", new double(0))
-	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::buttonMultiply, 10)
+	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
 	.build();
 }
 
