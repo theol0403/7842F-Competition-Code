@@ -2,9 +2,8 @@
 
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
-container(lv_obj_create(parent, NULL)),
+container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
 {
-  lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
   /**
   * Container
   */
