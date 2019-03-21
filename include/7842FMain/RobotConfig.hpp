@@ -44,8 +44,8 @@ extern robot_t robot;
 
 extern const int globalFlywheelRPM;
 
-void initializeDisplay();
 void initializeDevices();
 void initializeBase();
+void initializeDisplay();
 
 //#define TEST_ROBOT

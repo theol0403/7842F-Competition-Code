@@ -19,12 +19,13 @@
 */
 void initialize()
 {
+  std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
   pros::delay(500); //Give the legacy ports time to start up
 
-  initializeDisplay();
   initializeBase();
   initializeDevices();
-  std::cout << "init heap: " << xPortGetFreeHeapSize() << std::endl;
+  initializeDisplay();
+  std::cout << "after init heap: " << xPortGetFreeHeapSize() << std::endl;
 }
 
 /***
@@ -104,7 +105,7 @@ void opcontrol()
   // lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0 + 10, "RPM", 2, 0, 3000);
   // lv_obj_t* errorGauge = tuneFlywheel.initGauge(160 + 10, "Error", 1, -50, 50);
   // lv_obj_t* powerGauge = tuneFlywheel.initGauge(320 + 10, "MotorPower", 1, 0, 127);
-  
+
   std::cout << "op heap: " << xPortGetFreeHeapSize() << std::endl;
 
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);

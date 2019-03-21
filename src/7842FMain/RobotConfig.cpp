@@ -27,33 +27,6 @@ const int8_t mLeftFront = 12;
 const int8_t mLeftBack = 11;
 
 
-void initializeDisplay()
-{
-	std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
-
-	display.tabs = new DisplayTab(lv_scr_act());
-
-	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
-		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-		{"F", AutonFar}, {"Pf", AutonPlatformFar}
-	});
-
-	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
-	(*display.newFlywheel)
-	.withButton("kP", new double(0))
-	.withButton("kI", new double(0))
-	.withButton("kD", new double(0))
-	.withButton("rEMA", new double(0))
-	.withButton("dEma", new double(0))
-	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
-	.withGauge("Test", {new double(0)}, 0, 100)
-	.withGauge("Test2", {new double(0)}, 0, 100)
-	.withGauge("Test2", {new double(0)}, 0, 100)
-	.build();
-}
-
-
 void initializeBase()
 {
 
@@ -109,6 +82,31 @@ void initializeDevices()
 	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
 	std::cout << "vision heap: " << xPortGetFreeHeapSize() << std::endl;
 
+}
+
+
+void initializeDisplay()
+{
+	display.tabs = new DisplayTab(lv_scr_act());
+
+	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
+		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
+		{"F", AutonFar}, {"Pf", AutonPlatformFar}
+	});
+
+	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
+	(*display.newFlywheel)
+	.withButton("kP", new double(0))
+	.withButton("kI", new double(0))
+	.withButton("kD", new double(0))
+	.withButton("rEMA", new double(0))
+	.withButton("dEma", new double(0))
+	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
+	.withGauge("Test", {new double(0)}, 0, 100)
+	.withGauge("Test2", {new double(0)}, 0, 100)
+	.withGauge("Test2", {new double(0)}, 0, 100)
+	.build();
 }
 
 
