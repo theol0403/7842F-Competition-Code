@@ -61,16 +61,18 @@ void FlywheelController::run()
     }
 
     //std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
-    flywheelLogger.writeLine({
-      std::to_string(pros::millis()/1000.0),
-      std::to_string(targetRpm/4),
-      std::to_string(currentRpm/4),
-      std::to_string((velMath->getAccel()).convert(rpm / second)),
-      std::to_string(motorPower),
-      std::to_string(pid->getD()),
-      std::to_string(pros::battery::get_capacity()),
-      std::to_string(flywheel->getTemperature())
-    });
+    if(motorPower != 0 || currentRpm != 0) {
+      flywheelLogger.writeLine({
+        std::to_string(pros::millis()/1000.0),
+        std::to_string(targetRpm/4),
+        std::to_string(currentRpm/4),
+        std::to_string((velMath->getAccel()).convert(rpm / second)),
+        std::to_string(motorPower),
+        std::to_string(pid->getD()),
+        std::to_string(pros::battery::get_capacity()),
+        std::to_string(flywheel->getTemperature())
+      });
+    }
 
     pros::delay(10);
   }
