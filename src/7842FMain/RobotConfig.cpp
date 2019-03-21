@@ -88,15 +88,15 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
-	(*display.newFlywheel)
+	display.flywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
+	(*display.flywheel)
 	.withButton("kP", &robot.flywheel->pid->m_Kp)
 	.withButton("kD", &robot.flywheel->pid->m_Kd)
 	.withButton("kF", &robot.flywheel->pid->m_Kf)
 	.withButton("dEma", &robot.flywheel->pid->m_dFilter.m_alpha)
 	.withButton("rEMA", &robot.flywheel->rpmFilter->m_alpha)
 	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 400)
-	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
+	.withButton("Mult", &display.flywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
 	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
 	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)

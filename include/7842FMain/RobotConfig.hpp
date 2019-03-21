@@ -22,8 +22,7 @@ struct display_t
 {
   DisplayTab* tabs = nullptr;
   AutonSelector* selector = nullptr;
-  lib7842::PIDScreenTuner* flywheel = nullptr;
-  FlywheelTuner* newFlywheel = nullptr;
+  FlywheelTuner* flywheel = nullptr;
 };
 
 struct robot_t
