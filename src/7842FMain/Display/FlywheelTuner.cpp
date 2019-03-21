@@ -119,7 +119,7 @@ void FlywheelTuner::build() {
   style_gauge->body.grad_color =  LV_COLOR_WHITE;    /*Line color at the end*/
   style_gauge->body.padding.hor = 10;                      /*Scale line length*/
   style_gauge->body.padding.inner = 8;                    /*Scale label padding*/
-  style_gauge->body.border.color = LV_COLOR_BLACK;   /*Needle middle circle color*/
+  style_gauge->body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
   style_gauge->line.width = 2;
   style_gauge->text.font = gauges.size() > 2 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
   style_gauge->text.letter_space = 1;
