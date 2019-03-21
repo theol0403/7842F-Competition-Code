@@ -95,7 +95,7 @@ void FlywheelTuner::build() {
   lv_style_t* style_label = new lv_style_t;
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
-  style_label->text.letter_space = 2;
+  style_label->text.letter_space = 1;
   style_label->text.color = LV_COLOR_BLACK;
 
   for(auto &button : buttons) {
@@ -111,7 +111,10 @@ void FlywheelTuner::calcLabels() {
   for(auto &button : buttons) {
     lv_obj_t* label = std::get<2>(button);
     std::stringstream str;
-    str << *std::get<1>(button).variable;
+    int width = (double)lv_obj_get_width(container)/buttons.size()/25;
+    str << std::setprecision(width) << *std::get<1>(button).variable;
+    if(width > str.str().size()) width = str.str().size();
+    str.str().erase(width, std::string::npos);
     lv_label_set_text(label, str.str().c_str());
     offset += (double)lv_obj_get_width(container)/buttons.size();
     lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);

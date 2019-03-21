@@ -38,8 +38,14 @@ void initializeDisplay()
 	});
 
 	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("nFlywheel"));
-	display.newFlywheel->withButton("Test", new double(0.01111001)).withButton("Two", new double(0.01111001)).withButton("Ugg", new double(0.01111001)).withButton("Yeet", new double(0.01111001)).withButton("Ooof", new double(0.01111001))
-	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::buttonMultiply, 10).build();
+	(*display.newFlywheel)
+	.withButton("kP", new double(0))
+	.withButton("kI", new double(0))
+	.withButton("kD", new double(0))
+	.withButton("rEMA", new double(0))
+	.withButton("dEma", new double(0))
+	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::buttonMultiply, 10)
+	.build();
 }
 
 
