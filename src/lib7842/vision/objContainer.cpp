@@ -83,9 +83,9 @@ namespace lib7842
     }
     return *this;
   }
-  
+
   ObjContainer &ObjContainer::remove(int start, int end) {
-    end = end >= objects.size() ? objects.size() - 1 : end;
+    end = end > objects.size() ? objects.size() : end;
     if(start < objects.size()) {
       objects.erase(objects.begin() + start, objects.begin() + end);
     }

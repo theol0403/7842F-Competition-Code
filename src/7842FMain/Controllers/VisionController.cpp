@@ -36,11 +36,10 @@ void VisionController::run()
     reader.removeWith(objAttr::area, 0, 300);
     reader.sortBy(objAttr::area);
     standout = reader;
-    reader.print();
-    reader.remove(0, 6);
+    reader.remove(0);
     standout.trim(1);
     drawer.draw();
-    pros::delay(10);
+    pros::delay(50);
   }
 }
 
