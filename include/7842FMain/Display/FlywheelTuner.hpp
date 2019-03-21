@@ -9,27 +9,26 @@ class FlywheelTuner
 
 public:
 
-  enum buttonType_t {
-    buttonAdd,
-    buttonMultiply,
-    buttonIncrement
+  enum class btnType {
+    add,
+    multiply,
+    increment
   };
 
   struct button_t {
     double* variable = nullptr;
-    buttonType_t type = buttonAdd;
+    btnType type = btnType::add;
     double modifier = 1;
   };
 
   lv_obj_t *container = nullptr;
-  lv_color_t mainColor;
   std::vector<std::tuple<std::string, button_t, lv_obj_t*>> buttons = {};
   double multiplier = 1;
 
   FlywheelTuner(lv_obj_t*);
   ~FlywheelTuner();
 
-  FlywheelTuner &withButton(std::string, double*, buttonType_t = buttonAdd, double = 1);
+  FlywheelTuner &withButton(std::string, double*, btnType = btnType::add, double = 1);
   void build();
 
   void calcLabels();

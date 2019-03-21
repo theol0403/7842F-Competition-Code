@@ -2,8 +2,9 @@
 
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
-container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
+container(lv_obj_create(parent, NULL)),
 {
+  lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
   /**
   * Container
   */
@@ -23,7 +24,7 @@ FlywheelTuner::~FlywheelTuner() {
 }
 
 
-FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, buttonType_t type, double modifier) {
+FlywheelTuner &FlywheelTuner::withButton(std::string name, double* variable, btnType type, double modifier) {
   buttons.push_back(std::make_tuple(name, button_t{variable, type, modifier}, nullptr));
   return *this;
 }
@@ -138,7 +139,7 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
   switch(button.type)
   {
-    case buttonAdd: {
+    case btnType::add: {
       if(sign) {
         *button.variable += that->multiplier;
       } else  {
@@ -148,7 +149,7 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
       break;
     }
 
-    case buttonMultiply: {
+    case btnType::multiply: {
       if(sign) {
         *button.variable *= button.modifier;
       } else {
@@ -157,7 +158,7 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
       break;
     }
 
-    case buttonIncrement: {
+    case btnType::increment: {
       if(sign) {
         *button.variable += button.modifier;
       } else {

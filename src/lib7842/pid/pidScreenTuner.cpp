@@ -64,7 +64,7 @@ namespace lib7842
   }
 
 
-  void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* variableName, int charLength, buttonType_t buttonType, int incrementAmount)
+  void PIDScreenTuner::initButton(int xPos, double* variablePtr, const char* variableName, int charLength, btnType buttonType, int incrementAmount)
   {
     tunerButtons_t* tunerButtons = new tunerButtons_t;
     tunerButtons->variablePtr = variablePtr;

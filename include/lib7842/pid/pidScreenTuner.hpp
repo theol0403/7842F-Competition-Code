@@ -19,7 +19,7 @@ namespace lib7842
     };
 
 
-    enum buttonType_t
+    enum btnType
     {
       buttonAdd,
       buttonMultiply,
@@ -41,7 +41,7 @@ namespace lib7842
       int charLength = 0;
       char* labelContent = nullptr;
 
-      buttonType_t buttonType = buttonAdd;
+      btnType buttonType = buttonAdd;
       double* multiplierPtr = nullptr;
       int incrementAmount = 1;
 
@@ -76,7 +76,7 @@ namespace lib7842
     PIDScreenTuner(lv_obj_t*);
 
     double m_buttonMultiplier = 1;
-    void initButton(int, double*, const char*, int, buttonType_t = buttonAdd, int = 1);
+    void initButton(int, double*, const char*, int, btnType = buttonAdd, int = 1);
     static lv_res_t buttonAction(lv_obj_t*);
 
     lv_obj_t* initGauge(int, const char*, int, int, int);
