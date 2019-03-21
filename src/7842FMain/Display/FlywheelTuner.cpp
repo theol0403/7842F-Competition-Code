@@ -133,10 +133,11 @@ void FlywheelTuner::build() {
     lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
     lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
     lv_gauge_set_style(lv_gauge, style_gauge);
-    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - (double)lv_obj_get_width(container)/gauges.size()/2.0, lv_obj_get_height(container)/6.0 + gaugeSize/2.0);
+    // lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - (double)lv_obj_get_width(container)/gauges.size()/2.0, lv_obj_get_height(container)/2 + gaugeSize/2.0);
+    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 + ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
   }
 
-
+  std::cout << "gauges: " << gauges.size() << std::endl;
 
 
 }
