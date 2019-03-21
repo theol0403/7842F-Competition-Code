@@ -45,6 +45,7 @@ void initializeDisplay()
 	.withButton("rEMA", new double(0))
 	.withButton("dEma", new double(0))
 	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
+	.withGauge("Test", {new double(0)}, 0, 100)
 	.build();
 }
 

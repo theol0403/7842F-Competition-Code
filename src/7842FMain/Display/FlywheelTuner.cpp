@@ -126,13 +126,14 @@ void FlywheelTuner::build() {
   style_gauge->text.color = LV_COLOR_WHITE;
   style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
 
+  double offset = 0.0;
   for(auto &gauge : gauges) {
     if(gaugeTask == nullptr) gaugeTask = new pros::Task(gaugeLoop, this);
     lv_obj_t* &lv_gauge = std::get<2>(gauge);
     lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
     lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
     lv_gauge_set_style(lv_gauge, style_gauge);
-    //lv_obj_align(newGauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
+    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - (double)lv_obj_get_width(container)/gauges.size()/2.0, lv_obj_get_height(container)/6.0 + gaugeSize/2.0);
   }
 
 
@@ -204,4 +205,9 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
   that->calcLabels();
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
+}
+
+
+void FlywheelTuner::gaugeLoop(void* input) {
+  pros::delay(5000);
 }
