@@ -24,6 +24,7 @@ void initialize()
   initializeDisplay();
   initializeBase();
   initializeDevices();
+  std::cout << "init heap: " << xPortGetFreeHeapSize() << std::endl;
 }
 
 /***
@@ -92,17 +93,19 @@ void opcontrol()
   //kP, kI, kD, kF, readingEma, derivativeEma
   double wantedFlywheelRPM = 0;
 
-  PIDScreenTuner tuneFlywheel(display.tabs->newTab("Flywheel"));
-  tuneFlywheel.initButton(0 + 10, &flywheelPIDParams.kP, "kP", 5);
-  tuneFlywheel.initButton(65 + 10, &flywheelPIDParams.kD, "kD", 5);
-  tuneFlywheel.initButton(130 + 10, &flywheelPIDParams.kF, "kF", 5);
-  tuneFlywheel.initButton(195 + 10, &flywheelPIDParams.derivativeEma, "DE", 5);
-  tuneFlywheel.initButton(260 + 10, &flywheelPIDParams.readingEma, "RE", 5);
-  tuneFlywheel.initButton(325 + 10, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
-  tuneFlywheel.initButton(400 + 10, &tuneFlywheel.m_buttonMultiplier, "Mult", 6, PIDScreenTuner::buttonMultiply, 10);
-  lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0 + 10, "RPM", 2, 0, 3000);
-  lv_obj_t* errorGauge = tuneFlywheel.initGauge(160 + 10, "Error", 1, -50, 50);
-  lv_obj_t* powerGauge = tuneFlywheel.initGauge(320 + 10, "MotorPower", 1, 0, 127);
+  // PIDScreenTuner tuneFlywheel(display.tabs->newTab("Flywheel"));
+  // tuneFlywheel.initButton(0 + 10, &flywheelPIDParams.kP, "kP", 5);
+  // tuneFlywheel.initButton(65 + 10, &flywheelPIDParams.kD, "kD", 5);
+  // tuneFlywheel.initButton(130 + 10, &flywheelPIDParams.kF, "kF", 5);
+  // tuneFlywheel.initButton(195 + 10, &flywheelPIDParams.derivativeEma, "DE", 5);
+  // tuneFlywheel.initButton(260 + 10, &flywheelPIDParams.readingEma, "RE", 5);
+  // tuneFlywheel.initButton(325 + 10, &wantedFlywheelRPM, "RPM", 4, PIDScreenTuner::buttonIncrement, 300);
+  // tuneFlywheel.initButton(400 + 10, &tuneFlywheel.m_buttonMultiplier, "Mult", 6, PIDScreenTuner::buttonMultiply, 10);
+  // lv_obj_t* rpmGauge = tuneFlywheel.initGauge(0 + 10, "RPM", 2, 0, 3000);
+  // lv_obj_t* errorGauge = tuneFlywheel.initGauge(160 + 10, "Error", 1, -50, 50);
+  // lv_obj_t* powerGauge = tuneFlywheel.initGauge(320 + 10, "MotorPower", 1, 0, 127);
+  
+  std::cout << "op heap: " << xPortGetFreeHeapSize() << std::endl;
 
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
   // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});

@@ -37,7 +37,7 @@ void initializeDisplay()
 		{"F", AutonFar}, {"Pf", AutonPlatformFar}
 	});
 
-	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("nFlywheel"));
+	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
 	(*display.newFlywheel)
 	.withButton("kP", new double(0))
 	.withButton("kI", new double(0))
@@ -76,7 +76,6 @@ void initializeBase()
 		new IterativePosPIDController(0.008, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
 	);
 
-
 	pros::delay(200);
 	robot.tracker->resetState();
 	robot.tracker->resetSensors();
@@ -87,7 +86,6 @@ const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {
-
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
 	robot.flywheel = new FlywheelController(
@@ -97,6 +95,7 @@ void initializeDevices()
 		new EmaFilter(0.15),
 		new lib7842::velPID(0.073, 0.105, 0.039, 0.2), 0.4
 	);
+	std::cout << "flywheel heap: " << xPortGetFreeHeapSize() << std::endl;
 	// PIDScreenTuner::pidTune_t flywheelPIDParams = {0.073, 0.0, 0.105, 0.039, 0.15, 0.2};
 	//kP, kI, kD, kF, readingEma, derivativeEma
 
@@ -105,6 +104,7 @@ void initializeDevices()
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
+	std::cout << "vision heap: " << xPortGetFreeHeapSize() << std::endl;
 
 }
 

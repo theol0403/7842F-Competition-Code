@@ -48,6 +48,7 @@ void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
+size_t xPortGetFreeHeapSize( void ) ;
 #ifdef __cplusplus
 }
 #endif

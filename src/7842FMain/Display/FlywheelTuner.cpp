@@ -35,7 +35,6 @@ FlywheelTuner &FlywheelTuner::withGauge(std::string name, std::vector<double*> v
   return *this;
 }
 
-
 void FlywheelTuner::build() {
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
@@ -138,6 +137,7 @@ void FlywheelTuner::build() {
   }
 
   std::cout << "gauges: " << gauges.size() << std::endl;
+  std::cout << "heap: " << xPortGetFreeHeapSize() << std::endl;
 
 
 }
@@ -210,5 +210,5 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void FlywheelTuner::gaugeLoop(void* input) {
-  pros::delay(5000);
+  pros::delay(5000000);
 }
