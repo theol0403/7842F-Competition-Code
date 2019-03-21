@@ -156,7 +156,7 @@ void FlywheelTuner::calcLabels() {
   for(auto &button : buttons) {
     lv_obj_t* label = std::get<2>(button);
     std::stringstream str;
-    int width = ((double)lv_obj_get_width(container)/buttons.size())/20;
+    int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal
     str << std::setprecision(width) << *std::get<1>(button).variable;
     if(width > str.str().size()) width = str.str().size();
     str.str().erase(width, std::string::npos);
