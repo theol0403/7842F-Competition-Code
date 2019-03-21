@@ -111,7 +111,7 @@ void FlywheelTuner::calcLabels() {
   for(auto &button : buttons) {
     lv_obj_t* label = std::get<2>(button);
     std::stringstream str;
-    str << std::setw((int)((double)lv_obj_get_width(container)/buttons.size()/20)) << *std::get<1>(button).variable;
+    str << *std::get<1>(button).variable;
     lv_label_set_text(label, str.str().c_str());
     offset += (double)lv_obj_get_width(container)/buttons.size();
     lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
