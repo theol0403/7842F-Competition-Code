@@ -59,7 +59,7 @@ void competition_initialize() {}
 void disabled()
 {
   #ifndef TEST_ROBOT
-  robot.shooter->doJob(ShootController::off);
+  //robot.shooter->doJob(ShootController::off);
   robot.flywheel->disable();
   robot.flywheel->resetSlew();
   robot.arm->setState(ArmController::off);
@@ -120,7 +120,7 @@ void opcontrol()
   robot.model->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
-  robot.shooter->clearQueue();
+  //robot.shooter->clearQueue();
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
   robot.intake->setState(IntakeController::off);
