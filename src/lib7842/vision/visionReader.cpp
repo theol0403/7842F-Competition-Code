@@ -9,15 +9,16 @@ namespace lib7842
   }
 
 
-  void VisionReader::getAll()
+  VisionReader &VisionReader::getAll()
   {
     int count = vision->read_by_size(0, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
     for (int i = 0; i < count; i++) addObj(temp.at(i));
+    return *this;
   }
 
-  void VisionReader::getSig(int sig) {
+  VisionReader &VisionReader::getSig(int sig) {
     int count = vision->read_by_sig(0, sig, maxCount, temp.data());
     if(count > maxCount) count = 0; //If there are no objects pros returns a huge number
 
@@ -25,11 +26,13 @@ namespace lib7842
       assert(temp.at(i).signature == sig);
       addObj(temp.at(i));
     }
+    return *this;
   }
 
-  void VisionReader::getSig(std::initializer_list<int> sigs)
+  VisionReader &VisionReader::getSig(std::initializer_list<int> sigs)
   {
     for(const int &sig : sigs) getSig(sig);
+    return *this;
   }
 
 

@@ -17,9 +17,9 @@ namespace lib7842
 
     VisionReader(pros::Vision*);
 
-    void getAll();
-    void getSig(int);
-    void getSig(std::initializer_list<int>);
+    VisionReader &getAll();
+    VisionReader &getSig(int);
+    VisionReader &getSig(std::initializer_list<int>);
 
   };
 }
