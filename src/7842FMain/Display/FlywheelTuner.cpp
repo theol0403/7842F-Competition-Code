@@ -98,20 +98,28 @@ void FlywheelTuner::build() {
   style_label->text.letter_space = 2;
   style_label->text.color = LV_COLOR_BLACK;
 
-  double offset = 0.0;
   for(auto &button : buttons) {
     lv_obj_t* label = lv_label_create(container, NULL);
-    std::stringstream str;
-    str << std::setprecision(3) << *std::get<1>(button).variable;
-    lv_label_set_text(label, str.str().c_str());
-    offset += (double)lv_obj_get_width(container)/buttons.size();
-    lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
     lv_obj_set_style(label, style_label);
     std::get<2>(button) = label;
   }
+  calcLabels();
 
 }
 
+void FlywheelTuner::calcLabels() {
+  double offset = 0.0;
+  for(auto &button : buttons) {
+    lv_obj_t* label = lv_label_create(container, NULL);
+    lv_obj_set_style(label, style_label);
+    std::stringstream str;
+    str << std::setprecision((int)((double)lv_obj_get_width(container)/buttons.size()/20)) << *std::get<1>(button).variable;
+    lv_label_set_text(label, str.str().c_str());
+    offset += (double)lv_obj_get_width(container)/buttons.size();
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
+    std::get<2>(button) = label;
+  }
+}
 
 lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
   FlywheelTuner* that = static_cast<FlywheelTuner*>(lv_obj_get_free_ptr(btnm));
