@@ -1,14 +1,5 @@
 #include "FlywheelTuner.hpp"
 
-std::vector<lv_color_t> FlywheelTuner::needleColors = [] () {
-  needleColors.push_back(LV_COLOR_BLUE);
-  needleColors.push_back(LV_COLOR_RED);
-  needleColors.push_back(LV_COLOR_PURPLE);
-  needleColors.push_back(LV_COLOR_YELLOW);
-  return needleColors;
-} ();
-
-
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
 container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
 {
@@ -40,11 +31,7 @@ FlywheelTuner &FlywheelTuner::withGauge(std::string name, std::vector<double*> v
   lv_obj_t* gauge = lv_gauge_create(container, NULL);
   lv_gauge_set_range(gauge, min, max);
   lv_gauge_set_critical_value(gauge, max);
-  lv_gauge_set_needle_count(gauge, variables.size(), needleColors);
-  lv_gauge_set_style(gauge, &m_gaugeStyle);
-  lv_obj_align(gauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
-
-  gauges.push_back(std::make_tuple(name, variables, nullptr));
+  gauges.push_back(std::make_tuple(name, variables, gauge));
   return *this;
 }
 
@@ -124,6 +111,33 @@ void FlywheelTuner::build() {
     std::get<2>(button) = label;
   }
   calcLabels();
+
+  double gaugeSize = lv_obj_get_height(container) - lv_obj_get_height(container)/3;
+  lv_color_t needleColors[] = {LV_COLOR_BLUE, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
+  lv_style_t* style_gauge = new lv_style_t;
+  lv_style_copy(style_gauge, &lv_style_pretty_color);
+  style_gauge->body.main_color = LV_COLOR_WHITE;     /*Line color at the beginning*/
+  style_gauge->body.grad_color =  LV_COLOR_WHITE;    /*Line color at the end*/
+  style_gauge->body.padding.hor = 10;                      /*Scale line length*/
+  style_gauge->body.padding.inner = 8 ;                    /*Scale label padding*/
+  style_gauge->body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
+  style_gauge->line.width = 2;
+  style_gauge->text.font = &lv_font_dejavu_10;
+  style_gauge->text.color = LV_COLOR_WHITE;
+  style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
+
+  for(auto &gauge : gauges) {
+    if(gaugeTask == nullptr) gaugeTask = new pros::Task(gaugeLoop, this);
+    lv_obj_t* &lv_gauge = std::get<2>(gauge);
+    lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
+    lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
+    lv_gauge_set_style(lv_gauge, style_gauge);
+    //lv_obj_align(newGauge, m_infoContainer, LV_ALIGN_IN_LEFT_MID, xPos, 25);
+  }
+
+
+
+
 }
 
 void FlywheelTuner::calcLabels() {
