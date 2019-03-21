@@ -11,8 +11,6 @@
 #include "Display/DisplayTab.hpp"
 #include "Display/FlywheelTuner.hpp"
 
-#include "7842FMain/Auton/AutonFunctions.hpp"
-
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
 #define j_Analog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)

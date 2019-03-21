@@ -62,14 +62,7 @@ const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {
-	display.tabs = new DisplayTab(lv_scr_act());
-
-	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
-		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-		{"F", AutonFar}, {"Pf", AutonPlatformFar}
-	});
-
+	
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
 	Motor* flywheelM = new Motor(mFlywheel);

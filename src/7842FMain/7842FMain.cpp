@@ -3,6 +3,7 @@
 #include "lib7842/lib7842.hpp"
 #include "RobotConfig.hpp"
 
+#include "7842FMain/Auton/AutonFunctions.hpp"
 #include "DriverControl.hpp"
 
 /***
@@ -20,6 +21,15 @@
 void initialize()
 {
   std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
+
+  display.tabs = new DisplayTab(lv_scr_act());
+
+  display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
+    {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
+    {"F", AutonFar}, {"Pf", AutonPlatformFar}
+  });
+
   pros::delay(500); //Give the legacy ports time to start up
 
   initializeBase();
