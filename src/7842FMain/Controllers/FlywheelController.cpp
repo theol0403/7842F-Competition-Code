@@ -1,7 +1,7 @@
 #include "FlywheelController.hpp"
 
 FlywheelController::FlywheelController(IntakeController*& iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::emaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
-intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
+intake(iintake), flywheel{iflywheel}, sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
 flywheelTask(task, this) {
   flywheel->move(0);
 }
