@@ -27,6 +27,7 @@ namespace lib7842
 
   void ObjRenderer::expandTo(int size) {
     int diff = size - dObjects.size();
+    if(diff <= 0) return;
     for(int i = 0; i < diff; i++) {
       lv_obj_t* obj = lv_obj_create(parent, NULL);
       formatObj(obj);
@@ -66,7 +67,6 @@ namespace lib7842
 
 
   void ObjRenderer::draw() {
-
     expandTo(oContainer->objects.size());
 
     int dIndex = 0;

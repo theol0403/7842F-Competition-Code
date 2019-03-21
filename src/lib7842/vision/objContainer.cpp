@@ -15,7 +15,7 @@ namespace lib7842
     try {
       return objects.at(index);
     } catch(std::out_of_range) {
-      std::cerr << "get: Invalid Index\n";
+      std::cerr << "get: Invalid Index" << std::endl;
       return {};
     }
   }
@@ -78,19 +78,16 @@ namespace lib7842
   }
 
   ObjContainer &ObjContainer::remove(int index) {
-    try {
+    if(index < objects.size()) {
       objects.erase(objects.begin() + index);
-    } catch(std::out_of_range) {
-      std::cerr << "remove: Invalid Index\n";
     }
     return *this;
   }
-
+  
   ObjContainer &ObjContainer::remove(int start, int end) {
-    try {
+    end = end >= objects.size() ? objects.size() - 1 : end;
+    if(start < objects.size()) {
       objects.erase(objects.begin() + start, objects.begin() + end);
-    } catch(std::out_of_range) {
-      std::cerr << "remove: Invalid Indexes\n";
     }
     return *this;
   }

@@ -17,11 +17,14 @@ void VisionController::run()
   pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 7.600, 6823, 7385, 7104, -2009, -1543, -1776, 0, 0}; sensor->set_signature(2, &SIG_2);
 
   lib7842::VisionReader reader(sensor);
+  lib7842::ObjContainer standout;
 
   ObjDrawer drawer(parent);
   drawer.withStyle(LV_COLOR_HEX(0xFF7F00), LV_COLOR_WHITE);
 
-  drawer.withLayer(reader)
+  drawer.withLayer(reader);
+
+  drawer.withLayer(standout)
   .withStyle(VISION_OBJECT_ERR_SIG, LV_COLOR_YELLOW, LV_COLOR_WHITE)
   .withStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
   .withStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
@@ -31,7 +34,11 @@ void VisionController::run()
     reader.reset();
     reader.getAll();
     reader.removeWith(objAttr::area, 0, 300);
-    //reader.print();
+    reader.sortBy(objAttr::area);
+    standout = reader;
+    reader.print();
+    reader.remove(0, 6);
+    standout.trim(1);
     drawer.draw();
     pros::delay(10);
   }
