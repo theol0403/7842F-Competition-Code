@@ -24,7 +24,6 @@ void initialize()
 
   initializeBase();
   initializeDevices();
-  initializeDisplay();
   std::cout << "after init heap: " << xPortGetFreeHeapSize() << std::endl;
 }
 

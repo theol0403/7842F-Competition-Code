@@ -62,6 +62,14 @@ const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {
+	display.tabs = new DisplayTab(lv_scr_act());
+
+	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
+		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
+		{"F", AutonFar}, {"Pf", AutonPlatformFar}
+	});
+
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
 	robot.flywheel = new FlywheelController(
@@ -80,35 +88,21 @@ void initializeDevices()
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
-	std::cout << "vision heap: " << xPortGetFreeHeapSize() << std::endl;
-
-}
-
-
-void initializeDisplay()
-{
-	display.tabs = new DisplayTab(lv_scr_act());
-
-	display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
-		{"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
-		{"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-		{"F", AutonFar}, {"Pf", AutonPlatformFar}
-	});
 
 	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
 	(*display.newFlywheel)
-	.withButton("kP", new double(0))
-	.withButton("kI", new double(0))
-	.withButton("kD", new double(0))
-	.withButton("rEMA", new double(0))
-	.withButton("dEma", new double(0))
+	.withButton("kP", &robot.flywheel->pid->m_Kp)
+	.withButton("kD", &robot.flywheel->pid->m_Kd)
+	.withButton("kF", &robot.flywheel->pid->m_Kf)
+	.withButton("dEma", &robot.flywheel->pid->m_dFilter.m_alpha)
+	.withButton("rEMA", &robot.flywheel->rpmFilter->m_alpha)
 	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
-	.withGauge("Test", {new double(0)}, 0, 100)
-	.withGauge("Test2", {new double(0)}, 0, 100)
-	.withGauge("Test2", {new double(0)}, 0, 100)
+	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 100)
+	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 0, 100)
+	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 100)
 	.build();
-}
 
+}
 
 
 /***

@@ -8,7 +8,7 @@ namespace lib7842
 {
 	class velPID
 	{
-	private:
+	public:
 
 		double m_Kp = 0;
 		double m_Kd = 0;
@@ -19,8 +19,6 @@ namespace lib7842
 		double m_derivative = 0;
 
 		emaFilter m_dFilter;
-
-	public:
 
 		velPID(double, double, double, double);
 		double calculate(double, double);

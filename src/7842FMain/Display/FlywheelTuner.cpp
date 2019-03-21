@@ -210,5 +210,16 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void FlywheelTuner::gaugeLoop(void* input) {
-  pros::delay(5000000);
+  FlywheelTuner* that = static_cast<FlywheelTuner*>(input);
+  while(true) {
+    for(auto &gauge : that->gauges) {
+      int i = 0;
+      for(double* variable : std::get<1>(gauge)) {
+        lv_gauge_set_value(std::get<2>(gauge), i, *variable);
+        i++;
+      }
+    }
+    pros::delay(10);
+  }
+
 }
