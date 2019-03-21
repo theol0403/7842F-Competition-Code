@@ -101,7 +101,9 @@ void FlywheelTuner::build() {
   double offset = 0.0;
   for(auto &button : buttons) {
     lv_obj_t* label = lv_label_create(container, NULL);
-    lv_label_set_text(label, std::to_string(*std::get<1>(button).variable).c_str());
+    std::stringstream str;
+    str << std::setprecision(3) << *std::get<1>(button).variable;
+    lv_label_set_text(label, str.str().c_str());
     offset += (double)lv_obj_get_width(container)/buttons.size();
     lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
     lv_obj_set_style(label, style_label);
