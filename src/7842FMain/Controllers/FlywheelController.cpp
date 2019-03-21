@@ -32,6 +32,7 @@ void FlywheelController::run()
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
 
   sensor->reset();
+  pros::delay(200);
 
   while(true)
   {
@@ -80,7 +81,8 @@ void FlywheelController::run()
 
 void FlywheelController::task(void* input)
 {
-  pros::delay(500);
   FlywheelController* that = static_cast<FlywheelController*>(input);
+  pros::delay(500);
+  that->flywheel->move(0);
   that->run();
 }
