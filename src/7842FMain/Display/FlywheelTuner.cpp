@@ -1,6 +1,6 @@
 #include "FlywheelTuner.hpp"
 
-lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
+lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_HEX3(0x333), LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
 container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
@@ -104,7 +104,7 @@ void FlywheelTuner::build() {
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
   style_label->text.letter_space = 1;
-  style_label->text.color = LV_COLOR_BLACK;
+  style_label->text.color = LV_COLOR_HEX3(0x333);
 
   for(auto &button : buttons) {
     lv_obj_t* label = lv_label_create(container, NULL);
@@ -137,6 +137,11 @@ void FlywheelTuner::build() {
     lv_gauge_set_style(lv_gauge, style_gauge);
     offset += (double)lv_obj_get_width(container)/gauges.size();
     lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
+
+    lv_obj_t* label = lv_label_create(container, NULL);
+    lv_label_set_text(label, std::get<0>(gauge).c_str());
+    lv_obj_set_style(label, style_rel);
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - lv_obj_get_width(label)/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + lv_obj_get_height(label)/2.0 + gaugeSize/3.0);
   }
 
 

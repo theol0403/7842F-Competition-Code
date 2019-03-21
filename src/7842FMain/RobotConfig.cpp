@@ -72,9 +72,10 @@ void initializeDevices()
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
+	Motor* flywheelM = new Motor(mFlywheel);
 	robot.flywheel = new FlywheelController(
 		robot.intake,
-		new okapi::Motor(mFlywheel), new ADIEncoder('A', 'B', false),
+		flywheelM, new ADIEncoder('A', 'B', false),
 		new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
 		new emaFilter(0.15),
 		new lib7842::velPID(0.073, 0.105, 0.039, 0.2), 0.4
@@ -117,39 +118,39 @@ void initializeDevices()
 *
 */
 #else //TEST_ROBOT
-
-const int8_t left_mPort = 1;
-const int8_t right_mPort = -2;
-
-
-void initializeDevices()
-{
-}
-
-void initializeBase()
-{
-
-	robot.model = std::make_shared<SkidSteerModel> (
-		std::make_shared<Motor>(left_mPort),
-		std::make_shared<Motor>(right_mPort),
-		std::make_shared<ADIEncoder>(3, 4),
-		std::make_shared<ADIEncoder>(5, 6),
-		200,
-		12000
-	);
-
-	robot.tracker = new lib7842::OdomTracker (
-		robot.model,
-		27_cm, 4_in, 360,
-		lib7842::OdomTracker::mdTracking
-	);
-
-	robot.chassis = new lib7842::OdomController (
-		robot.tracker,
-		new IterativePosPIDController(0.009, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
-		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.01, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
-	);
+//
+// const int8_t left_mPort = 1;
+// const int8_t right_mPort = -2;
+//
+//
+// void initializeDevices()
+// {
+// }
+//
+// void initializeBase()
+// {
+//
+// 	robot.model = std::make_shared<SkidSteerModel> (
+// 		std::make_shared<Motor>(left_mPort),
+// 		std::make_shared<Motor>(right_mPort),
+// 		std::make_shared<ADIEncoder>(3, 4),
+// 		std::make_shared<ADIEncoder>(5, 6),
+// 		200,
+// 		12000
+// 	);
+//
+// 	robot.tracker = new lib7842::OdomTracker (
+// 		robot.model,
+// 		27_cm, 4_in, 360,
+// 		lib7842::OdomTracker::mdTracking
+// 	);
+//
+// 	robot.chassis = new lib7842::OdomController (
+// 		robot.tracker,
+// 		new IterativePosPIDController(0.009, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms), std::make_unique<AverageFilter<5>>()), //Distance PID - To mm
+// 		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)), //Angle PID - To Degree
+// 		new IterativePosPIDController(0.01, 0, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
+// 	);
 
 }
 

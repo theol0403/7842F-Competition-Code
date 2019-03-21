@@ -3,6 +3,7 @@
 FlywheelController::FlywheelController(IntakeController*& iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::emaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
 intake(iintake), flywheel(iflywheel), sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
 flywheelTask(task, this) {
+  flywheel->move(0);
 }
 
 void FlywheelController::setRpm(double rpm) { targetRpm = rpm; }
@@ -26,19 +27,17 @@ void FlywheelController::resetSlew() {
 
 void FlywheelController::run()
 {
-  flywheel->move(0);
 
   lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
 
   sensor->reset();
-  pros::delay(200);
 
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
-      currentRpm = rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
+      currentRpm = 0;//rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
 
       motorPower = pid->calculate(targetRpm, currentRpm);
 
@@ -81,8 +80,7 @@ void FlywheelController::run()
 
 void FlywheelController::task(void* input)
 {
-  FlywheelController* that = static_cast<FlywheelController*>(input);
   pros::delay(500);
-  that->flywheel->move(0);
+  FlywheelController* that = static_cast<FlywheelController*>(input);
   that->run();
 }
