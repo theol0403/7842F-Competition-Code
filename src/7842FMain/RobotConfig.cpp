@@ -84,7 +84,7 @@ void initializeDevices()
 	// PIDScreenTuner::pidTune_t flywheelPIDParams = {0.073, 0.0, 0.105, 0.039, 0.15, 0.2};
 	//kP, kI, kD, kF, readingEma, derivativeEma
 
-//	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 34.49, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 34.49, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 

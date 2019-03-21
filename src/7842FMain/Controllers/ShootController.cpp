@@ -103,7 +103,7 @@ void ShootController::doMacroLoop(shootMacros macro) {
 void ShootController::doMacroBlocking(shootMacros macro) {
   macroCompleted = false;
   doMacro(macro);
-  while(!macroCompleted) pros::delay(20);
+  while(!macroCompleted) pros::delay(10);
 }
 
 
@@ -142,7 +142,7 @@ double ShootController::computeHoodPower(double target) {
   double output = hoodPid->step(getHoodAngle()) * 127;
   if(output < 0) {
     output = 0;
-    std::cerr << "Reverse PID \n";
+    std::cerr << "Reverse PID" << std::endl;
   }
   //if(output > 100) output = 100;
   if(output < 40) output = 40;
