@@ -121,7 +121,7 @@ void FlywheelTuner::build() {
   style_gauge->body.padding.inner = 8;                    /*Scale label padding*/
   style_gauge->body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
   style_gauge->line.width = 2;
-  style_gauge->text.font = gauges.size() > 3 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
+  style_gauge->text.font = gauges.size() > 2 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
   style_gauge->text.letter_space = 1;
   style_gauge->text.color = LV_COLOR_WHITE;
   style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
@@ -147,7 +147,7 @@ void FlywheelTuner::calcLabels() {
   for(auto &button : buttons) {
     lv_obj_t* label = std::get<2>(button);
     std::stringstream str;
-    int width = (double)lv_obj_get_width(container)/buttons.size()/25;
+    int width = ((double)lv_obj_get_width(container)/buttons.size())/20;
     str << std::setprecision(width) << *std::get<1>(button).variable;
     if(width > str.str().size()) width = str.str().size();
     str.str().erase(width, std::string::npos);

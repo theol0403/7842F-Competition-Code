@@ -76,7 +76,7 @@ void initializeDevices()
 		robot.intake,
 		new okapi::Motor(mFlywheel), new ADIEncoder('A', 'B', false),
 		new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
-		new EmaFilter(0.15),
+		new emaFilter(0.15),
 		new lib7842::velPID(0.073, 0.105, 0.039, 0.2), 0.4
 	);
 	std::cout << "flywheel heap: " << xPortGetFreeHeapSize() << std::endl;
@@ -87,8 +87,6 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
-
 	display.newFlywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
 	(*display.newFlywheel)
 	.withButton("kP", &robot.flywheel->pid->m_Kp)
@@ -96,11 +94,14 @@ void initializeDevices()
 	.withButton("kF", &robot.flywheel->pid->m_Kf)
 	.withButton("dEma", &robot.flywheel->pid->m_dFilter.m_alpha)
 	.withButton("rEMA", &robot.flywheel->rpmFilter->m_alpha)
+	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 400)
 	.withButton("Mult", &display.newFlywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
-	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 100)
-	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 0, 100)
-	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 100)
+	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
+	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
+	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
+
+	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
 
 }
 
