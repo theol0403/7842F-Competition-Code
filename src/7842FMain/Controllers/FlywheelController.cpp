@@ -47,7 +47,8 @@ void FlywheelController::run()
 
       //This slews the motor by limiting the rate of change of the motor speed
       double increment = motorPower - lastPower;
-      if(std::abs(increment) > motorSlew) motorPower = lastPower + (motorSlew * lib7842::sgn(increment));
+      if(increment > motorSlew) motorPower = lastPower + motorSlew;
+      else if(increment < motorSlew) motorPower = lastPower - motorSlew * 2.0;
       lastPower = motorPower;
 
       //moves whatever motor is available

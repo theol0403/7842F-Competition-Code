@@ -16,7 +16,7 @@ namespace lib7842
 	{
 		m_Error = wantedRPM - currentRPM;
 
-		m_derivative = (m_Error - m_lastError);
+		m_derivative = m_Error - m_lastError;
 		m_lastError = m_Error;
 		//if(m_derivative < 0) m_derivative /= 4; //So it will not drop too much speed if it speeds up suddenly
 		m_derivative = m_dFilter.filter(m_derivative);

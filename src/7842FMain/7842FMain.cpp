@@ -88,12 +88,6 @@ void disabled()
 */
 void opcontrol()
 {
-
-  //PIDScreenTuner::pidTune_t flywheelPIDParams = {0.072, 0.0, 0.105, 0.039, 0.15, 0.1};
-  //kP, kI, kD, kF, readingEma, derivativeEma
-
-  std::cout << "op heap: " << xPortGetFreeHeapSize() << std::endl;
-
   // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::count);
   // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
 
