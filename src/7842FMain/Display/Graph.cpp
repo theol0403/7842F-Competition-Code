@@ -46,7 +46,9 @@ Graph &Graph::withRefresh(int irefresh) {
 
 
 Graph &Graph::withSeries(double* variable, lv_color_t color) {
-  series.push_back(std::make_pair(lv_chart_add_series(graph, color), variable));
+  lv_chart_series_t* ser = lv_chart_add_series(graph, color);
+  lv_chart_init_points(graph, ser, *variable);
+  series.push_back(std::make_pair(ser, variable));
   return *this;
 }
 

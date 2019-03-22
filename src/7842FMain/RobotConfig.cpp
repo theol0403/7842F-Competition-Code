@@ -98,7 +98,10 @@ void initializeDevices()
 	.withRes(200)
 	.withLines(6, 10)
 	.withRefresh(50)
+	.withSeries(&robot.flywheel->targetRpm, LV_COLOR_BLACK)
+	.withSeries(&robot.flywheel->currentRpm, LV_COLOR_BLACK)
 	.withSeries(&robot.flywheel->motorPower, LV_COLOR_BLACK)
+	.withSeries(&robot.flywheel->pid->m_derivative, LV_COLOR_BLACK)
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
