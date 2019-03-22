@@ -127,10 +127,6 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
       lv_style_t* imgStyle = lv_img_get_style(img);
       imgStyle->image.opa = val/100.0*255.0;
       lv_img_set_style(img, imgStyle);
-      lv_obj_t* parent = lv_obj_get_parent(img);
-      lv_style_t* parentStyle = lv_obj_get_style(parent);
-      parentStyle->body.border.opa = 255 - val/100.0*255.0;
-      lv_obj_set_style(parent, parentStyle);
     };
     a.path = lv_anim_path_linear;
     a.time = time/2;
