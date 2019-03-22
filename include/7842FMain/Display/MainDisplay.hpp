@@ -1,7 +1,7 @@
 #pragma once
 #include "main.h"
 
-class DisplayTab
+class MainDisplay
 {
 
 public:
@@ -9,8 +9,8 @@ public:
   lv_obj_t* tabview = nullptr;
   lv_style_t pageStyle;
 
-  DisplayTab(lv_obj_t*);
-  ~DisplayTab();
+  MainDisplay(lv_obj_t*);
+  ~MainDisplay();
 
   lv_obj_t* newTab(std::string);
 

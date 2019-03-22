@@ -8,7 +8,7 @@
 #include "Controllers/ArmController.hpp"
 #include "Controllers/VisionController.hpp"
 
-#include "Display/DisplayTab.hpp"
+#include "Display/MainDisplay.hpp"
 #include "Display/FlywheelTuner.hpp"
 
 extern okapi::Controller j_Main;
@@ -18,7 +18,7 @@ extern okapi::Controller j_Main;
 
 struct display_t
 {
-  DisplayTab* tabs = nullptr;
+  MainDisplay* main = nullptr;
   AutonSelector* selector = nullptr;
   FlywheelTuner* flywheel = nullptr;
 };

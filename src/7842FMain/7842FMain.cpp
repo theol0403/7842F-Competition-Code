@@ -28,9 +28,9 @@ void initialize()
   lv_obj_align(img1, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
   pros::delay(20000);
 
-  display.tabs = new DisplayTab(lv_scr_act());
-  
-  display.selector = new lib7842::AutonSelector(display.tabs->newTab("Auton"), {
+  display.main = new MainDisplay(lv_scr_act());
+
+  display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}

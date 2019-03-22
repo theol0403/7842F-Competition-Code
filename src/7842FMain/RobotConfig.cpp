@@ -62,7 +62,7 @@ const int globalFlywheelRPM = 2900;
 
 void initializeDevices()
 {
-	
+
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
 	Motor* flywheelM = new Motor(mFlywheel);
@@ -78,7 +78,7 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	display.flywheel = new FlywheelTuner(display.tabs->newTab("Flywheel"));
+	display.flywheel = new FlywheelTuner(display.main->newTab("Flywheel"));
 	(*display.flywheel)
 	.withButton("kP", &robot.flywheel->pid->m_Kp)
 	.withButton("kD", &robot.flywheel->pid->m_Kd)
@@ -92,7 +92,7 @@ void initializeDevices()
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
-	robot.vision = new VisionController(new pros::Vision(4), display.tabs->newTab("Vision"));
+	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
 }
 
