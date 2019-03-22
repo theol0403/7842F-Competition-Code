@@ -22,21 +22,15 @@ void initialize()
 {
   std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
 
+  display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
   LV_IMG_DECLARE(img_navigators);
-  lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
-  lv_img_set_src(img1, &img_navigators);
-  lv_obj_align(img1, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
-  pros::delay(20000);
-
-  display.main = new MainDisplay(lv_scr_act());
+  display.main->splashScreen(&img_navigators, 2000);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
-
-  pros::delay(500); //Give the legacy ports time to start up
 
   initializeBase();
   initializeDevices();

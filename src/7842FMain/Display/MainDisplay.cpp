@@ -1,10 +1,8 @@
 #include "MainDisplay.hpp"
 
-MainDisplay::MainDisplay(lv_obj_t* parent) :
-tabview(lv_tabview_create(parent, NULL))
+MainDisplay::MainDisplay(lv_obj_t* parent, lv_color_t imainColor) :
+tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
 {
-  lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
-
   lv_style_t* style_bg = new lv_style_t;
   lv_style_copy(style_bg, &lv_style_plain);
   style_bg->body.main_color = mainColor;
@@ -83,4 +81,31 @@ lv_obj_t* MainDisplay::newTab(std::string name) {
   lv_page_set_style(page, LV_PAGE_STYLE_BG, &pageStyle);
   lv_obj_align(page, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
   return page;
+}
+
+lv_obj_t* MainDisplay::getParent() {
+  return lv_obj_get_parent(tabview);
+}
+
+
+void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
+  lv_obj_t* parent = getParent();
+
+  lv_obj_t* overlay = lv_obj_create(parent, NULL);
+  lv_obj_set_size(overlay, lv_obj_get_width(parent), lv_obj_get_height(parent));
+
+  lv_style_t style;
+  lv_style_copy(&style, &lv_style_pretty_color);
+  style.body.main_color = mainColor;
+  style.body.grad_color = mainColor;
+  lv_obj_set_style(overlay, &style);
+
+  lv_obj_t* img = lv_img_create(overlay, NULL);
+  lv_img_set_src(img, imgPtr);
+  lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+  pros::delay(time);
+
+  lv_obj_del(overlay);
+
 }
