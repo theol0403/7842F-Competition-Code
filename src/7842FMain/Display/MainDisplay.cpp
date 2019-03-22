@@ -64,7 +64,7 @@ tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
   pageStyle.body.main_color = mainColor;
   pageStyle.body.grad_color = mainColor;
   pageStyle.body.border.color = LV_COLOR_WHITE;
-  pageStyle.body.border.width = 2;
+  pageStyle.body.border.width = 3;
   pageStyle.body.border.opa = LV_OPA_100;
   pageStyle.body.radius = 0;
 
@@ -120,17 +120,17 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_img_set_style(img, &imgStyle);
 
     lv_anim_t a;
-    a.var = img; a.start = 0; a.end = 100;
+    a.var = img; a.start = 30; a.end = 255;
     a.fp = [](void* iimg, int32_t val)
     {
       lv_obj_t* img = static_cast<lv_obj_t*>(iimg);
       lv_style_t* imgStyle = lv_img_get_style(img);
-      imgStyle->image.opa = val/100.0*255.0;
+      imgStyle->image.opa = val;
       lv_img_set_style(img, imgStyle);
     };
     a.path = lv_anim_path_linear;
-    a.time = time/2;
-    a.end_cb = NULL; a.act_time = 0; a.playback = 0; a.playback_pause = 0; a.repeat = 0; a.repeat_pause = 0;
+    a.time = time/3;
+    a.end_cb = NULL; a.act_time = 0; a.playback = 1; a.playback_pause = time/3; a.repeat = 0; a.repeat_pause = 0;
     lv_anim_create(&a);
 
     pros::delay(time);

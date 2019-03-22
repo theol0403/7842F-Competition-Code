@@ -33,6 +33,7 @@ public:
   pros::Task* gaugeTask = nullptr;
 
   FlywheelTuner(lv_obj_t*);
+  FlywheelTuner(lv_obj_t*, lv_color_t);
   ~FlywheelTuner();
 
   FlywheelTuner &withButton(std::string, double*, btnType = btnType::add, double = 1);

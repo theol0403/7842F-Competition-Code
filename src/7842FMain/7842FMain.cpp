@@ -22,9 +22,9 @@ void initialize()
 {
   std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
 
-  display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
+  display.main = new MainDisplay(lv_scr_act(), LV_COLOR_BLUE);
   LV_IMG_DECLARE(img_navigators);
-  display.main->splashScreen(&img_navigators, 2000);
+  display.main->splashScreen(&img_navigators, 3000);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},

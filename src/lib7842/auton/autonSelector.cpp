@@ -3,19 +3,22 @@
 namespace lib7842
 {
 
-  AutonSelector::AutonSelector(lv_obj_t *screenParent, std::initializer_list<autonPair> autonPairs)
-  :
-  m_autonPairs(autonPairs)
+  AutonSelector::AutonSelector(lv_obj_t* parent, std::initializer_list<autonPair> autonPairs)
+  : AutonSelector(parent, lv_obj_get_style(parent)->body.main_color, autonPairs)
   {
+  }
 
-    m_screenContainer = lv_obj_create(screenParent, NULL);
+  AutonSelector::AutonSelector(lv_obj_t *parent, lv_color_t mainColor, std::initializer_list<autonPair> autonPairs)
+  : m_autonPairs(autonPairs)
+  {
+    
+    m_screenContainer = lv_obj_create(parent, NULL);
 
-    lv_obj_set_size(m_screenContainer, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent));
+    lv_obj_set_size(m_screenContainer, lv_obj_get_width(parent), lv_obj_get_height(parent));
     lv_obj_align(m_screenContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
 
     lv_style_t* screenStyle = new lv_style_t;
     lv_style_copy(screenStyle, &lv_style_plain_color);
-    lv_color_t mainColor = LV_COLOR_HEX(0xFF7F00);
     screenStyle->body.main_color = mainColor;
     screenStyle->body.grad_color = mainColor;
     lv_obj_set_style(m_screenContainer, screenStyle);
@@ -34,7 +37,7 @@ namespace lib7842
 
     lv_obj_t* btnm = lv_btnm_create(m_screenContainer, NULL);
     lv_btnm_set_map(btnm, buttonNames);
-    lv_obj_set_size(btnm, lv_obj_get_width(screenParent), lv_obj_get_height(screenParent) / 2);
+    lv_obj_set_size(btnm, lv_obj_get_width(parent), lv_obj_get_height(parent) / 2);
     lv_btnm_set_toggle(btnm, true, m_currentAutonIndex);
     lv_btnm_set_action(btnm, matrixAction);
     lv_obj_set_free_ptr(btnm, this);
@@ -81,8 +84,8 @@ namespace lib7842
     //SWITCH
 
     lv_obj_t *colorSwitch = lv_sw_create(m_screenContainer, NULL);
-    lv_obj_set_size(colorSwitch, lv_obj_get_width(screenParent)/3, lv_obj_get_height(screenParent)/4);
-    lv_obj_align(colorSwitch, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -lv_obj_get_height(screenParent)/8);
+    lv_obj_set_size(colorSwitch, lv_obj_get_width(parent)/3, lv_obj_get_height(parent)/4);
+    lv_obj_align(colorSwitch, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -lv_obj_get_height(parent)/8);
     //  lv_sw_set_anim_time(colorSwitch, 200);
     lv_sw_set_action(colorSwitch, sliderAction);
     lv_obj_set_free_ptr(colorSwitch, this);

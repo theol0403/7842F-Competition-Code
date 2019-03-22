@@ -2,8 +2,10 @@
 
 lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
 
-FlywheelTuner::FlywheelTuner(lv_obj_t* parent) :
-container(lv_obj_create(parent, NULL)), mainColor(LV_COLOR_HEX(0xFF7F00))
+FlywheelTuner::FlywheelTuner(lv_obj_t* parent) : FlywheelTuner(parent, lv_obj_get_style(parent)->body.main_color) {}
+
+FlywheelTuner::FlywheelTuner(lv_obj_t* parent, lv_color_t imainColor) :
+container(lv_obj_create(parent, NULL)), mainColor(imainColor)
 {
   /**
   * Container

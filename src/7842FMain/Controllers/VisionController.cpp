@@ -20,7 +20,7 @@ void VisionController::run()
   lib7842::ObjContainer standout;
 
   ObjDrawer drawer(parent);
-  drawer.withStyle(LV_COLOR_HEX(0xFF7F00), LV_COLOR_WHITE);
+  drawer.withStyle(lv_obj_get_style(parent)->body.main_color, LV_COLOR_WHITE);
 
   drawer.withLayer(reader);
 
