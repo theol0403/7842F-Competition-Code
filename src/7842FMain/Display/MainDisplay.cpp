@@ -90,31 +90,36 @@ lv_obj_t* MainDisplay::getParent() {
 
 void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
 
-  std::function<void(void*)> func = [=](void*){
-    lv_obj_t* parent = getParent();
+  using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
+
+  void (*func)(void*) = [](void* input){
+    Passer* passer = static_cast<Passer*>(input);
+    MainDisplay* display = std::get<0>(*passer);
+
+    lv_obj_t* parent = display->getParent();
 
     lv_obj_t* overlay = lv_obj_create(parent, NULL);
     lv_obj_set_size(overlay, lv_obj_get_width(parent), lv_obj_get_height(parent));
 
     lv_style_t style;
     lv_style_copy(&style, &lv_style_pretty_color);
-    style.body.main_color = mainColor;
-    style.body.grad_color = mainColor;
+    style.body.main_color = display->mainColor;
+    style.body.grad_color = display->mainColor;
     lv_obj_set_style(overlay, &style);
 
     lv_obj_t* img = lv_img_create(overlay, NULL);
-    lv_img_set_src(img, imgPtr);
+    lv_img_set_src(img, std::get<1>(*passer));
     lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
-    pros::delay(time);
-
+    pros::delay(std::get<2>(*passer));
+    
     lv_obj_del(overlay);
+    delete passer;
 
     pros::c::task_delete(CURRENT_TASK);
   };
 
-  typedef void function_t(void*);
-  function_t* funcPtr = func.target<function_t>();
-  pros::c::task_create(funcPtr, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
+  Passer* passer = new Passer(this, imgPtr, time);
+  pros::c::task_create(func, passer, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
 
 }
