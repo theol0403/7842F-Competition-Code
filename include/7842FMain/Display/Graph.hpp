@@ -6,7 +6,7 @@ class Graph
 
 public:
 
-  lv_obj_t *graph = nullptr;
+  lv_obj_t* graph = nullptr;
   int refresh = 100;
   std::vector<std::pair<lv_chart_series_t*, double*>> series = {};
 
@@ -16,9 +16,9 @@ public:
   Graph(lv_obj_t*, lv_color_t);
   ~Graph();
 
-  Graph &withMin(int);
-  Graph &withMax(int);
+  Graph &withRange(int, int);
   Graph &withRes(int);
+  Graph &withLines(int, int);
   Graph &withRefresh(int);
 
   Graph &withSeries(double*, lv_color_t);
@@ -26,8 +26,6 @@ public:
   void build();
 
   void run();
-  static void task();
-
-
+  static void task(void*);
 
 };

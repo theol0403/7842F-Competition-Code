@@ -22,3 +22,51 @@ graph(lv_chart_create(parent, NULL))
 Graph::~Graph() {
   lv_obj_del(graph);
 }
+
+
+Graph &Graph::withRange(int min, int max) {
+  lv_chart_set_range(graph, min, max);
+  return *this;
+}
+
+Graph &Graph::withRes(int res) {
+  lv_chart_set_point_count(graph, res);
+  return *this;
+}
+
+Graph &Graph::withLines(int hor, int ver) {
+  lv_chart_set_div_line_count(graph, hor, ver);
+  return *this;
+}
+
+Graph &Graph::withRefresh(int irefresh) {
+  refresh = irefresh;
+  return *this;
+}
+
+
+Graph &Graph::withSeries(double* variable, lv_color_t color) {
+  series.push_back(std::make_pair(lv_chart_add_series(graph, color), variable));
+  return *this;
+}
+
+
+void Graph::build() {
+  if(graphTask == nullptr) graphTask = new pros::Task(task, this);
+}
+
+
+void Graph::run() {
+  while(true) {
+    for(auto &[ser, variable] : series) {
+      lv_chart_set_next(graph, ser, *variable);
+    }
+    pros::delay(refresh);
+  }
+}
+
+void Graph::task(void* input)
+{
+  Graph* that = static_cast<Graph*>(input);
+  that->run();
+}
