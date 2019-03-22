@@ -45,10 +45,10 @@ Graph &Graph::withRefresh(int irefresh) {
 }
 
 
-Graph &Graph::withSeries(double* variable, lv_color_t color) {
+Graph &Graph::withSeries(double* variable, lv_color_t color, double scale) {
   lv_chart_series_t* ser = lv_chart_add_series(graph, color);
-  lv_chart_init_points(graph, ser, *variable);
-  series.push_back(std::make_pair(ser, variable));
+  lv_chart_init_points(graph, ser, *variable / scale);
+  series.push_back(std::make_tuple(ser, variable, scale));
   return *this;
 }
 
@@ -60,8 +60,8 @@ void Graph::build() {
 
 void Graph::run() {
   while(true) {
-    for(auto &[ser, variable] : series) {
-      lv_chart_set_next(graph, ser, *variable);
+    for(auto &[ser, variable, scale] : series) {
+      lv_chart_set_next(graph, ser, *variable / scale);
     }
     pros::delay(refresh);
   }

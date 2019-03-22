@@ -85,23 +85,23 @@ void initializeDevices()
 	.withButton("kF", &robot.flywheel->pid->m_Kf)
 	.withButton("dEma", &robot.flywheel->pid->m_dFilter.m_alpha)
 	.withButton("rEMA", &robot.flywheel->rpmFilter->m_alpha)
-	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 400)
+	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 500)
 	.withButton("Mult", &display.flywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
 	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
 	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
-	display.graph = new Graph(display.main->newTab("Graph"));
+	display.graph = new Graph(display.main->newTab("Fly Graph"));
 	(*display.graph)
-	.withRange(-200, 750)
-	.withRes(200)
+	.withRange(-50, 3000/6)
+	.withRes(300)
 	.withLines(6, 10)
 	.withRefresh(50)
-	.withSeries(&robot.flywheel->targetRpm, LV_COLOR_BLACK)
-	.withSeries(&robot.flywheel->currentRpm, LV_COLOR_BLACK)
-	.withSeries(&robot.flywheel->motorPower, LV_COLOR_BLACK)
-	.withSeries(&robot.flywheel->pid->m_derivative, LV_COLOR_BLACK)
+	.withSeries(&robot.flywheel->targetRpm, LV_COLOR_RED, 6)
+	.withSeries(&robot.flywheel->currentRpm, LV_COLOR_YELLOW, 6)
+	.withSeries(&robot.flywheel->motorPower, LV_COLOR_GREEN)
+	.withSeries(&robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
