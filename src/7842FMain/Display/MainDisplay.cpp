@@ -105,31 +105,32 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_obj_t* overlay = lv_obj_create(parent, NULL);
     lv_obj_set_size(overlay, lv_obj_get_width(parent), lv_obj_get_height(parent));
 
-    lv_style_t style;
-    lv_style_copy(&style, &lv_style_pretty_color);
-    style.body.main_color = display->mainColor;
-    style.body.grad_color = display->mainColor;
-    style.body.border.width = 3;
-    style.body.border.color = LV_COLOR_WHITE;
-    style.body.border.opa = LV_OPA_100;
-    style.body.radius = 0;
-    lv_obj_set_style(overlay, &style);
+    lv_style_t oStyle;
+    lv_style_copy(&oStyle, &lv_style_pretty_color);
+    oStyle.body.main_color = display->mainColor;
+    oStyle.body.grad_color = display->mainColor;
+    oStyle.body.border.width = 3;
+    oStyle.body.border.color = LV_COLOR_WHITE;
+    oStyle.body.border.opa = LV_OPA_100;
+    oStyle.body.radius = 0;
+    lv_obj_set_style(overlay, &oStyle);
 
     lv_obj_t* img = lv_img_create(overlay, NULL);
     lv_img_set_src(img, imgPtr);
     lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
-    lv_style_t imgStyle;
-    lv_style_copy(&imgStyle, &lv_style_plain);
-    lv_img_set_style(img, &imgStyle);
+
+    lv_style_t iStyle;
+    lv_style_copy(&iStyle, &lv_style_plain);
+    lv_img_set_style(img, &iStyle);
 
     lv_anim_t bAnim;
     bAnim.var = overlay; bAnim.start = 0; bAnim.end = 255;
     bAnim.fp = [](void* ioverlay, int32_t val)
     {
       lv_obj_t* overlay = static_cast<lv_obj_t*>(ioverlay);
-      lv_style_t* parentStyle = lv_obj_get_style(overlay);
-      parentStyle->body.border.opa = val;
-      lv_obj_set_style(overlay, parentStyle);
+      lv_style_t* oStyle = lv_obj_get_style(overlay);
+      oStyle->body.border.opa = val;
+      lv_obj_set_style(overlay, oStyle);
     };
     bAnim.path = lv_anim_path_linear;
     bAnim.time = time/2;
@@ -141,9 +142,9 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     iAnim.fp = [](void* iimg, int32_t val)
     {
       lv_obj_t* img = static_cast<lv_obj_t*>(iimg);
-      lv_style_t* imgStyle = lv_img_get_style(img);
-      imgStyle->image.opa = val;
-      lv_img_set_style(img, imgStyle);
+      lv_style_t* iStyle = lv_img_get_style(img);
+      iStyle->image.opa = val;
+      lv_img_set_style(img, iStyle);
     };
     iAnim.path = lv_anim_path_linear;
     iAnim.time = time/3.0;
