@@ -32,6 +32,8 @@ void initialize()
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
 
+  pros::delay(500); //Give the legacy ports time to start up
+
   initializeBase();
   initializeDevices();
   std::cout << "after init heap: " << xPortGetFreeHeapSize() << std::endl;
