@@ -94,11 +94,11 @@ void initializeDevices()
 
 	display.graph = new Graph(display.main->newTab("Graph"));
 	(*display.graph)
-	.withRange(-100, 750)
-	.withRes(100)
+	.withRange(-200, 750)
+	.withRes(200)
 	.withLines(6, 10)
-	.withRefresh(100)
-	.withSeries(&robot.flywheel->currentRpm, LV_COLOR_BLACK)
+	.withRefresh(50)
+	.withSeries(&robot.flywheel->motorPower, LV_COLOR_BLACK)
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
