@@ -92,6 +92,8 @@ void initializeDevices()
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
+	display.graph = new Graph(display.main->newTab("Graph"));
+
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
 }

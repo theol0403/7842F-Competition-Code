@@ -10,6 +10,7 @@
 
 #include "Display/MainDisplay.hpp"
 #include "Display/FlywheelTuner.hpp"
+#include "Display/Graph.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -21,6 +22,7 @@ struct display_t
   MainDisplay* main = nullptr;
   AutonSelector* selector = nullptr;
   FlywheelTuner* flywheel = nullptr;
+  Graph* graph = nullptr;
 };
 
 struct robot_t
