@@ -22,7 +22,7 @@ void initialize()
 {
   std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
 
-  display.main = new MainDisplay(lv_scr_act(), LV_COLOR_BLUE);
+  display.main = new MainDisplay(lv_scr_act(), LV_COLOR_BLACK);
   LV_IMG_DECLARE(img_navigators);
   display.main->splashScreen(&img_navigators, 3000);
 
