@@ -53,7 +53,7 @@ tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
   style_pr->body.grad_color = LV_COLOR_WHITE;
   style_pr->text.color = mainColor;
   style_pr->body.border.width = 0;
-  style_pr->text.color = LV_COLOR_WHITE;
+  style_pr->text.color = mainColor;
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_PR, style_pr);
   lv_tabview_set_style(tabview, LV_TABVIEW_STYLE_BTN_TGL_PR, style_pr);
 
@@ -91,11 +91,11 @@ lv_obj_t* MainDisplay::getParent() {
 
 void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
 
+  //the task needs to know information
   using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
 
   void (*func)(void*) = [](void* input){
-    Passer* passer = static_cast<Passer*>(input);
-    MainDisplay* display = std::get<0>(*passer);
+    auto [display, imgPtr, time] = *static_cast<Passer*>(input);
 
     lv_obj_t* parent = lv_layer_top();
 
@@ -106,33 +106,41 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_style_copy(&style, &lv_style_pretty_color);
     style.body.main_color = display->mainColor;
     style.body.grad_color = display->mainColor;
+    style.body.border.width = 5;
+    style.body.border.color = LV_COLOR_WHITE;
+    style.body.border.opa = LV_OPA_100;
+    style.body.radius = 0;
     lv_obj_set_style(overlay, &style);
 
     lv_obj_t* img = lv_img_create(overlay, NULL);
-    lv_img_set_src(img, std::get<1>(*passer));
+    lv_img_set_src(img, imgPtr);
     lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_style_t imgStyle;
     lv_style_copy(&imgStyle, &lv_style_plain);
     lv_img_set_style(img, &imgStyle);
 
     lv_anim_t a;
-    a.var = img; a.start = 255; a.end = 0;
-    a.fp = (lv_anim_fp_t)[](void* iimg, long int val)
+    a.var = img; a.start = 0; a.end = 100;
+    a.fp = [](void* iimg, int32_t val)
     {
       lv_obj_t* img = static_cast<lv_obj_t*>(iimg);
-      lv_style_t* style = lv_img_get_style(img);
-      style->image.intense = val;
-      lv_img_set_style(img, style);
+      lv_style_t* imgStyle = lv_img_get_style(img);
+      imgStyle->image.opa = val/100.0*255.0;
+      lv_img_set_style(img, imgStyle);
+      lv_obj_t* parent = lv_obj_get_parent(img);
+      lv_style_t* parentStyle = lv_obj_get_style(parent);
+      parentStyle->body.border.opa = 255 - val/100.0*255.0;
+      lv_obj_set_style(parent, parentStyle);
     };
     a.path = lv_anim_path_linear;
-    a.time = std::get<2>(*passer)/2;
+    a.time = time/2;
     a.end_cb = NULL; a.act_time = 0; a.playback = 0; a.playback_pause = 0; a.repeat = 0; a.repeat_pause = 0;
     lv_anim_create(&a);
 
-    pros::delay(std::get<2>(*passer));
+    pros::delay(time);
 
     lv_obj_del(overlay);
-    delete passer;
+    delete static_cast<Passer*>(input);
 
     pros::c::task_delete(CURRENT_TASK);
   };
