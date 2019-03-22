@@ -87,6 +87,8 @@ lv_obj_t* MainDisplay::getParent() {
   return lv_obj_get_parent(tabview);
 }
 
+
+
 void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
 
   using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
@@ -109,6 +111,23 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_obj_t* img = lv_img_create(overlay, NULL);
     lv_img_set_src(img, std::get<1>(*passer));
     lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+    lv_style_t imgStyle;
+    lv_style_copy(&imgStyle, &lv_style_plain);
+    lv_img_set_style(img, &imgStyle);
+
+    lv_anim_t a;
+    a.var = img; a.start = 255; a.end = 0;
+    a.fp = (lv_anim_fp_t)[](void* iimg, long int val)
+    {
+      lv_obj_t* img = static_cast<lv_obj_t*>(iimg);
+      lv_style_t* style = lv_img_get_style(img);
+      style->image.intense = val;
+      lv_img_set_style(img, style);
+    };
+    a.path = lv_anim_path_linear;
+    a.time = std::get<2>(*passer)/2;
+    a.end_cb = NULL; a.act_time = 0; a.playback = 0; a.playback_pause = 0; a.repeat = 0; a.repeat_pause = 0;
+    lv_anim_create(&a);
 
     pros::delay(std::get<2>(*passer));
 
