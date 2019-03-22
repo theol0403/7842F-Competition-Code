@@ -87,7 +87,6 @@ lv_obj_t* MainDisplay::getParent() {
   return lv_obj_get_parent(tabview);
 }
 
-
 void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
 
   using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
@@ -96,7 +95,7 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     Passer* passer = static_cast<Passer*>(input);
     MainDisplay* display = std::get<0>(*passer);
 
-    lv_obj_t* parent = display->getParent();
+    lv_obj_t* parent = lv_layer_top();
 
     lv_obj_t* overlay = lv_obj_create(parent, NULL);
     lv_obj_set_size(overlay, lv_obj_get_width(parent), lv_obj_get_height(parent));
@@ -112,7 +111,7 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_obj_align(img, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
     pros::delay(std::get<2>(*passer));
-    
+
     lv_obj_del(overlay);
     delete passer;
 
