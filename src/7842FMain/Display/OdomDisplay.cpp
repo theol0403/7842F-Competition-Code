@@ -85,10 +85,10 @@ OdomDisplay::~OdomDisplay() {
 
 
 void OdomDisplay::drawRobot() {
+  double x = tracker->getX().convert(court);
+  double y = (1_crt - tracker->getY()).convert(court);
 
-
-
-
+  lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2);
 }
 
 
