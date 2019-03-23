@@ -13,8 +13,6 @@ public:
   lv_obj_t* field = nullptr;
   double fieldDim = 0;
 
-  lv_obj_t* led = nullptr;
-
   pros::Task task;
 
 
@@ -22,7 +20,7 @@ public:
   OdomDisplay(lv_obj_t*, lv_color_t, lib7842::OdomTracker*);
   ~OdomDisplay();
 
-  void drawRobot();
+  void run();
 
   static void taskFnc(void*);
 

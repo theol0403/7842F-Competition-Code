@@ -62,21 +62,6 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     }
   }
 
-
-  led = lv_led_create(field, NULL);
-  lv_led_on(led);
-  lv_obj_set_size(led, tileDim / 3, tileDim / 3);
-
-  lv_style_t* ledStyle = new lv_style_t;
-  lv_style_copy(ledStyle, &lv_style_pretty_color);
-  ledStyle->body.radius = LV_RADIUS_CIRCLE;
-  ledStyle->body.main_color = LV_COLOR_PURPLE;
-  ledStyle->body.grad_color = LV_COLOR_PURPLE;
-  ledStyle->body.border.color = LV_COLOR_WHITE;
-  ledStyle->body.border.width = 2;
-  ledStyle->body.border.opa = LV_OPA_100;
-  lv_obj_set_style(led, ledStyle);
-
 }
 
 OdomDisplay::~OdomDisplay() {
@@ -84,20 +69,61 @@ OdomDisplay::~OdomDisplay() {
 }
 
 
-void OdomDisplay::drawRobot() {
-  double x = tracker->getX().convert(court);
-  double y = tracker->getY().convert(court);
 
-  lv_obj_align(led, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, (x * fieldDim) - lv_obj_get_width(led)/2.0, -y * fieldDim - lv_obj_get_height(led)/2.0);
+void OdomDisplay::run() {
+
+  lv_obj_t* led = lv_led_create(field, NULL);
+  lv_led_on(led);
+  lv_obj_set_size(led, fieldDim / 18, fieldDim / 18);
+
+  lv_style_t ledStyle;
+  lv_style_copy(&ledStyle, &lv_style_plain);
+  ledStyle.body.radius = LV_RADIUS_CIRCLE;
+  ledStyle.body.main_color = LV_COLOR_PURPLE;
+  ledStyle.body.grad_color = LV_COLOR_PURPLE;
+  ledStyle.body.border.color = LV_COLOR_WHITE;
+  ledStyle.body.border.width = 2;
+  ledStyle.body.border.opa = LV_OPA_100;
+  lv_obj_set_style(led, &ledStyle);
+
+  std::vector<lv_point_t> points = {{0, 0}, {0, 0}};
+
+  lv_obj_t* arrow = lv_line_create(field, NULL);
+  //lv_line_set_y_invert(arrow, true);
+  lv_line_set_points(arrow, points.data(), points.size());
+  lv_obj_set_pos(arrow, 0, 0);
+
+  lv_style_t arrowStyle;
+  lv_style_copy(&arrowStyle, &lv_style_plain);
+    const int lineWidth = 2;
+  arrowStyle.line.width = lineWidth;
+  arrowStyle.line.opa = LV_OPA_100;
+  arrowStyle.line.color = LV_COLOR_WHITE;
+  lv_obj_set_style(arrow, &arrowStyle);
+
+  const int arrowHeight = 20;
+
+  while(true) {
+
+    double x = tracker->getX().convert(court);
+    double y = (1_crt - tracker->getY()).convert(court);
+    double theta = tracker->getTheta().convert(radian);
+
+    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2);
+
+    points[0] = {(short)((x * fieldDim) - (lineWidth/2)), (short)(y * fieldDim)};
+    points[1] = {(short)((arrowHeight * cos(theta)) + points[0].x), (short)(0)};
+    lv_line_set_points(arrow, points.data(), points.size());
+    lv_obj_invalidate(arrow);
+
+    pros::delay(100);
+  }
+
 }
 
 
 void OdomDisplay::taskFnc(void* input)
 {
   OdomDisplay* that = static_cast<OdomDisplay*>(input);
-
-  while(true) {
-    that->drawRobot();
-    pros::delay(100);
-  }
+  that->run();
 }
