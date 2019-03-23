@@ -10,6 +10,8 @@ public:
   lv_obj_t* container = nullptr;
   pros::Task odomDisplayTask;
 
+  lv_obj_t* arrow = nullptr;
+
   OdomDisplay(lv_obj_t*, lib7842::OdomTracker*);
   OdomDisplay(lv_obj_t*, lv_color_t, lib7842::OdomTracker*);
   ~OdomDisplay();
