@@ -23,7 +23,7 @@ tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
   lv_style_copy(style_btn_bg, &lv_style_transp);
   style_btn_bg->body.main_color = mainColor;
   style_btn_bg->body.grad_color = mainColor;
-  style_btn_bg->body.padding.ver = -10;
+  style_btn_bg->body.padding.ver = -15;
   style_btn_bg->body.padding.hor = 0;
   style_btn_bg->body.padding.inner = 1;
   style_btn_bg->text.color = LV_COLOR_WHITE;

@@ -11,12 +11,15 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   lv_style_copy(cStyle, &lv_style_plain_color);
   cStyle->body.main_color = mainColor;
   cStyle->body.grad_color = mainColor;
+  cStyle->body.border.width = 0;
+  cStyle->body.radius = 0;
   lv_obj_set_style(container, cStyle);
 
   field = lv_obj_create(container, NULL);
   fieldDim = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
   lv_obj_set_size(field, fieldDim, fieldDim);
-  lv_obj_align(field, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  lv_obj_set_style(field, cStyle);
 
   lv_style_t* grey = new lv_style_t;
   lv_style_t* red = new lv_style_t;
@@ -54,7 +57,6 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     }
   }
 
-
 }
 
 OdomDisplay::~OdomDisplay() {
@@ -64,20 +66,7 @@ OdomDisplay::~OdomDisplay() {
 
 void OdomDisplay::run() {
 
-  lv_point_t origPoints[] = { {0, 0}, {30, 0}, {24, -6}, {30, 0}, {24, 6}, {30, 0} };
-  lv_point_t newPoints[6];
-
-  lv_obj_t* arrow = lv_line_create(field, NULL);
-  lv_obj_set_pos(arrow, 12, 108);
-  lv_obj_set_style(arrow, &lv_style_plain);
-
   while(true) {
-
-    lv_obj_set_pos(arrow, tracker->state.x.convert(foot)/12 * fieldDim, (12_ft - tracker->state.y).convert(foot)/12 * fieldDim);
-    // rotateIt(origPoints, newPoints, 6, yeet.o);
-    // fix(newPoints, 6);
-    lv_line_set_points(arrow, origPoints, 6);
-    lv_obj_invalidate(arrow);
 
     pros::delay(100);
   }
