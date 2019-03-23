@@ -29,6 +29,7 @@ constexpr QLength yard = 3 * foot;
 constexpr QLength mile = 5280 * foot;
 
 constexpr QLength tile = 2 * foot;
+constexpr QLength court = 12 * foot;
 
 inline namespace literals {
 constexpr QLength operator"" _mm(long double x) {
@@ -58,6 +59,9 @@ constexpr QLength operator"" _in(long double x) {
 constexpr QLength operator"" _tl(long double x) {
   return static_cast<double>(x) * tile;
 }
+constexpr QLength operator"" _crt(long double x) {
+  return static_cast<double>(x) * court;
+}
 constexpr QLength operator"" _mm(unsigned long long int x) {
   return static_cast<double>(x) * millimeter;
 }
@@ -84,6 +88,9 @@ constexpr QLength operator"" _in(unsigned long long int x) {
 }
 constexpr QLength operator"" _tl(unsigned long long int x) {
   return static_cast<double>(x) * tile;
+}
+constexpr QLength operator"" _crt(unsigned long long int x) {
+  return static_cast<double>(x) * court;
 }
 
 } // namespace literals
