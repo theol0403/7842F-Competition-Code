@@ -2,8 +2,8 @@
 
 OdomDisplay::OdomDisplay(lv_obj_t* parent, lib7842::OdomTracker* tracker) : OdomDisplay(parent, lv_obj_get_style(parent)->body.main_color, tracker) {}
 
-OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t mainColor, lib7842::OdomTracker* tracker) :
-container(lv_obj_create(parent, NULL)), task(taskFnc, this)
+OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t mainColor, lib7842::OdomTracker* itracker) :
+container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
 {
   lv_obj_set_size(container, lv_obj_get_width(parent), lv_obj_get_height(parent));
   lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
@@ -13,8 +13,8 @@ container(lv_obj_create(parent, NULL)), task(taskFnc, this)
   cStyle->body.grad_color = mainColor;
   lv_obj_set_style(container, cStyle);
 
-  lv_obj_t* field = lv_obj_create(container, NULL);
-  int fieldDim = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
+  field = lv_obj_create(container, NULL);
+  fieldDim = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
   lv_obj_set_size(field, fieldDim, fieldDim);
   lv_obj_align(field, NULL, LV_ALIGN_CENTER, 0, 0);
 
@@ -53,13 +53,6 @@ container(lv_obj_create(parent, NULL)), task(taskFnc, this)
       lv_obj_set_style(tile, data[y][x]);
     }
   }
-  // orientationLabel = lv_label_create(field, NULL);
-  // lv_label_set_text(orientationLabel, "Loading...");
-  // arrow = lv_line_create(field, NULL);
-  // lv_obj_set_pos(arrow, 12, 108);
-  // lv_obj_set_style(arrow, lv_style_plain);
-  // updateRobot();
-  // lv_obj_set_hidden(field, true);
 }
 
 OdomDisplay::~OdomDisplay() {
@@ -68,7 +61,21 @@ OdomDisplay::~OdomDisplay() {
 
 
 void OdomDisplay::run() {
+
+  lv_point_t origPoints[] = { {0, 0}, {30, 0}, {24, -6}, {30, 0}, {24, 6}, {30, 0} };
+  lv_point_t newPoints[6];
+
+  lv_obj_t* arrow = lv_line_create(field, NULL);
+  lv_obj_set_pos(arrow, 12, 108);
+  lv_obj_set_style(arrow, &lv_style_plain);
+
   while(true) {
+
+    lv_obj_set_pos(arrow, tracker->state.x.convert(foot)/12 * fieldDim, (12_ft - tracker->state.y).convert(foot)/12 * fieldDim);
+    // rotateIt(origPoints, newPoints, 6, yeet.o);
+    // fix(newPoints, 6);
+    lv_line_set_points(arrow, origPoints, 6);
+    lv_obj_invalidate(arrow);
 
     pros::delay(100);
   }
