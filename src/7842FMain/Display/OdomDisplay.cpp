@@ -86,6 +86,8 @@ void OdomDisplay::run() {
   ledStyle.body.border.color = LV_COLOR_WHITE;
   ledStyle.body.border.width = 2;
   ledStyle.body.border.opa = LV_OPA_100;
+  ledStyle.text.color = LV_COLOR_WHITE;
+  ledStyle.text.opa = LV_OPA_100;
   lv_obj_set_style(led, &ledStyle);
 
   std::vector<lv_point_t> points = {{0, 0}, {0, 0}};
@@ -104,8 +106,19 @@ void OdomDisplay::run() {
 
   int arrowHeight = fieldDim / 6;
 
+  lv_obj_t* label = lv_label_create(container, NULL);
+  lv_obj_set_style(label, &ledStyle);
+  std::string text;
+
+  text =
+  "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
+  "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
+  "Theta: " + std::to_string(tracker->getTheta().convert(degree));
+  lv_label_set_text(label, text.c_str());
+  lv_obj_align(label, container, LV_ALIGN_CENTER, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
+
   while(true) {
-    
+
     double x = tracker->getX().convert(court);
     double y = (1_crt - tracker->getY()).convert(court);
     double theta = tracker->getTheta().convert(radian);
@@ -119,6 +132,12 @@ void OdomDisplay::run() {
 
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
+
+    text =
+    "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
+    "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
+    "Theta: " + std::to_string(tracker->getTheta().convert(degree));
+    lv_label_set_text(label, text.c_str());
 
     pros::delay(50);
   }
