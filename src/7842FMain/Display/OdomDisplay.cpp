@@ -57,6 +57,21 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     }
   }
 
+
+  led = lv_led_create(field, NULL);
+  lv_led_on(led);
+  lv_obj_set_size(led, tileDim / 3, tileDim / 3);
+
+  lv_style_t* ledStyle = new lv_style_t;
+  lv_style_copy(ledStyle, &lv_style_pretty_color);
+  ledStyle->body.radius = LV_RADIUS_CIRCLE;
+  ledStyle->body.main_color = LV_COLOR_YELLOW;
+  ledStyle->body.grad_color = LV_COLOR_YELLOW;
+  ledStyle->body.border.color = LV_COLOR_WHITE;
+  ledStyle->body.border.width = 1;
+  ledStyle->body.border.opa = LV_OPA_100;
+  lv_obj_set_style(led, ledStyle);
+
 }
 
 OdomDisplay::~OdomDisplay() {
@@ -64,16 +79,20 @@ OdomDisplay::~OdomDisplay() {
 }
 
 
-void OdomDisplay::run() {
+void OdomDisplay::drawRobot() {
 
-  while(true) {
 
-    pros::delay(100);
-  }
+
+
 }
+
 
 void OdomDisplay::taskFnc(void* input)
 {
   OdomDisplay* that = static_cast<OdomDisplay*>(input);
-  that->run();
+
+  while(true) {
+    that->drawRobot();
+    pros::delay(100);
+  }
 }
