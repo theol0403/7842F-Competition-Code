@@ -51,10 +51,10 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     {grey, grey, grey, grey, grey, grey}
   };
 
-  int tileDim = fieldDim / data.size();
+  double tileDim = fieldDim / data.size();
 
-  for(int y = 0; y < data.size(); y++) {
-    for(int x = 0; x < data[y].size(); x++) {
+  for(double y = 0; y < data.size(); y++) {
+    for(double x = 0; x < data[y].size(); x++) {
       lv_obj_t* tile = lv_obj_create(field, NULL);
       lv_obj_set_pos(tile, x * tileDim, y * tileDim);
       lv_obj_set_size(tile, tileDim, tileDim);
@@ -72,15 +72,17 @@ OdomDisplay::~OdomDisplay() {
 
 void OdomDisplay::run() {
 
+  lv_color_t mainColor = lv_obj_get_style(container)->body.main_color;
+
   lv_obj_t* led = lv_led_create(field, NULL);
   lv_led_on(led);
-  lv_obj_set_size(led, fieldDim / 18, fieldDim / 18);
+  lv_obj_set_size(led, fieldDim / 15, fieldDim / 15);
 
   lv_style_t ledStyle;
   lv_style_copy(&ledStyle, &lv_style_plain);
   ledStyle.body.radius = LV_RADIUS_CIRCLE;
-  ledStyle.body.main_color = LV_COLOR_PURPLE;
-  ledStyle.body.grad_color = LV_COLOR_PURPLE;
+  ledStyle.body.main_color = mainColor;
+  ledStyle.body.grad_color = mainColor;
   ledStyle.body.border.color = LV_COLOR_WHITE;
   ledStyle.body.border.width = 2;
   ledStyle.body.border.opa = LV_OPA_100;
@@ -89,37 +91,36 @@ void OdomDisplay::run() {
   std::vector<lv_point_t> points = {{0, 0}, {0, 0}};
 
   lv_obj_t* arrow = lv_line_create(field, NULL);
-  //lv_line_set_y_invert(arrow, true);
   lv_line_set_points(arrow, points.data(), points.size());
   lv_obj_set_pos(arrow, 0, 0);
 
   lv_style_t arrowStyle;
   lv_style_copy(&arrowStyle, &lv_style_plain);
-  const int lineWidth = 4;
+  const int lineWidth = 2;
   arrowStyle.line.width = lineWidth;
   arrowStyle.line.opa = LV_OPA_100;
-  arrowStyle.line.color = LV_COLOR_WHITE;
+  arrowStyle.line.color = mainColor;
   lv_obj_set_style(arrow, &arrowStyle);
 
-  const int arrowHeight = 20;
+  int arrowHeight = fieldDim / 6;
 
   while(true) {
-
+    
     double x = tracker->getX().convert(court);
     double y = (1_crt - tracker->getY()).convert(court);
     double theta = tracker->getTheta().convert(radian);
-    
-    //    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2);
 
-    points[0] = {(short)((x * fieldDim) - (lineWidth/2)), (short)((y * fieldDim) - (lineWidth/2))};
+    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2 - 1);
+
+    points[0] = {(short)((x * fieldDim)), (short)((y * fieldDim) - (lineWidth/2))};
     double newY = arrowHeight * cos(theta);
-    double newX = std::sqrt(ipow(arrowHeight, 2) - ipow(newY, 2));
+    double newX = arrowHeight * sin(theta);
     points[1] = {(short)(newX + points[0].x), (short)(-newY + points[0].y)};
 
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
 
-    pros::delay(100);
+    pros::delay(50);
   }
 
 }
