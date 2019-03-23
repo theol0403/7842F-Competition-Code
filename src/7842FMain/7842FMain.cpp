@@ -20,7 +20,7 @@
 */
 void initialize()
 {
-  std::cout << "startup heap: " << xPortGetFreeHeapSize() << std::endl;
+  std::cout << "startup heap:    " << xPortGetFreeHeapSize() << std::endl;
 
   display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
   LV_IMG_DECLARE(img_navigators);
@@ -36,7 +36,7 @@ void initialize()
 
   initializeBase();
   initializeDevices();
-  std::cout << "after init heap: " << xPortGetFreeHeapSize() << std::endl;
+  std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
 }
 
 /***

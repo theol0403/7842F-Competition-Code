@@ -5,7 +5,8 @@ lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_CO
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) : FlywheelTuner(parent, lv_obj_get_style(parent)->body.main_color) {}
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent, lv_color_t imainColor) :
-container(lv_obj_create(parent, NULL)), mainColor(imainColor)
+container(lv_obj_create(parent, NULL)), mainColor(imainColor),
+task(taskFnc, this)
 {
   /**
   * Container
@@ -135,7 +136,6 @@ void FlywheelTuner::build() {
 
   double offset = 0.0;
   for(auto &gauge : gauges) {
-    if(gaugeTask == nullptr) gaugeTask = new pros::Task(gaugeLoop, this);
     lv_obj_t* &lv_gauge = std::get<2>(gauge);
     lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
     lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
@@ -213,15 +213,15 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
     }
   }
 
-  that->calcLabels();
-
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
 
 
-void FlywheelTuner::gaugeLoop(void* input) {
+void FlywheelTuner::taskFnc(void* input) {
   FlywheelTuner* that = static_cast<FlywheelTuner*>(input);
   while(true) {
+    that->calcLabels();
+
     for(auto &gauge : that->gauges) {
       int i = 0;
       for(double* variable : std::get<1>(gauge)) {
@@ -229,7 +229,7 @@ void FlywheelTuner::gaugeLoop(void* input) {
         i++;
       }
     }
-    pros::delay(10);
+    pros::delay(50);
   }
 
 }

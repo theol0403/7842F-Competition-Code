@@ -26,11 +26,12 @@ public:
   lv_obj_t* container = nullptr;
   lv_color_t mainColor;
 
+  pros::Task task;
+
   std::vector<std::tuple<std::string, button_t, lv_obj_t*>> buttons = {};
   double multiplier = 1;
 
   std::vector<std::tuple<std::string, std::vector<double*>, lv_obj_t*>> gauges = {};
-  pros::Task* gaugeTask = nullptr;
 
   FlywheelTuner(lv_obj_t*);
   FlywheelTuner(lv_obj_t*, lv_color_t);
@@ -43,6 +44,7 @@ public:
   void calcLabels();
 
   static lv_res_t btnAction(lv_obj_t*, const char*);
-  static void gaugeLoop(void*);
+
+  static void taskFnc(void*);
 
 };
