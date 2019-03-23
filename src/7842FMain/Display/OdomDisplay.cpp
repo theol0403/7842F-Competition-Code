@@ -3,7 +3,7 @@
 OdomDisplay::OdomDisplay(lv_obj_t* parent, lib7842::OdomTracker* tracker) : OdomDisplay(parent, lv_obj_get_style(parent)->body.main_color, tracker) {}
 
 OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t mainColor, lib7842::OdomTracker* tracker) :
-container(lv_obj_create(parent, NULL)), odomDisplayTask(task, this)
+container(lv_obj_create(parent, NULL)), task(taskFnc, this)
 {
   lv_obj_set_size(container, lv_obj_get_width(parent), lv_obj_get_height(parent));
   lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
@@ -74,7 +74,7 @@ void OdomDisplay::run() {
   }
 }
 
-void OdomDisplay::task(void* input)
+void OdomDisplay::taskFnc(void* input)
 {
   OdomDisplay* that = static_cast<OdomDisplay*>(input);
   that->run();

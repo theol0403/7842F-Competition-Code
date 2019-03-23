@@ -4,7 +4,7 @@ using namespace lib7842;
 
 VisionController::VisionController(pros::Vision* isensor, lv_obj_t* iparent) :
 sensor(isensor), parent(iparent),
-visionTask(task, this)
+task(taskFnc, this)
 {
 }
 
@@ -44,7 +44,7 @@ void VisionController::run()
 }
 
 
-void VisionController::task(void* input)
+void VisionController::taskFnc(void* input)
 {
   pros::delay(500);
   VisionController* that = static_cast<VisionController*>(input);

@@ -2,7 +2,7 @@
 
 FlywheelController::FlywheelController(IntakeController*& iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::emaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
 intake(iintake), flywheel{iflywheel}, sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),
-flywheelTask(task, this) {
+task(taskFnc, this) {
   flywheel->move(0);
 }
 
@@ -81,7 +81,7 @@ void FlywheelController::run()
 
 
 
-void FlywheelController::task(void* input)
+void FlywheelController::taskFnc(void* input)
 {
   pros::delay(500);
   FlywheelController* that = static_cast<FlywheelController*>(input);

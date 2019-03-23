@@ -28,7 +28,8 @@ namespace lib7842
     const double m_degToInch;
 
     std::function<void(OdomTracker*)> m_trackerFunc;
-    pros::Task m_trackerTask;
+
+    pros::Task m_task;
 
     qPoint state {0_in, 0_in, 0_rad};
 
@@ -48,7 +49,7 @@ namespace lib7842
     void resetState();
     void resetSensors();
 
-    static void odometryTask(void*);
+    static void taskFnc(void*);
 
     static void aTracking(OdomTracker*);
     static void mTracking(OdomTracker*);

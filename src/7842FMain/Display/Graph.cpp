@@ -54,7 +54,7 @@ Graph &Graph::withSeries(double* variable, lv_color_t color, double scale) {
 
 
 void Graph::build() {
-  if(graphTask == nullptr) graphTask = new pros::Task(task, this);
+  if(task == nullptr) task = new pros::Task(taskFnc, this);
 }
 
 
@@ -67,7 +67,7 @@ void Graph::run() {
   }
 }
 
-void Graph::task(void* input)
+void Graph::taskFnc(void* input)
 {
   Graph* that = static_cast<Graph*>(input);
   that->run();

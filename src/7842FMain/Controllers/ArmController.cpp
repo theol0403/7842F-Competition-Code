@@ -2,7 +2,7 @@
 
 ArmController::ArmController(Motor* iarm, IterativePosPIDController* ipid) :
 arm(iarm), pid(ipid),
-armTask(task, this)
+task(taskFnc, this)
 {
   arm->setBrakeMode(AbstractMotor::brakeMode::coast);
   startAngle = arm->getPosition();
@@ -64,7 +64,7 @@ void ArmController::run()
 }
 
 
-void ArmController::task(void* input)
+void ArmController::taskFnc(void* input)
 {
   pros::delay(500);
   ArmController* that = static_cast<ArmController*>(input);

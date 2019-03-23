@@ -18,7 +18,8 @@ public:
   Motor* indexer = nullptr;
   pros::ADILineSensor* lineSensor = nullptr;
   okapi::EmaFilter sensorFilter;
-  pros::Task intakeTask;
+
+  pros::Task task;
 
   intakeStates intakeState = off;
   bool hasBall = false;
@@ -33,6 +34,6 @@ public:
   void enable();
 
   void run();
-  static void task(void*);
-  
+  static void taskFnc(void*);
+
 };

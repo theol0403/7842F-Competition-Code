@@ -14,7 +14,7 @@ namespace lib7842
   m_wheelDiam(wheelDiam),
   m_degToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
   m_trackerFunc(trackerFunc),
-  m_trackerTask(odometryTask, this)
+  m_task(taskFnc, this)
   {
     resetSensors();
     resetState();
@@ -71,7 +71,7 @@ namespace lib7842
   }
 
 
-  void OdomTracker::odometryTask(void* input)
+  void OdomTracker::taskFnc(void* input)
   {
     OdomTracker* that = static_cast<OdomTracker*>(input);
     pros::delay(500);

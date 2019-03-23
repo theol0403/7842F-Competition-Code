@@ -18,7 +18,8 @@ public:
   Motor* arm = nullptr;
   double startAngle = 0;
   IterativePosPIDController* pid = nullptr;
-  pros::Task armTask;
+
+  pros::Task task;
 
   armStates armState = off;
 
@@ -29,6 +30,6 @@ public:
   double getArmAngle();
 
   void run();
-  static void task(void*);
-  
+  static void taskFnc(void*);
+
 };

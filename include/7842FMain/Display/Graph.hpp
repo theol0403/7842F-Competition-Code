@@ -10,7 +10,7 @@ public:
   int refresh = 100;
   std::vector<std::tuple<lv_chart_series_t*, double*, double>> series = {};
 
-  pros::Task* graphTask = nullptr;
+  pros::Task* task = nullptr;
 
   Graph(lv_obj_t*);
   Graph(lv_obj_t*, lv_color_t);
@@ -26,6 +26,6 @@ public:
   void build();
 
   void run();
-  static void task(void*);
+  static void taskFnc(void*);
 
 };

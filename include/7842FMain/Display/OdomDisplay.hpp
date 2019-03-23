@@ -8,7 +8,8 @@ class OdomDisplay
 public:
 
   lv_obj_t* container = nullptr;
-  pros::Task odomDisplayTask;
+
+  pros::Task task;
 
   lv_obj_t* arrow = nullptr;
 
@@ -17,6 +18,6 @@ public:
   ~OdomDisplay();
 
   void run();
-  static void task(void*);
+  static void taskFnc(void*);
 
 };

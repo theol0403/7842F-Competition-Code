@@ -18,7 +18,7 @@ public:
   lib7842::velPID* pid = nullptr;
   double motorSlew;
 
-  pros::Task flywheelTask;
+  pros::Task task;
 
   double targetRpm = 0;
   double currentRpm = 0;
@@ -37,6 +37,6 @@ public:
   void resetSlew();
 
   void run();
-  static void task(void*);
+  static void taskFnc(void*);
 
 };

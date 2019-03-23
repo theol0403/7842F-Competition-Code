@@ -45,7 +45,8 @@ public:
   FlywheelController*& flywheel;
   pros::ADIPotentiometer* hoodSensor = nullptr;
   double backAngle = 0;
-  pros::Task shootTask;
+
+  pros::Task task;
 
   const shootStates defaultState = standby;
 
@@ -87,6 +88,6 @@ public:
   double computeHoodPower(double);
 
   void run();
-  static void task(void*);
+  static void taskFnc(void*);
 
 };

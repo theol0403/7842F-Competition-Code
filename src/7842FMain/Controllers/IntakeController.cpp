@@ -2,7 +2,7 @@
 
 IntakeController::IntakeController(Motor* iintake, Motor* iindexer, pros::ADILineSensor* ilineSensor, double isensorEma) :
 intake(iintake), indexer(iindexer), lineSensor(ilineSensor), sensorFilter(isensorEma),
-intakeTask(task, this)
+task(taskFnc, this)
 {
 }
 
@@ -74,7 +74,7 @@ void IntakeController::run()
 }
 
 
-void IntakeController::task(void* input)
+void IntakeController::taskFnc(void* input)
 {
   pros::delay(500);
   IntakeController* that = static_cast<IntakeController*>(input);

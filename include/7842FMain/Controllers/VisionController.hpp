@@ -11,11 +11,11 @@ public:
   pros::Vision* sensor = nullptr;
   lv_obj_t* parent = nullptr;
 
-  pros::Task visionTask;
+  pros::Task task;
 
   VisionController(pros::Vision*, lv_obj_t*);
 
   void run();
-  static void task(void*);
+  static void taskFnc(void*);
 
 };

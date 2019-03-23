@@ -2,7 +2,7 @@
 
 ShootController::ShootController(IntakeController*& iintake, FlywheelController*& iflywheel, pros::ADIPotentiometer* ihoodSensor, double ibackAngle, IterativePosPIDController* ihoodPid) :
 intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle), hoodPid(ihoodPid),
-shootTask(task, this)
+task(taskFnc, this)
 {
 }
 
@@ -317,7 +317,7 @@ void ShootController::run()
 }
 
 
-void ShootController::task(void* input)
+void ShootController::taskFnc(void* input)
 {
   pros::delay(500);
   ShootController* that = static_cast<ShootController*>(input);
