@@ -19,7 +19,12 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   fieldDim = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
   lv_obj_set_size(field, fieldDim, fieldDim);
   lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-  lv_obj_set_style(field, cStyle);
+
+  lv_style_t* fStyle = new lv_style_t;
+  lv_style_copy(fStyle, cStyle);
+  fStyle->body.main_color = LV_COLOR_WHITE;
+  fStyle->body.grad_color = LV_COLOR_WHITE;
+  lv_obj_set_style(field, fStyle);
 
   lv_style_t* grey = new lv_style_t;
   lv_style_t* red = new lv_style_t;
@@ -46,7 +51,7 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     {grey, grey, grey, grey, grey, grey}
   };
 
-  double tileDim = fieldDim / data.size();
+  int tileDim = fieldDim / data.size();
 
   for(int y = 0; y < data.size(); y++) {
     for(int x = 0; x < data[y].size(); x++) {
@@ -65,10 +70,10 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   lv_style_t* ledStyle = new lv_style_t;
   lv_style_copy(ledStyle, &lv_style_pretty_color);
   ledStyle->body.radius = LV_RADIUS_CIRCLE;
-  ledStyle->body.main_color = LV_COLOR_YELLOW;
-  ledStyle->body.grad_color = LV_COLOR_YELLOW;
+  ledStyle->body.main_color = LV_COLOR_PURPLE;
+  ledStyle->body.grad_color = LV_COLOR_PURPLE;
   ledStyle->body.border.color = LV_COLOR_WHITE;
-  ledStyle->body.border.width = 1;
+  ledStyle->body.border.width = 2;
   ledStyle->body.border.opa = LV_OPA_100;
   lv_obj_set_style(led, ledStyle);
 

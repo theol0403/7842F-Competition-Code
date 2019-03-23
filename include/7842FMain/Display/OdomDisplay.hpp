@@ -11,7 +11,7 @@ public:
   lib7842::OdomTracker* tracker = nullptr;
 
   lv_obj_t* field = nullptr;
-  double fieldDim = 0;
+  int fieldDim = 0;
 
   lv_obj_t* led = nullptr;
 
