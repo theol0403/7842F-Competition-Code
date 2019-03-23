@@ -28,7 +28,8 @@ public:
 
   pros::Task task;
 
-  std::vector<std::tuple<std::string, button_t, lv_obj_t*>> buttons = {};
+  using ButtonGroup = std::tuple<std::string, button_t, lv_obj_t*>;
+  std::vector<ButtonGroup> buttons = {};
   double multiplier = 1;
 
   std::vector<std::tuple<std::string, std::vector<double*>, lv_obj_t*>> gauges = {};

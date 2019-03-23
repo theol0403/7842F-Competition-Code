@@ -135,16 +135,15 @@ void FlywheelTuner::build() {
   double gaugeSize = std::min((double)lv_obj_get_width(container) / gauges.size(), lv_obj_get_height(container) - lv_obj_get_height(container)/5.0);
 
   double offset = 0.0;
-  for(auto &gauge : gauges) {
-    lv_obj_t* &lv_gauge = std::get<2>(gauge);
-    lv_obj_set_size(lv_gauge, gaugeSize, gaugeSize);
-    lv_gauge_set_needle_count(lv_gauge, std::get<1>(gauge).size(), needleColors);
-    lv_gauge_set_style(lv_gauge, style_gauge);
+  for(auto &[name, variables, gauge] : gauges) {
+    lv_obj_set_size(gauge, gaugeSize, gaugeSize);
+    lv_gauge_set_needle_count(gauge, variables.size(), needleColors);
+    lv_gauge_set_style(gauge, style_gauge);
     offset += (double)lv_obj_get_width(container)/gauges.size();
-    lv_obj_align(lv_gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
+    lv_obj_align(gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
 
     lv_obj_t* label = lv_label_create(container, NULL);
-    lv_label_set_text(label, std::get<0>(gauge).c_str());
+    lv_label_set_text(label, name.c_str());
     lv_obj_set_style(label, style_gauge_label);
     lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - lv_obj_get_width(label)/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + lv_obj_get_height(label)/2.0 + gaugeSize/3.0);
   }
@@ -154,11 +153,10 @@ void FlywheelTuner::build() {
 
 void FlywheelTuner::calcLabels() {
   double offset = 0.0;
-  for(auto &button : buttons) {
-    lv_obj_t* label = std::get<2>(button);
+  for(auto &[name, button, label] : buttons) {
     std::stringstream str;
     int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal
-    str << std::setprecision(width) << *std::get<1>(button).variable;
+    str << std::setprecision(width) << *button.variable;
     if(width > str.str().size()) width = str.str().size();
     str.str().erase(width, std::string::npos);
     lv_label_set_text(label, str.str().c_str());
@@ -175,7 +173,8 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
   bool sign = label.at(labelPos) == '+' ? true : false;
   label.erase(labelPos, std::string::npos);
 
-  auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const std::tuple<std::string, button_t, lv_obj_t*> &button){ return std::get<0>(button) == label; });
+  //find button in main vector from name
+  auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const ButtonGroup &button){ return std::get<0>(button) == label; });
   if (search == that->buttons.end()) {
     std::cerr << "FlywheelTuner::btnAction : no label found" << std::endl;
   }
@@ -222,10 +221,10 @@ void FlywheelTuner::taskFnc(void* input) {
   while(true) {
     that->calcLabels();
 
-    for(auto &gauge : that->gauges) {
+    for(auto &[name, variables, gauge] : that->gauges) {
       int i = 0;
-      for(double* variable : std::get<1>(gauge)) {
-        lv_gauge_set_value(std::get<2>(gauge), i, *variable);
+      for(double* variable : variables) {
+        lv_gauge_set_value(gauge, i, *variable);
         i++;
       }
     }
