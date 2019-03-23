@@ -18,7 +18,6 @@ container(lv_obj_create(parent, NULL)), mainColor(imainColor)
   cStyle->body.main_color = mainColor;
   cStyle->body.grad_color = mainColor;
   lv_obj_set_style(container, cStyle);
-  lv_obj_set_style(container, cStyle);
 }
 
 FlywheelTuner::~FlywheelTuner() {

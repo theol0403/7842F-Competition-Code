@@ -11,6 +11,7 @@
 #include "Display/MainDisplay.hpp"
 #include "Display/FlywheelTuner.hpp"
 #include "Display/Graph.hpp"
+#include "Display/OdomDisplay.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -23,6 +24,7 @@ struct display_t
   AutonSelector* selector = nullptr;
   FlywheelTuner* flywheel = nullptr;
   Graph* graph = nullptr;
+  OdomDisplay* odom = nullptr;
 };
 
 struct robot_t

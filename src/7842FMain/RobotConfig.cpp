@@ -78,7 +78,7 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	display.flywheel = new FlywheelTuner(display.main->newTab("Flywheel"));
+	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
 	(*display.flywheel)
 	.withButton("kP", &robot.flywheel->pid->m_Kp)
 	.withButton("kD", &robot.flywheel->pid->m_Kd)
@@ -92,7 +92,7 @@ void initializeDevices()
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
-	display.graph = new Graph(display.main->newTab("Fly Graph"));
+	display.graph = new Graph(display.main->newTab("Graph"));
 	(*display.graph)
 	.withRange(-50, 3000.0/6.0)
 	.withRes(300)
@@ -105,6 +105,8 @@ void initializeDevices()
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
+
+	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 
 }
 
