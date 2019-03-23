@@ -23,19 +23,20 @@ container(parent), odomDisplayTask(task, this)
   blue->body.main_color = LV_COLOR_HEX(0x0000FF);
   blue->body.grad_color = LV_COLOR_HEX(0x0000FF);
 
-  auto data = {
+  int tileCount = 6;
+  lv_style_t* data[tileCount][tileCount] = {
     {grey, grey, grey, grey, grey, grey},
     {grey, grey, grey, grey, grey, grey},
     {red , grey, grey, grey, grey, blue},
     {grey, grey, grey, grey, grey, grey},
     {red , grey, grey, grey, grey, blue},
-    {grey, grey, grey, grey, grey, grey},
+    {grey, grey, grey, grey, grey, grey}
   };
 
-  double tileDim = fieldDim / data.size();
+  double tileDim = fieldDim / tileCount;
 
-  for(int y = 0; y < data.size(); y++) {
-    for(int x = 0; x < data[y].size(); x++) {
+  for(int y = 0; y < tileCount; y++) {
+    for(int x = 0; x < tileCount; x++) {
       lv_obj_t* tile = lv_obj_create(field, NULL);
       lv_obj_set_pos(tile, x * tileDim, y * tileDim);
       lv_obj_set_size(tile, tileDim, tileDim);
