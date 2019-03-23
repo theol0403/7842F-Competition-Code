@@ -22,19 +22,19 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   lv_style_t* red = new lv_style_t;
   lv_style_t* blue = new lv_style_t;
   lv_style_copy(grey, &lv_style_plain);
-  grey->body.main_color = LV_COLOR_HEX(0x999999);
-  grey->body.grad_color = LV_COLOR_HEX(0x999999);
+  grey->body.main_color = LV_COLOR_HEX(0x828F8F);
+  grey->body.grad_color = LV_COLOR_HEX(0x828F8F);
   grey->body.border.width = 1;
+  grey->body.radius = 0;
   grey->body.border.color = LV_COLOR_WHITE;
   lv_style_copy(red, grey);
-  red->body.main_color = LV_COLOR_HEX(0xFF0000);
-  red->body.grad_color = LV_COLOR_HEX(0xFF0000);
+  red->body.main_color = LV_COLOR_HEX(0xD42630);
+  red->body.grad_color = LV_COLOR_HEX(0xD42630);
   lv_style_copy(blue, grey);
-  blue->body.main_color = LV_COLOR_HEX(0x0000FF);
-  blue->body.grad_color = LV_COLOR_HEX(0x0000FF);
+  blue->body.main_color = LV_COLOR_HEX(0x0077C9);
+  blue->body.grad_color = LV_COLOR_HEX(0x0077C9);
 
-  int tileCount = 6;
-  lv_style_t* data[tileCount][tileCount] = {
+  std::vector<std::vector<lv_style_t*>> data = {
     {grey, grey, grey, grey, grey, grey},
     {grey, grey, grey, grey, grey, grey},
     {red , grey, grey, grey, grey, blue},
@@ -43,16 +43,18 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     {grey, grey, grey, grey, grey, grey}
   };
 
-  double tileDim = fieldDim / tileCount;
+  double tileDim = fieldDim / data.size();
 
-  for(int y = 0; y < tileCount; y++) {
-    for(int x = 0; x < tileCount; x++) {
+  for(int y = 0; y < data.size(); y++) {
+    for(int x = 0; x < data[y].size(); x++) {
       lv_obj_t* tile = lv_obj_create(field, NULL);
       lv_obj_set_pos(tile, x * tileDim, y * tileDim);
       lv_obj_set_size(tile, tileDim, tileDim);
       lv_obj_set_style(tile, data[y][x]);
     }
   }
+
+
 }
 
 OdomDisplay::~OdomDisplay() {
