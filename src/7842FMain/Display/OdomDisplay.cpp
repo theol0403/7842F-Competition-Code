@@ -95,7 +95,7 @@ void OdomDisplay::run() {
 
   lv_style_t arrowStyle;
   lv_style_copy(&arrowStyle, &lv_style_plain);
-    const int lineWidth = 2;
+  const int lineWidth = 4;
   arrowStyle.line.width = lineWidth;
   arrowStyle.line.opa = LV_OPA_100;
   arrowStyle.line.color = LV_COLOR_WHITE;
@@ -108,11 +108,14 @@ void OdomDisplay::run() {
     double x = tracker->getX().convert(court);
     double y = (1_crt - tracker->getY()).convert(court);
     double theta = tracker->getTheta().convert(radian);
+    
+    //    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2);
 
-    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2);
+    points[0] = {(short)((x * fieldDim) - (lineWidth/2)), (short)((y * fieldDim) - (lineWidth/2))};
+    double newY = arrowHeight * cos(theta);
+    double newX = std::sqrt(ipow(arrowHeight, 2) - ipow(newY, 2));
+    points[1] = {(short)(newX + points[0].x), (short)(-newY + points[0].y)};
 
-    points[0] = {(short)((x * fieldDim) - (lineWidth/2)), (short)(y * fieldDim)};
-    points[1] = {(short)((arrowHeight * cos(theta)) + points[0].x), (short)(0)};
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
 
