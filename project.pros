@@ -142,6 +142,21 @@
                 ],
                 "version": "3.1.7"
             },
+            "lib7842Fstatic": {
+                "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\lib7842Fstatic@1.0.0",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "lib7842Fstatic",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.1.7",
+                "system_files": [
+                    "firmware\\lib7842Fstatic.a"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "1.0.0"
+            },
             "okapilib": {
                 "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\okapilib@3.3.12",
                 "metadata": {
