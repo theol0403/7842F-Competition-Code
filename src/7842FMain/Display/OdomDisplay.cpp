@@ -86,7 +86,7 @@ lv_res_t OdomDisplay::tileAction(lv_obj_t* tileObj) {
 
 void OdomDisplay::run() {
   pros::delay(500);
-  
+
   lv_color_t mainColor = lv_obj_get_style(container)->body.main_color;
 
   lv_obj_t* led = lv_led_create(field, NULL);
@@ -101,8 +101,6 @@ void OdomDisplay::run() {
   ledStyle.body.border.color = LV_COLOR_WHITE;
   ledStyle.body.border.width = 2;
   ledStyle.body.border.opa = LV_OPA_100;
-  ledStyle.text.color = LV_COLOR_WHITE;
-  ledStyle.text.opa = LV_OPA_100;
   lv_obj_set_style(led, &ledStyle);
 
   std::vector<lv_point_t> points = {{0, 0}, {0, 0}};
@@ -122,7 +120,11 @@ void OdomDisplay::run() {
   int arrowHeight = fieldDim / 6;
 
   lv_obj_t* label = lv_label_create(container, NULL);
-  lv_obj_set_style(label, &ledStyle);
+  lv_style_t textStyle;
+  lv_style_copy(&textStyle, &lv_style_plain);
+  textStyle.text.color = LV_COLOR_WHITE;
+  textStyle.text.opa = LV_OPA_100;
+  lv_obj_set_style(label, &textStyle);
   std::string text;
 
   text =

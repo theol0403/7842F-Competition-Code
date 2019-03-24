@@ -47,6 +47,7 @@ namespace lib7842
 
     void reset();
     void print();
+    int getCount();
     void checkErrSig();
 
     ObjContainer operator+(ObjContainer);

@@ -142,6 +142,10 @@ namespace lib7842
     }
   }
 
+  int ObjContainer::getCount() {
+    return objects.size();
+  }
+
 
   ObjContainer ObjContainer::operator+(ObjContainer rhs) {
     addObj(rhs.objects);

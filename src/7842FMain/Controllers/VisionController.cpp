@@ -22,12 +22,18 @@ void VisionController::run()
   ObjDrawer drawer(parent);
   drawer.withStyle(lv_obj_get_style(parent)->body.main_color, LV_COLOR_WHITE);
 
-  drawer.withLayer(reader);
-
-  drawer.withLayer(standout)
+  drawer.withLayer(reader)
   .withStyle(VISION_OBJECT_ERR_SIG, LV_COLOR_YELLOW, LV_COLOR_WHITE)
   .withStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
   .withStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
+
+  lv_obj_t* infoLabel = lv_label_create(parent, NULL);
+  std::stringstream infoText;
+  lv_style_t textStyle;
+  lv_style_copy(&textStyle, &lv_style_plain);
+  textStyle.text.color = LV_COLOR_WHITE;
+  textStyle.text.opa = LV_OPA_100;
+  lv_obj_set_style(infoLabel, &textStyle);
 
   while(true)
   {
@@ -35,10 +41,12 @@ void VisionController::run()
     reader.getAll();
     reader.removeWith(objAttr::area, 0, 300);
     reader.sortBy(objAttr::area);
-    standout = reader;
-    reader.remove(0);
-    standout.trim(1);
     drawer.draw();
+
+    infoText << "Count: " << reader.getCount();
+    lv_label_set_text(infoLabel, infoText.str().c_str());
+    lv_obj_align(infoLabel, parent, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
     pros::delay(50);
   }
 }
