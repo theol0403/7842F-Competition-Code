@@ -43,6 +43,7 @@ void VisionController::run()
     reader.sortBy(objAttr::area);
     drawer.draw();
 
+infoText = "";
     infoText << "Count: " << reader.getCount();
     lv_label_set_text(infoLabel, infoText.str().c_str());
     lv_obj_align(infoLabel, parent, LV_ALIGN_IN_TOP_LEFT, 0, 0);
