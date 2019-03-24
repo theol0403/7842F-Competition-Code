@@ -311,7 +311,7 @@ void ShootController::run()
 
     }
     //std::cout << "Hood: " << getHoodAngle() << std::endl;
-    pros::delay(1);
+    pros::delay(3);
   }
 
 }

@@ -53,12 +53,17 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
 
   double tileDim = fieldDim / data.size();
 
-  for(double y = 0; y < data.size(); y++) {
-    for(double x = 0; x < data[y].size(); x++) {
-      lv_obj_t* tile = lv_obj_create(field, NULL);
-      lv_obj_set_pos(tile, x * tileDim, y * tileDim);
-      lv_obj_set_size(tile, tileDim, tileDim);
-      lv_obj_set_style(tile, data[y][x]);
+  for(double y = 0; y < 6; y++) {
+    for(double x = 0; x < 6; x++) {
+      lv_obj_t* tileObj = lv_btn_create(field, NULL);
+      lv_obj_set_pos(tileObj, x * tileDim, y * tileDim);
+      lv_obj_set_size(tileObj, tileDim, tileDim);
+      lv_btn_set_action(tileObj, LV_BTN_ACTION_CLICK, tileAction);
+      lv_obj_set_free_num(tileObj, y * 6 + x);
+      lv_obj_set_free_ptr(tileObj, this);
+      lv_btn_set_toggle(tileObj, false);
+      lv_btn_set_style(tileObj, LV_BTN_STYLE_PR, data[y][x]);
+      lv_btn_set_style(tileObj, LV_BTN_STYLE_REL, data[y][x]);
     }
   }
 
@@ -69,9 +74,19 @@ OdomDisplay::~OdomDisplay() {
 }
 
 
+lv_res_t OdomDisplay::tileAction(lv_obj_t* tileObj) {
+  OdomDisplay* that = static_cast<OdomDisplay*>(lv_obj_get_free_ptr(tileObj));
+  int num = lv_obj_get_free_num(tileObj);
+  int y = num / 6;
+  int x = num - y * 6;
+  that->tracker->setState({x * tile + 0.5_tl, 1_crt - y * tile - 0.5_tl, 0_deg});
+  return LV_RES_OK;
+}
+
 
 void OdomDisplay::run() {
-
+  pros::delay(500);
+  
   lv_color_t mainColor = lv_obj_get_style(container)->body.main_color;
 
   lv_obj_t* led = lv_led_create(field, NULL);
@@ -98,7 +113,7 @@ void OdomDisplay::run() {
 
   lv_style_t arrowStyle;
   lv_style_copy(&arrowStyle, &lv_style_plain);
-  const int lineWidth = 2;
+  const int lineWidth = 3;
   arrowStyle.line.width = lineWidth;
   arrowStyle.line.opa = LV_OPA_100;
   arrowStyle.line.color = mainColor;

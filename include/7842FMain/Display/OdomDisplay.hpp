@@ -20,8 +20,9 @@ public:
   OdomDisplay(lv_obj_t*, lv_color_t, lib7842::OdomTracker*);
   ~OdomDisplay();
 
-  void run();
+  static lv_res_t tileAction(lv_obj_t*);
 
+  void run();
   static void taskFnc(void*);
 
 };

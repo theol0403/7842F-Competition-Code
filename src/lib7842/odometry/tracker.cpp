@@ -85,8 +85,7 @@ namespace lib7842
       count++;
       //if(count >= 50) { that->debug(); count = 0; }
 
-      //that->m_trackerFunc(that);
-      that->setState({8_ft, 8_ft, that->getTheta() + 0.1_deg});
+      that->m_trackerFunc(that);
       pros::delay(4);
     }
   }
