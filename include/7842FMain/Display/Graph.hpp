@@ -8,6 +8,7 @@ public:
 
   lv_obj_t* graph = nullptr;
   int refresh = 100;
+  std::tuple<int, int, int> lineData = {};
   std::vector<std::tuple<lv_chart_series_t*, double*, double>> series = {};
 
   pros::Task* task = nullptr;

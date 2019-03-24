@@ -24,8 +24,11 @@ Graph::~Graph() {
 }
 
 
-Graph &Graph::withRange(int min, int max) {
-  lv_chart_set_range(graph, min, max);
+Graph &Graph::withRange(int imin, int imax) {
+  lv_chart_set_range(graph, imin, imax);
+  // auto &[min, max, ver] = lineData;
+  // min = imin;
+  // max = imax;
   return *this;
 }
 
@@ -36,6 +39,23 @@ Graph &Graph::withRes(int res) {
 
 Graph &Graph::withLines(int hor, int ver) {
   lv_chart_set_div_line_count(graph, hor, ver);
+
+  // lv_style_t* style = new lv_style_t;
+  // lv_style_copy(style, &lv_style_plain);
+  // style->text.color = LV_COLOR_WHITE;
+  // style->text.opa = LV_OPA_100;
+  // style->text.font = &lv_font_dejavu_10;
+  // style->text.letter_space = 1;
+  //
+  // int lineVer = ver - 3;
+  // double lineHeight = (double)lv_obj_get_height(graph) / lineVer;
+
+  // for(int i = 0; i < lineVer; i++){
+  //   lv_obj_t* label = lv_label_create(graph, NULL);
+  //   lv_label_set_text(label, std::to_string(remapRange(i, 0, lineVer-1, std::get<0>(lineData), std::get<1>(lineData))).c_str());
+  //   lv_obj_set_style(label, style);
+  //   lv_obj_align(label, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -7, i * -lineHeight - 5);
+  // }
   return *this;
 }
 
