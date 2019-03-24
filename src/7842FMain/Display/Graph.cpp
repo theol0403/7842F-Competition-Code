@@ -51,7 +51,7 @@ Graph &Graph::withSeries(std::string name, double* variable, lv_color_t color, d
 
   //Add text to legend
   lv_obj_t* label = lv_label_create(graph, NULL);
-  lv_label_set_text(label, name.c_str());
+  lv_label_set_text(label, (std::string(SYMBOL_MINUS) + " " + name).c_str());
   lv_style_t* style = new lv_style_t;
   lv_style_copy(style, &lv_style_plain);
   style->text.color = color;
