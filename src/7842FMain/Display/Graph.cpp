@@ -45,9 +45,22 @@ Graph &Graph::withRefresh(int irefresh) {
 }
 
 
-Graph &Graph::withSeries(double* variable, lv_color_t color, double scale) {
+Graph &Graph::withSeries(std::string name, double* variable, lv_color_t color, double scale) {
   lv_chart_series_t* ser = lv_chart_add_series(graph, color);
   lv_chart_init_points(graph, ser, *variable / scale);
+
+  //Add text to legend
+  lv_obj_t* label = lv_label_create(graph, NULL);
+  lv_label_set_text(label, name.c_str());
+  lv_style_t* style = new lv_style_t;
+  lv_style_copy(style, &lv_style_plain);
+  style->text.color = color;
+  style->text.opa = LV_OPA_100;
+  style->text.font = &lv_font_dejavu_20;
+  style->text.letter_space = 1;
+  lv_obj_set_style(label, style);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 7, 5 + lv_obj_get_height(label) * series.size());
+
   series.push_back(std::make_tuple(ser, variable, scale));
   return *this;
 }

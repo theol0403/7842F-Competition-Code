@@ -21,7 +21,7 @@ public:
   Graph &withLines(int, int);
   Graph &withRefresh(int);
 
-  Graph &withSeries(double*, lv_color_t, double = 1);
+  Graph &withSeries(std::string, double*, lv_color_t, double = 1);
 
   void build();
 

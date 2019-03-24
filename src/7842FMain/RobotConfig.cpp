@@ -98,10 +98,10 @@ void initializeDevices()
 	.withRes(300)
 	.withLines(6, 10)
 	.withRefresh(50)
-	.withSeries(&robot.flywheel->targetRpm, LV_COLOR_RED, 6)
-	.withSeries(&robot.flywheel->currentRpm, LV_COLOR_YELLOW, 6)
-	.withSeries(&robot.flywheel->motorPower, LV_COLOR_GREEN)
-	.withSeries(&robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
+	.withSeries("Target/4", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
+	.withSeries("Current/4", &robot.flywheel->currentRpm, LV_COLOR_YELLOW, 6)
+	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
+	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.build();
 
 	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
