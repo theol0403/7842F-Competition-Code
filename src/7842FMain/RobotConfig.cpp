@@ -1,11 +1,8 @@
 #include "RobotConfig.hpp"
-#include "Display/FlywheelTuner.hpp"
-#include "Display/Graph.hpp"
-#include "Display/OdomDisplay.hpp"
 
 okapi::Controller j_Main(okapi::ControllerId::master);
 
-display_t* display;
+display_t display;
 robot_t robot;
 
 /***
@@ -45,7 +42,7 @@ void initializeBase()
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
 		5.88_in, 2.75_in, 360,
-		lib7842::OdomTracker::mdTracking
+		lib7842::OdomTracker::aTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
@@ -68,9 +65,10 @@ void initializeDevices()
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
+	Motor* flywheelM = new Motor(mFlywheel);
 	robot.flywheel = new FlywheelController(
 		robot.intake,
-		new Motor(mFlywheel), new ADIEncoder('A', 'B', false),
+		flywheelM, new ADIEncoder('A', 'B', false),
 		new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
 		new emaFilter(0.15),
 		new lib7842::velPID(0.073, 0.105, 0.04, 0.2), 0.4
@@ -80,22 +78,22 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
-	FlywheelTuner* flywheelTuner = new FlywheelTuner(display->newTab("Fly"));
-	(*flywheelTuner)
+	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
+	(*display.flywheel)
 	.withButton("kP", &robot.flywheel->pid->m_Kp)
 	.withButton("kD", &robot.flywheel->pid->m_Kd)
 	.withButton("kF", &robot.flywheel->pid->m_Kf)
 	.withButton("dEma", &robot.flywheel->pid->m_dFilter.m_alpha)
 	.withButton("rEMA", &robot.flywheel->rpmFilter->m_alpha)
 	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 400)
-	.withButton("Mult", &flywheelTuner->multiplier, FlywheelTuner::btnType::multiply, 10)
+	.withButton("Mult", &display.flywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
 	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
 	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
-	Graph* graph = new Graph(display->newTab("Graph"), LV_COLOR_WHITE);
-	(*graph)
+	display.graph = new Graph(display.main->newTab("Graph"), LV_COLOR_WHITE);
+	(*display.graph)
 	.withRange(-50, 3000.0/6.0)
 	.withRes(300)
 	.withLines(10, 8)
@@ -106,9 +104,9 @@ void initializeDevices()
 	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.build();
 
-	robot.vision = new VisionController(new pros::Vision(4), display->newTab("Vision"));
+	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
-	new OdomDisplay(display->newTab("Odom"), robot.tracker);
+	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 
 }
 
