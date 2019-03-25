@@ -1,4 +1,8 @@
 #include "VisionController.hpp"
+#include "lib7842/vision/visionReader.hpp"
+#include "lib7842/vision/objDrawer.hpp"
+#include <sstream>
+#include <iomanip>
 
 using namespace lib7842;
 

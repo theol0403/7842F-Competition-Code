@@ -1,8 +1,6 @@
 #pragma once
 #include "main.h"
 #include <map>
-#include <sstream>
-#include <iomanip>
 
 class FlywheelTuner
 {

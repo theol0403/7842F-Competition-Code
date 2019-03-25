@@ -1,4 +1,6 @@
 #include "FlywheelTuner.hpp"
+#include <sstream>
+#include <iomanip>
 
 lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
 

@@ -1,4 +1,7 @@
 #include "objContainer.hpp"
+#include <cassert>
+#include <algorithm>
+#include <numeric>
 
 namespace lib7842
 {

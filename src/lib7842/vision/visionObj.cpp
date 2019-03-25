@@ -1,4 +1,5 @@
 #include "visionObj.hpp"
+#include <cassert>
 
 namespace lib7842
 {

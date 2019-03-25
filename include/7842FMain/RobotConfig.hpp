@@ -1,6 +1,8 @@
 #pragma once
 #include "main.h"
-#include "lib7842/lib7842.hpp"
+
+#include "lib7842/auton/autonSelector.hpp"
+#include "lib7842/odometry/controller.hpp"
 
 #include "Controllers/IntakeController.hpp"
 #include "Controllers/FlywheelController.hpp"
@@ -17,11 +19,12 @@ extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
 #define j_Analog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
 
+using namespace lib7842;
 
 struct display_t
 {
   MainDisplay* main = nullptr;
-  AutonSelector* selector = nullptr;
+  lib7842::AutonSelector* selector = nullptr;
   FlywheelTuner* flywheel = nullptr;
   Graph* graph = nullptr;
   OdomDisplay* odom = nullptr;

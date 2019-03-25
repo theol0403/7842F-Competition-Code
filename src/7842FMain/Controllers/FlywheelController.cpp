@@ -1,4 +1,6 @@
 #include "FlywheelController.hpp"
+#include <cassert>
+#include "lib7842/other/sdLogger.hpp"
 
 FlywheelController::FlywheelController(IntakeController*& iintake, Motor* iflywheel, ADIEncoder* isensor, VelMath* ivelMath, lib7842::emaFilter* irpmFilter, lib7842::velPID* ipid, double imotorSlew) :
 intake(iintake), flywheel{iflywheel}, sensor(isensor), velMath(ivelMath), rpmFilter(irpmFilter), pid(ipid), motorSlew(imotorSlew),

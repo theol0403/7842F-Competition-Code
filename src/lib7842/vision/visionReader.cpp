@@ -1,4 +1,5 @@
 #include "visionReader.hpp"
+#include <cassert>
 
 namespace lib7842
 {

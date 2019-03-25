@@ -1,5 +1,5 @@
-#include "main.h"
-#include "lib7842/lib7842.hpp"
+#include "lib7842/odometry/odomMath.hpp"
+using namespace lib7842;
 
 extern qPoint sideFlagShoot;
 extern qPoint sideFlagPost;

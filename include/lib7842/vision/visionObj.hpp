@@ -1,6 +1,5 @@
 #pragma once
-#include <cassert>
-#include "objectTracking.hpp"
+#include "main.h"
 
 namespace lib7842
 {

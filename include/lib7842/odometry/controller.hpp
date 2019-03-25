@@ -3,8 +3,6 @@
 #include "odomMath.hpp"
 #include "tracker.hpp"
 #include "asyncAction.hpp"
-#include "lib7842/pid/pidSystem.hpp"
-#include "lib7842/auton/autonSelector.hpp"
 #include "lib7842/filter/avgFilter.hpp"
 
 namespace lib7842

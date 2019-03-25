@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <cstddef>
-#include <iostream>
 
 namespace lib7842
 {

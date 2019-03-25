@@ -1,4 +1,5 @@
 #include "avgFilter.hpp"
+#include <iostream>
 
 namespace lib7842
 {

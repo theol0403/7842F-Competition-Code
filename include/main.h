@@ -25,8 +25,6 @@
 //User Includes
 #include <cstdlib> //For maths like abs
 #include <cmath>
-#include <math.h>
-#include <functional>
 
 
 

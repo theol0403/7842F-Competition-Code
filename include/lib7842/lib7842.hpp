@@ -18,5 +18,3 @@
 
 #include "lib7842/vision/objContainer.hpp"
 #include "lib7842/vision/visionReader.hpp"
-
-using namespace lib7842;

@@ -3,7 +3,7 @@
 #include "lib7842/lib7842.hpp"
 #include "RobotConfig.hpp"
 
-#include "7842FMain/Auton/AutonFunctions.hpp"
+#include "7842FMain/Auton/AutonIncludes.hpp"
 #include "DriverControl.hpp"
 
 /***

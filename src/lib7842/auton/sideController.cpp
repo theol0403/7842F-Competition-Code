@@ -1,4 +1,5 @@
 #include "sideController.hpp"
+#include "lib7842/other/miscUtils.hpp"
 
 namespace lib7842
 {

@@ -2,8 +2,6 @@
 #include "main.h"
 #include "lib7842/pid/pidVelSystem.hpp"
 #include "IntakeController.hpp"
-#include "lib7842/other/sdLogger.hpp"
-#include <cassert>
 
 class FlywheelController
 {
