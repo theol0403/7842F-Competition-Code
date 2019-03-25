@@ -184,21 +184,21 @@ namespace lib7842
   {
     std::valarray<int32_t> newTicks = model->getSensorVals();
 
-    long double dX = 0.0;
-    long double dY = 0.0;
-    long double dTheta = 0.0;
+    double dX = 0.0;
+    double dY = 0.0;
+    double dTheta = 0.0;
 
-    long double lCurrEnc = newTicks[0] * m_degToInch;
-    long double rCurrEnc = newTicks[1] * m_degToInch;
+    double lCurrEnc = newTicks[0] * m_degToInch;
+    double rCurrEnc = newTicks[1] * m_degToInch;
 
-    long double lDEnc = lCurrEnc - m_lastLeft.convert(inch);
-    long double rDEnc = rCurrEnc - m_lastRight.convert(inch);
+    double lDEnc = lCurrEnc - m_lastLeft.convert(inch);
+    double rDEnc = rCurrEnc - m_lastRight.convert(inch);
 
-    long double dCenterArc = (lDEnc + rDEnc) / 2.0;
+    double dCenterArc = (lDEnc + rDEnc) / 2.0;
 
     dTheta = (lDEnc - rDEnc) / m_chassisWidth.convert(inch);
 
-    long double radius = (dTheta == 0) ? 0 : dCenterArc / dTheta;
+    double radius = (dTheta == 0) ? 0 : dCenterArc / dTheta;
     dX = dTheta == 0 ? 0 : (radius - radius * cos(dTheta));
     dY = dTheta == 0 ? dCenterArc : radius * sin(dTheta);
 

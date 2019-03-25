@@ -23,10 +23,10 @@ class RQuantity {
   explicit constexpr RQuantity() : value(0.0) {
   }
 
-  explicit constexpr RQuantity(long double val) : value(val) {
+  explicit constexpr RQuantity(double val) : value(val) {
   }
 
-  explicit constexpr RQuantity(double val) : value(static_cast<long double>(val)) {
+  explicit constexpr RQuantity(long double val) : value(static_cast<double>(val)) {
   }
 
   // The intrinsic operations for a quantity with a unit is addition and subtraction
@@ -44,23 +44,23 @@ class RQuantity {
     return RQuantity(value * -1);
   }
 
-  constexpr RQuantity const &operator*=(const long double rhs) {
+  constexpr RQuantity const &operator*=(const double rhs) {
     value *= rhs;
     return *this;
   }
 
-  constexpr RQuantity const &operator/=(const long double rhs) {
+  constexpr RQuantity const &operator/=(const double rhs) {
     value /= rhs;
     return *this;
   }
 
   // Returns the value of the quantity in multiples of the specified unit
-  constexpr long double convert(const RQuantity &rhs) const {
+  constexpr double convert(const RQuantity &rhs) const {
     return value / rhs.value;
   }
 
   // returns the raw value of the quantity (should not be used)
-  constexpr long double getValue() const {
+  constexpr double getValue() const {
     return value;
   }
 
@@ -69,7 +69,7 @@ class RQuantity {
   }
 
   private:
-  long double value;
+  double value;
 };
 
 // Predefined (physical unit) quantity types:
@@ -112,11 +112,11 @@ operator*(const RQuantity<M1, L1, T1, A1> &lhs, const RQuantity<M2, L2, T2, A2> 
                    std::ratio_add<A1, A2>>(lhs.getValue() * rhs.getValue());
 }
 template <typename M, typename L, typename T, typename A>
-constexpr RQuantity<M, L, T, A> operator*(const long double &lhs, const RQuantity<M, L, T, A> &rhs) {
+constexpr RQuantity<M, L, T, A> operator*(const double &lhs, const RQuantity<M, L, T, A> &rhs) {
   return RQuantity<M, L, T, A>(lhs * rhs.getValue());
 }
 template <typename M, typename L, typename T, typename A>
-constexpr RQuantity<M, L, T, A> operator*(const RQuantity<M, L, T, A> &lhs, const long double &rhs) {
+constexpr RQuantity<M, L, T, A> operator*(const RQuantity<M, L, T, A> &lhs, const double &rhs) {
   return RQuantity<M, L, T, A>(lhs.getValue() * rhs);
 }
 template <typename M1,
@@ -142,14 +142,14 @@ constexpr RQuantity<std::ratio_subtract<std::ratio<0>, M>,
                     std::ratio_subtract<std::ratio<0>, L>,
                     std::ratio_subtract<std::ratio<0>, T>,
                     std::ratio_subtract<std::ratio<0>, A>>
-operator/(const long double &x, const RQuantity<M, L, T, A> &rhs) {
+operator/(const double &x, const RQuantity<M, L, T, A> &rhs) {
   return RQuantity<std::ratio_subtract<std::ratio<0>, M>,
                    std::ratio_subtract<std::ratio<0>, L>,
                    std::ratio_subtract<std::ratio<0>, T>,
                    std::ratio_subtract<std::ratio<0>, A>>(x / rhs.getValue());
 }
 template <typename M, typename L, typename T, typename A>
-constexpr RQuantity<M, L, T, A> operator/(const RQuantity<M, L, T, A> &rhs, const long double &x) {
+constexpr RQuantity<M, L, T, A> operator/(const RQuantity<M, L, T, A> &rhs, const double &x) {
   return RQuantity<M, L, T, A>(rhs.getValue() / x);
 }
 
@@ -182,10 +182,10 @@ constexpr bool operator>(const RQuantity<M, L, T, A> &lhs, const RQuantity<M, L,
 
 inline namespace literals {
 constexpr long double operator"" _pi(long double x) {
-  return static_cast<long double>(x) * 3.1415926535897932384626433832795;
+  return static_cast<double>(x) * 3.1415926535897932384626433832795;
 }
 constexpr long double operator"" _pi(unsigned long long int x) {
-  return static_cast<long double>(x) * 3.1415926535897932384626433832795;
+  return static_cast<double>(x) * 3.1415926535897932384626433832795;
 }
 } // namespace literals
 } // namespace okapi
