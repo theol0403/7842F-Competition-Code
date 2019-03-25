@@ -283,13 +283,10 @@ void ShootController::run()
       break;
 
 
-      case shootIndexer:
+      case enableShoot:
       flywheel->enable();
-      intake->disable();
-      pros::delay(10);
-      intake->indexerSlave = false;
-      intake->intake->moveVelocity(200);
-      intake->indexer->moveVelocity(200);
+      intake->enable();
+      intake->setState(IntakeController::shoot);
       pros::delay(250);
       intake->enable();
       intake->setState(IntakeController::intakeBall);

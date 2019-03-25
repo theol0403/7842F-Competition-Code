@@ -67,6 +67,13 @@ void IntakeController::run()
         intake->moveVelocity(-50);
         indexerSlave = true;
         break;
+
+        case shoot:
+        intake->moveVelocity(50);
+        indexer->moveVelocity(200);
+        indexerSlave = false;
+        break;
+
       }
     }
     pros::delay(10);

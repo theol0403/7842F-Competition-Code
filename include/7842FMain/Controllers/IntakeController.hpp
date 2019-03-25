@@ -11,7 +11,8 @@ public:
     off,
     intakeBall, //runs intake and indexer until ball then indexer stops
     outIntake,
-    outSlow
+    outSlow,
+    shoot
   };
 
   Motor* intake = nullptr;

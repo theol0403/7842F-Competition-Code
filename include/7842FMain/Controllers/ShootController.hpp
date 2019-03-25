@@ -24,7 +24,8 @@ public:
     angleTarget, //drop hood to target angle
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
-    shootIndexer, //shoot indexer
+    enableShoot, //shoot indexer
+    waitForShoot, //waits until detects ball
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
