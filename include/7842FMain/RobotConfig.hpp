@@ -11,9 +11,6 @@
 #include "Controllers/VisionController.hpp"
 
 #include "Display/MainDisplay.hpp"
-#include "Display/FlywheelTuner.hpp"
-#include "Display/Graph.hpp"
-#include "Display/OdomDisplay.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -21,13 +18,9 @@ extern okapi::Controller j_Main;
 
 using namespace lib7842;
 
-struct display_t
+struct display_t : public MainDisplay
 {
-  MainDisplay* main = nullptr;
   lib7842::AutonSelector* selector = nullptr;
-  FlywheelTuner* flywheel = nullptr;
-  Graph* graph = nullptr;
-  OdomDisplay* odom = nullptr;
 };
 
 struct robot_t
@@ -43,7 +36,7 @@ struct robot_t
   VisionController* vision = nullptr;
 };
 
-extern display_t display;
+extern display_t* display;
 extern robot_t robot;
 
 extern const int globalFlywheelRPM;
