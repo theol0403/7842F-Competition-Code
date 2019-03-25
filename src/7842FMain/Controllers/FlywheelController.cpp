@@ -39,7 +39,7 @@ void FlywheelController::run()
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
-      currentRpm = 0;//rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
+      currentRpm = rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
 
       motorPower = pid->calculate(targetRpm, currentRpm);
 
