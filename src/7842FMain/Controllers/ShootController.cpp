@@ -114,17 +114,17 @@ double ShootController::getHoodAngle() {
 double ShootController::getTopFlagAngle() {
   double x = distanceToFlag.convert(foot);
   double y = -0.0974*std::pow(x, 2) + 1.8549*x - 1.9294;
-  if(x < 3.2) y = 0;
-  if(y < 0 || y > 40) y = 0;
+  // if(x < 3.2) y = 0;
+  // if(y < 0 || y > 40) y = 0;
   return y;
 }
 
 double ShootController::getMiddleFlagAngle() {
   double x = distanceToFlag.convert(foot);
   double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
-  if(x <= 2) y = 20;
-  if(x >= 10) y = 15;
-  if(y < 0 || y > 40) y = 0;
+  // if(x <= 2) y = 20;
+  // if(x >= 10) y = 15;
+  // if(y < 0 || y > 40) y = 0;
   return y;
 }
 
@@ -151,7 +151,7 @@ double ShootController::computeHoodPower(double target) {
 
 void ShootController::run()
 {
-  const double angleThresh = 3;
+  const double angleThresh = 2;
   const double cycleVel = -50;
 
   const double extendPos = 45;
@@ -313,6 +313,7 @@ void ShootController::run()
 
     }
     //std::cout << "Hood: " << getHoodAngle() << std::endl;
+    //std::cout << (intake->indexerSlave && !flywheel->disabled) << std::endl;
     pros::delay(3);
   }
 
