@@ -287,6 +287,11 @@ void ShootController::run()
       flywheel->enable();
       intake->enable();
       intake->setState(IntakeController::shoot);
+      completeJob();
+      addJob(waitForShoot);
+      break;
+
+      case waitForShoot:
       pros::delay(250);
       intake->enable();
       intake->setState(IntakeController::intakeBall);
