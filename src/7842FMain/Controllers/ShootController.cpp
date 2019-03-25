@@ -154,7 +154,7 @@ void ShootController::run()
   const double angleThresh = 3;
   const double cycleVel = -50;
 
-  const double extendPos = 46;
+  const double extendPos = 45;
 
   while(true)
   {
@@ -209,7 +209,7 @@ void ShootController::run()
       case waitForRetract:
       intake->enable();
       flywheel->enable();
-      if(getHoodAngle() < 5) {
+      if(getHoodAngle() < angleThresh) {
         completeJob();
       }
       break;

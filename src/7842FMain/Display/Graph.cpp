@@ -15,7 +15,7 @@ graph(lv_chart_create(parent, NULL))
   lv_style_copy(gStyle, &lv_style_pretty);
   gStyle->body.main_color = mainColor;
   gStyle->body.grad_color = mainColor;
-  gStyle->line.color = LV_COLOR_WHITE;
+  gStyle->line.color = LV_COLOR_BLACK;
   lv_obj_set_style(graph, gStyle);
 }
 
@@ -76,7 +76,7 @@ void Graph::build() {
 
   lv_style_t* style = new lv_style_t;
   lv_style_copy(style, &lv_style_plain);
-  style->text.color = LV_COLOR_WHITE;
+  style->text.color = LV_COLOR_BLACK;
   style->text.opa = LV_OPA_100;
   style->text.font = &lv_font_dejavu_10;
   style->text.letter_space = 1;

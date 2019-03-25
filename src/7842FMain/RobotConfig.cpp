@@ -94,7 +94,7 @@ void initializeDevices()
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
-	Graph* graph = new Graph(display->newTab("Graph"));
+	Graph* graph = new Graph(display->newTab("Graph"), LV_COLOR_WHITE);
 	(*graph)
 	.withRange(-50, 3000.0/6.0)
 	.withRes(300)
