@@ -43,23 +43,23 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootTopFlag :
-    addJobs({reportDone, shootIndexer, angleTop});
+    addJobs({reportDone, enableShoot, angleTop});
     break;
 
     case shootMacros::shootMiddleFlag :
-    addJobs({reportDone, shootIndexer, angleMiddle});
+    addJobs({reportDone, enableShoot, angleMiddle});
     break;
 
     case shootMacros::shootTarget :
-    addJobs({reportDone, shootIndexer, angleTarget});
+    addJobs({reportDone, enableShoot, angleTarget});
     break;
 
     case shootMacros::shootBothFlags :
-    addJobs({reportDone, shootIndexer, angleMiddle, shootIndexer, angleTop});
+    addJobs({reportDone, enableShoot, angleMiddle, enableShoot, angleTop});
     break;
 
     case shootMacros::shoot :
-    addJobs({shootIndexer});
+    addJobs({enableShoot});
     break;
 
     case shootMacros::angle :
