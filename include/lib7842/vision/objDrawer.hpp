@@ -35,6 +35,8 @@ namespace lib7842
     void draw();
     void clear();
 
+    friend class ObjDrawer;
+
   };
 
 
@@ -43,7 +45,8 @@ namespace lib7842
   private:
 
     lv_obj_t* dContainer = nullptr;
-    lv_style_t style;
+    lv_style_t cStyle;
+    lv_obj_t* infoLabel;
 
     std::vector<ObjRenderer> layers = {};
 

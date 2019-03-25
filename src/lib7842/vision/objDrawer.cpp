@@ -108,10 +108,18 @@ namespace lib7842
   {
     lv_obj_set_size(dContainer, lv_obj_get_width(parent), lv_obj_get_height(parent));
     lv_obj_align(dContainer, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-    lv_style_copy(&style, &lv_style_plain_color);
-    style.body.main_color = LV_COLOR_BLACK;
-    style.body.grad_color = LV_COLOR_BLACK;
-    lv_obj_set_style(dContainer, &style);
+    lv_style_copy(&cStyle, &lv_style_plain_color);
+    cStyle.body.main_color = LV_COLOR_BLACK;
+    cStyle.body.grad_color = LV_COLOR_BLACK;
+    lv_obj_set_style(dContainer, &cStyle);
+
+    infoLabel = lv_label_create(dContainer, NULL);
+    lv_style_t* textStyle = new lv_style_t;
+    lv_style_copy(textStyle, &lv_style_plain);
+    textStyle->text.color = LV_COLOR_WHITE;
+    textStyle->text.opa = LV_OPA_100;
+    lv_obj_set_style(infoLabel, textStyle);
+    lv_label_set_text(infoLabel, "");
   }
 
   ObjDrawer::~ObjDrawer() {
@@ -119,11 +127,11 @@ namespace lib7842
   }
 
   ObjDrawer &ObjDrawer::withStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
-    style.body.main_color = main;
-    style.body.grad_color = main;
-    style.body.border.color = border;
-    style.body.opa = opa;
-    lv_obj_set_style(dContainer, &style);
+    cStyle.body.main_color = main;
+    cStyle.body.grad_color = main;
+    cStyle.body.border.color = border;
+    cStyle.body.opa = opa;
+    lv_obj_set_style(dContainer, &cStyle);
     return *this;
   }
 
@@ -136,7 +144,12 @@ namespace lib7842
     for(ObjRenderer &layer : layers) {
       layer.draw();
     }
-  }
 
+    if(layers.size() > 0) {
+      std::cout << layers.at(0).oContainer->getCount() << std::endl;
+      lv_label_set_text(infoLabel, ("Count: " + std::to_string(layers.at(0).oContainer->getCount())).c_str());
+      lv_obj_align(infoLabel, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+    }
+  }
 
 }

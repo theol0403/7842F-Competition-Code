@@ -31,14 +31,6 @@ void VisionController::run()
   .withStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
   .withStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
 
-  lv_obj_t* infoLabel = lv_label_create(parent, NULL);
-  std::string infoText;
-  lv_style_t textStyle;
-  lv_style_copy(&textStyle, &lv_style_plain);
-  textStyle.text.color = LV_COLOR_WHITE;
-  textStyle.text.opa = LV_OPA_100;
-  lv_obj_set_style(infoLabel, &textStyle);
-
   while(true)
   {
     reader.reset();
@@ -46,10 +38,6 @@ void VisionController::run()
     reader.removeWith(objAttr::area, 0, 300);
     reader.sortBy(objAttr::area);
     drawer.draw();
-
-    infoText = "Count: " + std::to_string(reader.getCount());
-    lv_label_set_text(infoLabel, infoText.c_str());
-    lv_obj_align(infoLabel, parent, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
     pros::delay(50);
   }
