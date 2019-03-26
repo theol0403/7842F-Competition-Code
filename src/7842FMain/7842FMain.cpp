@@ -177,7 +177,7 @@ void opcontrol()
     });
     }
 
-    if(j_Digital(B)) {
+    if(j_Digital(A)) {
       robot.shooter->doJobLoop(ShootController::angleTarget);
     }
 
