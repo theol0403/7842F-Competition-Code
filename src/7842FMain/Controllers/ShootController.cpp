@@ -113,18 +113,28 @@ double ShootController::getHoodAngle() {
 
 double ShootController::getTopFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  double y = -0.0974*std::pow(x, 2) + 1.8549*x - 1.9294;
-  // if(x < 3.2) y = 0;
-  // if(y < 0 || y > 40) y = 0;
+  double y = 0;
+  if(x <= 7.5) {
+    y = -0.2075*std::pow(x, 4) + 4.6833*std::pow(x, 3) - 39.593*std::pow(x, 2) + 149.52*x - 208.23;
+  } else {
+    y = 1.6667*std::pow(x, 4) - 62.881*std::pow(x, 3) + 886.89*std::pow(x, 2) - 5543.2*x + 12959;
+  }
+  if(x < 3.5) y = 0;
+  if(y < 0 || y > 50) y = 0;
   return y;
 }
 
 double ShootController::getMiddleFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  double y = -0.2569*std::pow(x, 2) + 1.1859*x + 25.095;
-  // if(x <= 2) y = 20;
+  double y = 0;
+  if(x <= 8) {
+    y = -0.0763*std::pow(x, 5) + 1.8609*std::pow(x, 4) - 17.085*std::pow(x, 3) + 71.906*std::pow(x, 2) - 131.32*x + 84.176;
+  } else {
+    y = -8.8*std::pow(x, 4) + 333.6*std::pow(x, 3) - 4735*std::pow(x, 2) + 29821*x - 70297;
+  }
+  if(x <= 2) y = 0;
   // if(x >= 10) y = 15;
-  // if(y < 0 || y > 40) y = 0;
+  if(y < 0 || y > 50) y = 0;
   return y;
 }
 

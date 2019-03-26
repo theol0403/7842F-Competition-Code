@@ -131,55 +131,55 @@ void opcontrol()
     driverControl();
     #endif
 
-
-    if(j_Digital(L2)) {
-      shootMacro = ShootController::shootMacros::shootTarget;
-      topFlag = false;
-      shotRpm = robot.flywheel->currentRpm;
-    } else if(j_Digital(L1)) {
-      shootMacro = ShootController::shootMacros::shootTarget;
-      topFlag = true;
-      shotRpm = robot.flywheel->currentRpm;
-    } else {
-      shootMacro = ShootController::shootMacros::off;
-    }
-
-    if(shootMacro != lastShootMacro)
-    {
-      if(shootMacro == ShootController::shootMacros::shootTarget)
-      std::cout << "" << (11_ft - robot.tracker->state.y).convert(foot) << ", " << targetAngle << std::endl;
-      if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
-      lastShootMacro = shootMacro;
-    }
-
-    if(j_Digital(Y))
-    {
-      targetAngle -= 0.1;
-      std::cout << "Target Angle: " << targetAngle << std::endl;
-      robot.shooter->setTarget(targetAngle);
-    }
-    else if(j_Digital(X))
-    {
-      targetAngle += 0.1;
-      std::cout << "Target Angle: " << targetAngle << std::endl;
-      robot.shooter->setTarget(targetAngle);
-    }
-    else if(printTrigger.changedToPressed())
-    {
-      //print angle and distance
-    shootLogger.writeLine({
-      topFlag ? "Top" : "Middle",
-      std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
-      std::to_string(targetAngle),
-      std::to_string(shotRpm),
-      std::to_string(pros::battery::get_capacity()),
-      std::to_string(robot.flywheel->flywheel->getTemperature())
-    });
-    }
-
-    if(j_Digital(A)) {
-      robot.shooter->doJobLoop(ShootController::angleTarget);
-    }
+    // 
+    // if(j_Digital(L2)) {
+    //   shootMacro = ShootController::shootMacros::shootTarget;
+    //   topFlag = false;
+    //   shotRpm = robot.flywheel->currentRpm;
+    // } else if(j_Digital(L1)) {
+    //   shootMacro = ShootController::shootMacros::shootTarget;
+    //   topFlag = true;
+    //   shotRpm = robot.flywheel->currentRpm;
+    // } else {
+    //   shootMacro = ShootController::shootMacros::off;
+    // }
+    //
+    // if(shootMacro != lastShootMacro)
+    // {
+    //   if(shootMacro == ShootController::shootMacros::shootTarget)
+    //   std::cout << "" << (11_ft - robot.tracker->state.y).convert(foot) << ", " << targetAngle << std::endl;
+    //   if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
+    //   lastShootMacro = shootMacro;
+    // }
+    //
+    // if(j_Digital(Y))
+    // {
+    //   targetAngle -= 0.1;
+    //   std::cout << "Target Angle: " << targetAngle << std::endl;
+    //   robot.shooter->setTarget(targetAngle);
+    // }
+    // else if(j_Digital(X))
+    // {
+    //   targetAngle += 0.1;
+    //   std::cout << "Target Angle: " << targetAngle << std::endl;
+    //   robot.shooter->setTarget(targetAngle);
+    // }
+    // else if(printTrigger.changedToPressed())
+    // {
+    //   //print angle and distance
+    // shootLogger.writeLine({
+    //   topFlag ? "Top" : "Middle",
+    //   std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
+    //   std::to_string(targetAngle),
+    //   std::to_string(shotRpm),
+    //   std::to_string(pros::battery::get_capacity()),
+    //   std::to_string(robot.flywheel->flywheel->getTemperature())
+    // });
+    // }
+    //
+    // if(j_Digital(A)) {
+    //   robot.shooter->doJobLoop(ShootController::angleTarget);
+    // }
 
     pros::delay(10);
   }
