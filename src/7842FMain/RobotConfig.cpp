@@ -70,7 +70,7 @@ void initializeDevices()
 		robot.intake,
 		flywheelM, new ADIEncoder('A', 'B', false),
 		new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
-		new emaFilter(0.02),
+		new emaFilter(0.015),
 		new lib7842::velPID(0.073, 0.35, 0.04, 0.1), 0.4
 	);
 
@@ -97,7 +97,7 @@ void initializeDevices()
 	.withRange(-50, 3000.0/6.0)
 	.withRes(300)
 	.withLines(10, 8)
-	.withRefresh(50)
+	.withRefresh(20)
 	.withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
 	.withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
 	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
