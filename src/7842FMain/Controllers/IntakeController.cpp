@@ -36,8 +36,8 @@ void IntakeController::run()
   while(true)
   {
     double filteredSensor = sensorFilter.filter(lineSensor->get_value_calibrated());
-    //std::cout << "Sensor: " << filteredSensor << std::endl;
-    hasBall = filteredSensor < -100;
+    std::cout << "Sensor: " << filteredSensor << std::endl;
+    hasBall = filteredSensor < -200;
 
     if(!disabled)
     {
