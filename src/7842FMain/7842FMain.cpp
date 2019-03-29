@@ -34,7 +34,7 @@ void initialize()
 
   pros::delay(500); //Give the legacy ports time to start up
 
-  initializeBase();
+  initializeBase(); //test
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
 }
@@ -131,7 +131,7 @@ void opcontrol()
     driverControl();
     #endif
 
-    // 
+    //
     // if(j_Digital(L2)) {
     //   shootMacro = ShootController::shootMacros::shootTarget;
     //   topFlag = false;

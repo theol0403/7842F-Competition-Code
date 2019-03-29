@@ -16,15 +16,15 @@ robot_t robot;
 *                          |_|
 */
 #ifndef TEST_ROBOT //Competition
-const int8_t mFlywheel = -1;
-const int8_t mIntake = -9;
-const int8_t mIndexer = 10;
+const int8_t mFlywheel = -2;
+const int8_t mIntake = -8;
+const int8_t mIndexer = 1;
 const int8_t mArm = -8;
 
-const int8_t mRightFront = -19;
-const int8_t mRightBack = -20;
-const int8_t mLeftFront = 12;
-const int8_t mLeftBack = 11;
+const int8_t mRightFront = -10;
+const int8_t mRightBack = -9;
+const int8_t mLeftFront = 19;
+const int8_t mLeftBack = 20;
 
 
 void initializeBase()
@@ -74,7 +74,7 @@ void initializeDevices()
 		new lib7842::velPID(0.073, 0.105, 0.04, 0.2), 0.4
 	);
 
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 33, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 75.3, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
