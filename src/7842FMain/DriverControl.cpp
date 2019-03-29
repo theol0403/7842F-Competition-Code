@@ -52,7 +52,7 @@ void driverControl()
 		robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 
-		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(IntakeController::off); //turn off intake
+		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
 	}
 
 	/**
@@ -60,11 +60,11 @@ void driverControl()
 	*/
 	if(j_Digital(down))
 	{
-		robot.shooter->setDistanceToFlag(2_ft);
+		robot.shooter->setDistanceToFlag(3_ft);
 	}
 	else if(j_Digital(left))
 	{
-		robot.shooter->setDistanceToFlag(5_ft);
+		robot.shooter->setDistanceToFlag(4_ft);
 	}
 	else if(j_Digital(up))
 	{

@@ -125,7 +125,7 @@ void opcontrol()
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);
-    robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
+    robot.model->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
 
     #ifndef TEST_ROBOT
     driverControl();

@@ -50,7 +50,7 @@ void FlywheelController::run()
       //This slews the motor by limiting the rate of change of the motor speed
       double increment = motorPower - lastPower;
       if(increment > motorSlew) motorPower = lastPower + motorSlew;
-      else if(increment < motorSlew) motorPower = lastPower - motorSlew * 2.0;
+      else if(increment < motorSlew) motorPower = lastPower - motorSlew * 3.0;
       lastPower = motorPower;
 
       //moves whatever motor is available
