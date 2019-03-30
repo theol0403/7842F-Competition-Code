@@ -26,6 +26,7 @@ public:
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
+    waitForShoot,
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro

@@ -214,6 +214,8 @@ void ShootController::run()
 
   const double extendPos = 45;
 
+  Timer shootTimer;
+
   while(true)
   {
 
@@ -358,7 +360,13 @@ void ShootController::run()
 
 
       case enableShoot:
-      if(flywheel->isShot) {
+      shootTimer.placeMark();
+      completeJob();
+      addJob(waitForShoot);
+      break;
+
+      case waitForShoot:
+      if(shootTimer.getDtFromMark() >= 200_ms) {
         intake->enable();
         completeJob();
       } else {
