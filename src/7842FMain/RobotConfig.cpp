@@ -104,9 +104,11 @@ void initializeDevices()
 	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.build();
 
-//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
+	//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
 	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
+
+	display.angler = new AngleTuner(display.main->newTab("Angler"));
 
 }
 

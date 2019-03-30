@@ -4,17 +4,17 @@
 
 AngleTuner::AngleTuner(lv_obj_t* parent) : AngleTuner(parent, lv_obj_get_style(parent)->body.main_color) {}
 
-AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t imainColor) :
+AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor) :
 container(parent), task(taskFnc, this)
 {
 
-  std::vector<const char*> btnLabels;
-  btnLabels = {"Dist+", "Dist-", "\n", "Top+", "Top-", "\n", "Mid+", "Mid-", ""};
+  std::vector<const char*>* btnLabels = new std::vector<const char*>;
+  *btnLabels = {"Dist+", "Dist-", "\n", "Top+", "Top-", "\n", "Mid+", "Mid-", ""};
 
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   lv_btnm_set_map(btnm, btnLabels->data());
 
-  lv_obj_set_size(btnm, lv_obj_get_width(container)/3, lv_obj_get_height(container));
+  lv_obj_set_size(btnm, lv_obj_get_width(container)/4, lv_obj_get_height(container));
   lv_obj_align(btnm, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
   lv_btnm_set_action(btnm, angleBtnAction);
   lv_obj_set_free_ptr(btnm, this);
