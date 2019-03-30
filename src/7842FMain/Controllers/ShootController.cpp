@@ -322,16 +322,16 @@ void ShootController::run()
 
 
       case angleOut:
-      if(getHoodAngle() > 40 + angleThresh) {
+      if(getHoodAngle() > 35 + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= 40 - angleThresh) {
+        if(getHoodAngle() >= 35 - angleThresh) {
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(40));
+          flywheel->flywheel->move(-computeHoodPower(35));
         }
       }
       break;
@@ -360,12 +360,13 @@ void ShootController::run()
       case enableShoot:
       if(flywheel->isShot) {
         intake->enable();
-        intake->setState(IntakeController::intakeBall);
         completeJob();
       } else {
         flywheel->enable();
-        intake->enable();
-        intake->setState(IntakeController::shoot);
+        intake->disable();
+        intake->intake->moveVelocity(50);
+        intake->indexer->moveVelocity(200);
+        intake->indexerSlave = false;
       }
       break;
 

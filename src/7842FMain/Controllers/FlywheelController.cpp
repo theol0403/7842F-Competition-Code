@@ -81,7 +81,7 @@ void FlywheelController::run()
 
     if(accelTimer.getDtFromMark() >= 50_ms) {
       currentAccel = accelEma.filter(currentRpm - lastRpm);
-      isShot = currentAccel < -95.0 / 10.0;
+      isShot = currentAccel < -95.0 / 15.0;
       //std::cout << "Accel: " << currentRpm - lastRpm << " Shot: " << isShot << std::endl;
       lastRpm = currentRpm;
       accelTimer.placeMark();

@@ -54,7 +54,7 @@ void driverControl()
 		robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 
-		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
+		//if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
 	}
 
 	/**
