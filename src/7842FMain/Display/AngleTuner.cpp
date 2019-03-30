@@ -2,10 +2,10 @@
 #include <sstream>
 #include <iomanip>
 
-AngleTuner::AngleTuner(lv_obj_t* parent) : AngleTuner(parent, lv_obj_get_style(parent)->body.main_color) {}
+AngleTuner::AngleTuner(lv_obj_t* parent, ShootController*& iangler) : AngleTuner(parent, lv_obj_get_style(parent)->body.main_color, iangler) {}
 
-AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor) :
-container(parent), task(taskFnc, this)
+AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor, ShootController*& iangler) :
+container(parent), angler(iangler), task(taskFnc, this)
 {
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
@@ -75,121 +75,54 @@ AngleTuner::~AngleTuner() {
   lv_obj_del(container);
 }
 
-void AngleTuner::calcAngleLabels() {
-  double offset = 0.0;
+void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) {
   double height = lv_obj_get_height(container) - 5;
-  for(auto &label : angleLabels) {
-    std::stringstream str;
-    str << "Test";
-    lv_label_set_text(label, str.str().c_str());
-    offset += (double)height/angleLabels.size();
-    lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, offset - lv_obj_get_height(label) + (double)height/angleLabels.size()/2.0);
-  }
+  lv_label_set_text(label, text.c_str());
+  *offset += height/3.0;
+  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, *offset - lv_obj_get_height(label) + height/6.0);
+}
+
+void AngleTuner::calcAngleLabels() {
+  double offset = -30.0;
+  std::stringstream dist;
+  dist << angler->distanceToFlag.convert(foot);
+  allignLabel(angleLabels[0], dist.str(), &offset);
+  std::stringstream topAngle;
+  topAngle << angler->getTopFlagAngle();
+  allignLabel(angleLabels[1], topAngle.str(), &offset);
+  std::stringstream middleAngle;
+  middleAngle << angler->getMiddleFlagAngle();
+  allignLabel(angleLabels[2], middleAngle.str(), &offset);
 }
 
 
-// void AngleTuner::build() {
-//
-//   lv_style_t* style_gauge = new lv_style_t;
-//   lv_style_copy(style_gauge, &lv_style_pretty_color);
-//   style_gauge->body.main_color = LV_COLOR_WHITE;     /*Line color at the beginning*/
-//   style_gauge->body.grad_color =  LV_COLOR_WHITE;    /*Line color at the end*/
-//   style_gauge->body.padding.hor = 10;                      /*Scale line length*/
-//   style_gauge->body.padding.inner = 8;                    /*Scale label padding*/
-//   style_gauge->body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
-//   style_gauge->line.width = 2;
-//   style_gauge->text.font = gauges.size() > 2 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
-//   style_gauge->text.letter_space = 1;
-//   style_gauge->text.color = LV_COLOR_WHITE;
-//   style_gauge->line.color = LV_COLOR_WHITE;                  /*Line color after the critical value*/
-//
-//   lv_style_t* style_gauge_label = new lv_style_t;
-//   lv_style_copy(style_gauge_label, style_rel);
-//   style_gauge_label->text.font = gauges.size() > 4 ? &lv_font_dejavu_10 : &lv_font_dejavu_20;
-//
-//   double gaugeSize = std::min((double)lv_obj_get_width(container) / gauges.size(), lv_obj_get_height(container) - lv_obj_get_height(container)/5.0);
-//
-//   double offset = 0.0;
-//   for(auto &[name, variables, gauge] : gauges) {
-//     lv_obj_set_size(gauge, gaugeSize, gaugeSize);
-//     lv_gauge_set_needle_count(gauge, variables.size(), needleColors);
-//     lv_gauge_set_style(gauge, style_gauge);
-//     offset += (double)lv_obj_get_width(container)/gauges.size();
-//     lv_obj_align(gauge, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - gaugeSize/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + gaugeSize/2.0 + gaugeSize/6.0);
-//
-//     lv_obj_t* label = lv_label_create(container, NULL);
-//     lv_label_set_text(label, name.c_str());
-//     lv_obj_set_style(label, style_gauge_label);
-//     lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, offset - lv_obj_get_width(label)/2.0 - ((double)lv_obj_get_width(container)/gauges.size())/2.0, lv_obj_get_height(container)/3.0 + lv_obj_get_height(label)/2.0 + gaugeSize/3.0);
-//   }
-//
-//
-// }
-
 lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
-  // AngleTuner* that = static_cast<AngleTuner*>(lv_obj_get_free_ptr(btnm));
-  // std::string label = itxt;
-  //
-  // int labelPos = label.find_last_of({'+', '-'});
-  // bool sign = label.at(labelPos) == '+' ? true : false;
-  // label.erase(labelPos, std::string::npos);
-  //
-  // //find button in main vector from name
-  // auto search = std::find_if(that->buttons.begin(), that->buttons.end(), [=](const ButtonGroup &button){ return std::get<0>(button) == label; });
-  // if (search == that->buttons.end()) {
-  //   std::cerr << "AngleTuner::btnAction : no label found" << std::endl;
-  // }
-  //
-  // button_t &button = std::get<1>(*search);
-  //
-  // switch(button.type)
-  // {
-  //   case btnType::add: {
-  //     if(sign) {
-  //       *button.variable += that->multiplier;
-  //     } else  {
-  //       *button.variable -= that->multiplier;
-  //     }
-  //     if(*button.variable <= 0) *button.variable = 0.00000;
-  //     break;
-  //   }
-  //
-  //   case btnType::multiply: {
-  //     if(sign) {
-  //       *button.variable *= button.modifier;
-  //     } else {
-  //       *button.variable /= button.modifier;
-  //     }
-  //     break;
-  //   }
-  //
-  //   case btnType::increment: {
-  //     if(sign) {
-  //       *button.variable += button.modifier;
-  //     } else {
-  //       *button.variable -= button.modifier;
-  //     }
-  //     break;
-  //   }
-  // }
+  AngleTuner* that = static_cast<AngleTuner*>(lv_obj_get_free_ptr(btnm));
+  std::string label = itxt;
+
+  int labelPos = label.find_last_of({'+', '-'});
+  bool sign = label.at(labelPos) == '+' ? true : false;
+  label.erase(labelPos, std::string::npos);
+
+  if(label == "Dist") {
+    that->angler->distanceToFlag += 0.5_ft * boolToSign(sign);
+  } else if(label == "Top") {
+    that->angler->topAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
+  } else if(label == "Mid") {
+    that->angler->middleAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
+  } else {
+    std::cerr << "No Button Found" << std::endl;
+  }
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
 
 
 void AngleTuner::taskFnc(void* input) {
-  // AngleTuner* that = static_cast<AngleTuner*>(input);
-  // while(true) {
-  //   that->calcLabels();
-  //
-  //   for(auto &[name, variables, gauge] : that->gauges) {
-  //     int i = 0;
-  //     for(double* variable : variables) {
-  //       lv_gauge_set_value(gauge, i, *variable);
-  //       i++;
-  //     }
-  //   }
-  //   pros::delay(50);
-  // }
+  AngleTuner* that = static_cast<AngleTuner*>(input);
+  while(true) {
+    that->calcAngleLabels();
 
+    pros::delay(50);
+  }
 }

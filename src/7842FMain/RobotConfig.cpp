@@ -42,7 +42,7 @@ void initializeBase()
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
 		5.88_in, 2.75_in, 360,
-		lib7842::OdomTracker::aTracking
+		lib7842::OdomTracker::mTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
@@ -108,7 +108,7 @@ void initializeDevices()
 
 	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 
-	display.angler = new AngleTuner(display.main->newTab("Angler"));
+	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
 }
 
