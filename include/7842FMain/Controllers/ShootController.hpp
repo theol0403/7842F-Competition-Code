@@ -34,9 +34,9 @@ public:
   enum class shootMacros
   {
     off,
-    shootTopFlag,
-    shootMiddleFlag,
-    shootBothFlags,
+    shootTop,
+    shootMiddle,
+    shootBoth,
     shootTarget,
     shoot,
     angle
@@ -46,19 +46,21 @@ public:
   FlywheelController*& flywheel;
   pros::ADIPotentiometer* hoodSensor = nullptr;
   double backAngle = 0;
+  IterativePosPIDController* hoodPid = nullptr;
 
   pros::Task task;
 
-  const shootStates defaultState = standby;
+  std::map<float, double> topAngles = {};
+  std::map<float, double> middleAngles = {};
 
+  const shootStates defaultState = standby;
+  
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
   shootMacros currentMacro = shootMacros::off;
   double targetAngle = 0;
   QLength distanceToFlag = 0_in;
   bool macroCompleted = false;
-
-  IterativePosPIDController* hoodPid = nullptr;
 
   ShootController(IntakeController*&, FlywheelController*&, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 

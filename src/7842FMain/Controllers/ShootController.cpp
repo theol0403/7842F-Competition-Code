@@ -4,6 +4,58 @@ ShootController::ShootController(IntakeController*& iintake, FlywheelController*
 intake(iintake), flywheel(iflywheel), hoodSensor(ihoodSensor), backAngle(ibackAngle), hoodPid(ihoodPid),
 task(taskFnc, this)
 {
+  topAngles = {
+    {0, 0},
+    {0.5, 0},
+    {1, 0},
+    {1.5, 0},
+    {2, 0},
+    {2.5, 0},
+    {3, 0},
+    {3.5, 0},
+    {4, 2.2},
+    {4.5, 4.9},
+    {5, 6},
+    {5.5, 5.3},
+    {6, 6},
+    {6.5, 6.5},
+    {7, 7.1},
+    {7.5, 5.2},
+    {8, 6.1},
+    {8.5, 3.2},
+    {9, 2.9},
+    {9.5, 3},
+    {10, 2},
+    {10.5, 1.5},
+    {11, 1}
+  };
+
+  middleAngles = {
+    {0, 0},
+    {0.5, 0},
+    {1, 0},
+    {1.5, 0},
+    {2, 0},
+    {2.5, 3},
+    {3, 8.8},
+    {3.5, 12.6},
+    {4, 13.4},
+    {4.5, 15},
+    {5, 15.1},
+    {5.5, 13.3},
+    {6, 13},
+    {6.5, 14.2},
+    {7, 15},
+    {7.5, 14.4},
+    {8, 11.9},
+    {8.5, 9.8},
+    {9, 10.9},
+    {9.5, 8.6},
+    {10, 8.9},
+    {10.5, 7},
+    {11, 4.6}
+  };
+
 }
 
 void ShootController::clearQueue() {
@@ -42,11 +94,11 @@ void ShootController::addMacro(shootMacros macro) {
     clearQueue();
     break;
 
-    case shootMacros::shootTopFlag :
+    case shootMacros::shootTop :
     addJobs({reportDone, enableShoot, angleTop});
     break;
 
-    case shootMacros::shootMiddleFlag :
+    case shootMacros::shootMiddle :
     addJobs({reportDone, enableShoot, angleMiddle});
     break;
 
@@ -54,7 +106,7 @@ void ShootController::addMacro(shootMacros macro) {
     addJobs({reportDone, enableShoot, angleTarget});
     break;
 
-    case shootMacros::shootBothFlags :
+    case shootMacros::shootBoth :
     addJobs({reportDone, enableShoot, angleMiddle, enableShoot, angleTop});
     break;
 
@@ -111,30 +163,20 @@ double ShootController::getHoodAngle() {
   return (hoodSensor->get_value() / 4095.0 * 265.0) - backAngle;
 }
 
+
 double ShootController::getTopFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  double y = 0;
-  if(x <= 7.5) {
-    y = -0.2075*std::pow(x, 4) + 4.6833*std::pow(x, 3) - 39.593*std::pow(x, 2) + 149.52*x - 208.23;
-  } else {
-    y = 1.6667*std::pow(x, 4) - 62.881*std::pow(x, 3) + 886.89*std::pow(x, 2) - 5543.2*x + 12959;
-  }
-  if(x < 3.5) y = 0;
-  if(y < 0 || y > 50) y = 0;
+  x = std::round(x * 2) / 2; //round to nearest 0.5
+  if(x < 0 || x > 11) return 0; //bounds checking
+  double y = topAngles.at(x); //hopefully there is angle with distance key
   return y;
 }
 
 double ShootController::getMiddleFlagAngle() {
   double x = distanceToFlag.convert(foot);
-  double y = 0;
-  if(x <= 8) {
-    y = -0.0763*std::pow(x, 5) + 1.8609*std::pow(x, 4) - 17.085*std::pow(x, 3) + 71.906*std::pow(x, 2) - 131.32*x + 84.176;
-  } else {
-    y = -8.8*std::pow(x, 4) + 333.6*std::pow(x, 3) - 4735*std::pow(x, 2) + 29821*x - 70297;
-  }
-  if(x <= 2) y = 0;
-  // if(x >= 10) y = 15;
-  if(y < 0 || y > 50) y = 0;
+  x = std::round(x * 2) / 2; //round to nearest 0.5
+  if(x < 0 || x > 11) return 0; //bounds checking
+  double y = middleAngles.at(x); //hopefully there is angle with distance key
   return y;
 }
 
@@ -152,7 +194,7 @@ double ShootController::computeHoodPower(double target) {
   double output = hoodPid->step(getHoodAngle()) * 127;
   if(output < 0) {
     output = 0;
-    std::cerr << "Reverse PID" << std::endl;
+    std::cerr << "computeHoodPower: angler pid < 0" << std::endl;
   }
   //if(output > 100) output = 100;
   if(output < 40) output = 40;
