@@ -338,18 +338,15 @@ void ShootController::run()
 
 
       case enableShoot:
-      flywheel->enable();
-      intake->enable();
-      intake->setState(IntakeController::shoot);
-      completeJob();
-      addJob(waitForShoot);
-      break;
-
-      case waitForShoot:
-      pros::delay(250);
-      intake->enable();
-      intake->setState(IntakeController::intakeBall);
-      completeJob();
+      if(flywheel->isShot) {
+        intake->enable();
+        intake->setState(IntakeController::intakeBall);
+        completeJob();
+      } else {
+        flywheel->enable();
+        intake->enable();
+        intake->setState(IntakeController::shoot);
+      }
       break;
 
       case reportDone:

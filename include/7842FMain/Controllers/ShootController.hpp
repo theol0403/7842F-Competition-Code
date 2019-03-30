@@ -25,7 +25,6 @@ public:
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
-    waitForShoot, //waits until detects ball
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
@@ -54,7 +53,7 @@ public:
   std::map<float, double> middleAngles = {};
 
   const shootStates defaultState = standby;
-  
+
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
   shootMacros currentMacro = shootMacros::off;
