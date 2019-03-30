@@ -324,29 +324,31 @@ void ShootController::run()
 
 
       case angleOut:
-      if(getHoodAngle() > 35 + angleThresh) {
+      if(getHoodAngle() > 32 + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= 35 - angleThresh) {
+        if(getHoodAngle() >= 32 - angleThresh) {
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(35));
+          flywheel->flywheel->move(-computeHoodPower(32));
         }
       }
       break;
 
 
       case waitForBall:
-      flywheel->enable();
-      intake->enable();
-      intake->indexerSlave = false;
       if(intake->hasBall) {
+        intake->enable();
         completeJob();
       } else {
-        intake->setState(IntakeController::intakeBall);
+        flywheel->enable();
+        intake->disable();
+        intake->intake->moveVelocity(200);
+        intake->indexer->moveVelocity(200);
+        intake->indexerSlave = false;
       }
       break;
 
@@ -366,7 +368,7 @@ void ShootController::run()
       break;
 
       case waitForShoot:
-      if(shootTimer.getDtFromMark() >= 200_ms) {
+      if(shootTimer.getDtFromMark() >= 250_ms) {
         intake->enable();
         completeJob();
       } else {
