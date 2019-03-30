@@ -34,6 +34,10 @@ void FlywheelController::run()
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
   sensor->reset();
 
+  double lastRpm = 0;
+  Timer accelTimer;
+  EmaFilter accelEma(0.15);
+
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
@@ -61,10 +65,6 @@ void FlywheelController::run()
       //motorPower = 0;
     }
 
-    currentAccel = (currentRpm - lastRpm) * rpm / 10_ms;
-    rpmPerSecond = currentAccel.convert(rpm / second);
-    lastRpm = currentRpm;
-
     //std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
     if(motorPower != 0 || currentRpm != 0) {
       flywheelLogger.writeLine({
@@ -78,6 +78,15 @@ void FlywheelController::run()
         std::to_string(flywheel->getTemperature())
       });
     }
+
+    if(accelTimer.getDtFromMark() >= 50_ms) {
+      currentAccel = accelEma.filter(currentRpm - lastRpm);
+      isShot = currentAccel < -95.0 / 10.0;
+      //std::cout << "Accel: " << currentRpm - lastRpm << " Shot: " << isShot << std::endl;
+      lastRpm = currentRpm;
+      accelTimer.placeMark();
+    }
+
 
     pros::delay(10);
   }

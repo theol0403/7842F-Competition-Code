@@ -94,15 +94,15 @@ void initializeDevices()
 
 	display.graph = new Graph(display.main->newTab("Graph"), LV_COLOR_WHITE);
 	(*display.graph)
-	.withRange(-50, 3000.0/6.0)
+	.withRange(-20, 20)
 	.withRes(300)
 	.withLines(10, 8)
 	.withRefresh(20)
-	.withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
-	.withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
-	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
-	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
-	//.withSeries("Accel/6", &robot.flywheel->rpmPerSecond, LV_COLOR_BLACK, 6)
+	// .withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
+	// .withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
+	// .withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
+	// .withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
+	.withSeries("Accel", &robot.flywheel->currentAccel, LV_COLOR_LIME)
 	.build();
 
 	//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
