@@ -9,7 +9,7 @@ container(parent), task(taskFnc, this)
 {
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
-  *btnLabels = {"Dist+", "Dist-", "\n", "Top+", "Top-", "\n", "Mid+", "Mid-", ""};
+  *btnLabels = {"Dist+", "\n", "Dist-", "\n", "Top+", "\n", "Top-", "\n", "Mid+", "\n", "Mid-", ""};
 
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   lv_btnm_set_map(btnm, btnLabels->data());
@@ -63,21 +63,27 @@ container(parent), task(taskFnc, this)
   style_label->text.letter_space = 1;
   style_label->text.color = LV_COLOR_BLACK;
 
-  // for(auto &button : buttons) {
-  //   lv_obj_t* label = lv_label_create(container, NULL);
-  //   lv_obj_set_style(label, style_label);
-  //   std::get<2>(button) = label;
-  // }
-  // calcLabels();
+  for(auto &label : angleLabels) {
+    label = lv_label_create(container, NULL);
+    lv_obj_set_style(label, style_label);
+  }
 
-
-
-
-
+  calcAngleLabels();
 }
 
 AngleTuner::~AngleTuner() {
   lv_obj_del(container);
+}
+
+void AngleTuner::calcAngleLabels() {
+  double offset = 0.0;
+  for(auto &label : angleLabels) {
+    std::stringstream str;
+    str << "Test";
+    lv_label_set_text(label, str.str().c_str());
+    offset += (double)lv_obj_get_height(container)/3;
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, offset - lv_obj_get_height(label)/2.0);
+  }
 }
 
 

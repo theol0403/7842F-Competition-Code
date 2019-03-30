@@ -7,6 +7,7 @@ class AngleTuner
 public:
 
   lv_obj_t* container = nullptr;
+  std::array<lv_obj_t*, 3> angleLabels = {};
 
   pros::Task task;
 
