@@ -77,12 +77,13 @@ AngleTuner::~AngleTuner() {
 
 void AngleTuner::calcAngleLabels() {
   double offset = 0.0;
+  double height = lv_obj_get_height(container) - 5;
   for(auto &label : angleLabels) {
     std::stringstream str;
     str << "Test";
     lv_label_set_text(label, str.str().c_str());
-    offset += (double)lv_obj_get_height(container)/3;
-    lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, offset - lv_obj_get_height(label)/2.0);
+    offset += (double)height/angleLabels.size();
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, offset - lv_obj_get_height(label) + (double)height/angleLabels.size()/2.0);
   }
 }
 
