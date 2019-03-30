@@ -67,7 +67,7 @@ namespace lib7842
 
     }
 
-    std::cout << "Using: " << path << std::endl;
+    std::cout << name << " using: " << path << std::endl;
     return path;
   }
 

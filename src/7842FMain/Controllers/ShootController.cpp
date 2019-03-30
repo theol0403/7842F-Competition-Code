@@ -169,6 +169,7 @@ double ShootController::getTopFlagAngle() {
   x = std::round(x * 2) / 2; //round to nearest 0.5
   if(x < 0 || x > 11) return 0; //bounds checking
   double y = topAngles.at(x); //hopefully there is angle with distance key
+  //std::cout << "Distance: " << x << " Angle: " << y << std::endl;
   return y;
 }
 
@@ -177,6 +178,7 @@ double ShootController::getMiddleFlagAngle() {
   x = std::round(x * 2) / 2; //round to nearest 0.5
   if(x < 0 || x > 11) return 0; //bounds checking
   double y = middleAngles.at(x); //hopefully there is angle with distance key
+  //std::cout << "Distance: " << x << " Angle: " << y << std::endl;
   return y;
 }
 
