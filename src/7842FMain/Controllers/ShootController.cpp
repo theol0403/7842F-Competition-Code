@@ -106,6 +106,10 @@ void ShootController::addMacro(shootMacros macro) {
     addJobs({reportDone, enableShoot, angleTarget});
     break;
 
+    case shootMacros::shootOut :
+    addJobs({reportDone, enableShoot, angleOut});
+    break;
+
     case shootMacros::shootBoth :
     addJobs({reportDone, enableShoot, angleMiddle, enableShoot, angleTop});
     break;
@@ -312,6 +316,22 @@ void ShootController::run()
           intake->enable();
           flywheel->disable();
           flywheel->flywheel->move(-computeHoodPower(targetAngle));
+        }
+      }
+      break;
+
+
+      case angleOut:
+      if(getHoodAngle() > 40 + angleThresh) {
+        addJob(cycle);
+      } else {
+        if(getHoodAngle() >= 40 - angleThresh) {
+          flywheel->enable();
+          completeJob();
+        } else {
+          intake->enable();
+          flywheel->disable();
+          flywheel->flywheel->move(-computeHoodPower(40));
         }
       }
       break;

@@ -37,7 +37,9 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(L2) && j_Digital(L1)) {
+	if(j_Digital(X)) {
+		shootMacro = ShootController::shootMacros::shootOut;
+	} else if(j_Digital(L2) && j_Digital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
 	} else if(j_Digital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
