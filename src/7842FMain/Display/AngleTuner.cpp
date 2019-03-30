@@ -14,7 +14,7 @@ container(parent), angler(iangler), task(taskFnc, this)
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   lv_btnm_set_map(btnm, btnLabels->data());
 
-  lv_obj_set_size(btnm, lv_obj_get_width(container)/4, lv_obj_get_height(container));
+  lv_obj_set_size(btnm, lv_obj_get_width(container)/7, lv_obj_get_height(container));
   lv_obj_align(btnm, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
   lv_btnm_set_action(btnm, angleBtnAction);
   lv_obj_set_free_ptr(btnm, this);
@@ -61,7 +61,7 @@ container(parent), angler(iangler), task(taskFnc, this)
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
   style_label->text.letter_space = 1;
-  style_label->text.color = LV_COLOR_BLACK;
+  style_label->text.color = LV_COLOR_WHITE;
 
   for(auto &label : angleLabels) {
     label = lv_label_create(container, NULL);
@@ -79,7 +79,7 @@ void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) 
   double height = lv_obj_get_height(container) - 5;
   lv_label_set_text(label, text.c_str());
   *offset += height/3.0;
-  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(container)/8.0 - lv_obj_get_width(label)/2.0, *offset - lv_obj_get_height(label) + height/6.0);
+  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, 75, *offset - lv_obj_get_height(label) + height/6.0);
 }
 
 void AngleTuner::calcAngleLabels() {
