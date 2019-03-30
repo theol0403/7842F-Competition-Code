@@ -22,7 +22,7 @@ task(taskFnc, this)
     {7, 7.1},
     {7.5, 5.2},
     {8, 6.1},
-    {8.5, 3.2},
+    {8.5, 3.5},
     {9, 2.9},
     {9.5, 3},
     {10, 2},
@@ -37,7 +37,7 @@ task(taskFnc, this)
     {1.5, 0},
     {2, 0},
     {2.5, 3},
-    {3, 8.8},
+    {3, 9.8},
     {3.5, 12.6},
     {4, 13.4},
     {4.5, 15},
@@ -48,7 +48,7 @@ task(taskFnc, this)
     {7, 15},
     {7.5, 14.4},
     {8, 11.9},
-    {8.5, 9.8},
+    {8.5, 10.8},
     {9, 10.9},
     {9.5, 8.6},
     {10, 8.9},
@@ -339,18 +339,21 @@ void ShootController::run()
       break;
 
 
-      case waitForBall:
-      if(intake->hasBall) {
-        intake->enable();
-        completeJob();
-      } else {
+      case waitForBall: {
         flywheel->enable();
         intake->disable();
-        intake->intake->moveVelocity(200);
-        intake->indexer->moveVelocity(200);
-        intake->indexerSlave = false;
+        int count = 10;
+        while(count > 0) {
+          intake->intake->moveVelocity(200);
+          intake->indexer->moveVelocity(200);
+          intake->indexerSlave = false;
+          count--;
+          pros::delay(10);
+        }
+        intake->enable();
+        completeJob();
+        break;
       }
-      break;
 
 
       case waitForFlywheel:
@@ -368,7 +371,7 @@ void ShootController::run()
       break;
 
       case waitForShoot:
-      if(shootTimer.getDtFromMark() >= 250_ms) {
+      if(shootTimer.getDtFromMark() >= 300_ms) {
         intake->enable();
         completeJob();
       } else {
