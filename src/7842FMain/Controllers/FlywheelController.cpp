@@ -32,7 +32,6 @@ void FlywheelController::run()
 
   lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
-
   sensor->reset();
 
   while(true)
@@ -40,7 +39,6 @@ void FlywheelController::run()
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
       currentRpm = rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
-
       motorPower = pid->calculate(targetRpm, currentRpm);
 
       if(motorPower <= 0) motorPower = 0; //Prevent motor from spinning backward
@@ -62,6 +60,10 @@ void FlywheelController::run()
       //lastPower = lastPower <= 0 ? 0 : lastPower - 0.24;
       //motorPower = 0;
     }
+
+    currentAccel = (currentRpm - lastRpm) * rpm / 10_ms;
+    rpmPerSecond = currentAccel.convert(rpm / second);
+    lastRpm = currentRpm;
 
     //std::cout << std::setprecision(3) << "Target/4: " << targetRpm/4 << " Rpm/4: " << currentRpm/4 << " Power: "<< motorPower << " D: "<< pid->getD() << " Sensor: " << sensor->get() << std::endl;
     if(motorPower != 0 || currentRpm != 0) {

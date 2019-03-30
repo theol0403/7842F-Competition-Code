@@ -21,6 +21,10 @@ public:
   double targetRpm = 0;
   double currentRpm = 0;
 
+  double lastRpm = 0;
+  QAngularAcceleration currentAccel = 0_rpm / second;
+  double rpmPerSecond = 0;
+
   double lastPower = 0;
   double motorPower = 0;
 
