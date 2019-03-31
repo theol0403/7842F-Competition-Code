@@ -55,6 +55,15 @@ container(parent), angler(iangler), task(taskFnc, this)
   btnm_ina->text.color = LV_COLOR_WHITE;
 
   /**
+  * Label Style
+  */
+  lv_style_t* style_label = new lv_style_t;
+  lv_style_copy(style_label, &lv_style_plain);
+  style_label->text.font = &lv_font_dejavu_20;
+  style_label->text.letter_space = 1;
+  style_label->text.color = LV_COLOR_WHITE;
+
+  /**
   * Container Master Style
   */
   lv_style_t* masterStyle = new lv_style_t;
@@ -92,12 +101,6 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Labels
     */
-    lv_style_t* style_label = new lv_style_t;
-    lv_style_copy(style_label, &lv_style_plain);
-    style_label->text.font = &lv_font_dejavu_20;
-    style_label->text.letter_space = 1;
-    style_label->text.color = LV_COLOR_WHITE;
-
     for(auto &label : angleLabels) {
       label = lv_label_create(angleContainer, NULL);
       lv_obj_set_style(label, style_label);
@@ -158,20 +161,29 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    auto &[points, line, label] = dial;
-    points = {{0, 0}, {0, 0}};
-
-    line = lv_line_create(dialContainer, NULL);
-
     lv_style_t* lineStyle = new lv_style_t;
     lv_style_copy(lineStyle, &lv_style_plain);
     lineStyle->line.width = 2;
     lineStyle->line.opa = LV_OPA_100;
     lineStyle->line.color = LV_COLOR_WHITE;
-    lv_obj_set_style(line, lineStyle);
 
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
+    std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_RED, LV_COLOR_BLUE};
+    for(int i = 0; i < dialLines.size(); i++) {
+      auto &[points, line] = dialLines[i];
+      points = {{0, 0}, {0, 0}};
+      line = lv_line_create(dialContainer, NULL);
+      lv_style_t* style = new lv_style_t;
+      lv_style_copy(style, lineStyle);
+      style->line.color = lineColors[i];
+      lv_obj_set_style(line, style);
+
+      lv_line_set_points(line, points.data(), points.size());
+      lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
+    }
+
+    /**
+    * Angle Dial Label
+    */
 
   }
 
@@ -193,15 +205,21 @@ void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) 
 
 void AngleTuner::calcAngleLabels() {
   double offset = -30.0;
-  std::stringstream dist;
-  dist << angler->distanceToFlag.convert(foot);
-  allignLabel(angleLabels[0], dist.str(), &offset);
-  std::stringstream topAngle;
-  topAngle << angler->getTopFlagAngle();
-  allignLabel(angleLabels[1], topAngle.str(), &offset);
-  std::stringstream middleAngle;
-  middleAngle << angler->getMiddleFlagAngle();
-  allignLabel(angleLabels[2], middleAngle.str(), &offset);
+  {
+    std::stringstream str;
+    str << angler->distanceToFlag.convert(foot);
+    allignLabel(angleLabels[0], str.str(), &offset);
+  }
+  {
+    std::stringstream str;
+    str << angler->getTopFlagAngle();
+    allignLabel(angleLabels[1], str.str(), &offset);
+  }
+  {
+    std::stringstream str;
+    str << angler->getMiddleFlagAngle();
+    allignLabel(angleLabels[2], str.str(), &offset);
+  }
 }
 
 
@@ -249,11 +267,29 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void AngleTuner::calcDial() {
-  auto &[points, line, label] = dial;
-  int length = 30;
-  points[1] = {(short)(length * cos(45)), (short)(length * sin(45))};
-  lv_line_set_points(line, points.data(), points.size());
-  lv_obj_invalidate(line);
+  int lineLength = 30;
+
+  {
+    auto &[points, line] = dialLines[0];
+    points[1] = {(short)(lineLength * cos(45)), (short)(lineLength * sin(45))};
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
+  }
+
+  {
+    auto &[points, line] = dialLines[1];
+    points[1] = {(short)(lineLength * cos(10)), (short)(lineLength * sin(10))};
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
+  }
+
+  {
+    auto &[points, line] = dialLines[2];
+    points[1] = {(short)(lineLength * cos(90)), (short)(lineLength * sin(90))};
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
+  }
+
 }
 
 

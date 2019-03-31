@@ -12,7 +12,8 @@ public:
   pros::Task task;
 
   std::array<lv_obj_t*, 3> angleLabels = {};
-  std::tuple<std::vector<lv_point_t>, lv_obj_t*, lv_obj_t*> dial = {};
+  std::array<std::tuple<std::vector<lv_point_t>, lv_obj_t*>, 3> dialLines = {};
+  lv_obj_t* dialLabel;
 
   AngleTuner(lv_obj_t*, ShootController*&);
   AngleTuner(lv_obj_t*, lv_color_t, ShootController*&);
