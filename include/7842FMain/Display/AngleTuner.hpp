@@ -9,9 +9,10 @@ public:
 
   lv_obj_t* container = nullptr;
   ShootController*& angler;
-  std::array<lv_obj_t*, 3> angleLabels = {};
-
   pros::Task task;
+
+  std::array<lv_obj_t*, 3> angleLabels = {};
+  std::tuple<lv_obj_t*, lv_obj_t*> dial = {};
 
   AngleTuner(lv_obj_t*, ShootController*&);
   AngleTuner(lv_obj_t*, lv_color_t, ShootController*&);
@@ -22,6 +23,8 @@ public:
   static lv_res_t angleBtnAction(lv_obj_t*, const char*);
 
   static lv_res_t actionBtnAction(lv_obj_t*, const char*);
+
+  void calcDial();
 
   static void taskFnc(void*);
 

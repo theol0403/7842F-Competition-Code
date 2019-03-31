@@ -112,7 +112,7 @@ container(parent), angler(iangler), task(taskFnc, this)
   {
     lv_obj_t* actionContainer = lv_obj_create(container, NULL);
     lv_obj_set_size(actionContainer, actionContainerWidth, actionContainerHeight);
-    lv_obj_align(actionContainer, NULL, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+    lv_obj_align(actionContainer, container, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
     lv_obj_set_style(actionContainer, masterStyle);
 
     std::vector<const char*>* actionLabels = new std::vector<const char*>;
@@ -138,8 +138,22 @@ container(parent), angler(iangler), task(taskFnc, this)
   {
     lv_obj_t* dialContainer = lv_obj_create(container, NULL);
     lv_obj_set_size(dialContainer, dialContainerWidth, dialContainerHeight);
-    lv_obj_align(dialContainer, NULL, LV_ALIGN_IN_BOTTOM_LEFT, angleContainerWidth, 10);
+    lv_obj_align(dialContainer, container, LV_ALIGN_IN_BOTTOM_LEFT, angleContainerWidth, 0);
     lv_obj_set_style(dialContainer, masterStyle);
+    lv_obj_t* led = lv_led_create(dialContainer, NULL);
+    lv_led_on(led);
+    lv_obj_set_size(led, 5, 5);
+
+    lv_style_t* ledStyle = new lv_style_t;
+    lv_style_copy(ledStyle, &lv_style_plain);
+    ledStyle->body.radius = LV_RADIUS_CIRCLE;
+    ledStyle->body.main_color = mainColor;
+    ledStyle->body.grad_color = mainColor;
+    ledStyle->body.border.color = LV_COLOR_WHITE;
+    ledStyle->body.border.width = 2;
+    ledStyle->body.border.opa = LV_OPA_100;
+    lv_obj_set_style(led, ledStyle);
+    lv_obj_align(led, NULL, LV_ALIGN_CENTER, 0, 0);
   }
 
 
