@@ -8,6 +8,12 @@ AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor, ShootController*&
 container(parent), angler(iangler), task(taskFnc, this)
 {
 
+  int angleContainerWidth = lv_obj_get_width(container)/5.0;
+  int angleContainerHeight = lv_obj_get_height(container);
+
+  int actionContainerWidth = lv_obj_get_width(container) - angleContainerWidth;
+  int actionContainerHeight = lv_obj_get_height(container)/4.0;
+
   /**
   * ButtonMatrix Styles
   */
@@ -60,7 +66,7 @@ container(parent), angler(iangler), task(taskFnc, this)
   * Angle Buttons
   */
   lv_obj_t* angleContainer = lv_obj_create(container, NULL);
-  lv_obj_set_size(angleContainer, lv_obj_get_width(container)/5, lv_obj_get_height(container));
+  lv_obj_set_size(angleContainer, angleContainerWidth, angleContainerHeight);
   lv_obj_align(angleContainer, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
   lv_obj_set_style(angleContainer, masterStyle);
 
@@ -70,16 +76,20 @@ container(parent), angler(iangler), task(taskFnc, this)
   lv_obj_t* angleBtnm = lv_btnm_create(angleContainer, NULL);
   lv_btnm_set_map(angleBtnm, btnLabels->data());
 
-  lv_obj_set_size(angleBtnm, lv_obj_get_width(angleContainer)/3*2, lv_obj_get_height(angleContainer));
-  lv_obj_align(angleBtnm, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
-  lv_btnm_set_action(angleBtnm, angleBtnAction);
-  lv_obj_set_free_ptr(angleBtnm, this);
-
   lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BG, btnm_bg);
   lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_REL, btnm_rel);
   lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
   lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
+  lv_obj_set_size(angleBtnm, lv_obj_get_width(angleContainer)/3*2, lv_obj_get_height(angleContainer));
+  lv_btnm_set_action(angleBtnm, angleBtnAction);
+  lv_obj_set_free_ptr(angleBtnm, this);
+
+
+
+  /**
+  * Angle Labels
+  */
   lv_style_t* style_label = new lv_style_t;
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
@@ -90,8 +100,39 @@ container(parent), angler(iangler), task(taskFnc, this)
     label = lv_label_create(angleContainer, NULL);
     lv_obj_set_style(label, style_label);
   }
-
   calcAngleLabels();
+
+
+  /**
+  * Action Buttons
+  */
+  lv_obj_t* actionContainer = lv_obj_create(container, NULL);
+  lv_obj_set_size(actionContainer, actionContainerWidth, actionContainerHeight);
+  lv_obj_align(actionContainer, container, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+  lv_obj_set_style(actionContainer, masterStyle);
+
+  std::vector<const char*>* actionLabels = new std::vector<const char*>;
+  *actionLabels = {"Top", "Mid", "Cycle", "Shoot", ""};
+
+  lv_obj_t* actionBtnm = lv_btnm_create(actionContainer, NULL);
+  lv_btnm_set_map(actionBtnm, actionLabels->data());
+
+  lv_btnm_set_style(actionBtnm, LV_BTNM_STYLE_BG, btnm_bg);
+  lv_btnm_set_style(actionBtnm, LV_BTNM_STYLE_BTN_REL, btnm_rel);
+  lv_btnm_set_style(actionBtnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
+  lv_btnm_set_style(actionBtnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
+
+  lv_obj_set_size(actionBtnm, lv_obj_get_width(actionContainer), lv_obj_get_height(actionContainer));
+  lv_btnm_set_action(actionBtnm, actionBtnAction);
+  lv_obj_set_free_ptr(actionBtnm, this);
+
+
+
+
+
+
+
+
 }
 
 AngleTuner::~AngleTuner() {
@@ -141,7 +182,28 @@ lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
 }
 
 
+lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
+  AngleTuner* that = static_cast<AngleTuner*>(lv_obj_get_free_ptr(btnm));
+  std::string label = itxt;
+
+  //Top Mid Cycle Shoot
+  // if(label == "Dist") {
+  //   that->angler->distanceToFlag += 0.5_ft * boolToSign(sign);
+  // } else if(label == "Top") {
+  //   that->angler->topAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
+  // } else if(label == "Mid") {
+  //   that->angler->middleAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
+  // } else {
+  //   std::cerr << "No Button Found" << std::endl;
+  // }
+  std::cout << label << std::endl;
+
+  return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
+}
+
+
 void AngleTuner::taskFnc(void* input) {
+  pros::delay(500);
   AngleTuner* that = static_cast<AngleTuner*>(input);
   while(true) {
     that->calcAngleLabels();

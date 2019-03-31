@@ -21,7 +21,7 @@ public:
   void calcAngleLabels();
   static lv_res_t angleBtnAction(lv_obj_t*, const char*);
 
-  static lv_res_t commandBtnAction(lv_obj_t*, const char*);
+  static lv_res_t actionBtnAction(lv_obj_t*, const char*);
 
   static void taskFnc(void*);
 
