@@ -161,22 +161,18 @@ container(parent), angler(iangler), task(taskFnc, this)
     auto &[points, line, label] = dial;
     points = {{0, 0}, {0, 0}};
 
-    label = lv_line_create(dialContainer, NULL);
+    line = lv_line_create(dialContainer, NULL);
 
     lv_style_t* lineStyle = new lv_style_t;
     lv_style_copy(lineStyle, &lv_style_plain);
-    lineStyle->line.width = 3;
+    lineStyle->line.width = 2;
     lineStyle->line.opa = LV_OPA_100;
-    lineStyle->line.color = mainColor;
+    lineStyle->line.color = LV_COLOR_WHITE;
     lv_obj_set_style(line, lineStyle);
 
     lv_line_set_points(line, points.data(), points.size());
     lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
-    
-    points[1] = {(short)(20 * cos(45)), (short)(20 * sin(45))};
 
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
   }
 
 
@@ -252,11 +248,21 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 }
 
 
+void AngleTuner::calcDial() {
+  auto &[points, line, label] = dial;
+  int length = 30;
+  points[1] = {(short)(length * cos(45)), (short)(length * sin(45))};
+  lv_line_set_points(line, points.data(), points.size());
+  lv_obj_invalidate(line);
+}
+
+
 void AngleTuner::taskFnc(void* input) {
   pros::delay(500);
   AngleTuner* that = static_cast<AngleTuner*>(input);
   while(true) {
     that->calcAngleLabels();
+    that->calcDial();
 
     pros::delay(100);
   }
