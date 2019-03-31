@@ -8,54 +8,77 @@ AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor, ShootController*&
 container(parent), angler(iangler), task(taskFnc, this)
 {
 
+  /**
+  * ButtonMatrix Styles
+  */
+  lv_style_t* btnm_bg = new lv_style_t;
+  lv_style_copy(btnm_bg, &lv_style_plain);
+  btnm_bg->body.main_color = mainColor;
+  btnm_bg->body.grad_color = mainColor;
+  btnm_bg->body.border.color = LV_COLOR_WHITE;
+  btnm_bg->body.border.width = 0;
+  btnm_bg->body.radius = 0;
+  btnm_bg->body.padding.hor = 5;
+  btnm_bg->body.padding.ver = 5;
+  btnm_bg->body.padding.inner = 5;
+
+  lv_style_t* btnm_rel = new lv_style_t;
+  lv_style_copy(btnm_rel, &lv_style_btn_tgl_rel);
+  btnm_rel->body.main_color = mainColor;
+  btnm_rel->body.grad_color = mainColor;
+  btnm_rel->body.border.color = LV_COLOR_WHITE;
+  btnm_rel->body.border.width = 2;
+  btnm_rel->body.border.opa = LV_OPA_100;
+  btnm_rel->body.radius = 2;
+  btnm_rel->text.color = LV_COLOR_WHITE;
+
+  lv_style_t* btnm_pr = new lv_style_t;
+  lv_style_copy(btnm_pr, btnm_rel);
+  btnm_pr->body.main_color = LV_COLOR_WHITE;
+  btnm_pr->body.grad_color = LV_COLOR_WHITE;
+  btnm_pr->text.color = mainColor;
+
+  lv_style_t* btnm_ina = new lv_style_t;
+  lv_style_copy(btnm_ina, &lv_style_btn_ina);
+  btnm_ina->body.main_color = mainColor;
+  btnm_ina->body.grad_color = mainColor;
+  btnm_ina->body.border.width = 0;
+  btnm_ina->text.color = LV_COLOR_WHITE;
+
+  /**
+  * Container Master Style
+  */
+  lv_style_t* masterStyle = new lv_style_t;
+  lv_style_copy(masterStyle, &lv_style_plain);
+  masterStyle->body.main_color = mainColor;
+  masterStyle->body.grad_color = mainColor;
+  masterStyle->body.border.color = LV_COLOR_WHITE;
+  masterStyle->body.border.width = 3;
+  masterStyle->body.radius = 0;
+
+  /**
+  * Angle Buttons
+  */
+  lv_obj_t* angleContainer = lv_obj_create(container, NULL);
+  lv_obj_set_size(angleContainer, lv_obj_get_width(container)/5, lv_obj_get_height(container));
+  lv_obj_align(angleContainer, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_obj_set_style(angleContainer, masterStyle);
+
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
   *btnLabels = {"Dist+", "\n", "Dist-", "\n", "Top+", "\n", "Top-", "\n", "Mid+", "\n", "Mid-", ""};
 
-  lv_obj_t* btnm = lv_btnm_create(container, NULL);
-  lv_btnm_set_map(btnm, btnLabels->data());
+  lv_obj_t* angleBtnm = lv_btnm_create(angleContainer, NULL);
+  lv_btnm_set_map(angleBtnm, btnLabels->data());
 
-  lv_obj_set_size(btnm, lv_obj_get_width(container)/7, lv_obj_get_height(container));
-  lv_obj_align(btnm, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
-  lv_btnm_set_action(btnm, angleBtnAction);
-  lv_obj_set_free_ptr(btnm, this);
+  lv_obj_set_size(angleBtnm, lv_obj_get_width(angleContainer)/3*2, lv_obj_get_height(angleContainer));
+  lv_obj_align(angleBtnm, NULL, LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_btnm_set_action(angleBtnm, angleBtnAction);
+  lv_obj_set_free_ptr(angleBtnm, this);
 
-  lv_style_t* style_bg = new lv_style_t;
-  lv_style_copy(style_bg, &lv_style_plain);
-  style_bg->body.main_color = mainColor;
-  style_bg->body.grad_color = mainColor;
-  style_bg->body.border.color = LV_COLOR_WHITE;
-  style_bg->body.border.width = 3;
-  style_bg->body.radius = 0;
-  style_bg->body.padding.hor = 5;
-  style_bg->body.padding.ver = 5;
-  style_bg->body.padding.inner = 5;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BG, style_bg);
-
-  lv_style_t* style_rel = new lv_style_t;
-  lv_style_copy(style_rel, &lv_style_btn_tgl_rel);
-  style_rel->body.main_color = mainColor;
-  style_rel->body.grad_color = mainColor;
-  style_rel->body.border.color = LV_COLOR_WHITE;
-  style_rel->body.border.width = 2;
-  style_rel->body.border.opa = LV_OPA_100;
-  style_rel->body.radius = 2;
-  style_rel->text.color = LV_COLOR_WHITE;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_REL, style_rel);
-
-  lv_style_t* style_pr = new lv_style_t;
-  lv_style_copy(style_pr, style_rel);
-  style_pr->body.main_color = LV_COLOR_WHITE;
-  style_pr->body.grad_color = LV_COLOR_WHITE;
-  style_pr->text.color = mainColor;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, style_pr);
-
-  lv_style_t* style_ina = new lv_style_t;
-  lv_style_copy(style_ina, &lv_style_btn_ina);
-  style_ina->body.main_color = mainColor;
-  style_ina->body.grad_color = mainColor;
-  style_ina->body.border.width = 0;
-  style_ina->text.color = LV_COLOR_WHITE;
-  lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, style_ina);
+  lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BG, btnm_bg);
+  lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_REL, btnm_rel);
+  lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
+  lv_btnm_set_style(angleBtnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
   lv_style_t* style_label = new lv_style_t;
   lv_style_copy(style_label, &lv_style_plain);
@@ -64,7 +87,7 @@ container(parent), angler(iangler), task(taskFnc, this)
   style_label->text.color = LV_COLOR_WHITE;
 
   for(auto &label : angleLabels) {
-    label = lv_label_create(container, NULL);
+    label = lv_label_create(angleContainer, NULL);
     lv_obj_set_style(label, style_label);
   }
 
@@ -76,10 +99,10 @@ AngleTuner::~AngleTuner() {
 }
 
 void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) {
-  double height = lv_obj_get_height(container) - 5;
+  int height = lv_obj_get_height(container) - 15;
   lv_label_set_text(label, text.c_str());
   *offset += height/3.0;
-  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, 75, *offset - lv_obj_get_height(label) + height/6.0);
+  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, 65, *offset - lv_obj_get_height(label) + height/6.0);
 }
 
 void AngleTuner::calcAngleLabels() {
@@ -123,6 +146,6 @@ void AngleTuner::taskFnc(void* input) {
   while(true) {
     that->calcAngleLabels();
 
-    pros::delay(50);
+    pros::delay(100);
   }
 }
