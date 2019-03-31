@@ -17,9 +17,9 @@ robot_t robot;
 */
 #ifndef TEST_ROBOT //Competition
 const int8_t mFlywheel = -2;
-const int8_t mIntake = -8;
+const int8_t mIntake = 8;
 const int8_t mIndexer = 1;
-const int8_t mArm = -8;
+const int8_t mArm = -11;
 
 const int8_t mRightFront = -10;
 const int8_t mRightBack = -9;
