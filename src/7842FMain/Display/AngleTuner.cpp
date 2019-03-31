@@ -161,19 +161,20 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    lv_style_t* lineStyle = new lv_style_t;
-    lv_style_copy(lineStyle, &lv_style_plain);
-    lineStyle->line.width = 2;
-    lineStyle->line.opa = LV_OPA_100;
-    lineStyle->line.color = LV_COLOR_WHITE;
+    lv_style_t lineStyle;
+    lv_style_copy(&lineStyle, &lv_style_plain);
+    lineStyle.line.width = 2;
+    lineStyle.line.opa = LV_OPA_100;
+    lineStyle.line.color = LV_COLOR_WHITE;
 
     std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_RED, LV_COLOR_BLUE};
     for(int i = 0; i < dialLines.size(); i++) {
       auto &[points, line] = dialLines[i];
-      points = {{0, 0}, {0, 0}};
+      points[0] = {0, 0};
+      points[1] = {0, 0};
       line = lv_line_create(dialContainer, NULL);
       lv_style_t* style = new lv_style_t;
-      lv_style_copy(style, lineStyle);
+      lv_style_copy(style, &lineStyle);
       style->line.color = lineColors[i];
       lv_obj_set_style(line, style);
 
@@ -276,19 +277,19 @@ void AngleTuner::calcDial() {
     lv_obj_invalidate(line);
   }
 
-  {
-    auto &[points, line] = dialLines[1];
-    points[1] = {(short)(lineLength * cos(10)), (short)(lineLength * sin(10))};
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
-  }
-
-  {
-    auto &[points, line] = dialLines[2];
-    points[1] = {(short)(lineLength * cos(90)), (short)(lineLength * sin(90))};
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
-  }
+  // {
+  //   auto &[points, line] = dialLines[1];
+  //   points[1] = {(short)(lineLength * cos(10)), (short)(lineLength * sin(10))};
+  //   lv_line_set_points(line, points.data(), points.size());
+  //   lv_obj_invalidate(line);
+  // }
+  //
+  // {
+  //   auto &[points, line] = dialLines[2];
+  //   points[1] = {(short)(lineLength * cos(90)), (short)(lineLength * sin(90))};
+  //   lv_line_set_points(line, points.data(), points.size());
+  //   lv_obj_invalidate(line);
+  // }
 
 }
 
