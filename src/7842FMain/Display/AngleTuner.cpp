@@ -142,7 +142,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_obj_set_style(dialContainer, masterStyle);
     lv_obj_t* led = lv_led_create(dialContainer, NULL);
     lv_led_on(led);
-    lv_obj_set_size(led, 5, 5);
+    lv_obj_set_size(led, 10, 10);
 
     lv_style_t* ledStyle = new lv_style_t;
     lv_style_copy(ledStyle, &lv_style_plain);
@@ -154,6 +154,29 @@ container(parent), angler(iangler), task(taskFnc, this)
     ledStyle->body.border.opa = LV_OPA_100;
     lv_obj_set_style(led, ledStyle);
     lv_obj_align(led, NULL, LV_ALIGN_CENTER, 0, 0);
+
+    /**
+    * Angle Dial Line
+    */
+    auto &[points, line, label] = dial;
+    points = {{0, 0}, {0, 0}};
+
+    label = lv_line_create(dialContainer, NULL);
+
+    lv_style_t* lineStyle = new lv_style_t;
+    lv_style_copy(lineStyle, &lv_style_plain);
+    lineStyle->line.width = 3;
+    lineStyle->line.opa = LV_OPA_100;
+    lineStyle->line.color = mainColor;
+    lv_obj_set_style(line, lineStyle);
+
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
+    
+    points[1] = {(short)(20 * cos(45)), (short)(20 * sin(45))};
+
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
   }
 
 
