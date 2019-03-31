@@ -32,15 +32,17 @@ void FlywheelController::run()
 
   lib7842::SDLogger flywheelLogger("flywheelLog", lib7842::SDLogger::count);
   flywheelLogger.writeFields({"Time", "Target/4", "Rpm/4", "Accel(rpm/s)", "Power", "D", "Battery", "Temp"});
-
   sensor->reset();
+
+  double lastRpm = 0;
+  Timer accelTimer;
+  EmaFilter accelEma(0.15);
 
   while(true)
   {
     if(!disabled || intake->indexerSlave) //there is a motor available
     {
       currentRpm = rpmFilter->filter(velMath->step(sensor->get()).convert(rpm));
-
       motorPower = pid->calculate(targetRpm, currentRpm);
 
       if(motorPower <= 0) motorPower = 0; //Prevent motor from spinning backward
@@ -76,6 +78,15 @@ void FlywheelController::run()
         std::to_string(flywheel->getTemperature())
       });
     }
+
+    if(accelTimer.getDtFromMark() >= 50_ms) {
+      currentAccel = accelEma.filter(currentRpm - lastRpm);
+      isShot = currentAccel < -95.0 / 15.0;
+      //std::cout << "Accel: " << currentRpm - lastRpm << " Shot: " << isShot << std::endl;
+      lastRpm = currentRpm;
+      accelTimer.placeMark();
+    }
+
 
     pros::delay(10);
   }

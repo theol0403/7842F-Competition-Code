@@ -22,10 +22,11 @@ public:
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     angleTarget, //drop hood to target angle
+    angleOut, //drop hood to out angle
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
-    waitForShoot, //waits until detects ball
+    waitForShoot,
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
@@ -34,10 +35,11 @@ public:
   enum class shootMacros
   {
     off,
-    shootTopFlag,
-    shootMiddleFlag,
-    shootBothFlags,
+    shootTop,
+    shootMiddle,
+    shootBoth,
     shootTarget,
+    shootOut,
     shoot,
     angle
   };
@@ -46,8 +48,12 @@ public:
   FlywheelController*& flywheel;
   pros::ADIPotentiometer* hoodSensor = nullptr;
   double backAngle = 0;
+  IterativePosPIDController* hoodPid = nullptr;
 
   pros::Task task;
+
+  std::map<float, double> topAngles = {};
+  std::map<float, double> middleAngles = {};
 
   const shootStates defaultState = standby;
 
@@ -57,8 +63,6 @@ public:
   double targetAngle = 0;
   QLength distanceToFlag = 0_in;
   bool macroCompleted = false;
-
-  IterativePosPIDController* hoodPid = nullptr;
 
   ShootController(IntakeController*&, FlywheelController*&, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 

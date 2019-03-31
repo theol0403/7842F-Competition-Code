@@ -26,6 +26,9 @@ public:
 
   bool disabled = false;
 
+  double currentAccel = 0;
+  bool isShot = false;
+
   FlywheelController(IntakeController*&, Motor*, ADIEncoder*, VelMath*, lib7842::emaFilter*, lib7842::velPID*, double);
 
   void setRpm(double);

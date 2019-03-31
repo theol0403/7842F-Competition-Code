@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iomanip>
 
-lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_RED, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
+lv_color_t FlywheelTuner::needleColors[4] = {LV_COLOR_BLACK, LV_COLOR_BLUE, LV_COLOR_PURPLE, LV_COLOR_YELLOW};
 
 FlywheelTuner::FlywheelTuner(lv_obj_t* parent) : FlywheelTuner(parent, lv_obj_get_style(parent)->body.main_color) {}
 

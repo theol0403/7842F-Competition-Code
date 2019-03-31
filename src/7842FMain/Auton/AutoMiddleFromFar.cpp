@@ -17,15 +17,15 @@ void AutonMiddleFromFar(void* input)
   pros::delay(2000);
 
   robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTopFlag);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddleFlag);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
 
 }

@@ -37,12 +37,14 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(L2) && j_Digital(L1)) {
-		shootMacro = ShootController::shootMacros::shootBothFlags;
+	if(j_Digital(X)) {
+		shootMacro = ShootController::shootMacros::shootOut;
+	} else if(j_Digital(L2) && j_Digital(L1)) {
+		shootMacro = ShootController::shootMacros::shootBoth;
 	} else if(j_Digital(L2)) {
-		shootMacro = ShootController::shootMacros::shootMiddleFlag;
+		shootMacro = ShootController::shootMacros::shootMiddle;
 	} else if(j_Digital(L1)) {
-		shootMacro = ShootController::shootMacros::shootTopFlag;
+		shootMacro = ShootController::shootMacros::shootTop;
 	} else {
 		shootMacro = ShootController::shootMacros::off;
 	}
@@ -52,7 +54,7 @@ void driverControl()
 		robot.shooter->doMacro(shootMacro);
 		lastShootMacro = shootMacro;
 
-		if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
+		//if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
 	}
 
 	/**
@@ -68,7 +70,7 @@ void driverControl()
 	}
 	else if(j_Digital(up))
 	{
-		robot.shooter->setDistanceToFlag(9_ft);
+		robot.shooter->setDistanceToFlag(8.5_ft);
 	}
 	else if(j_Digital(right))
 	{
