@@ -100,15 +100,15 @@ void disabled()
 */
 void opcontrol()
 {
-  lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::cout);
-  shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
-
-  double targetAngle = 0;
-  bool topFlag = true;
-  double shotRpm = 0;
-  okapi::ControllerButton printTrigger = j_Main[ControllerDigital::A];
-  ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
-  ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
+  // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::cout);
+  // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
+  //
+  // double targetAngle = 0;
+  // bool topFlag = true;
+  // double shotRpm = 0;
+  // okapi::ControllerButton printTrigger = j_Main[ControllerDigital::A];
+  // ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
+  // ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
   robot.model->stop();
 

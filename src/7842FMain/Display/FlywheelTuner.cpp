@@ -219,6 +219,7 @@ lv_res_t FlywheelTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void FlywheelTuner::taskFnc(void* input) {
+  pros::delay(500);
   FlywheelTuner* that = static_cast<FlywheelTuner*>(input);
   while(true) {
     that->calcLabels();
@@ -230,7 +231,7 @@ void FlywheelTuner::taskFnc(void* input) {
         i++;
       }
     }
-    pros::delay(50);
+    pros::delay(100);
   }
 
 }

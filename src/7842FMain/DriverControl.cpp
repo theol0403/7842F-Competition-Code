@@ -51,10 +51,15 @@ void driverControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-		robot.shooter->doMacro(shootMacro);
-		lastShootMacro = shootMacro;
 
-		//if(shootMacro == ShootController::shootMacros::off) robot.intake->setState(intakeState); //turn off intake
+		//if X is released while it is angling, it will shoot
+		if(lastShootMacro == ShootController::shootMacros::shootOut && shootMacro == ShootController::shootMacros::off && robot.shooter->getCurrentJob() == ShootController::angleOut) {
+			robot.shooter->doMacro(ShootController::shootMacros::shoot);
+		} else {
+			robot.shooter->doMacro(shootMacro);
+		}
+
+		lastShootMacro = shootMacro;
 	}
 
 	/**

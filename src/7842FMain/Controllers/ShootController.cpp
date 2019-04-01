@@ -111,7 +111,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBoth :
-    addJobs({reportDone, enableShoot, angleMiddle, enableShoot, angleTop});
+    addJobs({reportDone, enableShoot, enableShoot, angleMiddle, enableShoot, angleTop});
     break;
 
     case shootMacros::shoot :
@@ -247,22 +247,24 @@ void ShootController::run()
       break;
 
       case extend:
-      intake->enable();
-      flywheel->disable();
-      flywheel->flywheel->moveVelocity(cycleVel);
       if(getHoodAngle() > extendPos) {
         flywheel->enable();
         completeJob();
+      } else {
+        intake->enable();
+        flywheel->disable();
+        flywheel->flywheel->moveVelocity(cycleVel);
       }
       break;
 
       case waitForSlip:
-      intake->enable();
-      flywheel->disable();
-      flywheel->flywheel->moveVelocity(cycleVel);
       if(getHoodAngle() <= extendPos) {
         flywheel->enable();
         completeJob();
+      } else {
+        intake->enable();
+        flywheel->disable();
+        flywheel->flywheel->moveVelocity(cycleVel);
       }
       break;
 
@@ -271,6 +273,9 @@ void ShootController::run()
       flywheel->enable();
       if(getHoodAngle() < angleThresh) {
         completeJob();
+      } else {
+        intake->enable();
+        flywheel->enable();
       }
       break;
 
