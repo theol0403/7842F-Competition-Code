@@ -182,6 +182,7 @@ container(parent), angler(iangler), task(taskFnc, this)
       lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
     }
 
+
     /**
     * Angle Dial Label
     */
@@ -268,28 +269,29 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void AngleTuner::calcDial() {
-  int lineLength = 30;
+  const int lineLength = 30;
 
   {
-    auto &[points, line] = dialLines[0];
-    points[1] = {(short)(lineLength * cos(45)), (short)(lineLength * sin(45))};
+    auto &[points, line] = dialLines.at(0);
+    points[1] = {(short)(lineLength * std::cos((45_deg).convert(radian))), (short)(lineLength * std::sin((45_deg).convert(radian)))};
     lv_line_set_points(line, points.data(), points.size());
     lv_obj_invalidate(line);
   }
 
-  // {
-  //   auto &[points, line] = dialLines[1];
-  //   points[1] = {(short)(lineLength * cos(10)), (short)(lineLength * sin(10))};
-  //   lv_line_set_points(line, points.data(), points.size());
-  //   lv_obj_invalidate(line);
-  // }
-  //
-  // {
-  //   auto &[points, line] = dialLines[2];
-  //   points[1] = {(short)(lineLength * cos(90)), (short)(lineLength * sin(90))};
-  //   lv_line_set_points(line, points.data(), points.size());
-  //   lv_obj_invalidate(line);
-  // }
+  {
+    auto &[points, line] = dialLines.at(1);
+    points[1] = {(short)(lineLength * std::cos((10_deg).convert(radian))), (short)(lineLength * std::sin((10_deg).convert(radian)))};
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
+  }
+
+
+  {
+    auto &[points, line] = dialLines[2];
+    points[1] = {(short)(lineLength * std::cos((90_deg).convert(radian))), (short)(lineLength * std::sin((90_deg).convert(radian)))};
+    lv_line_set_points(line, points.data(), points.size());
+    lv_obj_invalidate(line);
+  }
 
 }
 
