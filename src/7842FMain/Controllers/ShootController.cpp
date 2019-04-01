@@ -111,7 +111,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBoth :
-    addJobs({reportDone, enableShoot, angleMiddle, enableShoot, angleTop});
+    addJobs({reportDone, enableShoot, enableShoot, angleMiddle, enableShoot, angleTop});
     break;
 
     case shootMacros::shoot :
