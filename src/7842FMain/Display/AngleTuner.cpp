@@ -17,6 +17,8 @@ container(parent), angler(iangler), task(taskFnc, this)
   int dialContainerWidth = (lv_obj_get_width(container) - angleContainerWidth) / 3;
   int dialContainerHeight = lv_obj_get_height(container) - actionContainerHeight;
 
+  std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_BLACK, LV_COLOR_BLUE}; //Hood, Top, Mid
+
   /**
   * ButtonMatrix Styles
   */
@@ -101,10 +103,15 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Labels
     */
-    for(auto &label : angleLabels) {
+    for(int i = 0; i < angleLabels.size(); i++) {
+      lv_obj_t*& label = angleLabels.at(i);
       label = lv_label_create(angleContainer, NULL);
-      lv_obj_set_style(label, style_label);
+      lv_style_t* style = new lv_style_t;
+      lv_style_copy(style, style_label);
+      style->text.color = lineColors[i];
+      lv_obj_set_style(label, style);
     }
+
     calcAngleLabels();
   }
 
@@ -161,25 +168,26 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    lv_style_t lineStyle;
-    lv_style_copy(&lineStyle, &lv_style_plain);
-    lineStyle.line.width = 2;
-    lineStyle.line.opa = LV_OPA_100;
-    lineStyle.line.color = LV_COLOR_WHITE;
+    {
+      lv_style_t lineStyle;
+      lv_style_copy(&lineStyle, &lv_style_plain);
+      lineStyle.line.width = 2;
+      lineStyle.line.opa = LV_OPA_100;
+      lineStyle.line.color = LV_COLOR_WHITE;
 
-    std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_RED, LV_COLOR_BLUE};
-    for(int i = 0; i < dialLines.size(); i++) {
-      auto &[points, line] = dialLines[i];
-      points[0] = {0, 0};
-      points[1] = {0, 0};
-      line = lv_line_create(dialContainer, NULL);
-      lv_style_t* style = new lv_style_t;
-      lv_style_copy(style, &lineStyle);
-      style->line.color = lineColors[i];
-      lv_obj_set_style(line, style);
+      for(int i = 0; i < dialLines.size(); i++) {
+        auto &[points, line] = dialLines[i];
+        points[0] = {0, 0};
+        points[1] = {0, 0};
+        line = lv_line_create(dialContainer, NULL);
+        lv_style_t* style = new lv_style_t;
+        lv_style_copy(style, &lineStyle);
+        style->line.color = lineColors[i];
+        lv_obj_set_style(line, style);
 
-      lv_line_set_points(line, points.data(), points.size());
-      lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
+        lv_line_set_points(line, points.data(), points.size());
+        lv_obj_align(line, NULL, LV_ALIGN_CENTER, 0, 0);
+      }
     }
 
 
@@ -270,25 +278,37 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 void AngleTuner::calcDial() {
   const int lineLength = 30;
+  QAngle backAngle = 0_deg;
 
   {
+    double theta = (backAngle + 0_deg).convert(radian);
     auto &[points, line] = dialLines.at(0);
-    points[1] = {(short)(lineLength * std::cos((45_deg).convert(radian))), (short)(lineLength * std::sin((45_deg).convert(radian)))};
+    points[0] = {0, 0};
+    points[1] = {(int16_t)(lineLength * cos(theta)), (int16_t)(lineLength * sin(theta))};
     lv_line_set_points(line, points.data(), points.size());
     lv_obj_invalidate(line);
   }
 
   {
+    static double theta;
+    theta += 0.1;
+    //double theta = (backAngle + 20_deg).convert(radian);
     auto &[points, line] = dialLines.at(1);
-    points[1] = {(short)(lineLength * std::cos((10_deg).convert(radian))), (short)(lineLength * std::sin((10_deg).convert(radian)))};
+    double x = lineLength * cos(theta);
+    double y = -lineLength * sin(theta);
+    points[0] = {0, 0};
+    points[1] = {(int16_t)(x), (int16_t)(y)};
     lv_line_set_points(line, points.data(), points.size());
     lv_obj_invalidate(line);
+    std::cout << "20deg X: " << x << " Y: " << y << std::endl;
   }
 
 
   {
+    double theta = (backAngle + 40_deg).convert(radian);
     auto &[points, line] = dialLines[2];
-    points[1] = {(short)(lineLength * std::cos((90_deg).convert(radian))), (short)(lineLength * std::sin((90_deg).convert(radian)))};
+    points[0] = {0, 0};
+    points[1] = {(int16_t)(lineLength * cos(theta)), (int16_t)(lineLength * sin(theta))};
     lv_line_set_points(line, points.data(), points.size());
     lv_obj_invalidate(line);
   }
