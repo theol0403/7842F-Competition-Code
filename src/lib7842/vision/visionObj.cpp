@@ -103,7 +103,8 @@ namespace lib7842
       case objAttr::centerX: return centerX; break;
       case objAttr::centerY: return centerY; break;
     }
-    std::cerr << "GetAttr: Invalid Attr\n";
+    std::cerr << "GetAttr: Invalid Attr" << std::endl;
+    return 0;
   }
 
 

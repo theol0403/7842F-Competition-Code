@@ -32,8 +32,8 @@ namespace lib7842
     );
     printf (
       "left: %d, right: %d\n",
-      model->getSensorVals()[0],
-      model->getSensorVals()[1]
+      (int)model->getSensorVals()[0],
+      (int)model->getSensorVals()[1]
     );
   }
 

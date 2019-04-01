@@ -175,7 +175,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     lineStyle.line.opa = LV_OPA_100;
     lineStyle.line.color = LV_COLOR_WHITE;
 
-    for(int i = 0; i < dialLines.size(); i++) {
+    for(int i = dialLines.size()-1; i >= 0; i--) { //reversed so the first line goes on top
       auto &[points, line] = dialLines[i];
       points[0] = {0, 0};
       points[1] = {0, 0};
