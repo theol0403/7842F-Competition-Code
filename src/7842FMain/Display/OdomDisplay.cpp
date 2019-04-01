@@ -164,6 +164,7 @@ void OdomDisplay::run() {
 
 void OdomDisplay::taskFnc(void* input)
 {
+  pros::delay(500);
   OdomDisplay* that = static_cast<OdomDisplay*>(input);
   that->run();
 }

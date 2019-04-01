@@ -168,35 +168,39 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    {
-      const int lineWidth = 2;
-      lv_style_t lineStyle;
-      lv_style_copy(&lineStyle, &lv_style_plain);
-      lineStyle.line.width = lineWidth;
-      lineStyle.line.opa = LV_OPA_100;
-      lineStyle.line.color = LV_COLOR_WHITE;
+    const int lineWidth = 2;
+    lv_style_t lineStyle;
+    lv_style_copy(&lineStyle, &lv_style_plain);
+    lineStyle.line.width = lineWidth;
+    lineStyle.line.opa = LV_OPA_100;
+    lineStyle.line.color = LV_COLOR_WHITE;
 
-      for(int i = 0; i < dialLines.size(); i++) {
-        auto &[points, line] = dialLines[i];
-        points[0] = {0, 0};
-        points[1] = {0, 0};
-        line = lv_line_create(dialContainer, NULL);
-        lv_style_t* style = new lv_style_t;
-        lv_style_copy(style, &lineStyle);
-        style->line.color = lineColors[i];
-        lv_obj_set_style(line, style);
+    for(int i = 0; i < dialLines.size(); i++) {
+      auto &[points, line] = dialLines[i];
+      points[0] = {0, 0};
+      points[1] = {0, 0};
+      line = lv_line_create(dialContainer, NULL);
+      lv_style_t* style = new lv_style_t;
+      lv_style_copy(style, &lineStyle);
+      style->line.color = lineColors[i];
+      lv_obj_set_style(line, style);
 
-        lv_line_set_points(line, points.data(), points.size());
-        lv_obj_align(line, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+      lv_line_set_points(line, points.data(), points.size());
+      lv_obj_align(line, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
-        points[0] = {(int16_t)(dialContainerWidth/2.0), (int16_t)(dialContainerHeight/2.0)};
-      }
+      points[0] = {(int16_t)(dialContainerWidth/2.0), (int16_t)(dialContainerHeight/2.0)};
     }
 
 
     /**
     * Angle Dial Label
     */
+    dialLabel = lv_label_create(dialContainer, NULL);
+    lv_style_t* textStyle = new lv_style_t;
+    lv_style_copy(textStyle, &lv_style_plain);
+    textStyle->text.color = LV_COLOR_WHITE;
+    textStyle->text.opa = LV_OPA_100;
+    lv_obj_set_style(dialLabel, textStyle);
 
   }
 
@@ -281,10 +285,10 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 void AngleTuner::calcDial() {
   const int lineLength = 30;
-  QAngle backAngle = -80_deg;
+  QAngle backAngle = -45_deg;
 
   {
-    double theta = (backAngle + 0_deg).convert(radian);
+    double theta = (backAngle + (angler->getHoodAngle() * degree)).convert(radian);
     auto &[points, line] = dialLines.at(0);
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
@@ -294,7 +298,7 @@ void AngleTuner::calcDial() {
   }
 
   {
-    double theta = (backAngle + 20_deg).convert(radian);
+    double theta = (backAngle + (angler->getTopFlagAngle() * degree)).convert(radian);
     auto &[points, line] = dialLines.at(1);
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
@@ -303,9 +307,8 @@ void AngleTuner::calcDial() {
     lv_obj_invalidate(line);
   }
 
-
   {
-    double theta = (backAngle + 40_deg).convert(radian);
+    double theta = (backAngle + (angler->getMiddleFlagAngle() * degree)).convert(radian);
     auto &[points, line] = dialLines[2];
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
@@ -314,6 +317,11 @@ void AngleTuner::calcDial() {
     lv_obj_invalidate(line);
   }
 
+
+  std::stringstream str;
+  str << "Angle: " << std::fixed << std::setprecision(1) << angler->getHoodAngle();
+  lv_label_set_text(dialLabel, str.str().c_str());
+  lv_obj_align(dialLabel, NULL, LV_ALIGN_CENTER, 0, lv_obj_get_height(lv_obj_get_parent(dialLabel))/3.0);
 }
 
 
