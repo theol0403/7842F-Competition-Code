@@ -8,11 +8,11 @@ AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor, ShootController*&
 container(parent), angler(iangler), task(taskFnc, this)
 {
 
-  int angleContainerWidth = lv_obj_get_width(container)/5.0;
+  int angleContainerWidth = lv_obj_get_width(container)/4.0;
   int angleContainerHeight = lv_obj_get_height(container);
 
   int actionContainerWidth = lv_obj_get_width(container) - angleContainerWidth;
-  int actionContainerHeight = lv_obj_get_height(container)/5.0;
+  int actionContainerHeight = lv_obj_get_height(container)/4.0;
 
   int dialContainerWidth = (lv_obj_get_width(container) - angleContainerWidth) / 3;
   int dialContainerHeight = lv_obj_get_height(container) - actionContainerHeight;
@@ -214,10 +214,10 @@ AngleTuner::~AngleTuner() {
 }
 
 void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) {
-  int height = lv_obj_get_height(container) - 15;
+  int height = lv_obj_get_height(lv_obj_get_parent(label)) - 15;
   lv_label_set_text(label, text.c_str());
   *offset += height/3.0;
-  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, 65, *offset - lv_obj_get_height(label) + height/6.0);
+  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(lv_obj_get_parent(label))/3.0*2.0, *offset - lv_obj_get_height(label) + height/6.0);
 }
 
 void AngleTuner::calcAngleLabels() {
@@ -284,7 +284,7 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void AngleTuner::calcDial() {
-  const int lineLength = 30;
+  const int lineLength = 40;
   QAngle backAngle = -45_deg;
 
   {
@@ -319,7 +319,7 @@ void AngleTuner::calcDial() {
 
 
   std::stringstream str;
-  str << "Angle: " << std::fixed << std::setprecision(1) << angler->getHoodAngle();
+  str << "Angle:\n" << std::fixed << std::setprecision(3) << angler->getHoodAngle();
   lv_label_set_text(dialLabel, str.str().c_str());
   lv_obj_align(dialLabel, NULL, LV_ALIGN_CENTER, 0, lv_obj_get_height(lv_obj_get_parent(dialLabel))/3.0);
 }
