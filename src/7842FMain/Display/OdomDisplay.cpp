@@ -125,14 +125,6 @@ void OdomDisplay::run() {
   textStyle.text.color = LV_COLOR_WHITE;
   textStyle.text.opa = LV_OPA_100;
   lv_obj_set_style(label, &textStyle);
-  std::string text;
-
-  text =
-  "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
-  "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
-  "Theta: " + std::to_string(tracker->getTheta().convert(degree));
-  lv_label_set_text(label, text.c_str());
-  lv_obj_align(label, container, LV_ALIGN_CENTER, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
 
   while(true) {
 
@@ -150,11 +142,14 @@ void OdomDisplay::run() {
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
 
-    text =
+    std::string text =
     "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
     "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
-    "Theta: " + std::to_string(tracker->getTheta().convert(degree));
+    "Theta: " + std::to_string(tracker->getTheta().convert(degree)) + "\n" +
+    "Left: " + std::to_string(tracker->model->getSensorVals()[0]) + "\n" +
+    "Right: " + std::to_string(tracker->model->getSensorVals()[1]);
     lv_label_set_text(label, text.c_str());
+    lv_obj_align(label, container, LV_ALIGN_CENTER, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
 
     pros::delay(50);
   }

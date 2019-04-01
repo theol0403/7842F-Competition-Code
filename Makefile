@@ -13,7 +13,7 @@ SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
 
-WARNFLAGS+= -Wno-psabi -Wno-switch
+WARNFLAGS+= -Wall -Wno-psabi -Wno-unused-variable -Wno-sign-compare
 EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
 

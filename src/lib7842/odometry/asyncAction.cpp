@@ -85,6 +85,7 @@ namespace lib7842
           if(!std::get<0>(trigger)(that)) { return; }
           break;
         }
+        default: break;
       }
     }
     for(triggerGroup &trigger : m_triggers)
@@ -96,6 +97,7 @@ namespace lib7842
           if(std::get<0>(trigger)(that) && !m_triggered) { m_triggered = true; }
           break;
         }
+        default: break;
       }
     }
 
