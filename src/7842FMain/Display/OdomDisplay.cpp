@@ -142,10 +142,10 @@ void OdomDisplay::run() {
 
     lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2 - 1);
 
-    points[0] = {(short)((x * fieldDim)), (short)((y * fieldDim) - (lineWidth/2))};
+    points[0] = {(int16_t)((x * fieldDim)), (int16_t)((y * fieldDim) - (lineWidth/2))};
     double newY = arrowHeight * cos(theta);
     double newX = arrowHeight * sin(theta);
-    points[1] = {(short)(newX + points[0].x), (short)(-newY + points[0].y)};
+    points[1] = {(int16_t)(newX + points[0].x), (int16_t)(-newY + points[0].y)};
 
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
