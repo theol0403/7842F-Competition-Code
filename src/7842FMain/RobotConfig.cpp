@@ -41,7 +41,7 @@ void initializeBase()
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
-		5.88_in, 2.75_in, 360,
+		6.035_in, 2.75_in, 360,
 		lib7842::OdomTracker::mdTracking
 	);
 
