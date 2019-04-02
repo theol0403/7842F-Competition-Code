@@ -1,5 +1,4 @@
 #include "DriverControl.hpp"
-#include "lib7842/other/controllerPrinter.hpp"
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
@@ -11,8 +10,8 @@ static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
 static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
-static ControllerPrinter anglePrinter(&j_Main, 0);
-static ControllerPrinter flywheelReadyPrinter(&j_Main, 2);
+
+//static ControllerPrinter flywheelReadyPrinter(&j_Main, 2);
 
 void driverControl()
 {
@@ -67,7 +66,7 @@ void driverControl()
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
-	anglePrinter.print(std::to_string(robot.shooter->distanceToFlag.convert(foot)));
+
 
 
 	/**
@@ -107,15 +106,15 @@ void driverControl()
 		robot.arm->setState(ArmController::off);
 	}
 
-	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
-		std::string str;
-		str.insert(0, 15, '-');
-		flywheelReadyPrinter.print(str);
-	} else {
-		std::string str;
-		str.insert(0, 15, '#');
-		flywheelReadyPrinter.print(str);
-	}
+	// if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
+	// 	std::string str;
+	// 	str.insert(0, 15, '-');
+	// 	flywheelReadyPrinter.print(str);
+	// } else {
+	// 	std::string str;
+	// 	str.insert(0, 15, '#');
+	// 	flywheelReadyPrinter.print(str);
+	// }
 
 
 	/**

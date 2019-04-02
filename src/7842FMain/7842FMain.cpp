@@ -5,6 +5,7 @@
 
 #include "7842FMain/Auton/AutonIncludes.hpp"
 #include "DriverControl.hpp"
+#include "lib7842/other/controllerPrinter.hpp"
 
 /***
 *     _____      _ _   _       _ _
@@ -120,11 +121,13 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
+  ControllerPrinter anglePrinter(&j_Main, 0);
+
   while(true) {
     if(j_Digital(A)) {
       autonomous();
-    //   robot.tracker->resetSensors();
-    //   robot.tracker->resetState();
+      //   robot.tracker->resetSensors();
+      //   robot.tracker->resetState();
     }
 
     double rightY = j_Analog(rightY);
@@ -133,6 +136,7 @@ void opcontrol()
 
     #ifndef TEST_ROBOT
     driverControl();
+    anglePrinter.print(std::to_string(robot.shooter->distanceToFlag.convert(foot)));
     #endif
 
     //

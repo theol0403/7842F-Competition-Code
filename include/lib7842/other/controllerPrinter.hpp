@@ -8,7 +8,7 @@ namespace lib7842
   {
 
     Controller* controller = nullptr;
-    int line = 0;
+    const int line;
     Timer timer;
 
   public:
