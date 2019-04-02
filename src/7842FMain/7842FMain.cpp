@@ -27,7 +27,7 @@ void initialize()
   display.main->splashScreen(&img_navigators, 2000);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+    {"T", AutonTest}, {"C", AutonClose},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
@@ -121,10 +121,11 @@ void opcontrol()
   #endif
 
   while(true) {
-    // if(j_Digital(A)) {
+    if(j_Digital(A)) {
+      autonomous();
     //   robot.tracker->resetSensors();
     //   robot.tracker->resetState();
-    // }
+    }
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);
@@ -217,7 +218,7 @@ void autonomous()
   //robot.arm->setState(ArmController::unfold);
   #endif
 
-  //Create a new chassis that automatically mirrors side and send it to the autonomous code
+  //Create a new chassis that mirrors side and send it to the autonomous code
   SideController* sideChassis = new SideController(
     robot.chassis, display.selector->getSelectedSide());
     display.selector->getSelectedAuton().autonFunc(sideChassis);
