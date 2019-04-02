@@ -277,7 +277,7 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
   } else {
     std::cerr << "No Button Found" << std::endl;
   }
-  std::cout << label << std::endl;
+  //std::cout << label << std::endl;
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
