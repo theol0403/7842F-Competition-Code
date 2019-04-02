@@ -121,7 +121,7 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
-  ControllerPrinter anglePrinter(&j_Main, 1);
+  ControllerPrinter anglePrinter(&j_Main);
 
   while(true) {
     if(j_Digital(A)) {
@@ -136,7 +136,7 @@ void opcontrol()
 
     #ifndef TEST_ROBOT
     driverControl();
-    anglePrinter.print(std::to_string(robot.shooter->distanceToFlag.convert(foot)));
+    anglePrinter.print(1, std::to_string(robot.shooter->distanceToFlag.convert(foot)));
     #endif
 
     //
