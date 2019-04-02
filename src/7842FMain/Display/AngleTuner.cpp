@@ -332,6 +332,6 @@ void AngleTuner::taskFnc(void* input) {
     that->calcAngleLabels();
     that->calcDial();
 
-    pros::delay(100);
+    pros::delay(50);
   }
 }
