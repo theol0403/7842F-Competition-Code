@@ -6,12 +6,13 @@ namespace lib7842
   ControllerPrinter::ControllerPrinter(Controller* icontroller, int iline)
   : controller(icontroller), line(iline) {
     timer.placeMark();
+    controller->clear();
   }
 
   void ControllerPrinter::print(std::string str) {
-    const int maxWidth = 15;
+    const int maxWidth = 14;
 
-    if(timer.getDtFromMark() >= 52_ms) {
+    if(timer.getDtFromMark() >= 500_ms) {
       timer.placeMark();
 
       if(str.size() < maxWidth) {
@@ -21,7 +22,7 @@ namespace lib7842
       }
 
       controller->setText(line, 0, str);
-      std::cout << "Set Text: " << str << std::endl;
+      //std::cout << "Set Text: " << str << std::endl;
     }
 
   }

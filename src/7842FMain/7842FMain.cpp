@@ -121,7 +121,7 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
-  ControllerPrinter anglePrinter(&j_Main, 0);
+  ControllerPrinter anglePrinter(&j_Main, 1);
 
   while(true) {
     if(j_Digital(A)) {

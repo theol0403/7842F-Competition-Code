@@ -67,8 +67,6 @@ void driverControl()
 	}
 
 
-
-
 	/**
 	* Intake Control
 	*/
