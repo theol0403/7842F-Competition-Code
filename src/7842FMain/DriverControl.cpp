@@ -1,6 +1,7 @@
 #include "DriverControl.hpp"
+#include <sstream>
 
-static okapi::ControllerButton flywheelTrigger = robot.joystick[ControllerDigital::B];
+static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
@@ -8,7 +9,7 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = robot.joystick[ControllerDigital::X];
+static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
 void driverControl()
 {
@@ -63,7 +64,9 @@ void driverControl()
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
-	robot.printer->print(0, std::to_string(robot.shooter->distanceToFlag.convert(foot)));
+	std::stringstream distStr;
+	distStr << robot.shooter->distanceToFlag.convert(foot);
+	robot.printer->print(2, distStr.str() + " <- Feet From Flag");
 
 
 	/**
@@ -105,11 +108,11 @@ void driverControl()
 
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
 		std::string str;
-		str.insert(0, 15, '-');
+		str.insert(0, 15, ' ');
 		robot.printer->print(1, str);
 	} else {
 		std::string str;
-		str.insert(0, 15, '#');
+		str.insert(0, 7, '#');
 		robot.printer->print(1, str);
 	}
 

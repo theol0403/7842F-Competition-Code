@@ -17,8 +17,9 @@
 #include "Display/OdomDisplay.hpp"
 #include "Display/AngleTuner.hpp"
 
-#define j_Digital(x) robot.joystick->getDigital(okapi::ControllerDigital::x)
-#define j_Analog(x) robot.joystick->getAnalog(okapi::ControllerAnalog::x)
+extern okapi::Controller j_Main;
+#define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
+#define j_Analog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
 
 using namespace lib7842;
 
@@ -34,7 +35,6 @@ struct display_t
 
 struct robot_t
 {
-  okapi::Controller* joystick = nullptr;
   ControllerPrinter* printer = nullptr;
 
   std::shared_ptr<okapi::SkidSteerModel> model = nullptr;

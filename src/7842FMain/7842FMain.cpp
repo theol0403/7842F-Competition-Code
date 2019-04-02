@@ -33,12 +33,12 @@ void initialize()
   });
 
   pros::delay(500); //Give the legacy ports time to start up
-  
+
   initializeBase();
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
 
-  robot.printer->print(2, "7842F");
+  j_Main.rumble("-");
 }
 
 /***
@@ -123,6 +123,7 @@ void opcontrol()
   #endif
 
   while(true) {
+
     if(j_Digital(A)) {
       autonomous();
       //   robot.tracker->resetSensors();
@@ -136,6 +137,8 @@ void opcontrol()
     #ifndef TEST_ROBOT
     driverControl();
     #endif
+
+    robot.printer->print(0, "Time:" + std::to_string((int)(pros::millis()/1000.0)) + " Battery:" + std::to_string((int)(pros::c::battery_get_capacity())));
 
 
     // if(j_Digital(L2)) {
