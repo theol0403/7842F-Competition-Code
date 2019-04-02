@@ -12,6 +12,7 @@ static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
 static ControllerPrinter anglePrinter(&j_Main, 0);
+static ControllerPrinter flywheelReadyPrinter(&j_Main, 2);
 
 void driverControl()
 {
@@ -104,6 +105,16 @@ void driverControl()
 		robot.shooter->doJob(ShootController::off);
 
 		robot.arm->setState(ArmController::off);
+	}
+
+	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
+		std::string str;
+		str.insert(0, 15, '-');
+		flywheelReadyPrinter.print(str);
+	} else {
+		std::string str;
+		str.insert(0, 15, '#');
+		flywheelReadyPrinter.print(str);
 	}
 
 
