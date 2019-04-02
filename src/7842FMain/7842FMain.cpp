@@ -121,7 +121,10 @@ void opcontrol()
   #endif
 
   while(true) {
-    //if(j_Digital(A)) autonomous(); //For testing
+    // if(j_Digital(A)) {
+    //   robot.tracker->resetSensors();
+    //   robot.tracker->resetState();
+    // }
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);

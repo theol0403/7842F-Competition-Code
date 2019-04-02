@@ -67,6 +67,40 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     }
   }
 
+  lv_obj_t* btn = lv_btn_create(container, NULL);
+  lv_obj_set_size(btn, 100, 40);
+  lv_obj_align(btn, NULL, LV_ALIGN_IN_BOTTOM_MID, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
+  lv_obj_set_free_ptr(btn, this);
+  lv_btn_set_action(btn, LV_BTN_ACTION_PR, resetAction);
+
+  lv_style_t* btnm_rel = new lv_style_t;
+  lv_style_copy(btnm_rel, &lv_style_btn_tgl_rel);
+  btnm_rel->body.main_color = mainColor;
+  btnm_rel->body.grad_color = mainColor;
+  btnm_rel->body.border.color = LV_COLOR_WHITE;
+  btnm_rel->body.border.width = 2;
+  btnm_rel->body.border.opa = LV_OPA_100;
+  btnm_rel->body.radius = 2;
+  btnm_rel->text.color = LV_COLOR_WHITE;
+
+  lv_style_t* btnm_pr = new lv_style_t;
+  lv_style_copy(btnm_pr, btnm_rel);
+  btnm_pr->body.main_color = LV_COLOR_WHITE;
+  btnm_pr->body.grad_color = LV_COLOR_WHITE;
+  btnm_pr->text.color = mainColor;
+
+  lv_btn_set_style(btn, LV_BTN_STYLE_REL, btnm_rel);
+  lv_btn_set_style(btn, LV_BTN_STYLE_PR, btnm_pr);
+
+  lv_obj_t* label = lv_label_create(btn, NULL);
+  lv_style_t* labelStyle = new lv_style_t;
+  lv_style_copy(labelStyle, &lv_style_plain);
+  labelStyle->text.color = LV_COLOR_WHITE;
+  labelStyle->text.opa = LV_OPA_100;
+  lv_obj_set_style(label, labelStyle);
+  lv_label_set_text(label, "Reset");
+
+
 }
 
 OdomDisplay::~OdomDisplay() {
@@ -83,6 +117,13 @@ lv_res_t OdomDisplay::tileAction(lv_obj_t* tileObj) {
   return LV_RES_OK;
 }
 
+
+lv_res_t OdomDisplay::resetAction(lv_obj_t* btn) {
+  OdomDisplay* that = static_cast<OdomDisplay*>(lv_obj_get_free_ptr(btn));
+  that->tracker->resetSensors();
+  that->tracker->resetState();
+  return LV_RES_OK;
+}
 
 void OdomDisplay::run() {
   pros::delay(500);

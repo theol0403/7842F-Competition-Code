@@ -168,7 +168,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    const int lineWidth = 2;
+    const int lineWidth = 1;
     lv_style_t lineStyle;
     lv_style_copy(&lineStyle, &lv_style_plain);
     lineStyle.line.width = lineWidth;
@@ -284,7 +284,7 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
 
 
 void AngleTuner::calcDial() {
-  const int lineLength = 40;
+  const int lineLength = 60;
   QAngle backAngle = -45_deg;
 
   {
