@@ -66,7 +66,7 @@ void driverControl()
 
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
-	robot.printer->print(2, distStr.str() + " <- Feet From Flag");
+	robot.printer->print(2, distStr.str() + " <- Feet To Flag");
 
 
 	/**
@@ -107,13 +107,9 @@ void driverControl()
 	}
 
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
-		std::string str;
-		str.insert(0, 15, ' ');
-		robot.printer->print(1, str);
+		robot.printer->print(1, "Flywheel Ready");
 	} else {
-		std::string str;
-		str.insert(0, 7, '#');
-		robot.printer->print(1, str);
+		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
 	}
 
 

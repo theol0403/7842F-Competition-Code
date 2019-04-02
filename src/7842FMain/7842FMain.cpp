@@ -38,7 +38,7 @@ void initialize()
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
 
-  j_Main.rumble("-");
+  j_Main.rumble(".");
 }
 
 /***
@@ -138,7 +138,7 @@ void opcontrol()
     driverControl();
     #endif
 
-    robot.printer->print(0, "Time:" + std::to_string((int)(pros::millis()/1000.0)) + " Battery:" + std::to_string((int)(pros::c::battery_get_capacity())));
+    robot.printer->print(0, "Time:" + std::to_string((int)(pros::millis()/1000.0)) + " Batt:" + std::to_string((int)(pros::c::battery_get_capacity())));
 
 
     // if(j_Digital(L2)) {
