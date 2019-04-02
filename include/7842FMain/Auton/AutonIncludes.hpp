@@ -7,7 +7,7 @@
 #include "lib7842/auton/sideController.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
-#include "AutoPoints.hpp"
+#include "AutonPoints.hpp"
 
 /**
 * Functions

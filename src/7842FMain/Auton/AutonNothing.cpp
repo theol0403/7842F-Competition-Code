@@ -20,7 +20,7 @@ void AutonTest(void* input)
   //chassis->driveDistance(1_ft);
 }
 
-void AutoDraft(void* input)
+void AutonDraft(void* input)
 {
   SideController* chassis = static_cast<SideController*>(input);
 
