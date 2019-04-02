@@ -15,7 +15,7 @@ namespace lib7842
 
 
   void ControllerPrinter::run() {
-    const int maxWidth = 14;
+    const int maxWidth = 15;
     while(true) {
       for(int i = 0; i < lines.size(); i++) {
         std::string str = lines.at(i);

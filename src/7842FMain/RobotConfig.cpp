@@ -1,7 +1,5 @@
 #include "RobotConfig.hpp"
 
-okapi::Controller j_Main(okapi::ControllerId::master);
-
 display_t display;
 robot_t robot;
 
@@ -29,6 +27,8 @@ const int8_t mLeftBack = 11;
 
 void initializeBase()
 {
+	robot.joystick = new okapi::Controller(okapi::ControllerId::master);
+	robot.printer = new ControllerPrinter(robot.joystick);
 
 	robot.model = std::make_shared<SkidSteerModel> (
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mLeftFront, mLeftBack})),

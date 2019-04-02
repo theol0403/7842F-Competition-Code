@@ -5,7 +5,6 @@
 
 #include "7842FMain/Auton/AutonIncludes.hpp"
 #include "DriverControl.hpp"
-#include "lib7842/other/controllerPrinter.hpp"
 
 /***
 *     _____      _ _   _       _ _
@@ -34,10 +33,12 @@ void initialize()
   });
 
   pros::delay(500); //Give the legacy ports time to start up
-
+  
   initializeBase();
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
+
+  robot.printer->print(2, "7842F");
 }
 
 /***
@@ -121,8 +122,6 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
-  ControllerPrinter anglePrinter(&j_Main);
-
   while(true) {
     if(j_Digital(A)) {
       autonomous();
@@ -136,10 +135,9 @@ void opcontrol()
 
     #ifndef TEST_ROBOT
     driverControl();
-    anglePrinter.print(1, std::to_string(robot.shooter->distanceToFlag.convert(foot)));
     #endif
 
-    //
+
     // if(j_Digital(L2)) {
     //   shootMacro = ShootController::shootMacros::shootTarget;
     //   topFlag = false;

@@ -1,6 +1,6 @@
 #include "DriverControl.hpp"
 
-static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
+static okapi::ControllerButton flywheelTrigger = robot.joystick[ControllerDigital::B];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
@@ -8,10 +8,7 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
-
-
-//static ControllerPrinter flywheelReadyPrinter(&j_Main, 2);
+static okapi::ControllerButton armTrigger = robot.joystick[ControllerDigital::X];
 
 void driverControl()
 {
@@ -66,6 +63,8 @@ void driverControl()
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
+	robot.printer->print(0, std::to_string(robot.shooter->distanceToFlag.convert(foot)));
+
 
 	/**
 	* Intake Control
@@ -104,15 +103,15 @@ void driverControl()
 		robot.arm->setState(ArmController::off);
 	}
 
-	// if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
-	// 	std::string str;
-	// 	str.insert(0, 15, '-');
-	// 	flywheelReadyPrinter.print(str);
-	// } else {
-	// 	std::string str;
-	// 	str.insert(0, 15, '#');
-	// 	flywheelReadyPrinter.print(str);
-	// }
+	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
+		std::string str;
+		str.insert(0, 15, '-');
+		robot.printer->print(1, str);
+	} else {
+		std::string str;
+		str.insert(0, 15, '#');
+		robot.printer->print(1, str);
+	}
 
 
 	/**
