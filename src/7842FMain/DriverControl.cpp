@@ -1,4 +1,5 @@
 #include "DriverControl.hpp"
+#include "lib7842/other/controllerPrinter.hpp"
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
 
@@ -10,26 +11,10 @@ static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
 static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
+static ControllerPrinter anglePrinter(&j_Main, 0);
+
 void driverControl()
 {
-
-	/**
-	* Flywheel Toggle
-	* Angling Abort
-	* Arm Abort
-	*/
-	if(flywheelTrigger.changedToPressed()) {
-		if(robot.flywheel->getTargetRpm() == 0) {
-			robot.flywheel->setRpm(globalFlywheelRPM);
-		} else {
-			robot.flywheel->setRpm(0);
-		}
-		shootMacro = ShootController::shootMacros::off;
-		lastShootMacro = ShootController::shootMacros::off;
-		robot.shooter->doJob(ShootController::off);
-
-		robot.arm->setState(ArmController::off);
-	}
 
 	/**
 	* Automatic Shoot Control
@@ -51,7 +36,6 @@ void driverControl()
 
 	if(shootMacro != lastShootMacro)
 	{
-
 		//if X is released while it is angling, it will shoot
 		if(lastShootMacro == ShootController::shootMacros::shootOut && shootMacro == ShootController::shootMacros::off && robot.shooter->getCurrentJob() == ShootController::angleOut) {
 			robot.shooter->doMacro(ShootController::shootMacros::shoot);
@@ -82,27 +66,7 @@ void driverControl()
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
-	/**
-	* Manual Control
-	*/
-	// if(j_Digital(L2))
-	// {
-	// 	shootMacro = ShootController::shootMacros::shoot;
-	// }
-	// else if(j_Digital(L1))
-	// {
-	// 	shootMacro = ShootController::shootMacros::angleManual;
-	// }
-	// else
-	// {
-	// 	shootMacro = ShootController::shootMacros::off;
-	// }
-	//
-	// if(shootMacro != lastShootMacro)
-	// {
-	// 	robot.shooter->doMacroLoop(shootMacro);
-	// 	lastShootMacro = shootMacro;
-	// }
+	anglePrinter.print(std::to_string(robot.shooter->distanceToFlag.convert(foot)));
 
 
 	/**
@@ -121,6 +85,25 @@ void driverControl()
 	if(intakeState != lastIntakeState) {
 		robot.intake->setState(intakeState);
 		lastIntakeState = intakeState;
+	}
+
+
+	/**
+	* Flywheel Toggle
+	* Angling Abort
+	* Arm Abort
+	*/
+	if(flywheelTrigger.changedToPressed()) {
+		if(robot.flywheel->getTargetRpm() == 0) {
+			robot.flywheel->setRpm(globalFlywheelRPM);
+		} else {
+			robot.flywheel->setRpm(0);
+		}
+		shootMacro = ShootController::shootMacros::off;
+		lastShootMacro = ShootController::shootMacros::off;
+		robot.shooter->doJob(ShootController::off);
+
+		robot.arm->setState(ArmController::off);
 	}
 
 
