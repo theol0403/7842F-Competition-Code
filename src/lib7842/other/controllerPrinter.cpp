@@ -5,7 +5,6 @@ namespace lib7842
 
   ControllerPrinter::ControllerPrinter(Controller* icontroller)
   : controller(icontroller), task(taskFnc, this) {
-    controller->clear();
   }
 
 
@@ -33,7 +32,6 @@ namespace lib7842
 
   void ControllerPrinter::taskFnc(void* input)
   {
-    pros::delay(500);
     ControllerPrinter* that = static_cast<ControllerPrinter*>(input);
     that->run();
   }

@@ -66,7 +66,7 @@ void driverControl()
 
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
-	robot.printer->print(2, distStr.str() + " <- Feet To Flag");
+	robot.printer->print(2, distStr.str() + "\' to flag");
 
 
 	/**
