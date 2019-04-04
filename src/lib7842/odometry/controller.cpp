@@ -43,7 +43,7 @@ namespace lib7842
   }
 
   bool OdomController::emergencyAbort() {
-    if(std::abs(filterVelocity()) <= 0) {
+    if(std::abs(filterVelocity()) <= 0.01) {
       std::cout << "EMERGENCY ABORT - n/a" << std::endl;
       //return true;
       return false;

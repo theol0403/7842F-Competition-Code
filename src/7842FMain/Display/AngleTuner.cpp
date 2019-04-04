@@ -96,7 +96,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
-    lv_obj_set_size(btnm, lv_obj_get_width(angleContainer)/3*2, lv_obj_get_height(angleContainer));
+    lv_obj_set_size(btnm, angleContainerWidth/3*2, angleContainerHeight);
     lv_btnm_set_action(btnm, angleBtnAction);
     lv_obj_set_free_ptr(btnm, this);
 
@@ -168,7 +168,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     /**
     * Angle Dial Line
     */
-    const int lineWidth = 2;
+    const int lineWidth = 1;
     lv_style_t lineStyle;
     lv_style_copy(&lineStyle, &lv_style_plain);
     lineStyle.line.width = lineWidth;
@@ -277,14 +277,14 @@ lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
   } else {
     std::cerr << "No Button Found" << std::endl;
   }
-  std::cout << label << std::endl;
+  //std::cout << label << std::endl;
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
 
 
 void AngleTuner::calcDial() {
-  const int lineLength = 40;
+  const int lineLength = 60;
   QAngle backAngle = -45_deg;
 
   {
@@ -332,6 +332,6 @@ void AngleTuner::taskFnc(void* input) {
     that->calcAngleLabels();
     that->calcDial();
 
-    pros::delay(100);
+    pros::delay(50);
   }
 }

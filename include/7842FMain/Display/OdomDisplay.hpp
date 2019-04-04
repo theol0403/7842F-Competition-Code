@@ -21,6 +21,8 @@ public:
   ~OdomDisplay();
 
   static lv_res_t tileAction(lv_obj_t*);
+  static lv_res_t resetAction(lv_obj_t*);
+  static lv_res_t btnmAction(lv_obj_t*);
 
   void run();
   static void taskFnc(void*);
