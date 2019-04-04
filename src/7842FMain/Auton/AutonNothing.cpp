@@ -7,10 +7,10 @@ void AutonNothing(void* input)
 void AutonTest(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-auto &[chassis, timer] = *passer;
+  auto &[chassis, timer] = *passer;
 
   chassis.turnToAngle(90_deg);
-  
+
   //robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothFlags);
 
   //chassis.turnToAngle(90_deg);
@@ -22,7 +22,7 @@ auto &[chassis, timer] = *passer;
 void AutonDraft(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-auto &[chassis, timer] = *passer;
+  auto &[chassis, timer] = *passer;
 
   // //chassis.setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   // robot.intake->setState(IntakeController::loading);
