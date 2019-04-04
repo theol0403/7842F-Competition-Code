@@ -111,6 +111,8 @@ void initializeDevices()
 
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
+	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
+
 }
 
 

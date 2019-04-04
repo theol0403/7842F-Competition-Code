@@ -58,6 +58,7 @@ container(parent), controller(icontroller)
   *btnLabels = {"kP+", "kP-", "kI+", "kI-", "kD+", "kD-", ""};
 
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
+  lv_obj_set_hidden(btnm, true);
   lv_btnm_set_map(btnm, btnLabels->data());
 
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BG, btnm_bg);
@@ -65,16 +66,12 @@ container(parent), controller(icontroller)
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
   lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
-  lv_obj_set_size(btnm, lv_obj_get_width(container), lv_obj_get_height(container)/2);
-  lv_obj_align(btnm, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
-
-  buildTuner(btnm, "Distance", controller->distancePid);
-  buildTuner(btnm, "Angle", controller->anglePid);
-  buildTuner(btnm, "Turn", controller->turnPid);
-
-  lv_obj_set_hidden(btnm, true);
+  tuners.push_back(buildTuner(btnm, "Distance", controller->distancePid));
+  tuners.push_back(buildTuner(btnm, "Angle", controller->anglePid));
+  tuners.push_back(buildTuner(btnm, "Turn", controller->turnPid));
 
 
+  
 
 }
 
@@ -85,143 +82,30 @@ ChassisTuner::~ChassisTuner() {
 
 
 lv_obj_t* ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePosPIDController* pid) {
+
   lv_obj_t* tuner = lv_obj_create(container, NULL);
-  lv_obj_set_size(tuner, lv_obj_get_width(copy), lv_obj_get_height(copy));
-  lv_obj_align(tuner, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_size(tuner, lv_obj_get_width(container), lv_obj_get_height(container)/2);
+  lv_obj_align(tuner, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
   lv_obj_set_style(tuner, &containerStyle);
   lv_obj_set_hidden(tuner, true);
 
   lv_obj_t* btnm = lv_btnm_create(tuner, copy);
-  Passer* passer = new Passer(this, pid);
+  lv_obj_set_hidden(btnm, false);
+  lv_obj_set_size(btnm, lv_obj_get_width(tuner), lv_obj_get_height(tuner));
+  lv_obj_align(btnm, NULL, LV_ALIGN_CENTER, 0, 0);
 
-  lv_obj_set_free_ptr(btnm, passer);
   lv_btnm_set_action(btnm, btnAction);
+
+  Passer* passer = new Passer(this, pid);
+  lv_obj_set_free_ptr(btnm, passer);
 
   return tuner;
 }
 
 
-
-
-void ChassisTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) {
-  int height = lv_obj_get_height(lv_obj_get_parent(label)) - 15;
-  lv_label_set_text(label, text.c_str());
-  *offset += height/3.0;
-  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(lv_obj_get_parent(label))/3.0*2.0, *offset - lv_obj_get_height(label) + height/6.0);
-}
-
-void ChassisTuner::calcAngleLabels() {
-  double offset = -30.0;
-  {
-    std::stringstream str;
-    str << angler->distanceToFlag.convert(foot);
-    allignLabel(angleLabels[0], str.str(), &offset);
-  }
-  {
-    std::stringstream str;
-    str << angler->getTopFlagAngle();
-    allignLabel(angleLabels[1], str.str(), &offset);
-  }
-  {
-    std::stringstream str;
-    str << angler->getMiddleFlagAngle();
-    allignLabel(angleLabels[2], str.str(), &offset);
-  }
-}
-
-
-lv_res_t ChassisTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
-  ChassisTuner* that = static_cast<ChassisTuner*>(lv_obj_get_free_ptr(btnm));
+lv_res_t ChassisTuner::btnAction(lv_obj_t* btnm, const char *itxt) {
+  Passer* passer = static_cast<Passer*>(lv_obj_get_free_ptr(btnm));
+  auto &[that, pid] = *passer;
   std::string label = itxt;
-
-  int labelPos = label.find_last_of({'+', '-'});
-  bool sign = label.at(labelPos) == '+' ? true : false;
-  label.erase(labelPos, std::string::npos);
-
-  if(label == "Dist") {
-    that->angler->distanceToFlag += 0.5_ft * boolToSign(sign);
-  } else if(label == "Top") {
-    that->angler->topAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
-  } else if(label == "Mid") {
-    that->angler->middleAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
-  } else {
-    std::cerr << "No Button Found" << std::endl;
-  }
-
-  return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
-}
-
-
-lv_res_t ChassisTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
-  ChassisTuner* that = static_cast<ChassisTuner*>(lv_obj_get_free_ptr(btnm));
-  std::string label = itxt;
-
-  if(label == "Top") {
-    that->angler->doJobLoop(ShootController::angleTop);
-  } else if(label == "Mid") {
-    that->angler->doJobLoop(ShootController::angleMiddle);
-  } else if(label == "Cycle") {
-    that->angler->doJob(ShootController::cycle);
-  } else if(label == "Shoot") {
-    that->angler->doJob(ShootController::enableShoot);
-  } else {
-    std::cerr << "No Button Found" << std::endl;
-  }
-  //std::cout << label << std::endl;
-
-  return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
-}
-
-
-void ChassisTuner::calcDial() {
-  const int lineLength = 60;
-  QAngle backAngle = -45_deg;
-
-  {
-    double theta = (backAngle + (angler->getHoodAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines.at(0);
-    double x = lineLength * sin(theta);
-    double y = -lineLength * cos(theta);
-    points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
-  }
-
-  {
-    double theta = (backAngle + (angler->getTopFlagAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines.at(1);
-    double x = lineLength * sin(theta);
-    double y = -lineLength * cos(theta);
-    points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
-  }
-
-  {
-    double theta = (backAngle + (angler->getMiddleFlagAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines[2];
-    double x = lineLength * sin(theta);
-    double y = -lineLength * cos(theta);
-    points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
-    lv_line_set_points(line, points.data(), points.size());
-    lv_obj_invalidate(line);
-  }
-
-
-  std::stringstream str;
-  str << "Angle:\n" << std::fixed << std::setprecision(3) << angler->getHoodAngle();
-  lv_label_set_text(dialLabel, str.str().c_str());
-  lv_obj_align(dialLabel, NULL, LV_ALIGN_CENTER, 0, lv_obj_get_height(lv_obj_get_parent(dialLabel))/3.0);
-}
-
-
-void ChassisTuner::taskFnc(void* input) {
-  pros::delay(500);
-  ChassisTuner* that = static_cast<ChassisTuner*>(input);
-  while(true) {
-    that->calcAngleLabels();
-    that->calcDial();
-
-    pros::delay(50);
-  }
+  return LV_RES_OK;
 }

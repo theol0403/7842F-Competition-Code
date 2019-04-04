@@ -16,6 +16,7 @@
 #include "Display/Graph.hpp"
 #include "Display/OdomDisplay.hpp"
 #include "Display/AngleTuner.hpp"
+#include "Display/ChassisTuner.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -31,6 +32,7 @@ struct display_t
   Graph* graph = nullptr;
   OdomDisplay* odom = nullptr;
   AngleTuner* angler = nullptr;
+  ChassisTuner* chassisTuner = nullptr;
 };
 
 struct robot_t
