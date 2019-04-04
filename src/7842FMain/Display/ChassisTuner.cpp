@@ -53,6 +53,11 @@ container(parent), controller(icontroller)
   containerStyle.body.border.width = 3;
   containerStyle.body.radius = 0;
 
+  lv_style_copy(&style_label, &lv_style_plain);
+  style_label.text.font = &lv_font_dejavu_20;
+  style_label.text.letter_space = 1;
+  style_label.text.color = LV_COLOR_BLACK;
+
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
   *btnLabels = {"kP+", "kI+", "kD+", "\n", "kP-", "kI-", "kD-", ""};
@@ -81,7 +86,7 @@ ChassisTuner::~ChassisTuner() {
 }
 
 
-lv_obj_t* ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePosPIDController* pid) {
+Tuner ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePosPIDController* pid) {
 
   lv_obj_t* tuner = lv_obj_create(container, NULL);
   lv_obj_set_size(tuner, lv_obj_get_width(container), lv_obj_get_height(container)/2);
@@ -96,16 +101,22 @@ lv_obj_t* ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePo
 
   lv_btnm_set_action(btnm, btnAction);
 
-  Passer* passer = new Passer(this, pid);
+  Passer* passer = new Passer(this, tuner);
   lv_obj_set_free_ptr(btnm, passer);
 
 
+  lv_obj_t* label = lv_label_create(container, NULL);
+  lv_obj_set_style(label, &style_label);
 
-  return tuner;
+  return std::make_tuple(tuner, label, pid);
 }
 
-void FlywheelTuner::calcLabels() {
+
+void FlywheelTuner::calcLabels(Tuner tuner) {
   double offset = 0.0;
+
+  std::vector<
+
   for(auto &[name, button, label] : buttons) {
     std::stringstream str;
     int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal

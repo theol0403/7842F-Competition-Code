@@ -11,15 +11,17 @@ public:
   lib7842::OdomController* controller = nullptr;
 
   lv_style_t containerStyle;
+    lv_style_t style_label;
 
-  std::vector<lv_obj_t*> tuners = {};
-  using Passer = std::tuple<ChassisTuner*, IterativePosPIDController*>;
+  using Tuner = std::tuple<lv_obj_t*, std::vector<lv_obj_t*>, IterativePosPIDController*>;
+  std::vector<Tuner> tuners = {};
+  using Passer = std::tuple<ChassisTuner*, lv_obj_t*>;
 
   ChassisTuner(lv_obj_t*, lib7842::OdomController*);
   ChassisTuner(lv_obj_t*, lv_color_t, lib7842::OdomController*);
   ~ChassisTuner();
 
-  lv_obj_t* buildTuner(lv_obj_t*, std::string, IterativePosPIDController*);
+  Tuner buildTuner(lv_obj_t*, std::string, IterativePosPIDController*);
 
   static lv_res_t btnAction(lv_obj_t*, const char*);
 
