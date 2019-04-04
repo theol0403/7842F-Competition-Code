@@ -32,7 +32,7 @@ struct display_t
   Graph* graph = nullptr;
   OdomDisplay* odom = nullptr;
   AngleTuner* angler = nullptr;
-  ChassisTuner* chassisTuner = nullptr;
+  //ChassisTuner* chassisTuner = nullptr;
 };
 
 struct robot_t
