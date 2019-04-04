@@ -9,6 +9,8 @@
 
 #include "AutonPoints.hpp"
 
+using AutonPasser = std::tuple<SideController, Timer>;
+
 /**
 * Functions
 */

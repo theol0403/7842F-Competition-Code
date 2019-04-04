@@ -1,4 +1,4 @@
-#include "main.h"
+
 
 #include "lib7842/auton/autonSelector.hpp"
 #include "RobotConfig.hpp"
@@ -173,9 +173,13 @@ void autonomous()
   #endif
 
   //Create a new chassis that mirrors side and send it to the autonomous code
-  SideController* sideChassis = new SideController(
-    robot.chassis, display.selector->getSelectedSide());
-    display.selector->getSelectedAuton().autonFunc(sideChassis);
-    delete sideChassis;
-    std::cout << "Exit Auton" << std::endl;
-  }
+
+  AutonPasser passer = std::make_tuple(
+  SideController(robot.chassis, display.selector->getSelectedSide()),
+  Timer()
+);
+
+  display.selector->getSelectedAuton().autonFunc(&passer);
+
+  std::cout << "Exit Auton" << std::endl;
+}
