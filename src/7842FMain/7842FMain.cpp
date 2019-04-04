@@ -111,7 +111,7 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
-  j_Main.rumble(".");
+  robot.printer->rumble(".");
 
   Timer opTimer;
   opTimer.placeMark();
@@ -132,11 +132,11 @@ void opcontrol()
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else if(remaining > 1_min) {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
     // if(true) {

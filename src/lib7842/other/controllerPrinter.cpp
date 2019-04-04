@@ -13,6 +13,11 @@ namespace lib7842
     paused = false;
   }
 
+  void ControllerPrinter::rumble(std::string str) {
+    rumbleText = str;
+    doRumble = true;
+  }
+
   void ControllerPrinter::pause() {
     paused = true;
     controller->clear();
@@ -36,6 +41,13 @@ namespace lib7842
 
           controller->setText(i, 0, str);
           pros::delay(52);
+
+          if(doRumble) {
+            pros::delay(52);
+            controller->rumble(rumbleText);
+            pros::delay(52);
+            doRumble = false;
+          }
         }
 
       } else {

@@ -13,12 +13,15 @@ namespace lib7842
     pros::Task task;
 
     std::array<std::string, 3> lines = {};
+    bool doRumble = false;
+    std::string rumbleText = {};
     bool paused = true;
 
   public:
 
     ControllerPrinter(Controller*);
     void print(int, std::string);
+    void rumble(std::string);
     void pause();
 
     void run();

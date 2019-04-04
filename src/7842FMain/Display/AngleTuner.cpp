@@ -96,7 +96,7 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
-    lv_obj_set_size(btnm, lv_obj_get_width(angleContainer)/3*2, lv_obj_get_height(angleContainer));
+    lv_obj_set_size(btnm, angleContainerWidth/3*2, angleContainerHeight);
     lv_btnm_set_action(btnm, angleBtnAction);
     lv_obj_set_free_ptr(btnm, this);
 
