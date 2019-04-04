@@ -3,6 +3,7 @@
 
 #include "lib7842/auton/autonSelector.hpp"
 #include "lib7842/odometry/controller.hpp"
+#include "lib7842/other/controllerPrinter.hpp"
 
 #include "Controllers/IntakeController.hpp"
 #include "Controllers/FlywheelController.hpp"
@@ -15,6 +16,7 @@
 #include "Display/Graph.hpp"
 #include "Display/OdomDisplay.hpp"
 #include "Display/AngleTuner.hpp"
+#include "Display/ChassisTuner.hpp"
 
 extern okapi::Controller j_Main;
 #define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
@@ -30,10 +32,13 @@ struct display_t
   Graph* graph = nullptr;
   OdomDisplay* odom = nullptr;
   AngleTuner* angler = nullptr;
+  //ChassisTuner* chassisTuner = nullptr;
 };
 
 struct robot_t
 {
+  ControllerPrinter* printer = nullptr;
+
   std::shared_ptr<okapi::SkidSteerModel> model = nullptr;
   lib7842::OdomController* chassis = nullptr;
   lib7842::OdomTracker* tracker = nullptr;

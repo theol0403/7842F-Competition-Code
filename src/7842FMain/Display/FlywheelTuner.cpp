@@ -231,7 +231,7 @@ void FlywheelTuner::taskFnc(void* input) {
         i++;
       }
     }
-    pros::delay(100);
+    pros::delay(50);
   }
 
 }

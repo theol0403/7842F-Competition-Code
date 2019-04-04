@@ -1,7 +1,6 @@
 #include "RobotConfig.hpp"
 
 okapi::Controller j_Main(okapi::ControllerId::master);
-
 display_t display;
 robot_t robot;
 
@@ -29,6 +28,7 @@ const int8_t mLeftBack = 20;
 
 void initializeBase()
 {
+	robot.printer = new ControllerPrinter(&j_Main);
 
 	robot.model = std::make_shared<SkidSteerModel> (
 		std::make_shared<MotorGroup>(std::initializer_list<Motor>({mLeftFront, mLeftBack})),
@@ -41,15 +41,15 @@ void initializeBase()
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
-		5.88_in, 2.75_in, 360,
+		6.035_in, 2.75_in, 360,
 		lib7842::OdomTracker::mdTracking
 	);
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
 		new IterativePosPIDController(0.003, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
-		new IterativePosPIDController(0.005, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.008, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(3, 1, 100_ms)) //Turn PID - To Degree
+		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
+		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 1, 100_ms)) //Turn PID - To Degree
 	);
 
 	pros::delay(200);
@@ -88,7 +88,7 @@ void initializeDevices()
 	.withButton("RPM", &robot.flywheel->targetRpm, FlywheelTuner::btnType::increment, 400)
 	.withButton("Mult", &display.flywheel->multiplier, FlywheelTuner::btnType::multiply, 10)
 	.withGauge("RPM", {&robot.flywheel->targetRpm, &robot.flywheel->currentRpm}, 0, 3000)
-	.withGauge("Error", {&robot.flywheel->pid->m_Error}, 50, -50)
+	.withGauge("Error", {&robot.flywheel->pid->m_Error}, -50, 50)
 	.withGauge("Power", {&robot.flywheel->motorPower}, 0, 127)
 	.build();
 
@@ -102,6 +102,7 @@ void initializeDevices()
 	.withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
 	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
 	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
+	.withSeries("Accel", &robot.flywheel->currentAccel, LV_COLOR_LIME)
 	.build();
 
 	//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
@@ -109,6 +110,8 @@ void initializeDevices()
 	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
+
+//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
 
 }
 

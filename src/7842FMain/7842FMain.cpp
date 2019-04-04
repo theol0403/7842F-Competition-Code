@@ -1,6 +1,6 @@
-#include "main.h"
 
-#include "lib7842/lib7842.hpp"
+
+#include "lib7842/auton/autonSelector.hpp"
 #include "RobotConfig.hpp"
 
 #include "7842FMain/Auton/AutonIncludes.hpp"
@@ -27,7 +27,7 @@ void initialize()
   display.main->splashScreen(&img_navigators, 2000);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"N", AutonNothing}, {"C", AutonClose}, {"CwP", AutonCloseWithoutPush}, {"Cex", AutonCloseExperimental}, {"Cmid", AutonCloseMiddle},
+    {"T", AutonTest}, {"C", AutonClose},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
@@ -37,6 +37,7 @@ void initialize()
   initializeBase(); //test
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
+
 }
 
 /***
@@ -100,16 +101,6 @@ void disabled()
 */
 void opcontrol()
 {
-  // lib7842::SDLogger shootLogger("shotLog", lib7842::SDLogger::cout);
-  // shootLogger.writeFields({"Flag", "Distance", "Angle", "Rpm", "Battery", "Temp"});
-  //
-  // double targetAngle = 0;
-  // bool topFlag = true;
-  // double shotRpm = 0;
-  // okapi::ControllerButton printTrigger = j_Main[ControllerDigital::A];
-  // ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
-  // ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
-
   robot.model->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
@@ -120,8 +111,12 @@ void opcontrol()
   robot.arm->setState(ArmController::off);
   #endif
 
+  robot.printer->rumble(".");
+
+  Timer opTimer;
+  opTimer.placeMark();
+
   while(true) {
-    //if(j_Digital(A)) autonomous(); //For testing
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);
@@ -131,55 +126,27 @@ void opcontrol()
     driverControl();
     #endif
 
-    //
-    // if(j_Digital(L2)) {
-    //   shootMacro = ShootController::shootMacros::shootTarget;
-    //   topFlag = false;
-    //   shotRpm = robot.flywheel->currentRpm;
-    // } else if(j_Digital(L1)) {
-    //   shootMacro = ShootController::shootMacros::shootTarget;
-    //   topFlag = true;
-    //   shotRpm = robot.flywheel->currentRpm;
-    // } else {
-    //   shootMacro = ShootController::shootMacros::off;
+    QTime remaining = 1.75_min - opTimer.getDtFromMark();
+    if(remaining < 0_ms) {
+      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+    } else if(remaining > 1_min) {
+      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+    } else {
+      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+    }
+
+    // if(true) {
+    //   if(remaining == 60_s) {
+    //     j_Main.rumble(".");
+    //   } else if(remaining == 30_s) {
+    //     j_Main.rumble(".-");
+    //   } else if(remaining == 15_s) {
+    //     j_Main.rumble("..-");
+    //   } else if(remaining == 10_s) {
+    //     j_Main.rumble("....");
+    //   }
     // }
-    //
-    // if(shootMacro != lastShootMacro)
-    // {
-    //   if(shootMacro == ShootController::shootMacros::shootTarget)
-    //   std::cout << "" << (11_ft - robot.tracker->state.y).convert(foot) << ", " << targetAngle << std::endl;
-    //   if(shootMacro != ShootController::shootMacros::off) robot.shooter->doMacro(shootMacro);
-    //   lastShootMacro = shootMacro;
-    // }
-    //
-    // if(j_Digital(Y))
-    // {
-    //   targetAngle -= 0.1;
-    //   std::cout << "Target Angle: " << targetAngle << std::endl;
-    //   robot.shooter->setTarget(targetAngle);
-    // }
-    // else if(j_Digital(X))
-    // {
-    //   targetAngle += 0.1;
-    //   std::cout << "Target Angle: " << targetAngle << std::endl;
-    //   robot.shooter->setTarget(targetAngle);
-    // }
-    // else if(printTrigger.changedToPressed())
-    // {
-    //   //print angle and distance
-    // shootLogger.writeLine({
-    //   topFlag ? "Top" : "Middle",
-    //   std::to_string((11_ft - robot.tracker->state.y).convert(foot)),
-    //   std::to_string(targetAngle),
-    //   std::to_string(shotRpm),
-    //   std::to_string(pros::battery::get_capacity()),
-    //   std::to_string(robot.flywheel->flywheel->getTemperature())
-    // });
-    // }
-    //
-    // if(j_Digital(A)) {
-    //   robot.shooter->doJobLoop(ShootController::angleTarget);
-    // }
+
 
     pros::delay(10);
   }
@@ -214,10 +181,14 @@ void autonomous()
   //robot.arm->setState(ArmController::unfold);
   #endif
 
-  //Create a new chassis that automatically mirrors side and send it to the autonomous code
-  SideController* sideChassis = new SideController(
-    robot.chassis, display.selector->getSelectedSide());
-    display.selector->getSelectedAuton().autonFunc(sideChassis);
-    delete sideChassis;
-    std::cout << "Exit Auton" << std::endl;
-  }
+  //Create a new chassis that mirrors side and send it to the autonomous code
+
+  AutonPasser passer = std::make_tuple(
+    SideController(robot.chassis, display.selector->getSelectedSide()),
+    Timer()
+  );
+
+  display.selector->getSelectedAuton().autonFunc(&passer);
+
+  std::cout << "Exit Auton" << std::endl;
+}

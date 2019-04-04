@@ -1,13 +1,15 @@
 #pragma once
 #include "main.h"
 
-#define CONTROLLER_NAME_FOR_SHORTCUTS chassis->
+#define CONTROLLER_NAME_FOR_SHORTCUTS chassis.
 
 #include "7842FMain/RobotConfig.hpp"
 #include "lib7842/auton/sideController.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
-#include "AutoPoints.hpp"
+#include "AutonPoints.hpp"
+
+using AutonPasser = std::tuple<SideController, Timer>;
 
 /**
 * Functions
