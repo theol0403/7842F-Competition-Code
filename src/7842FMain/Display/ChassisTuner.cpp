@@ -55,7 +55,7 @@ container(parent), controller(icontroller)
 
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
-  *btnLabels = {"kP+", "kP-", "kI+", "kI-", "kD+", "kD-", ""};
+  *btnLabels = {"kP+", "kI+", "kD+", "\n", "kP-", "kI-", "kD-", ""};
 
   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   lv_obj_set_hidden(btnm, true);
@@ -71,7 +71,7 @@ container(parent), controller(icontroller)
   tuners.push_back(buildTuner(btnm, "Turn", controller->turnPid));
 
 
-  
+  lv_obj_set_hidden(tuners[1], false);
 
 }
 
@@ -85,14 +85,14 @@ lv_obj_t* ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePo
 
   lv_obj_t* tuner = lv_obj_create(container, NULL);
   lv_obj_set_size(tuner, lv_obj_get_width(container), lv_obj_get_height(container)/2);
-  lv_obj_align(tuner, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+  lv_obj_align(tuner, container, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
   lv_obj_set_style(tuner, &containerStyle);
   lv_obj_set_hidden(tuner, true);
 
   lv_obj_t* btnm = lv_btnm_create(tuner, copy);
   lv_obj_set_hidden(btnm, false);
   lv_obj_set_size(btnm, lv_obj_get_width(tuner), lv_obj_get_height(tuner));
-  lv_obj_align(btnm, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(btnm, tuner, LV_ALIGN_CENTER, 0, 0);
 
   lv_btnm_set_action(btnm, btnAction);
 
