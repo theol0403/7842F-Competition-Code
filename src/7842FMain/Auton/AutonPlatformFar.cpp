@@ -2,20 +2,21 @@
 
 void AutonPlatformFar(void* input)
 {
-  SideController* chassis = static_cast<SideController*>(input);
+  AutonPasser* passer = static_cast<AutonPasser*>(input);
+auto &[chassis, timer] = *passer;
 
-  chassis->setState({1_ft, 3_ft, 90_deg});
+  chassis.setState({1_ft, 3_ft, 90_deg});
 
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint(farCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis->driveToPoint(farCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis.driveToPoint(farCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
 
-  chassis->driveToPoint({3.93_ft, 2.5_ft});
+  chassis.driveToPoint({3.93_ft, 2.5_ft});
 
-  chassis->turnToAngle(180_deg);
+  chassis.turnToAngle(180_deg);
 
-  chassis->driveForTime(1600, -1);
+  chassis.driveForTime(1600, -1);
 
 }
