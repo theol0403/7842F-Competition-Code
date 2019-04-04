@@ -13,11 +13,13 @@ namespace lib7842
     pros::Task task;
 
     std::array<std::string, 3> lines = {};
+    bool paused = true;
 
   public:
 
     ControllerPrinter(Controller*);
     void print(int, std::string);
+    void pause();
 
     void run();
     static void taskFnc(void*);
