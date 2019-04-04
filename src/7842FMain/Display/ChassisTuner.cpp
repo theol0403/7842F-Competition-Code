@@ -99,7 +99,23 @@ lv_obj_t* ChassisTuner::buildTuner(lv_obj_t* copy, std::string name, IterativePo
   Passer* passer = new Passer(this, pid);
   lv_obj_set_free_ptr(btnm, passer);
 
+
+
   return tuner;
+}
+
+void FlywheelTuner::calcLabels() {
+  double offset = 0.0;
+  for(auto &[name, button, label] : buttons) {
+    std::stringstream str;
+    int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal
+    str << std::setprecision(width) << *button.variable;
+    if(width > str.str().size()) width = str.str().size();
+    str.str().erase(width, std::string::npos);
+    lv_label_set_text(label, str.str().c_str());
+    offset += (double)lv_obj_get_width(container)/buttons.size();
+    lv_obj_align(label, NULL, LV_ALIGN_OUT_BOTTOM_LEFT, offset - lv_obj_get_width(label)/2.0 - (double)lv_obj_get_width(container)/buttons.size()/2.0, -lv_obj_get_height(container)/6.0 - lv_obj_get_height(label)/2.0);
+  }
 }
 
 
