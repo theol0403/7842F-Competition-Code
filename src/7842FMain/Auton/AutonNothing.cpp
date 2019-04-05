@@ -10,7 +10,7 @@ void AutonTest(void* input)
   auto &[chassis, timer] = *passer;
 
   //chassis.turnToAngle(90_deg);
-  chassis.driveDistance(1_ft);
+  chassis.driveDistance(3_ft);
 
   //robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothFlags);
 

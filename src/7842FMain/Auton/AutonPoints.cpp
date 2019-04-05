@@ -5,7 +5,7 @@
  * It is assumed they will mirror perfectly along the middle of the court
  */
 
-qPoint sideFlagShoot {1.6_ft, 11.2_ft};
+qPoint sideFlagShoot {1.5_ft, 11.2_ft};
 qPoint sideFlagPost {2_ft, 11_ft};
 
 qPoint middleFlagShoot {5.7_ft, 11.2_ft};

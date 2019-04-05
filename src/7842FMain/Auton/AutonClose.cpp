@@ -11,8 +11,8 @@ void AutonClose(void* input)
   .withTrigger(makeTrigger(return computeDistanceToPoint(closeCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis.driveToPoint(closeCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
-  chassis.driveToPoint({1_ft, 7_ft}); // Move to behind shooting position -- was 6.7
+  chassis.driveToPoint(closeCapDrive, 1, driveSettle, {intake}); // Move to ball under cap
+  chassis.driveToPoint({1_ft, 8_ft}); // Move to behind shooting position -- was 6.7
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
 
