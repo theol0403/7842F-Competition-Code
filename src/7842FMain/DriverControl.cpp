@@ -53,7 +53,7 @@ void driverControl()
 	}
 	else if(j_Digital(left))
 	{
-		robot.shooter->setDistanceToFlag(4_ft);
+		robot.shooter->setDistanceToFlag(4.5_ft);
 	}
 	else if(j_Digital(up))
 	{

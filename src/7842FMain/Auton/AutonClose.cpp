@@ -17,24 +17,23 @@ void AutonClose(void* input)
   chassis.turnToPoint(sideFlagShoot); // turn to flag
 
   robot.shooter->setDistanceToFlag(7_ft);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.turnToAngle(3_deg);
-  chassis.driveDistance(3.8_ft, makeSettle(2_in));
-  chassis.driveDistance(-1_ft, makeSettle(2_in));
-  chassis.turnToAngle(90_deg);
-
-  chassis.driveToPointSimple({1.6_ft, 8.9_ft}, makeSettle(2_in));
-  robot.arm->setState(ArmController::down);
-  chassis.driveDistance(-3_in);
-
-  chassis.turnToPoint(middleFlagShoot);
-  robot.shooter->setTarget(0);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
-  robot.shooter->setTarget(20);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
+  // chassis.turnToAngle(0_deg);
+  // chassis.driveDistance(3.8_ft, makeSettle(2_in));
+  // chassis.driveDistance(-1_ft, makeSettle(2_in));
+  // chassis.turnToAngle(90_deg);
+  //
+  // chassis.driveToPointSimple({1.6_ft, 8.9_ft}, makeSettle(2_in));
+  // robot.arm->setState(ArmController::down);
+  // chassis.driveDistance(-3_in);
+  //
+  // chassis.turnToPoint(middleFlagShoot);
+  // robot.shooter->setTarget(0);
+  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
+  // robot.shooter->setTarget(20);
+  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   //   setIntakeMode(intakeModes::loading);
   //

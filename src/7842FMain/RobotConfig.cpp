@@ -47,9 +47,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new IterativePosPIDController(0.003, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
-		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 1, 100_ms)) //Turn PID - To Degree
+		new IterativePosPIDController(0.0016, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 100_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.007, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
+		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 2, 100_ms)) //Turn PID - To Degree
 	);
 
 	pros::delay(200);
@@ -74,7 +74,7 @@ void initializeDevices()
 		new lib7842::velPID(0.073, 0.35, 0.04, 0.1), 0.4
 	);
 
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 32, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 32.3, new IterativePosPIDController(0.025, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
 
@@ -98,10 +98,10 @@ void initializeDevices()
 	.withRes(300)
 	.withLines(10, 8)
 	.withRefresh(20)
-	.withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
-	.withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
-	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
-	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
+	// .withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
+	// .withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
+	// .withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
+	// .withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.withSeries("Accel", &robot.flywheel->currentAccel, LV_COLOR_LIME)
 	.build();
 
@@ -111,7 +111,7 @@ void initializeDevices()
 
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
-//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
+	//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
 
 }
 

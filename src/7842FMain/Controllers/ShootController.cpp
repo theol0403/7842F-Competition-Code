@@ -13,9 +13,9 @@ task(taskFnc, this)
     {2.5, 0},
     {3, 0},
     {3.5, 0},
-    {4, 2.2},
-    {4.5, 4.9},
-    {5, 6},
+    {4, 3.2},
+    {4.5, 6.5},
+    {5, 7},
     {5.5, 5.3},
     {6, 6},
     {6.5, 6.5},
@@ -39,8 +39,8 @@ task(taskFnc, this)
     {2.5, 3},
     {3, 9.8},
     {3.5, 12.6},
-    {4, 13.4},
-    {4.5, 15},
+    {4, 21},
+    {4.5, 22.4},
     {5, 15.1},
     {5.5, 13.3},
     {6, 13},
@@ -209,7 +209,7 @@ double ShootController::computeHoodPower(double target) {
 
 void ShootController::run()
 {
-  const double angleThresh = 2;
+  const double angleThresh = 3;
   const double cycleVel = -50;
 
   const double extendPos = 45;
@@ -281,7 +281,7 @@ void ShootController::run()
 
 
       case angleTop:
-      if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
+      if(getHoodAngle() >= getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
@@ -297,7 +297,7 @@ void ShootController::run()
 
 
       case angleMiddle:
-      if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
+      if(getHoodAngle() >= getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
@@ -313,7 +313,7 @@ void ShootController::run()
 
 
       case angleTarget:
-      if(getHoodAngle() > targetAngle + angleThresh) {
+      if(getHoodAngle() >= targetAngle + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= targetAngle - angleThresh) {
@@ -329,7 +329,7 @@ void ShootController::run()
 
 
       case angleOut:
-      if(getHoodAngle() > 32 + angleThresh) {
+      if(getHoodAngle() >= 32 + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= 32 - angleThresh) {
@@ -376,7 +376,7 @@ void ShootController::run()
       break;
 
       case waitForShoot:
-      if(shootTimer.getDtFromMark() >= 350_ms) {
+      if(shootTimer.getDtFromMark() >= 300_ms) {
         intake->enable();
         completeJob();
       } else {
