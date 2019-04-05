@@ -9,7 +9,7 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
+//static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
 void driverControl()
 {
@@ -116,15 +116,15 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(j_Digital(Y)) {
-		robot.arm->setState(ArmController::out);
-	} else if(armTrigger.changedToPressed()) {
-		if(robot.arm->getState() != ArmController::down) {
-			robot.arm->setState(ArmController::down);
-		} else {
-			robot.arm->setState(ArmController::up);
-		}
-	}
+	// if(j_Digital(Y)) {
+	// 	robot.arm->setState(ArmController::out);
+	// } else if(armTrigger.changedToPressed()) {
+	// 	if(robot.arm->getState() != ArmController::down) {
+	// 		robot.arm->setState(ArmController::down);
+	// 	} else {
+	// 		robot.arm->setState(ArmController::up);
+	// 	}
+	// }
 
 
 }
