@@ -7,8 +7,6 @@
 #include "lib7842/auton/sideController.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
-#include "AutonCommon.hpp"
-
 using AutonPasser = std::tuple<SideController, Timer>;
 
 /**
@@ -28,3 +26,27 @@ void AutonMiddleFromFar(void*);
 void AutonPlatformFar(void*);
 
 void AutonTest(void*);
+
+
+/**
+ * Points
+ */
+extern QTime shootTime;
+extern QLength startX;
+
+extern qPoint sideFlagShoot;
+extern qPoint sideFlagPost;
+
+extern qPoint middleFlagShoot;
+extern qPoint middleFlagPost;
+
+extern qPoint closeFlatCap;
+
+extern qPoint sidePlatform;
+
+
+/**
+ * Actions
+ */
+void firstCapMovement(SideController& chassis, QLength y);
+void waitForLastMinute(Timer& timer);
