@@ -12,22 +12,22 @@ void AutonClose(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   chassis.driveToPoint(closeCapDrive, 1, driveSettle, {intake}); // Move to ball under cap while intaking
-  chassis.driveToPoint({1_ft, 8_ft}); // Move to shooting position
+  chassis.driveToPoint({1_ft, 7.5_ft}); // Move to shooting position
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
   robot.shooter->setDistanceToFlag(7_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.turnToAngle(0_deg);
-  chassis.driveDistance(3.8_ft);
+  chassis.turnToAngle(2_deg);
+  chassis.driveDistance(3.6_ft);
   chassis.driveDistance(-1_ft);
   chassis.turnToAngle(90_deg);
 
-  chassis.driveToPoint({1.6_ft, 8.9_ft}, 1, makeSettle(2_in));
+  chassis.driveToPoint({2_ft, 8_ft}, 1, makeSettle(2_in));
 
   chassis.turnToPoint(middleFlagShoot);
-  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot) + 0.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   //   setIntakeMode(intakeModes::loading);

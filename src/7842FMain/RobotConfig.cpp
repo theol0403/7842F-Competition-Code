@@ -18,7 +18,7 @@ robot_t robot;
 const int8_t mFlywheel = -1;
 const int8_t mIntake = -9;
 const int8_t mIndexer = 10;
-const int8_t mArm = -8;
+const int8_t mArm = 2;
 
 const int8_t mRightFront = -19;
 const int8_t mRightBack = -20;

@@ -22,7 +22,7 @@ task(taskFnc, this)
     {7, 7.1},
     {7.5, 5.2},
     {8, 6.1},
-    {8.5, 12},
+    {8.5, 13.5},
     {9, 2.9},
     {9.5, 3},
     {10, 2},
@@ -48,7 +48,7 @@ task(taskFnc, this)
     {7, 19},
     {7.5, 14.4},
     {8, 15.5},
-    {8.5, 19},
+    {8.5, 18},
     {9, 12.9},
     {9.5, 8.6},
     {10, 8.9},
@@ -329,16 +329,16 @@ void ShootController::run()
 
 
       case angleOut:
-      if(getHoodAngle() >= 32 + angleThresh) {
+      if(getHoodAngle() >= 33 + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= 32 - angleThresh) {
+        if(getHoodAngle() >= 33 - angleThresh) {
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(32));
+          flywheel->flywheel->move(-computeHoodPower(33));
         }
       }
       break;

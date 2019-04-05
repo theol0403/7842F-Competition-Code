@@ -116,15 +116,15 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	// if(j_Digital(A)) {
-	// 	robot.arm->setState(ArmController::out);
-	// } else if(armTrigger.changedToPressed()) {
-	// 	if(robot.arm->getState() != ArmController::down) {
-	// 		robot.arm->setState(ArmController::down);
-	// 	} else {
-	// 		robot.arm->setState(ArmController::up);
-	// 	}
-	// }
+	if(j_Digital(Y)) {
+		robot.arm->setState(ArmController::out);
+	} else if(armTrigger.changedToPressed()) {
+		if(robot.arm->getState() != ArmController::down) {
+			robot.arm->setState(ArmController::down);
+		} else {
+			robot.arm->setState(ArmController::up);
+		}
+	}
 
 
 }

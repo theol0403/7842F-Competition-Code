@@ -9,7 +9,7 @@ QTime shootTime {13_s};
 
 QLength startX {2_in};
 
-qPoint sideFlagShoot {1.5_ft, 11.2_ft};
+qPoint sideFlagShoot {1.4_ft, 11.2_ft};
 qPoint sideFlagPost {2_ft, 11_ft};
 
 qPoint middleFlagShoot {5.7_ft, 11.2_ft};
