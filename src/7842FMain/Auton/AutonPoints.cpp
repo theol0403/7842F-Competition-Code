@@ -5,6 +5,10 @@
  * It is assumed they will mirror perfectly along the middle of the court
  */
 
+QTime shootTime {13_s};
+
+QLength startX {2_in};
+
 qPoint sideFlagShoot {1.5_ft, 11.2_ft};
 qPoint sideFlagPost {2_ft, 11_ft};
 

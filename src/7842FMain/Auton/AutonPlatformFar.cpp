@@ -3,15 +3,17 @@
 void AutonPlatformFar(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-auto &[chassis, timer] = *passer;
+  auto &[chassis, timer] = *passer;
 
-  chassis.setState({1_ft, 3_ft, 90_deg});
+  chassis.setState({startX, 3_ft, 90_deg});
+
+  robot.flywheel->setRpm(0);
 
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint(farCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis.driveToPoint(farCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis.driveToPoint(farCapDrive, 1, driveSettle, {intake}); // Move to ball under cap
 
   chassis.driveToPoint({3.93_ft, 2.5_ft});
 

@@ -3,22 +3,21 @@
 void AutonMiddleFromClose(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-auto &[chassis, timer] = *passer;
+  auto &[chassis, timer] = *passer;
 
-  chassis.setState({1_ft, 7_ft, 90_deg}); // Robot is facing cap
+  chassis.setState({startX, 7_ft, 90_deg}); // Robot is facing cap
 
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint(closeCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis.driveToPoint(closeCapDrive, 1, makeSettle(3_in), {intake}); // Move to ball under cap
+  chassis.driveToPoint(closeCapDrive, 1, driveSettle, {intake}); // Move to ball under cap
   chassis.driveToPoint({3_ft, 8_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
 
-  chassis.turnToPoint(middleFlagShoot); // turn to flag
+  while(timer.millis() < shootTime) pros::delay(20);
 
-  robot.shooter->setTarget(0);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
-  robot.shooter->setTarget(20);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
+  chassis.turnToPoint(middleFlagShoot); // turn to flag
+  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 }

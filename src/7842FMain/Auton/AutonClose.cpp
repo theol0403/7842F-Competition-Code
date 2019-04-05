@@ -5,35 +5,30 @@ void AutonClose(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  chassis.setState({1_ft, 7_ft, 90_deg}); // Robot is facing cap
+  chassis.setState({startX, 7_ft, 90_deg}); // Robot is facing cap
 
   AsyncAction intake = AsyncAction()
   .withTrigger(makeTrigger(return computeDistanceToPoint(closeCapDrive) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
-  chassis.driveToPoint(closeCapDrive, 1, driveSettle, {intake}); // Move to ball under cap
-  chassis.driveToPoint({1_ft, 8_ft}); // Move to behind shooting position -- was 6.7
+  chassis.driveToPoint(closeCapDrive, 1, driveSettle, {intake}); // Move to ball under cap while intaking
+  chassis.driveToPoint({1_ft, 8_ft}); // Move to shooting position
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
-
   robot.shooter->setDistanceToFlag(7_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  // chassis.turnToAngle(0_deg);
-  // chassis.driveDistance(3.8_ft, makeSettle(2_in));
-  // chassis.driveDistance(-1_ft, makeSettle(2_in));
-  // chassis.turnToAngle(90_deg);
-  //
-  // chassis.driveToPointSimple({1.6_ft, 8.9_ft}, makeSettle(2_in));
-  // robot.arm->setState(ArmController::down);
-  // chassis.driveDistance(-3_in);
-  //
-  // chassis.turnToPoint(middleFlagShoot);
-  // robot.shooter->setTarget(0);
-  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
-  // robot.shooter->setTarget(20);
-  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
+  chassis.turnToAngle(0_deg);
+  chassis.driveDistance(3.8_ft);
+  chassis.driveDistance(-1_ft);
+  chassis.turnToAngle(90_deg);
+
+  chassis.driveToPoint({1.6_ft, 8.9_ft}, 1, makeSettle(2_in));
+
+  chassis.turnToPoint(middleFlagShoot);
+  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   //   setIntakeMode(intakeModes::loading);
   //
