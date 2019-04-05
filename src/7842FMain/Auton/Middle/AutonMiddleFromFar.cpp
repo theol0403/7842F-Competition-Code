@@ -5,18 +5,13 @@ void AutonMiddleFromFar(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  chassis.setState({startX, 3_ft, 90_deg}); // Robot is facing cap
+  firstCapMovement(chassis, 3_ft);
 
-  AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 3_ft}) < 2_ft;))
-  .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
-
-  chassis.driveToPoint(farCapDrive, 1, driveSettle, {intake}); // Move to ball under cap
   chassis.driveToPoint({1_ft, 3_ft}, 1); // Move to shooting position
 
   chassis.turnToPoint(middleFlagShoot); // turn to flag
 
-  while(timer.millis() < shootTime) pros::delay(20);
+  waitForLastMinute(timer);
 
   robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
