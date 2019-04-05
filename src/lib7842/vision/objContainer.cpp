@@ -15,14 +15,14 @@ namespace lib7842
   }
 
   visionObj ObjContainer::get(int index) {
-    try {
+    if(index < objects.size()) {
       return objects.at(index);
-    } catch(std::out_of_range) {
+    } else {
       std::cerr << "get: Invalid Index" << std::endl;
       return {};
     }
   }
-
+  
   visionObj ObjContainer::getTotal() {
     return std::accumulate(objects.begin(), objects.end(), visionObj{});
   }
