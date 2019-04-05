@@ -7,7 +7,8 @@
 #include "lib7842/auton/sideController.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
-#include "AutonPoints.hpp"
+#include "Common/AutonPoints.hpp"
+#include "Common/AutonActions.hpp"
 
 using AutonPasser = std::tuple<SideController, Timer>;
 
