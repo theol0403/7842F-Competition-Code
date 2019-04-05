@@ -46,7 +46,7 @@ struct robot_t
   IntakeController* intake = nullptr;
   FlywheelController* flywheel = nullptr;
   ShootController* shooter = nullptr;
-  ArmController* arm = nullptr;
+  //ArmController* arm = nullptr;
   VisionController* vision = nullptr;
 };
 
@@ -54,6 +54,8 @@ extern display_t display;
 extern robot_t robot;
 
 extern const int globalFlywheelRPM;
+
+extern pros::Motor mArm;
 
 void initializeDevices();
 void initializeBase();

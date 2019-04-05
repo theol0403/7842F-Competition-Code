@@ -9,7 +9,7 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
+//static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
 
 void driverControl()
 {
@@ -20,7 +20,7 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(X)) {
+	if(j_Digital(Y)) {
 		shootMacro = ShootController::shootMacros::shootOut;
 	} else if(j_Digital(L2) && j_Digital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
@@ -103,7 +103,7 @@ void driverControl()
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
 
-		robot.arm->setState(ArmController::off);
+		//robot.arm->setState(ArmController::off);
 	}
 
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
@@ -113,18 +113,37 @@ void driverControl()
 	}
 
 
+
+
 	/**
 	* Arm Control
 	*/
+
+
+	if (mArm.get_position()<5) {
+		mArm.move_relative(5, 200);
+	}
+	if (mArm.get_position()>550) {
+		mArm.move_absolute(550, -200);
+	}
+
+	if(j_Digital(A)) {
+  mArm.move_velocity(-100);
+	}
+	else if(j_Digital(X)) {
+  mArm.move_velocity(100);
+}
+else {
+mArm.move_velocity(0);
+}
+//else{robot.arm->setState(ArmController::off);}
+
+
 	// if(j_Digital(A)) {
-	// 	robot.arm->setState(ArmController::out);
-	// } else if(armTrigger.changedToPressed()) {
-	// 	if(robot.arm->getState() != ArmController::down) {
-	// 		robot.arm->setState(ArmController::down);
-	// 	} else {
-	// 		robot.arm->setState(ArmController::up);
-	// 	}
-	// }
+	// 	robot.arm->setState(ArmController::forward);
+	// } else if(j_Digital(X)) {
+	// 	robot.arm->setState(ArmController::back);
+	// }else{robot.arm->setState(ArmController::off);}
 
 
 }

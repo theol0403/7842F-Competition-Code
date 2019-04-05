@@ -22,7 +22,7 @@ auto &[chassis, timer] = *passer;
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
 
   chassis.driveToPointSimple(closeFlatCap, makeSettle(3_in));
-  robot.arm->setState(ArmController::down);
+//  robot.arm->setState(ArmController::down);
   chassis.driveDistance(-4_in);
 
   chassis.turnToPoint(middleFlagPost);

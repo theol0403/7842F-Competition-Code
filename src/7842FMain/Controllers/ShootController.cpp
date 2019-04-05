@@ -27,7 +27,7 @@ task(taskFnc, this)
     {9.5, 3},
     {10, 2},
     {10.5, 1.5},
-    {11, 7.5}
+    {11, 7}
   };
 
   middleAngles = {
@@ -53,7 +53,7 @@ task(taskFnc, this)
     {9.5, 8.6},
     {10, 8.9},
     {10.5, 7},
-    {11, 12.5}
+    {11, 11.5}
   };
 
 }
@@ -376,7 +376,7 @@ void ShootController::run()
       break;
 
       case waitForShoot:
-      if(shootTimer.getDtFromMark() >= 350_ms) {
+      if(shootTimer.getDtFromMark() >= 250_ms) {
         intake->enable();
         completeJob();
       } else {

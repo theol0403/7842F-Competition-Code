@@ -4,7 +4,7 @@ ArmController::ArmController(Motor* iarm, IterativePosPIDController* ipid) :
 arm(iarm), pid(ipid),
 task(taskFnc, this)
 {
-  arm->setBrakeMode(AbstractMotor::brakeMode::coast);
+  arm->setBrakeMode(AbstractMotor::brakeMode::hold);
   startAngle = arm->getPosition();
 }
 
@@ -23,40 +23,28 @@ double ArmController::getArmAngle() {
 
 void ArmController::run()
 {
-
+	arm->tare_position();
   while(true)
   {
-    double downPos = 19.4;
-    double upPos = 3.4;
-    double outPos = 13;
+
 
     switch(armState) {
 
       case off:
-      arm->move(0);
+
       break;
 
-      case down:
-      pid->setTarget(downPos);
-      arm->move(pid->step(getArmAngle()) * 127);
-      break;
-
-      case up:
-      pid->setTarget(upPos);
-      arm->move(pid->step(getArmAngle()) * 127);
-      break;
-
-      case out:
-      pid->setTarget(outPos);
-      arm->move(pid->step(getArmAngle()) * 127);
+      case forward:
+      arm->move_velocity(200);
       break;
 
       case back:
-      pid->setTarget(0);
-      arm->move(pid->step(getArmAngle()) * 127);
+      arm->move_velocity(-200);
       break;
 
     }
+
+
 
     //std::cout << "Arm: " << getArmAngle() << std::endl;
     pros::delay(10);

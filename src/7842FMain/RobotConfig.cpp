@@ -15,16 +15,20 @@ robot_t robot;
 *                          |_|
 */
 #ifndef TEST_ROBOT //Competition
-const int8_t mFlywheel = -2;
-const int8_t mIntake = 8;
-const int8_t mIndexer = 1;
-const int8_t mArm = -11;
-const int8_t lift = 10;
+const int8_t mFlywheel = -8;
+const int8_t mIntake = 7;
+const int8_t mIndexer = 9;
+//const int8_t mArm = -10;
 
-const int8_t mRightFront = -10;
-const int8_t mRightBack = -9;
-const int8_t mLeftFront = 19;
-const int8_t mLeftBack = 20;
+
+const int8_t mRightFront = -20;
+const int8_t mRightBack = -19;
+const int8_t mLeftFront = 18;
+const int8_t mLeftBack = 17;
+
+pros::Motor mArm (-10);//port 13
+
+
 
 
 void initializeBase()
@@ -64,6 +68,10 @@ const int globalFlywheelRPM = 2800;
 void initializeDevices()
 {
 
+	mArm.tare_position();
+	mArm.set_brake_mode(MOTOR_BRAKE_HOLD);
+
+
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
 	Motor* flywheelM = new Motor(mFlywheel);
@@ -77,7 +85,7 @@ void initializeDevices()
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 75.3, new IterativePosPIDController(0.02, 0, 0, 0, TimeUtilFactory::create()));
 
-	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
+	//robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.2, 0, 0, 0, TimeUtilFactory::create()));
 
 	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
 	(*display.flywheel)

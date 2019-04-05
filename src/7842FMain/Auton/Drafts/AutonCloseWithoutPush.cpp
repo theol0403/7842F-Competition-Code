@@ -23,7 +23,7 @@ auto &[chassis, timer] = *passer;
 
   chassis.turnToPoint(closeFlatCap);
   chassis.driveDistance(1_ft);
-  robot.arm->setState(ArmController::down);
+//  robot.arm->setState(ArmController::down);
   chassis.driveDistance(-3_in);
 
   chassis.turnToPoint(middleFlagShoot);

@@ -23,7 +23,7 @@ auto &[chassis, timer] = *passer;
 
   chassis.turnToPoint(closeFlatCap);
   chassis.driveDistance(3_in);
-  robot.arm->setState(ArmController::down);
+  //robot.arm->setState(ArmController::down);
   chassis.driveDistance(-3_in);
 
   chassis.driveToPoint({1_ft, 7.2_ft}, 1, makeSettle(3_in)); // Move to behind shooting position
