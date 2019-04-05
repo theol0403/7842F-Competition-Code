@@ -15,7 +15,6 @@ void AutonMiddleFromFar(void* input)
   chassis.driveToPoint({1_ft, 3_ft}, 1); // Move to shooting position
 
   chassis.turnToPoint(middleFlagShoot); // turn to flag
-  pros::delay(2000);
 
   while(timer.millis() < shootTime) pros::delay(20);
 

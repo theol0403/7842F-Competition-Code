@@ -13,6 +13,3 @@ extern qPoint middleFlagPost;
 extern qPoint closeFlatCap;
 
 extern qPoint sidePlatform;
-
-extern qPoint closeCapDrive;
-extern qPoint farCapDrive;
