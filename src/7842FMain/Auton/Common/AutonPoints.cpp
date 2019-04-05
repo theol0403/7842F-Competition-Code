@@ -1,4 +1,4 @@
-#include "AutonPoints.hpp"
+#include "7842FMain/Auton/AutonIncludes.hpp"
 
 /*
  * These only represent the left (red) side of the court
