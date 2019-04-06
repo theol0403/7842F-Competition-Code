@@ -1,6 +1,6 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 
-void AutonCloseMiddle(void* input)
+void AutonClose(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
@@ -13,14 +13,18 @@ void AutonCloseMiddle(void* input)
   robot.shooter->setDistanceToFlag(7_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
-  chassis.driveToPointSimple(closeFlatCap, makeSettle(3_in));
-  chassis.driveDistance(-4_in);
-  pros::delay(2000);
+  // Move forward towards flags and push bottom flag
+  chassis.turnToAngle(2_deg);
+  chassis.driveDistance(3.6_ft);
+  chassis.driveDistance(-1.5_ft, makeSettle(0.5_ft));
+  chassis.turnToAngle(90_deg);
 
-  chassis.turnToPoint(middleFlagPost);
+  chassis.driveToPoint({2_ft, 9_ft}, 1, makeSettle(2_in));
+
+  chassis.turnToPoint(middleFlagShoot);
 
   waitForLastMinute(timer);
-  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->setDistanceToFlag(5.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 }

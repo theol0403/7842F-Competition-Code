@@ -13,16 +13,16 @@ task(taskFnc, this)
     {2.5, 0},
     {3, 0},
     {3.5, 0},
-    {4, 2.2},
-    {4.5, 4.9},
-    {5, 6},
+    {4, 3.2},
+    {4.5, 8.5},
+    {5, 7},
     {5.5, 5.3},
     {6, 6},
     {6.5, 6.5},
     {7, 7.1},
     {7.5, 5.2},
     {8, 6.1},
-    {8.5, 10},
+    {8.5, 13.5},
     {9, 2.9},
     {9.5, 3},
     {10, 2},
@@ -39,16 +39,16 @@ task(taskFnc, this)
     {2.5, 3},
     {3, 9.8},
     {3.5, 12.6},
-    {4, 13.4},
-    {4.5, 15},
+    {4, 21},
+    {4.5, 22.4},
     {5, 15.1},
     {5.5, 13.3},
     {6, 13},
     {6.5, 14.2},
-    {7, 15},
+    {7, 19},
     {7.5, 14.4},
     {8, 15.5},
-    {8.5, 17.5},
+    {8.5, 18},
     {9, 12.9},
     {9.5, 8.6},
     {10, 8.9},
@@ -209,7 +209,7 @@ double ShootController::computeHoodPower(double target) {
 
 void ShootController::run()
 {
-  const double angleThresh = 2;
+  const double angleThresh = 3;
   const double cycleVel = -50;
 
   const double extendPos = 45;
@@ -281,7 +281,7 @@ void ShootController::run()
 
 
       case angleTop:
-      if(getHoodAngle() > getTopFlagAngle() + angleThresh) {
+      if(getHoodAngle() >= getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
@@ -297,7 +297,7 @@ void ShootController::run()
 
 
       case angleMiddle:
-      if(getHoodAngle() > getMiddleFlagAngle() + angleThresh) {
+      if(getHoodAngle() >= getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
@@ -313,7 +313,7 @@ void ShootController::run()
 
 
       case angleTarget:
-      if(getHoodAngle() > targetAngle + angleThresh) {
+      if(getHoodAngle() >= targetAngle + angleThresh) {
         addJob(cycle);
       } else {
         if(getHoodAngle() >= targetAngle - angleThresh) {
@@ -329,16 +329,16 @@ void ShootController::run()
 
 
       case angleOut:
-      if(getHoodAngle() > 32 + angleThresh) {
+      if(getHoodAngle() >= 33 + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= 32 - angleThresh) {
+        if(getHoodAngle() >= 33 - angleThresh) {
           flywheel->enable();
           completeJob();
         } else {
           intake->enable();
           flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(32));
+          flywheel->flywheel->move(-computeHoodPower(33));
         }
       }
       break;

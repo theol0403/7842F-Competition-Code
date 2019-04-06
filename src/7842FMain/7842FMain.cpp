@@ -27,7 +27,7 @@ void initialize()
   display.main->splashScreen(&img_navigators, 2000);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"T", AutonTest}, {"C", AutonClose},
+    {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}
   });
@@ -191,4 +191,6 @@ void autonomous()
   display.selector->getSelectedAuton().autonFunc(&passer);
 
   std::cout << "Exit Auton" << std::endl;
+
+  robot.flywheel->setRpm(0);
 }

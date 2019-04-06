@@ -66,7 +66,7 @@ std::cout <<"Arm1:"<< Arm1.get_position() << std::endl;
 	}
 	else if(j_Digital(left))
 	{
-		robot.shooter->setDistanceToFlag(4_ft);
+		robot.shooter->setDistanceToFlag(4.5_ft);
 	}
 	else if(j_Digital(up))
 	{
@@ -107,6 +107,7 @@ std::cout <<"Arm1:"<< Arm1.get_position() << std::endl;
 	* Arm Abort
 	*/
 	if(flywheelTrigger.changedToPressed()) {
+		robot.printer->rumble(".");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
 		} else {
@@ -119,10 +120,12 @@ std::cout <<"Arm1:"<< Arm1.get_position() << std::endl;
 		//robot.arm->setState(ArmController::off);
 	}
 
-	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
+	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
 		robot.printer->print(1, "Flywheel Ready");
+		display.driverDisplay->setColor(LV_COLOR_LIME);
 	} else {
 		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
+		display.driverDisplay->setColor(LV_COLOR_MAGENTA);
 	}
 
 

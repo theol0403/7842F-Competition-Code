@@ -53,9 +53,9 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new IterativePosPIDController(0.003, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(40, 5, 250_ms)), //Distance PID - To mm
-		new IterativePosPIDController(0.008, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
-		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 1, 100_ms)) //Turn PID - To Degree
+		new IterativePosPIDController(0.0014, 0, 0.000, 0, TimeUtilFactory::withSettledUtilParams(30, 5, 100_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.007, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
+		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 2, 100_ms)) //Turn PID - To Degree
 	);
 
 	pros::delay(200);
@@ -107,10 +107,10 @@ void initializeDevices()
 	.withRes(300)
 	.withLines(10, 8)
 	.withRefresh(20)
-	.withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
-	.withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
-	.withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
-	.withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
+	// .withSeries("Target/6", &robot.flywheel->targetRpm, LV_COLOR_RED, 6)
+	// .withSeries("Current/6", &robot.flywheel->currentRpm, LV_COLOR_BLUE, 6)
+	// .withSeries("Power", &robot.flywheel->motorPower, LV_COLOR_GREEN)
+	// .withSeries("D", &robot.flywheel->pid->m_derivative, LV_COLOR_PURPLE)
 	.withSeries("Accel", &robot.flywheel->currentAccel, LV_COLOR_LIME)
 	.build();
 
@@ -120,7 +120,9 @@ void initializeDevices()
 
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
-//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
+	//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
+
+	display.driverDisplay = new DriverDisplay(display.main->newTab("Driver"));
 
 }
 
