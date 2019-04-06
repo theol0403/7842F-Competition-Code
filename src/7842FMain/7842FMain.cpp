@@ -107,10 +107,13 @@ void opcontrol()
   robot.shooter->clearQueue();
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
-  robot.flywheel->setRpm(globalFlywheelRPM);
   robot.intake->setState(IntakeController::off);
   robot.arm->setState(ArmController::off);
   #endif
+
+  if(display.selector->m_currentAutonIndex != 0) {
+    robot.flywheel->setRpm(globalFlywheelRPM);
+  }
 
   robot.printer->rumble(".");
 

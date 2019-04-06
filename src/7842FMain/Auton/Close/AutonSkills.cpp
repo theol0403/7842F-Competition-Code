@@ -45,12 +45,12 @@ void AutonSkills(void* input)
   pros::delay(3000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
-  chassis.driveDistance(2.4_ft);
+  chassis.driveDistance(2.5_ft);
 
   chassis.driveToPoint({0.8_ft, 5_ft}, 1, makeSettle(2_in));
   chassis.turnToAngle(-95_deg);
 
-  chassis.driveForTime(2000, -1);
+  chassis.driveForTime(3000, -1);
   chassis.driveDistance(-0.1_ft);
 
 }

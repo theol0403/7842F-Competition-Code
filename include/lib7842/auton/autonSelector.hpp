@@ -23,10 +23,10 @@ namespace lib7842
 
     lv_obj_t *m_screenContainer = nullptr;
 
+  public:
+
     int m_currentAutonIndex = 0;
     autonSides m_currentSide = autonSides::red;
-
-  public:
 
     AutonSelector(lv_obj_t*, std::initializer_list<autonPair>);
     AutonSelector(lv_obj_t*, lv_color_t, std::initializer_list<autonPair>);
