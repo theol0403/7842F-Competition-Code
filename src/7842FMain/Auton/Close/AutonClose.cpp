@@ -19,7 +19,11 @@ void AutonClose(void* input)
   chassis.driveDistance(-1.5_ft, makeSettle(0.5_ft));
   chassis.turnToAngle(90_deg);
 
-  chassis.driveToPoint({2_ft, 9_ft}, 1, makeSettle(2_in));
+  robot.intake->setState(IntakeController::outtake);
+  chassis.driveToPoint({3_ft, 9_ft}, 1, makeSettle(2_in));
+
+  robot.intake->setState(IntakeController::intakeBall);
+  pros::delay(500);
 
   chassis.turnToPoint(middleFlagShoot);
 

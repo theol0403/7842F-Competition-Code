@@ -7,7 +7,7 @@ void AutonMiddleFromFar(void* input)
 
   firstCapMovement(chassis, 3_ft);
 
-  chassis.driveToPoint({1_ft, 3_ft}, 1); // Move to shooting position
+  chassis.driveToPoint({0.9_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
 
   chassis.turnToPoint(middleFlagShoot); // turn to flag
 

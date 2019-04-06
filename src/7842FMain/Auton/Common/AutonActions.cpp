@@ -15,5 +15,5 @@ void firstCapMovement(SideController& chassis, QLength y) {
 
 void waitForLastMinute(Timer& timer) {
   QTime shootTime {13_s}; //Time to wait before last-minute shooting
-  while(timer.millis() < shootTime) pros::delay(20);
+  while(timer.getDtFromStart() < shootTime) pros::delay(20);
 }

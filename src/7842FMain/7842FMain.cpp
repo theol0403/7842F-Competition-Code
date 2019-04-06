@@ -118,10 +118,10 @@ void opcontrol()
 
   while(true) {
 
-    if(j_Digital(A)) {
-      robot.printer->rumble(".");
-      autonomous();
-    }
+    // if(j_Digital(A)) {
+    //   robot.printer->rumble("-");
+    //   autonomous();
+    // }
 
     double rightY = j_Analog(rightY);
     double leftX = j_Analog(leftX);
