@@ -14,12 +14,13 @@ void AutonSkills(void* input)
   .withMakeAction(robot.intake->setState(IntakeController::outIntake););
 
   // Move to ball under cap while intaking
-  chassis.driveToPoint({4_ft, 7_ft}, 1, driveSettle, {intake});
+  chassis.driveToPoint({3.9_ft, 7_ft}, 1, driveSettle, {intake});
   robot.intake->setState(IntakeController::intakeBall);
   chassis.driveDistance(0.5_ft);
   pros::delay(1000);
 
   chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
+  robot.intake->setState(IntakeController::intakeBall);
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
   robot.shooter->setDistanceToFlag(7_ft);
@@ -27,7 +28,7 @@ void AutonSkills(void* input)
 
   // Move forward towards flags and push bottom flag
   chassis.turnToAngle(1.5_deg);
-  chassis.driveDistance(3.7_ft);
+  chassis.driveDistance(3.8_ft);
   chassis.driveDistance(-1.5_ft, makeSettle(0.5_ft));
   chassis.turnToAngle(90_deg);
 
@@ -41,7 +42,15 @@ void AutonSkills(void* input)
 
   robot.shooter->setDistanceToFlag(5.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
-  pros::delay(4000);
+  pros::delay(3000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
+
+  chassis.driveDistance(2.4_ft);
+
+  chassis.driveToPoint({0.8_ft, 5_ft}, 1, makeSettle(2_in));
+  chassis.turnToAngle(-95_deg);
+
+  chassis.driveForTime(2000, -1);
+  chassis.driveDistance(-0.1_ft);
 
 }
