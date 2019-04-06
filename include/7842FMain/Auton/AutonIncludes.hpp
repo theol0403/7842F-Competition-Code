@@ -27,6 +27,7 @@ void AutonPlatformFar(void*);
 
 void AutonTest(void*);
 
+void AutonSkills(void*);
 
 /**
  * Points

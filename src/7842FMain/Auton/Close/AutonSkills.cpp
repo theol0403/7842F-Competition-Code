@@ -1,11 +1,19 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 
-void AutonClose(void* input)
+void AutonSkills(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  firstCapMovement(chassis, 7_ft);
+  chassis.setState({startX, 7_ft, 90_deg}); // Robot is facing cap
+
+  //this will make the robot intake when it is a distance from the cap
+  AsyncAction intake = AsyncAction()
+  .withTrigger(makeTrigger(return computeDistanceToPoint({3.9_ft, 7_ft}) < 2_ft;))
+  .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
+
+  // Move to ball under cap while intaking
+  chassis.driveToPoint({4.5_ft, 7_ft}, 1, driveSettle, {intake});
 
   chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
 

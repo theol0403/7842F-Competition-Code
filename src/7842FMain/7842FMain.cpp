@@ -29,7 +29,7 @@ void initialize()
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-    {"F", AutonFar}, {"Pf", AutonPlatformFar}
+    {"F", AutonFar}, {"Pf", AutonPlatformFar}, {"S", AutonSkills}
   });
 
   pros::delay(500); //Give the legacy ports time to start up
