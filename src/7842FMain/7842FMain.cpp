@@ -107,6 +107,7 @@ void opcontrol()
   robot.shooter->clearQueue();
   robot.flywheel->resetSlew();
   robot.flywheel->enable();
+  robot.flywheel->setRpm(0);
   robot.intake->setState(IntakeController::off);
   robot.arm->setState(ArmController::off);
   #endif
