@@ -9,10 +9,9 @@ public:
   enum armStates
   {
     off, //motors off
-    down, //presses down to cap position
-    up, //brings arm up
-    out,
-    back //brings up to descore position but allows upwards movement
+    down,
+    aboveWall,
+    descore
   };
 
   Motor* arm = nullptr;

@@ -26,9 +26,6 @@ void ArmController::run()
 
   while(true)
   {
-    double downPos = 19.4;
-    double upPos = 3.4;
-    double outPos = 13;
 
     switch(armState) {
 
@@ -37,25 +34,19 @@ void ArmController::run()
       break;
 
       case down:
-      pid->setTarget(downPos);
-      arm->move(pid->step(getArmAngle()) * 127);
-      break;
-
-      case up:
-      pid->setTarget(upPos);
-      arm->move(pid->step(getArmAngle()) * 127);
-      break;
-
-      case out:
-      pid->setTarget(outPos);
-      arm->move(pid->step(getArmAngle()) * 127);
-      break;
-
-      case back:
       pid->setTarget(0);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
+      case aboveWall:
+      pid->setTarget(20);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
+      case descore:
+      pid->setTarget(40);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
     }
 
     //std::cout << "Arm: " << getArmAngle() << std::endl;

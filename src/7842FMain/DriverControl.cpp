@@ -9,7 +9,7 @@ static ShootController::shootMacros lastShootMacro = ShootController::shootMacro
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-//static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::X];
+static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::Y];
 
 void driverControl()
 {
@@ -94,6 +94,7 @@ void driverControl()
 	* Arm Abort
 	*/
 	if(flywheelTrigger.changedToPressed()) {
+		robot.printer->rumble(".");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
 		} else {
@@ -106,7 +107,7 @@ void driverControl()
 		robot.arm->setState(ArmController::off);
 	}
 
-	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 100) {
+	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
 		robot.printer->print(1, "Flywheel Ready");
 	} else {
 		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
@@ -116,15 +117,15 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	// if(j_Digital(Y)) {
-	// 	robot.arm->setState(ArmController::out);
-	// } else if(armTrigger.changedToPressed()) {
-	// 	if(robot.arm->getState() != ArmController::down) {
-	// 		robot.arm->setState(ArmController::down);
-	// 	} else {
-	// 		robot.arm->setState(ArmController::up);
-	// 	}
-	// }
+	if(armTrigger.changedToPressed()) {
 
+		if(robot.arm->getState() == ArmController::down) {
+			robot.arm->setState(ArmController::aboveWall);
+		} else if(robot.arm->getState() == ArmController::aboveWall) {
+			robot.arm->setState(ArmController::descore);
+		} else {
+			robot.arm->setState(ArmController::down);
+		}
+	}
 
 }

@@ -119,6 +119,7 @@ void opcontrol()
   while(true) {
 
     if(j_Digital(A)) {
+      robot.printer->rumble(".");
       autonomous();
     }
 
@@ -195,6 +196,6 @@ void autonomous()
   display.selector->getSelectedAuton().autonFunc(&passer);
 
   std::cout << "Exit Auton" << std::endl;
-  
+
   robot.flywheel->setRpm(0);
 }
