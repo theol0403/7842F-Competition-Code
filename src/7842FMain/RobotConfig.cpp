@@ -26,7 +26,8 @@ const int8_t mRightBack = -19;
 const int8_t mLeftFront = 18;
 const int8_t mLeftBack = 17;
 
-pros::Motor mArm (-10);//port 13
+okapi::Motor mArm (-11);//port 13
+okapi::Motor Arm1 (-10);//port 13
 
 
 
@@ -46,7 +47,7 @@ void initializeBase()
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
-		6.035_in, 2.75_in, 360,
+		5.86_in, 2.75_in, 360,
 		lib7842::OdomTracker::mdTracking
 	);
 
@@ -68,9 +69,8 @@ const int globalFlywheelRPM = 2800;
 void initializeDevices()
 {
 
-	mArm.tare_position();
-	mArm.set_brake_mode(MOTOR_BRAKE_HOLD);
-
+	Arm1.tare_position();
+	Arm1.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 

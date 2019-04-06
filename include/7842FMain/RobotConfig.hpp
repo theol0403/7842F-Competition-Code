@@ -55,7 +55,7 @@ extern robot_t robot;
 
 extern const int globalFlywheelRPM;
 
-extern pros::Motor mArm;
+extern okapi::Motor Arm1;
 
 void initializeDevices();
 void initializeBase();

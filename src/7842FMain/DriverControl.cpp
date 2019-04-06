@@ -14,6 +14,19 @@ static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 void driverControl()
 {
 
+//if (Arm1.get_position()>10 || Arm1.get_position()<550){
+	if (j_Digital(A)) {Arm1.move_velocity(-200);}
+	else if (j_Digital(X)){ Arm1.move_velocity(200);}
+//}
+	else if (Arm1.get_position()<-600) {
+		Arm1.move_velocity(100);
+	}
+	else if (Arm1.get_position()>-30) {
+	Arm1.move_velocity(-100);
+  }
+	else{Arm1.move_velocity(0);}
+
+std::cout <<"Arm1:"<< Arm1.get_position() << std::endl;
 	/**
 	* Automatic Shoot Control
 	* Arrow buttons set odom y
@@ -119,24 +132,7 @@ void driverControl()
 	* Arm Control
 	*/
 
-
-	if (mArm.get_position()<5) {
-		mArm.move_relative(5, 200);
-	}
-	if (mArm.get_position()>550) {
-		mArm.move_absolute(550, -200);
-	}
-
-	if(j_Digital(A)) {
-  mArm.move_velocity(-100);
-	}
-	else if(j_Digital(X)) {
-  mArm.move_velocity(100);
-}
-else {
-mArm.move_velocity(0);
-}
-//else{robot.arm->setState(ArmController::off);}
+	//else{robot.arm->setState(ArmController::off);}
 
 
 	// if(j_Digital(A)) {
