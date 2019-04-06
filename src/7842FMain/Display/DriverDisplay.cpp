@@ -1,6 +1,6 @@
 #include "DriverDisplay.hpp"
 
-DriverDisplay::DriverDisplay(lv_obj_t* parent) : DriverDisplay(parent, lv_obj_get_style(parent)->body.main_color, iangler) {}
+DriverDisplay::DriverDisplay(lv_obj_t* parent) : DriverDisplay(parent, lv_obj_get_style(parent)->body.main_color) {}
 
 DriverDisplay::DriverDisplay(lv_obj_t* parent, lv_color_t mainColor) :
 container(lv_obj_create(parent, NULL))
@@ -19,7 +19,7 @@ DriverDisplay::~DriverDisplay() {
 }
 
 
-void setColor(lv_color_t color) {
+void DriverDisplay::setColor(lv_color_t color) {
   style.body.main_color = color;
   style.body.grad_color = color;
   lv_obj_set_style(container, &style);
