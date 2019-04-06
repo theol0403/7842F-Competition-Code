@@ -9,7 +9,7 @@ void firstCapMovement(SideController& chassis, QLength y) {
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   // Move to ball under cap while intaking
-  chassis.driveToPoint({3.9_ft, y}, 1, driveSettle, {intake});
+  chassis.driveToPoint({4_ft, y}, 1, driveSettle, {intake});
 }
 
 

@@ -9,7 +9,12 @@ void AutonMiddleFromFar(void* input)
 
   chassis.driveToPoint({0.9_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
 
-  chassis.turnToPoint(middleFlagShoot); // turn to flag
+  if(chassis.side == autonSides::red) {
+    chassis.turnToPoint({5_ft, 11.2_ft}); // turn to flag
+  } else {
+    chassis.turnToPoint(middleFlagShoot); // turn to flag
+  }
+
 
   waitForLastMinute(timer);
 

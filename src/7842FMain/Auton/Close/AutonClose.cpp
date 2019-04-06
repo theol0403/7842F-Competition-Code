@@ -14,7 +14,7 @@ void AutonClose(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.turnToAngle(1.5_deg);
+  chassis.turnToAngle(2_deg);
   chassis.driveDistance(3.7_ft);
   chassis.driveDistance(-1.5_ft, makeSettle(0.5_ft));
   chassis.turnToAngle(90_deg);
