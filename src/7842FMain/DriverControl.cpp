@@ -118,7 +118,6 @@ void driverControl()
 	* Arm Control
 	*/
 	if(armTrigger.changedToPressed()) {
-
 		if(robot.arm->getState() == ArmController::down) {
 			robot.arm->setState(ArmController::aboveWall);
 		} else if(robot.arm->getState() == ArmController::aboveWall) {
