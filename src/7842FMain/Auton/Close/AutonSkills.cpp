@@ -17,7 +17,7 @@ void AutonSkills(void* input)
   chassis.driveToPoint({4_ft, 7_ft}, 1, driveSettle, {intake});
   robot.intake->setState(IntakeController::intakeBall);
   chassis.driveDistance(0.5_ft);
-  pros::delay(2000);
+  pros::delay(1000);
 
   chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
 
