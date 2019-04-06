@@ -109,11 +109,13 @@ void driverControl()
 
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
 		robot.printer->print(1, "Flywheel Ready");
+		display.driverDisplay->setColor(LV_COLOR_GREEN);
 	} else {
 		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
+		display.driverDisplay->setColor(LV_COLOR_RED);
 	}
 
-
+	
 	/**
 	* Arm Control
 	*/

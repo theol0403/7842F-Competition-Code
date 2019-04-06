@@ -15,5 +15,4 @@ public:
 
   void setColor(lv_color_t);
 
-
 };
