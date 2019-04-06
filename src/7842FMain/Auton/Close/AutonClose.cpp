@@ -7,15 +7,15 @@ void AutonClose(void* input)
 
   firstCapMovement(chassis, 7_ft);
 
-  chassis.driveToPoint({1_ft, 7.5_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
+  chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
   robot.shooter->setDistanceToFlag(7_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.turnToAngle(2_deg);
-  chassis.driveDistance(3.6_ft);
+  chassis.turnToAngle(1.5_deg);
+  chassis.driveDistance(3.5_ft);
   chassis.driveDistance(-1.5_ft, makeSettle(0.5_ft));
   chassis.turnToAngle(90_deg);
 
