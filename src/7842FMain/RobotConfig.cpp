@@ -76,7 +76,7 @@ void initializeDevices()
 
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 32.3, new IterativePosPIDController(0.025, 0, 0, 0, TimeUtilFactory::create()));
 
-	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.12, 0, 0, 0, TimeUtilFactory::create()));
+	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.15, 0, 0, 0, TimeUtilFactory::create()));
 
 	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
 	(*display.flywheel)
@@ -112,7 +112,7 @@ void initializeDevices()
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
 	//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
-	
+
 	display.driverDisplay = new DriverDisplay(display.main->newTab("Driver"));
 
 }
