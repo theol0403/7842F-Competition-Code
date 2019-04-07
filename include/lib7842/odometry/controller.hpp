@@ -12,9 +12,9 @@ namespace lib7842
   class OdomController;
   class AsyncAction;
 
-  typedef std::function<bool(OdomController*)> settleFunc_t;
-  typedef std::function<void(OdomController*, double)> turnFunc_t;
-  typedef std::function<QAngle(OdomController*)> angleCalc_t;
+  using settleFunc_t = std::function<bool(OdomController*)>;
+  using turnFunc_t = std::function<void(OdomController*, double)>;
+  using angleCalc_t = std::function<QAngle(OdomController*)>;
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
   using AsyncActionList = std::vector<AsyncActionRef>;
@@ -25,10 +25,10 @@ namespace lib7842
   public:
 
     OdomTracker *tracker = nullptr;
-
     IterativePosPIDController *distancePid = nullptr;
     IterativePosPIDController *anglePid = nullptr;
     IterativePosPIDController *turnPid = nullptr;
+    const QLength m_pointRadius; //radius to point before slowing down and ignoring angle
 
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;

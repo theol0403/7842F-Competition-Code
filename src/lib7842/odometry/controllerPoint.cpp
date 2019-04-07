@@ -21,7 +21,7 @@ namespace lib7842
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < 1.5_ft) {
+      if(distanceToTarget.abs() < m_pointRadius) {
         m_angleErr = 0_deg;
         m_distanceErr = distanceToClose;
       } else {

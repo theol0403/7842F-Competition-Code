@@ -16,6 +16,7 @@ namespace lib7842
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid),
+  m_pointRadius(1.5_ft),
   m_velFilter(30)
   {
   };
