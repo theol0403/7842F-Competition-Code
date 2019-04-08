@@ -5,7 +5,8 @@ void firstCapMovement(SideController& chassis, QLength y) {
 
   //this will make the robot intake when it is a distance from the cap
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({3.9_ft, y}) < 2_ft;))
+  .withSide(chassis.side)
+  .withTrigger({3.9_ft, y}, 2_ft)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   // Move to ball under cap while intaking
