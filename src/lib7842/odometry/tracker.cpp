@@ -3,12 +3,11 @@
 namespace lib7842
 {
 
-  OdomTracker::OdomTracker
-  (
+  OdomTracker::OdomTracker (
     std::shared_ptr<okapi::SkidSteerModel> imodel,
     QLength chassisWidth, QLength wheelDiam, double ticksPerRotation,
     std::function<void(OdomTracker*)> trackerFunc
-  ):
+  ) :
   model(imodel),
   m_chassisWidth(chassisWidth),
   m_wheelDiam(wheelDiam),
@@ -16,10 +15,7 @@ namespace lib7842
   m_trackerFunc(trackerFunc),
   m_task(taskFnc, this)
   {
-    resetSensors();
-    resetState();
-    resetSensors();
-    resetState();
+    reset();
   };
 
 
@@ -38,8 +34,7 @@ namespace lib7842
   }
 
 
-  void OdomTracker::setState(qPoint newState)
-  {
+  void OdomTracker::setState(qPoint newState) {
     state.x = newState.x;
     state.y = newState.y;
     state.theta = newState.theta;
@@ -47,9 +42,9 @@ namespace lib7842
 
   qPoint& OdomTracker::getState() { return state; }
 
-  void OdomTracker::setX(QLength newX) { state.x = newX; }
-  void OdomTracker::setY(QLength newY) { state.y = newY; }
-  void OdomTracker::setTheta(QAngle newTheta) { state.theta = newTheta; }
+  void OdomTracker::setX(QLength x) { state.x = x; }
+  void OdomTracker::setY(QLength y) { state.y = y; }
+  void OdomTracker::setTheta(QAngle theta) { state.theta = theta; }
 
   QLength& OdomTracker::getX() { return state.x; }
   QLength& OdomTracker::getY() { return state.y; }
@@ -70,21 +65,17 @@ namespace lib7842
     m_lastRight = 0_in;
   }
 
+  void OdomTracker::reset() {
+    resetSensors();
+    resetState();
+  }
 
-  void OdomTracker::taskFnc(void* input)
-  {
+
+  void OdomTracker::taskFnc(void* input) {
     OdomTracker* that = static_cast<OdomTracker*>(input);
     pros::delay(500);
-    that->resetState();
-    that->resetSensors();
-    that->resetState();
-    //std::cout << "Begin Tracking" << std::endl;
-
-    int count = 0;
+    that->reset();
     while(true) {
-      count++;
-      //if(count >= 50) { that->debug(); count = 0; }
-
       that->m_trackerFunc(that);
       pros::delay(4);
     }

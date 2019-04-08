@@ -45,6 +45,7 @@ namespace lib7842
 
     void resetState();
     void resetSensors();
+    void reset();
 
     static void taskFnc(void*);
 
