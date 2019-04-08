@@ -40,8 +40,8 @@ namespace lib7842
   }
 
   bool OdomController::checkEmergencyAbort() {
-    //if distance error is not 0 such as in a turn
-    if(m_distanceErr != 0_in) {
+    //only applies when driving and not turning, and not when settling
+    if(m_distanceErr > 1_in) {
       return checkAbort(0, 3_s);
     }
     return false;
