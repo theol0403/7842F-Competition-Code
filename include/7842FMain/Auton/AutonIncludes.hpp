@@ -4,7 +4,7 @@
 #define CONTROLLER_NAME_FOR_SHORTCUTS chassis.
 
 #include "7842FMain/RobotConfig.hpp"
-#include "lib7842/auton/sideController.hpp"
+#include "lib7842/odometry/sideController.hpp"
 #include "lib7842/other/miscUtils.hpp"
 
 using AutonPasser = std::tuple<SideController, Timer>;
