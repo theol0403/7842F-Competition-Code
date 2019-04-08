@@ -1,7 +1,7 @@
 #pragma once
 #include "main.h"
 
-#define CONTROLLER_NAME_FOR_SHORTCUTS chassis.
+#define INSERT_CONTROLLER_NAME chassis.
 
 #include "7842FMain/RobotConfig.hpp"
 #include "lib7842/odometry/sideController.hpp"

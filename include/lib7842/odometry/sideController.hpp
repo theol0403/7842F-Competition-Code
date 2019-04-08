@@ -55,20 +55,20 @@ namespace lib7842
     void driveToPointSimple(qPoint, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
 
-    #ifdef CONTROLLER_NAME_FOR_SHORTCUTS
-    #define computeAngleToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeAngleToPoint
-    #define computeDistanceToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeDistanceToPoint
+    #ifdef INSERT_CONTROLLER_NAME
+    #define computeAngleToPoint INSERT_CONTROLLER_NAME computeAngleToPoint
+    #define computeDistanceToPoint INSERT_CONTROLLER_NAME computeDistanceToPoint
 
-    #define makeSettle CONTROLLER_NAME_FOR_SHORTCUTS makeSettle
+    #define makeSettle INSERT_CONTROLLER_NAME makeSettle
     #define turnSettle OdomController::turnSettle
     #define driveSettle OdomController::driveSettle
 
-    #define makeArc CONTROLLER_NAME_FOR_SHORTCUTS makeArc
+    #define makeArc INSERT_CONTROLLER_NAME makeArc
     #define pointTurn OdomController::pointTurn
-    #define leftPivot CONTROLLER_NAME_FOR_SHORTCUTS leftPivot
-    #define rightPivot CONTROLLER_NAME_FOR_SHORTCUTS rightPivot
+    #define leftPivot INSERT_CONTROLLER_NAME leftPivot
+    #define rightPivot INSERT_CONTROLLER_NAME rightPivot
 
-    #define angleCalc CONTROLLER_NAME_FOR_SHORTCUTS angleCalc
+    #define angleCalc INSERT_CONTROLLER_NAME angleCalc
     #endif
 
 
