@@ -20,8 +20,12 @@
 #include "Display/DriverDisplay.hpp"
 
 extern okapi::Controller j_Main;
-#define j_Digital(x) j_Main.getDigital(okapi::ControllerDigital::x)
-#define j_Analog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
+#define mDigital(x) j_Main.getDigital(okapi::ControllerDigital::x)
+#define mAnalog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
+
+extern okapi::Controller j_Partner;
+#define pDigital(x) j_Parter.getDigital(okapi::ControllerDigital::x)
+#define pAnalog(x) j_Parter.getAnalog(okapi::ControllerAnalog::x)
 
 using namespace lib7842;
 
@@ -39,7 +43,8 @@ struct display_t
 
 struct robot_t
 {
-  ControllerPrinter* printer = nullptr;
+  ControllerPrinter* mPrinter = nullptr;
+  ControllerPrinter* pPrinter = nullptr;
 
   std::shared_ptr<okapi::SkidSteerModel> model = nullptr;
   lib7842::OdomController* chassis = nullptr;

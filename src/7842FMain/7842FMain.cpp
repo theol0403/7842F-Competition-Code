@@ -113,20 +113,20 @@ void opcontrol()
     robot.flywheel->setRpm(globalFlywheelRPM);
   }
 
-  robot.printer->rumble(".");
+  robot.mPrinter->rumble(".");
 
   Timer opTimer;
   opTimer.placeMark();
 
   while(true) {
 
-    // if(j_Digital(A)) {
-    //   robot.printer->rumble("-");
+    // if(mDigital(A)) {
+    //   robot.mPrinter->rumble("-");
     //   autonomous();
     // }
 
-    double rightY = j_Analog(rightY);
-    double leftX = j_Analog(leftX);
+    double rightY = mAnalog(rightY);
+    double leftX = mAnalog(leftX);
     robot.model->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
 
     #ifndef TEST_ROBOT
@@ -135,11 +135,11 @@ void opcontrol()
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else if(remaining > 1_min) {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
     // if(true) {

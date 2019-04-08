@@ -20,13 +20,13 @@ void driverControl()
 	* Angle of hood is calculated from y using lookup table
 	* Pressing one of the two shoot buttons (representing flag) will drop the hood to the proper angle and shoot
 	*/
-	if(j_Digital(X)) {
+	if(mDigital(X)) {
 		shootMacro = ShootController::shootMacros::shootOut;
-	} else if(j_Digital(L2) && j_Digital(L1)) {
+	} else if(mDigital(L2) && mDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
-	} else if(j_Digital(L2)) {
+	} else if(mDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
-	} else if(j_Digital(L1)) {
+	} else if(mDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootTop;
 	} else {
 		shootMacro = ShootController::shootMacros::off;
@@ -47,36 +47,36 @@ void driverControl()
 	/**
 	* Angle Control
 	*/
-	if(j_Digital(down))
+	if(mDigital(down))
 	{
 		robot.shooter->setDistanceToFlag(3.5_ft);
 	}
-	else if(j_Digital(left))
+	else if(mDigital(left))
 	{
 		robot.shooter->setDistanceToFlag(4.5_ft);
 	}
-	else if(j_Digital(up))
+	else if(mDigital(up))
 	{
 		robot.shooter->setDistanceToFlag(8.5_ft);
 	}
-	else if(j_Digital(right))
+	else if(mDigital(right))
 	{
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
-	robot.printer->print(2, distStr.str() + "\' to flag");
+	robot.mPrinter->print(2, distStr.str() + "\' to flag");
 
 
 	/**
 	* Intake Control
 	*/
-	if(j_Digital(R2) && j_Digital(R1)) {
+	if(mDigital(R2) && mDigital(R1)) {
 		intakeState = IntakeController::outSlow;
-	} else if(j_Digital(R2)) {
+	} else if(mDigital(R2)) {
 		intakeState = IntakeController::intakeBall;
-	} else if(j_Digital(R1)) {
+	} else if(mDigital(R1)) {
 		intakeState = IntakeController::outIntake;
 	} else {
 		intakeState = IntakeController::off;
@@ -94,7 +94,7 @@ void driverControl()
 	* Arm Abort
 	*/
 	if(flywheelTrigger.changedToPressed()) {
-		robot.printer->rumble(".");
+		robot.mPrinter->rumble(".");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
 		} else {
@@ -108,10 +108,10 @@ void driverControl()
 	}
 
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
-		robot.printer->print(1, "Flywheel Ready");
+		robot.mPrinter->print(1, "Flywheel Ready");
 		display.driverDisplay->setColor(LV_COLOR_LIME);
 	} else {
-		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
+		robot.mPrinter->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
 		display.driverDisplay->setColor(LV_COLOR_MAGENTA);
 	}
 
