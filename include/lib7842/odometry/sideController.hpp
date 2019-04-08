@@ -18,6 +18,8 @@ namespace lib7842
 
     SideController(OdomController*, autonSides);
 
+    AsyncAction makeAsyncAction();
+
     void setState(qPoint);
     void setX(QLength);
 
@@ -69,6 +71,8 @@ namespace lib7842
     #define rightPivot INSERT_CONTROLLER_NAME rightPivot
 
     #define angleCalc INSERT_CONTROLLER_NAME angleCalc
+
+    //#define makeAsyncAction INSERT_CONTROLLER_NAME makeAsyncAction
     #endif
 
 
