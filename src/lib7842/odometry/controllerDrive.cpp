@@ -63,12 +63,13 @@ namespace lib7842
 
   void OdomController::allignToAngle(QAngle angle, double vel, double velThresh)
   {
-    // angle = rollAngle180(angle);
-    // turnToAngle(angle);
-    // resetVelocityMax();
-    // tracker->model->forward(vel);
-    // while(filterVelocity() > velThresh) { pros::delay(10); }
-    // tracker->setTheta(angle);
+    angle = rollAngle180(angle);
+    turnToAngle(angle);
+    while(!checkAbort(velThresh, 2_s)) {
+      tracker->model->forward(vel);
+      pros::delay(10);
+    }
+    tracker->setTheta(angle);
   }
 
 

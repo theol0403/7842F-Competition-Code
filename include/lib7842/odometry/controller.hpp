@@ -45,7 +45,9 @@ namespace lib7842
     double getAbsAvgVelocity();
 
     void resetPid();
-    bool checkForAbort();
+
+bool checkEmergencyAbort();
+    bool checkAbort(int, QTime);
 
     void driveVector(double, double);
     void runActions(AsyncActionList);

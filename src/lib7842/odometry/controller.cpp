@@ -22,7 +22,7 @@ namespace lib7842
 
 
   /**
-  * Velocity calculations and checkForAbort
+  * Velocity calculations and checkAbort
   */
   double OdomController::getLeftVelocity() { return tracker->model->getLeftSideMotor()->getActualVelocity();}
   double OdomController::getRightVelocity() { return tracker->model->getRightSideMotor()->getActualVelocity();}
@@ -39,21 +39,26 @@ namespace lib7842
     m_distanceErr = 0_in;
   }
 
-  bool OdomController::checkForAbort() {
+  bool OdomController::checkEmergencyAbort() {
     //if distance error is not 0 such as in a turn
     //and if the distance error is inside the radius
     if(m_distanceErr != 0_in && m_distanceErr < m_pointRadius) {
-      //if velocity is below a threshold start counting
-      if(getAbsAvgVelocity() <= 0) {
-        abortTimer.placeHardMark(); //mark when it first entered 0
-      } else {
-        abortTimer.clearHardMark(); //reset mark
-      }
-      //if it has been in 0 velocity for long enough
-      if(abortTimer.getDtFromHardMark() > 3_s) {
-        return true;
-        std::cout << "Emergency Abort" << std::endl;
-      }
+      return checkAbort(0, 3_s);
+    }
+    return false;
+  }
+
+  bool OdomController::checkAbort(int vel, QTime time) {
+    //if velocity is below a threshold start counting
+    if(getAbsAvgVelocity() <= vel) {
+      abortTimer.placeHardMark(); //mark when it first entered 0
+    } else {
+      abortTimer.clearHardMark(); //reset mark
+    }
+    //if it has been in 0 velocity for long enough
+    if(abortTimer.getDtFromHardMark() > time) {
+      return true;
+      std::cout << "Abort" << std::endl;
     }
     return false;
   }
@@ -104,23 +109,23 @@ namespace lib7842
   * Settle Functions
   */
   settleFunc_t OdomController::makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkForAbort(); };
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkForAbort(); };
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkForAbort(); };
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkAbort(); };
   }
 
   bool OdomController::turnSettle(OdomController* that) {
-    return that->turnPid->isSettled() || that->checkForAbort();
+    return that->turnPid->isSettled() || that->checkAbort();
   }
 
   bool OdomController::driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkForAbort();
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkAbort();
   }
 
 
