@@ -5,7 +5,7 @@ namespace lib7842
 
   void OdomController::driveDistanceAtAngle(QLength distance, angleCalc_t turnCalc, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    reset();
+    resetPid();
     std::valarray<int32_t> lastTicks = tracker->model->getSensorVals();
 
     do {
@@ -63,12 +63,12 @@ namespace lib7842
 
   void OdomController::allignToAngle(QAngle angle, double vel, double velThresh)
   {
-    angle = rollAngle180(angle);
-    turnToAngle(angle);
-    resetVelocityMax();
-    tracker->model->forward(vel);
-    while(filterVelocity() > velThresh) { pros::delay(10); }
-    tracker->setTheta(angle);
+    // angle = rollAngle180(angle);
+    // turnToAngle(angle);
+    // resetVelocityMax();
+    // tracker->model->forward(vel);
+    // while(filterVelocity() > velThresh) { pros::delay(10); }
+    // tracker->setTheta(angle);
   }
 
 

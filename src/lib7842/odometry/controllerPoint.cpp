@@ -5,7 +5,7 @@ namespace lib7842
 
   void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    reset();
+    resetPid();
     QAngle lastTarget = tracker->state.theta;
     do
     {
@@ -48,10 +48,8 @@ namespace lib7842
 
   void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    reset();
-    settleFunc_t exitFunc = makeSettle(tracker->m_chassisWidth);
-    distancePid->reset();
-    anglePid->reset();
+    resetPid();
+    settleFunc_t exitFunc = makeSettle(m_pointRadius);
     do
     {
       m_angleErr = computeAngleToPoint(targetPoint);
@@ -69,7 +67,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    //driveDistanceAtAngle(m_distanceErr/2, angleCalc(tracker->state.theta), turnScale, settleFunc, actions);
+    driveDistanceAtAngle(computeDistanceToPoint(targetPoint), angleCalc(computeAngleToPoint(targetPoint)), turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 

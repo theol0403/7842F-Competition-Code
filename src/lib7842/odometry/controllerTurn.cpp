@@ -47,7 +47,7 @@ namespace lib7842
 
   void OdomController::turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
-    reset();
+    resetPid();
     do {
       m_angleErr = turnCalc(this);
       double turnVel = turnPid->step(-m_angleErr.convert(degree));
