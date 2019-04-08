@@ -67,10 +67,9 @@ void initializeDevices()
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
-	Motor* flywheelM = new Motor(mFlywheel);
 	robot.flywheel = new FlywheelController(
 		robot.intake,
-		flywheelM, new ADIEncoder('A', 'B', false),
+		new Motor(mFlywheel), new ADIEncoder('A', 'B', false),
 		new VelMath(quadEncoderTPR / 3, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
 		new emaFilter(0.015),
 		new lib7842::velPID(0.073, 0.35, 0.04, 0.1), 0.4
@@ -107,13 +106,13 @@ void initializeDevices()
 	.withSeries("Accel", &robot.flywheel->currentAccel, LV_COLOR_LIME)
 	.build();
 
-	//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
+	//robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
 	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 
 	display.angler = new AngleTuner(display.main->newTab("Angler"), robot.shooter);
 
-	//	display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
+	//display.chassisTuner = new ChassisTuner(display.main->newTab("Chassis"), robot.chassis);
 
 	display.driverDisplay = new DriverDisplay(display.main->newTab("Driver"));
 

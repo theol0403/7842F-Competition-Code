@@ -13,9 +13,14 @@ namespace lib7842
     paused = false;
   }
 
+  std::string ControllerPrinter::get(int line) {
+    return lines.at(line);
+  }
+
   void ControllerPrinter::rumble(std::string str) {
     rumbleText = str;
     doRumble = true;
+    paused = false;
   }
 
   void ControllerPrinter::pause() {
@@ -29,6 +34,7 @@ namespace lib7842
     while(true) {
 
       if(!paused) {
+        paused = true;
 
         for(int i = 0; i < lines.size(); i++) {
 
@@ -51,7 +57,7 @@ namespace lib7842
         }
 
       } else {
-        pros::delay(20);
+        pros::delay(52);
       }
     }
   }

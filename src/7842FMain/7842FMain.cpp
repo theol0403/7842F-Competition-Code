@@ -22,7 +22,7 @@ void initialize()
 
   display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
   LV_IMG_DECLARE(img_navigators);
-  display.main->splashScreen(&img_navigators, 2000);
+  display.main->splashScreen(&img_navigators, 1500);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
@@ -113,7 +113,7 @@ void opcontrol()
     subsystem(flywheel)->setRpm(globalFlywheelRPM);
   }
 
-  subsystem(mPrinter)->rumble("-");
+  robot.mPrinter->rumble("-");
 
   Timer opTimer;
   opTimer.placeMark();
@@ -121,7 +121,7 @@ void opcontrol()
   while(true) {
 
     // if(mDigital(A)) {
-    //   subsystem(mPrinter)->rumble("--");
+    //   robot.mPrinter->rumble("--");
     //   autonomous();
     // }
 
@@ -135,12 +135,16 @@ void opcontrol()
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      subsystem(mPrinter)->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else if(remaining > 1_min) {
-      subsystem(mPrinter)->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      subsystem(mPrinter)->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
+
+    robot.pPrinter->print(0, robot.mPrinter->get(0));
+    robot.pPrinter->print(1, robot.mPrinter->get(1));
+    robot.pPrinter->print(2, robot.mPrinter->get(2));
 
     // if(true) {
     //   if(remaining == 60_s) {

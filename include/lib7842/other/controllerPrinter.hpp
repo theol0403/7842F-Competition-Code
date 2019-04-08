@@ -21,6 +21,7 @@ namespace lib7842
 
     ControllerPrinter(Controller*);
     void print(int, std::string);
+    std::string get(int);
     void rumble(std::string);
     void pause();
 
