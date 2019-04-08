@@ -28,23 +28,24 @@ namespace lib7842
     IterativePosPIDController *distancePid = nullptr;
     IterativePosPIDController *anglePid = nullptr;
     IterativePosPIDController *turnPid = nullptr;
-    const QLength m_pointRadius; //radius to point before slowing down and ignoring angle
 
+    const QLength m_pointRadius; //radius to point before slowing down and ignoring angle
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
-    avgFilter m_velFilter;
+    Timer abortTimer;
 
     OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*);
 
-    void resetVelocity(double);
-    void resetVelocityActual();
-    void resetVelocityMax();
-    double getActualVelocity();
-    double filterVelocity();
-    double getFilteredVelocity();
-    void reset();
-    bool emergencyAbort();
+    double getLeftVelocity();
+    double getRightVelocity();
+    double getAvgVelocity();
+    double getAbsLeftVelocity();
+    double getAbsRightVelocity();
+    double getAbsAvgVelocity();
+
+    void resetPid();
+    bool checkForAbort();
 
     void driveVector(double, double);
     void runActions(AsyncActionList);

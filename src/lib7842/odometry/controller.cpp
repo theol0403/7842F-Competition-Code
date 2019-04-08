@@ -16,38 +16,44 @@ namespace lib7842
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid),
-  m_pointRadius(1.5_ft),
-  m_velFilter(30)
+  m_pointRadius(1.5_ft)
   {
   };
 
 
   /**
-  * Velocity calculations, used for emergency abort
+  * Velocity calculations and checkForAbort
   */
-  void OdomController::resetVelocity(double vel) { m_velFilter.resetTo(vel); }
-  void OdomController::resetVelocityActual() { resetVelocity(getActualVelocity()); }
-  void OdomController::resetVelocityMax() { resetVelocity(200); }
+  double OdomController::getLeftVelocity() { return tracker->model->getLeftSideMotor()->getActualVelocity();}
+  double OdomController::getRightVelocity() { return tracker->model->getRightSideMotor()->getActualVelocity();}
+  double OdomController::getAvgVelocity() { return (getLeftVelocity() + getRightVelocity()) / 2;}
+  double OdomController::getAbsLeftVelocity() { return std::abs(tracker->model->getLeftSideMotor()->getActualVelocity());}
+  double OdomController::getAbsRightVelocity() { return std::abs(tracker->model->getRightSideMotor()->getActualVelocity());}
+  double OdomController::getAbsAvgVelocity() { return (getAbsLeftVelocity() + getAbsRightVelocity()) / 2;}
 
-  double OdomController::getActualVelocity() {
-    return (std::abs(tracker->model->getLeftSideMotor()->getActualVelocity()) + std::abs(tracker->model->getRightSideMotor()->getActualVelocity())) / 2;
-  }
-
-  double OdomController::filterVelocity() { return m_velFilter.filter(getActualVelocity()); }
-  double OdomController::getFilteredVelocity() { return m_velFilter.getOutput(); }
-
-  void OdomController::reset() {
-    resetVelocityMax();
+  void OdomController::resetPid() {
     turnPid->reset();
     distancePid->reset();
     anglePid->reset();
+    m_angleErr = 0_deg;
+    m_distanceErr = 0_in;
   }
 
-  bool OdomController::emergencyAbort() {
-    if(std::abs(filterVelocity()) <= 0.01) {
-      std::cout << "EMERGENCY ABORT - n/a" << std::endl;
-      //return true;
-      return false;
+  bool OdomController::checkForAbort() {
+    //if distance error is not 0 such as in a turn
+    //and if the distance error is inside the radius
+    if(m_distanceErr != 0_in && m_distanceErr < m_pointRadius) {
+      //if velocity is below a threshold start counting
+      if(getAbsAvgVelocity() <= 0) {
+        abortTimer.placeHardMark(); //mark when it first entered 0
+      } else {
+        abortTimer.clearHardMark(); //reset mark
+      }
+      //if it has been in 0 velocity for long enough
+      if(abortTimer.getDtFromHardMark() > 3_s) {
+        return true;
+        std::cout << "Emergency Abort" << std::endl;
+      }
     }
     return false;
   }
@@ -98,23 +104,23 @@ namespace lib7842
   * Settle Functions
   */
   settleFunc_t OdomController::makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->emergencyAbort(); };
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkForAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->emergencyAbort(); };
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkForAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->emergencyAbort(); };
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkForAbort(); };
   }
 
   bool OdomController::turnSettle(OdomController* that) {
-    return that->turnPid->isSettled() || that->emergencyAbort();
+    return that->turnPid->isSettled() || that->checkForAbort();
   }
 
   bool OdomController::driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->emergencyAbort();
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkForAbort();
   }
 
 
