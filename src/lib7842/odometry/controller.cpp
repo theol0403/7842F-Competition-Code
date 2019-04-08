@@ -41,8 +41,7 @@ namespace lib7842
 
   bool OdomController::checkEmergencyAbort() {
     //if distance error is not 0 such as in a turn
-    //and if the distance error is inside the radius
-    if(m_distanceErr != 0_in && m_distanceErr < m_pointRadius) {
+    if(m_distanceErr != 0_in) {
       return checkAbort(0, 3_s);
     }
     return false;
@@ -55,7 +54,7 @@ namespace lib7842
     } else {
       abortTimer.clearHardMark(); //reset mark
     }
-    //if it has been in 0 velocity for long enough
+    //if it has been in velocity for long enough
     if(abortTimer.getDtFromHardMark() > time) {
       return true;
       std::cout << "Abort" << std::endl;
