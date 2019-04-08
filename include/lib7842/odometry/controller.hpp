@@ -43,8 +43,8 @@ namespace lib7842
 
     void resetPid();
 
-    bool checkEmergencyAbort();
     bool checkAbort(double, QTime);
+    bool checkEmergencyAbort();
 
     void driveVector(double, double);
     void runActions(AsyncActionList);

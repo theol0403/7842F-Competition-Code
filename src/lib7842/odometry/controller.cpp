@@ -22,7 +22,7 @@ namespace lib7842
 
 
   /**
-  * Velocity calculations and checkAbort
+  * Velocity calculations and reset
   */
   double OdomController::getLeftVelocity() { return tracker->model->getLeftSideMotor()->getActualVelocity();}
   double OdomController::getRightVelocity() { return tracker->model->getRightSideMotor()->getActualVelocity();}
@@ -39,14 +39,13 @@ namespace lib7842
     m_distanceErr = 0_in;
   }
 
-  bool OdomController::checkEmergencyAbort() {
-    //only applies when driving and not turning, and not when settling
-    if(m_distanceErr > 1_in) {
-      return checkAbort(0, 3_s);
-    }
-    return false;
-  }
-
+  /**
+  * returns whether the robot is stuck and the velocity is 0
+  * @method OdomController::checkAbort
+  * @param  vel                        velocity threshold before counting
+  * @param  time                       time to count before aborting
+  * @return                            whether to abort or not
+  */
   bool OdomController::checkAbort(double vel, QTime time) {
     //if velocity is below a threshold start counting
     if(getAbsAvgVelocity() <= vel) {
@@ -58,6 +57,14 @@ namespace lib7842
     if(abortTimer.getDtFromHardMark() > time) {
       return true;
       std::cout << "Abort" << std::endl;
+    }
+    return false;
+  }
+
+  bool OdomController::checkEmergencyAbort() {
+    //only applies when driving and not turning, and not when settling
+    if(m_distanceErr > 1_in) {
+      return checkAbort(0, 3_s);
     }
     return false;
   }
