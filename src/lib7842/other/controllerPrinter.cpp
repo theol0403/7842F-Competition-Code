@@ -10,7 +10,7 @@ namespace lib7842
 
   void ControllerPrinter::print(int line, std::string str) {
     lines.at(line) = str;
-    paused = false;
+    if(str != "") paused = false;
   }
 
   std::string ControllerPrinter::get(int line) {

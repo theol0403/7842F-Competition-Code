@@ -131,6 +131,7 @@ void opcontrol()
 
     #ifndef TEST_ROBOT
     driverControl();
+    angleControl();
     #endif
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
@@ -139,7 +140,7 @@ void opcontrol()
     } else if(remaining > 1_min) {
       robot.mPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
     robot.pPrinter->print(0, robot.mPrinter->get(0));
