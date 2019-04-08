@@ -15,11 +15,16 @@ namespace lib7842
 
   public:
 
+    using trackerFunc_t = std::function<void(OdomTracker*)>;
+
     std::shared_ptr<okapi::SkidSteerModel> model;
     const QLength m_chassisWidth;
     const QLength m_wheelDiam;
     const double m_degToInch;
-    std::function<void(OdomTracker*)> m_trackerFunc;
+    trackerFunc_t m_trackerFunc;
+
+    okapi::VelMath m_leftVelMath;
+    okapi::VelMath m_rightVelMath;
     pros::Task m_task;
 
     qPoint state {0_in, 0_in, 0_rad};
@@ -27,7 +32,7 @@ namespace lib7842
     OdomTracker (
       std::shared_ptr<okapi::SkidSteerModel>,
       QLength, QLength, double,
-      std::function<void(OdomTracker*)>
+      trackerFunc_t
     );
 
     void debug();
@@ -47,6 +52,7 @@ namespace lib7842
     void resetSensors();
     void reset();
 
+    void run();
     static void taskFnc(void*);
 
     static void aTracking(OdomTracker*);

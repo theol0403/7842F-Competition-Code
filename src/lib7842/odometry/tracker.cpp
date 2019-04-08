@@ -6,13 +6,15 @@ namespace lib7842
   OdomTracker::OdomTracker (
     std::shared_ptr<okapi::SkidSteerModel> imodel,
     QLength chassisWidth, QLength wheelDiam, double ticksPerRotation,
-    std::function<void(OdomTracker*)> trackerFunc
+    trackerFunc_t trackerFunc
   ) :
   model(imodel),
   m_chassisWidth(chassisWidth),
   m_wheelDiam(wheelDiam),
   m_degToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
   m_trackerFunc(trackerFunc),
+  m_leftVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
+  m_rightVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
   m_task(taskFnc, this)
   {
     reset();
@@ -71,18 +73,22 @@ namespace lib7842
   }
 
 
-  void OdomTracker::taskFnc(void* input) {
-    OdomTracker* that = static_cast<OdomTracker*>(input);
-    pros::delay(500);
-    that->reset();
+  void OdomTracker::run() {
+    reset();
     while(true) {
-      that->m_trackerFunc(that);
+      m_trackerFunc(this);
       pros::delay(4);
     }
   }
 
+  void OdomTracker::taskFnc(void* input) {
+    OdomTracker* that = static_cast<OdomTracker*>(input);
+    pros::delay(500);
+    that->run();
+  }
 
 
+  
   void OdomTracker::aTracking(OdomTracker* that) {
     that->m_aTracking();
   }
