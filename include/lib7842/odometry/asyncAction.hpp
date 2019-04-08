@@ -49,6 +49,7 @@ namespace lib7842
     std::vector<actionGroup> m_actions;
 
     bool m_triggered = false;
+    autonSides m_side = autonSides::red;
 
   public:
 
@@ -63,6 +64,8 @@ namespace lib7842
     AsyncAction &withTrigger(qPoint, QLength, QAngle, triggerTypes = triggerTypes::trigger);
     AsyncAction &withTrigger(qPoint, QAngle, triggerTypes = triggerTypes::trigger);
     AsyncAction &withTrigger(QAngle, QAngle, triggerTypes = triggerTypes::trigger);
+
+    AsyncAction &withSide(autonSides);
 
     #define makeTrigger(x) [&](OdomController* that){x}
     #define makeAction(x) [&](){x}
