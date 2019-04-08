@@ -32,9 +32,9 @@ namespace lib7842
   /**
   * returns whether the robot is stuck and the velocity is 0
   * @method OdomController::checkAbort
-  * @param  vel                        velocity threshold before counting
-  * @param  time                       time to count before aborting
-  * @return                            whether to abort or not
+  * @param  vel - velocity threshold before counting
+  * @param  time - time to count before aborting
+  * @return - whether to abort or not
   */
   bool OdomController::checkAbort(double vel, QTime time) {
     //if velocity is below a threshold start counting

@@ -57,6 +57,7 @@ namespace lib7842
 
     static angleCalc_t angleCalc(QAngle);
     static angleCalc_t angleCalc(qPoint);
+    static angleCalc_t angleDisable();
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});

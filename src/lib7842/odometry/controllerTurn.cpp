@@ -45,6 +45,10 @@ namespace lib7842
     return [=](OdomController* that) { return that->computeAngleToPoint(point); };
   }
 
+  angleCalc_t OdomController::angleDisable() {
+    return [=](OdomController* that) { return 0_deg; };
+  }
+
   void OdomController::turn(angleCalc_t turnCalc, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetPid();
