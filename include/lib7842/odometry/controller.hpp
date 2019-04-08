@@ -16,9 +16,6 @@ namespace lib7842
   using turnFunc_t = std::function<void(OdomController*, double)>;
   using angleCalc_t = std::function<QAngle(OdomController*)>;
 
-  using AsyncActionRef = std::reference_wrapper<AsyncAction>;
-  using AsyncActionList = std::vector<AsyncActionRef>;
-
   class OdomController
   {
 
@@ -48,7 +45,7 @@ namespace lib7842
 
     bool checkEmergencyAbort();
     bool checkAbort(double, QTime);
-    
+
     void driveVector(double, double);
     void runActions(AsyncActionList);
 

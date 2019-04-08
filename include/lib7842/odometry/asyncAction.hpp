@@ -2,7 +2,6 @@
 #include "main.h"
 #include "odomMath.hpp"
 #include "tracker.hpp"
-#include "controller.hpp"
 
 namespace lib7842
 {
@@ -10,25 +9,23 @@ namespace lib7842
   class AsyncAction;
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
+  using AsyncActionList = std::vector<AsyncActionRef>;
 
   typedef std::function<bool(OdomController*)> triggerFunction;
   typedef std::function<void()> actionFunction;
 
-  enum class exclusionTypes
-  {
+  enum class exclusionTypes {
     onlyBefore,
     onlyAfter
   };
 
-  enum class triggerTypes
-  {
+  enum class triggerTypes {
     trigger,
     onlyBefore,
     onlyAfter
   };
 
-  enum class actionTypes
-  {
+  enum class actionTypes {
     onceBefore,
     onceAfter,
     onceUnlessTriggered,
