@@ -54,7 +54,7 @@ namespace lib7842
   bool OdomController::checkEmergencyAbort() {
     //only applies when driving and not turning, and not when settling
     if(m_distanceErr > 1_in) {
-      return checkAbort(0, 3_s);
+      return checkAbort(0, 2_s);
     }
     return false;
   }
@@ -73,8 +73,9 @@ namespace lib7842
       leftOutput /= maxInputMag;
       rightOutput /= maxInputMag;
     }
-    tracker->model->left(leftOutput);
-    tracker->model->right(rightOutput);
+    tracker->model->tank(leftOutput, rightOutput);
+    // tracker->model->left(leftOutput);
+    // tracker->model->right(rightOutput);
   }
 
   /**
