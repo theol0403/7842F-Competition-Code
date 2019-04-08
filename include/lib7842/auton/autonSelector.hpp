@@ -1,14 +1,9 @@
 #pragma once
 #include "main.h"
+#include "lib7842/odometry/odomMath.hpp"
 
 namespace lib7842
 {
-
-  enum class autonSides {
-    blue,
-    red
-  };
-
   struct autonPair {
     std::string autonName;
     std::function<void(void*)> autonFunc;

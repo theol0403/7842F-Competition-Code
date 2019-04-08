@@ -3,7 +3,6 @@
 #include "lib7842/odometry/odomMath.hpp"
 #include "lib7842/odometry/controller.hpp"
 #include "lib7842/odometry/asyncAction.hpp"
-#include "lib7842/auton/autonSelector.hpp"
 
 
 namespace lib7842

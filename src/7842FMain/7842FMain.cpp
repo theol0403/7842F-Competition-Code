@@ -1,6 +1,4 @@
 
-
-#include "lib7842/auton/autonSelector.hpp"
 #include "RobotConfig.hpp"
 
 #include "7842FMain/Auton/AutonIncludes.hpp"

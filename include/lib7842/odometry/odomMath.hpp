@@ -1,9 +1,14 @@
 #pragma once
 #include "main.h"
-#include "lib7842/auton/autonSelector.hpp"
 
 namespace lib7842
 {
+
+  enum class autonSides {
+    blue,
+    red
+  };
+
   struct dPoint; //Forward declare
 
   struct qPoint
