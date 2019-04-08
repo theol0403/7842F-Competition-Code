@@ -70,12 +70,12 @@ void competition_initialize() {}
 void disabled()
 {
   #ifndef TEST_ROBOT
-  robot.shooter->doJob(ShootController::off);
-  robot.flywheel->disable();
-  robot.flywheel->resetSlew();
-  robot.arm->setState(ArmController::off);
+  subsystem(shooter)->doJob(ShootController::off);
+  subsystem(flywheel)->disable();
+  subsystem(flywheel)->resetSlew();
+  subsystem(arm)->setState(ArmController::off);
   #endif
-  robot.model->stop();
+  subsystem(model)->stop();
 }
 
 /***
@@ -99,21 +99,21 @@ void disabled()
 */
 void opcontrol()
 {
-  robot.model->stop();
+  subsystem(model)->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
-  robot.shooter->clearQueue();
-  robot.flywheel->resetSlew();
-  robot.flywheel->enable();
-  robot.intake->setState(IntakeController::off);
-  robot.arm->setState(ArmController::off);
+  subsystem(shooter)->clearQueue();
+  subsystem(flywheel)->resetSlew();
+  subsystem(flywheel)->enable();
+  subsystem(intake)->setState(IntakeController::off);
+  subsystem(arm)->setState(ArmController::off);
   #endif
 
   if(display.selector->m_currentAutonIndex != 0) {
-    robot.flywheel->setRpm(globalFlywheelRPM);
+    subsystem(flywheel)->setRpm(globalFlywheelRPM);
   }
 
-  robot.mPrinter->rumble(".");
+  subsystem(mPrinter)->rumble("-");
 
   Timer opTimer;
   opTimer.placeMark();
@@ -121,13 +121,13 @@ void opcontrol()
   while(true) {
 
     // if(mDigital(A)) {
-    //   robot.mPrinter->rumble("-");
+    //   subsystem(mPrinter)->rumble("--");
     //   autonomous();
     // }
 
     double rightY = mAnalog(rightY);
     double leftX = mAnalog(leftX);
-    robot.model->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
+    subsystem(model)->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
 
     #ifndef TEST_ROBOT
     driverControl();
@@ -135,11 +135,11 @@ void opcontrol()
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.mPrinter->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      subsystem(mPrinter)->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else if(remaining > 1_min) {
-      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      subsystem(mPrinter)->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      subsystem(mPrinter)->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
     // if(true) {
@@ -181,11 +181,11 @@ void opcontrol()
 void autonomous()
 {
   #ifndef TEST_ROBOT
-  robot.shooter->clearQueue();
-  robot.flywheel->resetSlew();
-  robot.flywheel->enable();
-  robot.flywheel->setRpm(globalFlywheelRPM);
-  //robot.arm->setState(ArmController::unfold);
+  subsystem(shooter)->clearQueue();
+  subsystem(flywheel)->resetSlew();
+  subsystem(flywheel)->enable();
+  subsystem(flywheel)->setRpm(globalFlywheelRPM);
+  //subsystem(arm)->setState(ArmController::unfold);
   #endif
 
   //Create a new chassis that mirrors side and send it to the autonomous code
@@ -199,5 +199,5 @@ void autonomous()
 
   std::cout << "Exit Auton" << std::endl;
 
-  robot.flywheel->setRpm(0);
+  subsystem(flywheel)->setRpm(0);
 }

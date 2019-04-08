@@ -3,3 +3,4 @@
 #include "7842FMain/RobotConfig.hpp"
 
 void driverControl();
+void angleControl();

@@ -27,6 +27,8 @@ extern okapi::Controller j_Partner;
 #define pDigital(x) j_Parter.getDigital(okapi::ControllerDigital::x)
 #define pAnalog(x) j_Parter.getAnalog(okapi::ControllerAnalog::x)
 
+#define subsystem(x) if(robot.x)robot.x
+
 using namespace lib7842;
 
 struct display_t
