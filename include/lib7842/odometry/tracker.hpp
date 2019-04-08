@@ -52,6 +52,13 @@ namespace lib7842
     void resetSensors();
     void reset();
 
+    double getLeftVelocity();
+    double getRightVelocity();
+    double getAvgVelocity();
+    double getAbsLeftVelocity();
+    double getAbsRightVelocity();
+    double getAbsAvgVelocity();
+
     void run();
     static void taskFnc(void*);
 

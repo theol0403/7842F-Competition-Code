@@ -34,15 +34,7 @@ namespace lib7842
 
     OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*);
 
-    double getLeftVelocity();
-    double getRightVelocity();
-    double getAvgVelocity();
-    double getAbsLeftVelocity();
-    double getAbsRightVelocity();
-    double getAbsAvgVelocity();
-
     void resetPid();
-
     bool checkAbort(double, QTime);
     bool checkEmergencyAbort();
 

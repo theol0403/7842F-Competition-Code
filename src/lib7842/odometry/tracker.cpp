@@ -73,6 +73,14 @@ namespace lib7842
   }
 
 
+  double OdomTracker::getLeftVelocity() { return m_leftVelMath.getVelocity().convert(rpm);}
+  double OdomTracker::getRightVelocity() { return m_rightVelMath.getVelocity().convert(rpm);}
+  double OdomTracker::getAvgVelocity() { return (getLeftVelocity() + getRightVelocity()) / 2;}
+  double OdomTracker::getAbsLeftVelocity() { return std::abs(getLeftVelocity());}
+  double OdomTracker::getAbsRightVelocity() { return std::abs(getRightVelocity());}
+  double OdomTracker::getAbsAvgVelocity() { return (getAbsLeftVelocity() + getAbsRightVelocity()) / 2;}
+
+
   void OdomTracker::run() {
     reset();
     while(true) {

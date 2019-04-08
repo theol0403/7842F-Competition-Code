@@ -21,16 +21,6 @@ namespace lib7842
   };
 
 
-  /**
-  * Velocity calculations and reset
-  */
-  double OdomController::getLeftVelocity() { return tracker->model->getLeftSideMotor()->getActualVelocity();}
-  double OdomController::getRightVelocity() { return tracker->model->getRightSideMotor()->getActualVelocity();}
-  double OdomController::getAvgVelocity() { return (getLeftVelocity() + getRightVelocity()) / 2;}
-  double OdomController::getAbsLeftVelocity() { return std::abs(tracker->model->getLeftSideMotor()->getActualVelocity());}
-  double OdomController::getAbsRightVelocity() { return std::abs(tracker->model->getRightSideMotor()->getActualVelocity());}
-  double OdomController::getAbsAvgVelocity() { return (getAbsLeftVelocity() + getAbsRightVelocity()) / 2;}
-
   void OdomController::resetPid() {
     turnPid->reset();
     distancePid->reset();
@@ -48,7 +38,7 @@ namespace lib7842
   */
   bool OdomController::checkAbort(double vel, QTime time) {
     //if velocity is below a threshold start counting
-    if(getAbsAvgVelocity() <= vel) {
+    if(tracker->getAbsAvgVelocity() <= vel) {
       abortTimer.placeHardMark(); //mark when it first entered 0
     } else {
       abortTimer.clearHardMark(); //reset mark
