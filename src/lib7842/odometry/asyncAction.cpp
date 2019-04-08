@@ -1,4 +1,5 @@
 #include "asyncAction.hpp"
+#include "controller.hpp"
 
 namespace lib7842
 {
