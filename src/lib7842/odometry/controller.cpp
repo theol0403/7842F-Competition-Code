@@ -48,7 +48,7 @@ namespace lib7842
     return false;
   }
 
-  bool OdomController::checkAbort(int vel, QTime time) {
+  bool OdomController::checkAbort(double vel, QTime time) {
     //if velocity is below a threshold start counting
     if(getAbsAvgVelocity() <= vel) {
       abortTimer.placeHardMark(); //mark when it first entered 0
@@ -109,23 +109,23 @@ namespace lib7842
   * Settle Functions
   */
   settleFunc_t OdomController::makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkAbort(); };
+    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkEmergencyAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkAbort(); };
+    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkEmergencyAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkAbort(); };
+    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkEmergencyAbort(); };
   }
 
   bool OdomController::turnSettle(OdomController* that) {
-    return that->turnPid->isSettled() || that->checkAbort();
+    return that->turnPid->isSettled() || that->checkEmergencyAbort();
   }
 
   bool OdomController::driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkAbort();
+    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkEmergencyAbort();
   }
 
 
