@@ -77,6 +77,9 @@ namespace lib7842
     reset();
     while(true) {
       m_trackerFunc(this);
+      auto ticks = model->getSensorVals();
+      m_leftVelMath.step(ticks[0]);
+      m_rightVelMath.step(ticks[1]);
       pros::delay(4);
     }
   }
@@ -88,14 +91,14 @@ namespace lib7842
   }
 
 
-  
+
   void OdomTracker::aTracking(OdomTracker* that) {
     that->m_aTracking();
   }
 
   void OdomTracker::m_aTracking()
   {
-    std::valarray<int32_t> newTicks = model->getSensorVals();
+    auto newTicks = model->getSensorVals();
 
     QLength newLeftInch = (newTicks[0] * m_degToInch) * inch;
     QLength newRightInch = (newTicks[1] * m_degToInch) * inch;
@@ -142,7 +145,7 @@ namespace lib7842
 
   void OdomTracker::m_mTracking()
   {
-    std::valarray<int32_t> newTicks = model->getSensorVals();
+    auto newTicks = model->getSensorVals();
 
     QLength dX = 0.0_in;
     QLength dY = 0.0_in;
@@ -179,7 +182,7 @@ namespace lib7842
 
   void OdomTracker::m_mdTracking()
   {
-    std::valarray<int32_t> newTicks = model->getSensorVals();
+    auto newTicks = model->getSensorVals();
 
     double dX = 0.0;
     double dY = 0.0;
