@@ -29,7 +29,7 @@ const int8_t mLeftBack = 11;
 
 void initializeBase()
 {
-	//robot.mPrinter = new ControllerPrinter(&j_Main);
+	robot.mPrinter = new ControllerPrinter(pros::E_CONTROLLER_MASTER);
 	//robot.pPrinter = new ControllerPrinter(&j_Partner);
 
 	robot.model = std::make_shared<SkidSteerModel> (
