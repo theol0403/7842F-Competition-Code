@@ -21,11 +21,11 @@
 
 #define mDigital(x) pros::c::controller_get_digital(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_DIGITAL_##x)
 #define mDigitalPressed(x) pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_DIGITAL_##x)
-#define mAnalog(x) pros::c::controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_##x)
+#define mAnalog(x) (float)pros::c::controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_##x)/127.0
 
 #define pDigital(x) pros::c::controller_get_digital(pros::E_CONTROLLER_PARTNER, pros::E_CONTROLLER_DIGITAL_##x)
 #define pDigitalPressed(x) pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_PARTNER, pros::E_CONTROLLER_DIGITAL_##x)
-#define pAnalog(x) pros::c::controller_get_analog(pros::E_CONTROLLER_PARTNER, pros::E_CONTROLLER_ANALOG_##x)
+#define pAnalog(x) (float)pros::c::controller_get_analog(pros::E_CONTROLLER_PARTNER, pros::E_CONTROLLER_ANALOG_##x)/127.0
 
 #define subsystem(x) if(robot.x)robot.x
 

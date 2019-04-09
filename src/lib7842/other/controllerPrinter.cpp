@@ -1,12 +1,11 @@
 #include "controllerPrinter.hpp"
+using namespace pros::c;
 
 namespace lib7842
 {
 
-  ControllerPrinter::ControllerPrinter(Controller* icontroller)
-  : controller(icontroller), task(taskFnc, this) {
-  }
-
+  ControllerPrinter::ControllerPrinter(pros::controller_id_e_t icontroller)
+  : controller(icontroller), task(taskFnc, this) {}
 
   void ControllerPrinter::print(int line, std::string str) {
     lines.at(line) = str;
@@ -25,7 +24,7 @@ namespace lib7842
 
   void ControllerPrinter::pause() {
     paused = true;
-    controller->clear();
+    controller_clear(controller);
   }
 
 
@@ -45,12 +44,17 @@ namespace lib7842
             str.erase(str.begin() + maxWidth, str.end());
           }
 
-          controller->setText(i, 0, str);
+          if(lines.at(i) == "") {
+            controller_clear_line(controller, i);
+          } else {
+            controller_set_text(controller, i, 0, str.c_str());
+          }
+
           pros::delay(52);
 
           if(doRumble) {
             pros::delay(52);
-            controller->rumble(rumbleText);
+            controller_rumble(controller, rumbleText.c_str());
             pros::delay(52);
             doRumble = false;
           }
@@ -62,8 +66,8 @@ namespace lib7842
     }
   }
 
-  void ControllerPrinter::taskFnc(void* input)
-  {
+
+  void ControllerPrinter::taskFnc(void* input) {
     ControllerPrinter* that = static_cast<ControllerPrinter*>(input);
     that->run();
   }

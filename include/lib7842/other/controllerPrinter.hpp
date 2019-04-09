@@ -9,7 +9,7 @@ namespace lib7842
 
   private:
 
-    Controller* controller = nullptr;
+    pros::controller_id_e_t controller;
     pros::Task task;
 
     std::array<std::string, 3> lines = {};
@@ -19,7 +19,7 @@ namespace lib7842
 
   public:
 
-    ControllerPrinter(Controller*);
+    ControllerPrinter(pros::controller_id_e_t);
     void print(int, std::string);
     std::string get(int);
     void rumble(std::string);
