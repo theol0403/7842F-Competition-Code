@@ -4,8 +4,6 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
-static okapi::ControllerButton armTrigger = j_Main[ControllerDigital::Y];
-
 void driverControl()
 {
 
@@ -31,7 +29,7 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(armTrigger.changedToPressed()) {
+	if(mDigitalPressed(Y)) {
 		if(robot.arm->getState() == ArmController::down) {
 			robot.arm->setState(ArmController::aboveWall);
 		} else if(robot.arm->getState() == ArmController::aboveWall) {

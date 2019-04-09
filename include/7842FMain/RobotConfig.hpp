@@ -19,13 +19,13 @@
 #include "Display/ChassisTuner.hpp"
 #include "Display/DriverDisplay.hpp"
 
-extern okapi::Controller j_Main;
-#define mDigital(x) j_Main.getDigital(okapi::ControllerDigital::x)
-#define mAnalog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
+#define mDigital(x) pros::c::controller_get_digital(pros::E_CONTROLLER_MASTER, ControllerUtil::digitalToProsEnum(okapi::ControllerDigital::x))
+#define mDigitalPressed(x) pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_MASTER, ControllerUtil::digitalToProsEnum(okapi::ControllerDigital::x))
+#define mAnalog(x) pros::c::controller_get_digital(pros::E_CONTROLLER_MASTER, ControllerUtil::analogToProsEnum(okapi::ControllerAnalog::x))
 
-extern okapi::Controller j_Partner;
-#define pDigital(x) j_Parter.getDigital(okapi::ControllerDigital::x)
-#define pAnalog(x) j_Parter.getAnalog(okapi::ControllerAnalog::x)
+#define pDigital(x) pros::c::controller_get_digital(pros::E_CONTROLLER_PARTNER, ControllerUtil::digitalToProsEnum(okapi::ControllerDigital::x))
+#define pDigitalPressed(x) pros::c::controller_get_digital_new_press(pros::E_CONTROLLER_PARTNER, ControllerUtil::digitalToProsEnum(okapi::ControllerDigital::x))
+#define pAnalog(x) pros::c::controller_get_digital(pros::E_CONTROLLER_PARTNER, ControllerUtil::analogToProsEnum(okapi::ControllerAnalog::x))
 
 #define subsystem(x) if(robot.x)robot.x
 
