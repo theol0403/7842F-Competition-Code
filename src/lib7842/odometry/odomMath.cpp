@@ -124,7 +124,7 @@ namespace lib7842::OdomMath
   }
 
 
-  QLength computeDistanceBetweenPoints(qPoint firstPoint, qPoint secondPoint)
+  QLength distanceBetweenPoints(qPoint firstPoint, qPoint secondPoint)
   {
     QLength xDiff = secondPoint.x - firstPoint.x;
     QLength yDiff = secondPoint.y - firstPoint.y;
