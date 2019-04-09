@@ -4,6 +4,8 @@
 #include "7842FMain/Auton/AutonIncludes.hpp"
 #include "DriverControl.hpp"
 
+static bool isCompetition = false; //will be toggled when autonomous is run
+
 /***
 *     _____      _ _   _       _ _
 *    |_   _|    (_) | (_)     | (_)
@@ -54,7 +56,9 @@ void initialize()
 * This task will exit when the robot is enabled and autonomous or opcontrol
 * starts.
 */
-void competition_initialize() {}
+void competition_initialize() {
+  isCompetition = true;
+}
 
 /***
 *    ______ _           _     _          _
@@ -109,12 +113,12 @@ void opcontrol()
   subsystem(arm)->setState(ArmController::off);
   #endif
 
-  //if there is an autonomous selected and opcontrol starts, automatically start the flywheel
-  if(display.selector->m_currentAutonIndex != 0) {
+  //if it is compeition, automatically start the flywheel
+  if(isCompetition) {
     subsystem(flywheel)->setRpm(globalFlywheelRPM);
   }
 
-  robot.mPrinter->rumble("-");
+  robot.mPrinter->rumble(".");
 
   Timer opTimer;
   opTimer.placeMark();
@@ -122,7 +126,7 @@ void opcontrol()
   while(true) {
 
     if(mDigital(A)) {
-      robot.mPrinter->rumble(".");
+      robot.mPrinter->rumble("-");
       autonomous();
     }
 
@@ -189,8 +193,10 @@ void autonomous()
   //subsystem(arm)->setState(ArmController::unfold);
   #endif
 
-  //Create a new chassis that mirrors side and send it to the autonomous code
+  isCompetition = true;
 
+  //Create a new chassis that mirrors side and send it to the autonomous code
+  //create timer
   AutonPasser passer = std::make_tuple(
     SideController(robot.chassis, display.selector->getSelectedSide()),
     Timer()
