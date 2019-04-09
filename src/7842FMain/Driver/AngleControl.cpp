@@ -83,4 +83,6 @@ void angleControl()
 	distStr << robot.shooter->distanceToFlag.convert(foot);
 	robot.mPrinter->print(2, distStr.str() + "\' to flag");
 
+	//std::cout << pros::c::controller_get_digital(CONTROLLER_PARTNER, DIGITAL_RIGHT) << std::endl;
+
 }

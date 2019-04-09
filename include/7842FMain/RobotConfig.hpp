@@ -23,9 +23,9 @@ extern okapi::Controller j_Main;
 #define mDigital(x) j_Main.getDigital(okapi::ControllerDigital::x)
 #define mAnalog(x) j_Main.getAnalog(okapi::ControllerAnalog::x)
 
-// extern okapi::Controller j_Partner;
-// #define pDigital(x) j_Parter.getDigital(okapi::ControllerDigital::x)
-// #define pAnalog(x) j_Parter.getAnalog(okapi::ControllerAnalog::x)
+extern okapi::Controller j_Partner;
+#define pDigital(x) j_Parter.getDigital(okapi::ControllerDigital::x)
+#define pAnalog(x) j_Parter.getAnalog(okapi::ControllerAnalog::x)
 
 #define subsystem(x) if(robot.x)robot.x
 
@@ -68,3 +68,5 @@ void initializeDevices();
 void initializeBase();
 
 //#define TEST_ROBOT
+#define B_ROBOT
+//#define F_ROBOT
