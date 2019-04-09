@@ -10,12 +10,14 @@ namespace lib7842
     OdomTracker *itracker,
     IterativePosPIDController *idistancePid,
     IterativePosPIDController *ianglePid,
-    IterativePosPIDController *iturnPid
+    IterativePosPIDController *iturnPid,
+    double islewRate
   ) :
   tracker(itracker),
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid),
+  slewRate(islewRate),
   pointRadius(1.5_ft)
   {
   };
