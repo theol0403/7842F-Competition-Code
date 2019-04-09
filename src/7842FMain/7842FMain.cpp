@@ -120,10 +120,10 @@ void opcontrol()
 
   while(true) {
 
-    // if(mDigital(A)) {
-    //   robot.mPrinter->rumble("--");
-    //   autonomous();
-    // }
+    if(mDigital(A)) {
+      robot.mPrinter->rumble("--");
+      autonomous();
+    }
 
     double rightY = mAnalog(rightY);
     double leftX = mAnalog(leftX);

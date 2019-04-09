@@ -9,8 +9,8 @@ void AutonTest(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  //chassis.turnToAngle(90_deg);
-  chassis.driveDistance(3_ft);
+  firstCapMovement(chassis, 7_ft);
+  chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in));
 
   //robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothFlags);
 
