@@ -109,6 +109,7 @@ void opcontrol()
   subsystem(arm)->setState(ArmController::off);
   #endif
 
+  //if there is an autonomous selected and opcontrol starts, automatically start the flywheel
   if(display.selector->m_currentAutonIndex != 0) {
     subsystem(flywheel)->setRpm(globalFlywheelRPM);
   }
@@ -127,7 +128,6 @@ void opcontrol()
 
     #ifndef TEST_ROBOT
     driverControl();
-    angleControl();
     #endif
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();

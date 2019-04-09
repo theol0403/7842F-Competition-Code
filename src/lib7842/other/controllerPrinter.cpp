@@ -29,7 +29,7 @@ namespace lib7842
 
 
   void ControllerPrinter::run() {
-    const int maxWidth = 20;
+    const int maxWidth = 15;
     while(true) {
 
       if(!paused) {

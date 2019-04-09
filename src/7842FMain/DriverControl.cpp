@@ -1,11 +1,53 @@
 #include "7842FMain/DriverControl.hpp"
 #include <sstream>
 
+static IntakeController::intakeStates intakeState = IntakeController::off;
+static IntakeController::intakeStates lastIntakeState = IntakeController::off;
+
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
 
-void angleControl()
+void driverControl()
 {
+
+	/**
+	* Base Control
+	*/
+	double rightY = mAnalog(RIGHT_Y);
+	double leftX = mAnalog(LEFT_X);
+	subsystem(model)->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
+
+	/**
+	* Intake Control
+	*/
+	if(mDigital(R2) && mDigital(R1)) {
+		intakeState = IntakeController::outSlow;
+	} else if(mDigital(R2)) {
+		intakeState = IntakeController::intakeBall;
+	} else if(mDigital(R1)) {
+		intakeState = IntakeController::outIntake;
+	} else {
+		intakeState = IntakeController::off;
+	}
+
+	if(intakeState != lastIntakeState) {
+		robot.intake->setState(intakeState);
+		lastIntakeState = intakeState;
+	}
+
+	/**
+	* Arm Control
+	*/
+	if(mDigitalPressed(Y)) {
+		if(robot.arm->getState() == ArmController::down) {
+			robot.arm->setState(ArmController::aboveWall);
+		} else if(robot.arm->getState() == ArmController::aboveWall) {
+			robot.arm->setState(ArmController::descore);
+		} else {
+			robot.arm->setState(ArmController::down);
+		}
+	}
+
 	/**
 	* Flywheel Toggle
 	* Angling Abort
@@ -25,6 +67,9 @@ void angleControl()
 		robot.arm->setState(ArmController::off);
 	}
 
+	/**
+	* Flywheel Ready Printing
+	*/
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
 		robot.mPrinter->print(1, "Flywheel Ready");
 		display.driverDisplay->setColor(LV_COLOR_LIME);
@@ -79,7 +124,5 @@ void angleControl()
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
 	robot.mPrinter->print(2, distStr.str() + "\' to flag");
-
-	//std::cout << pros::c::controller_get_digital(CONTROLLER_PARTNER, DIGITAL_RIGHT) << std::endl;
 
 }
