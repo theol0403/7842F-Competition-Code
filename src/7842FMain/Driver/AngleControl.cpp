@@ -66,13 +66,13 @@ void angleControl()
 	/**
 	* Angle Control
 	*/
-	if(mDigital(down)) {
+	if(mDigital(DOWN)) {
 		robot.shooter->setDistanceToFlag(3.5_ft);
-	} else if(mDigital(left)) {
+	} else if(mDigital(LEFT)) {
 		robot.shooter->setDistanceToFlag(4.5_ft);
-	} else if(mDigital(up)) {
+	} else if(mDigital(UP)) {
 		robot.shooter->setDistanceToFlag(8.5_ft);
-	} else if(mDigital(right)) {
+	} else if(mDigital(RIGHT)) {
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
