@@ -42,7 +42,7 @@ namespace lib7842
   }
 
   angleCalc_t OdomController::angleCalc(qPoint point) {
-    return [=](OdomController* that) { return that->computeAngleToPoint(point); };
+    return [=](OdomController* that) { return that->angleToPoint(point); };
   }
 
   angleCalc_t OdomController::angleDisable() {

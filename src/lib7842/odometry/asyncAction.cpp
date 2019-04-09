@@ -23,17 +23,17 @@ namespace lib7842
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, triggerTypes type) {
-    m_triggers.push_back({[=](OdomController* that){ return that->computeDistanceToPoint(mirrorSide(point, m_side)) < distanceThresh; }, type});
+    m_triggers.push_back({[=](OdomController* that){ return that->distanceToPoint(mirrorSide(point, m_side)) < distanceThresh; }, type});
     return *this;
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh, triggerTypes type) {
-    m_triggers.push_back({[=](OdomController* that){ return that->computeDistanceToPoint(mirrorSide(point, m_side)) < distanceThresh && that->computeAngleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
+    m_triggers.push_back({[=](OdomController* that){ return that->distanceToPoint(mirrorSide(point, m_side)) < distanceThresh && that->angleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
     return *this;
   }
 
   AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh, triggerTypes type) {
-    m_triggers.push_back({[=](OdomController* that){ return that->computeAngleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
+    m_triggers.push_back({[=](OdomController* that){ return that->angleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
     return *this;
   }
 

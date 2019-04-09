@@ -18,11 +18,11 @@ namespace lib7842
     controller->tracker->setX(mirrorSide(x, side));
   }
 
-  QAngle SideController::computeAngleToPoint(qPoint point) {
-    return controller->computeAngleToPoint(mirrorSide(point, side));
+  QAngle SideController::angleToPoint(qPoint point) {
+    return controller->angleToPoint(mirrorSide(point, side));
   }
-  QLength SideController::computeDistanceToPoint(qPoint point) {
-    return controller->computeDistanceToPoint(mirrorSide(point, side));
+  QLength SideController::distanceToPoint(qPoint point) {
+    return controller->distanceToPoint(mirrorSide(point, side));
   }
 
 
@@ -100,7 +100,7 @@ namespace lib7842
   void SideController::driveToPointSimple(qPoint point, settleFunc_t settleFunc, AsyncActionList actions)
   {
     int direction = 1;
-    QAngle wantedAngle = computeAngleToPoint(point);
+    QAngle wantedAngle = angleToPoint(point);
     if (wantedAngle.abs() > 90_deg)
     {
       wantedAngle -= 180_deg * sgn(wantedAngle.convert(degree));
@@ -108,7 +108,7 @@ namespace lib7842
     }
     controller->turnAngle(wantedAngle);
 
-    controller->driveDistance(computeDistanceToPoint(point) * direction, settleFunc, actions);
+    controller->driveDistance(distanceToPoint(point) * direction, settleFunc, actions);
   }
 
 }

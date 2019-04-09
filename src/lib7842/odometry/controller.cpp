@@ -113,12 +113,12 @@ namespace lib7842
   * Relative Position Calcs
   * Does not take side into account
   */
-  QAngle OdomController::computeAngleToPoint(qPoint point) {
+  QAngle OdomController::angleToPoint(qPoint point) {
     QAngle angle = (atan2(point.x.convert(inch) - tracker->state.x.convert(inch), point.y.convert(inch) - tracker->state.y.convert(inch)) * radian) - tracker->state.theta;
     return rollAngle180(angle);
   }
 
-  QLength OdomController::computeDistanceToPoint(qPoint point) {
+  QLength OdomController::distanceToPoint(qPoint point) {
     return computeDistanceBetweenPoints(tracker->state, point);
   }
 

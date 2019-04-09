@@ -18,7 +18,7 @@ void AutonMiddleFromFar(void* input)
 
   waitForLastMinute(timer);
 
-  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 }

@@ -10,7 +10,7 @@ void AutonSkills(void* input)
 
   //this will make the robot intake when it is a distance from the cap
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return computeDistanceToPoint({4_ft, 7_ft}) < 2_ft;))
+  .withTrigger(makeTrigger(return distanceToPoint({4_ft, 7_ft}) < 2_ft;))
   .withMakeAction(robot.intake->setState(IntakeController::outIntake););
 
   // Move to ball under cap while intaking

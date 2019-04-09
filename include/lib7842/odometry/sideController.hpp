@@ -23,8 +23,8 @@ namespace lib7842
     void setState(qPoint);
     void setX(QLength);
 
-    QAngle computeAngleToPoint(qPoint);
-    QLength computeDistanceToPoint(qPoint);
+    QAngle angleToPoint(qPoint);
+    QLength distanceToPoint(qPoint);
 
     settleFunc_t makeSettle(QAngle);
     settleFunc_t makeSettle(QLength);
@@ -58,8 +58,8 @@ namespace lib7842
 
 
     #ifdef INSERT_CONTROLLER_NAME
-    #define computeAngleToPoint INSERT_CONTROLLER_NAME computeAngleToPoint
-    #define computeDistanceToPoint INSERT_CONTROLLER_NAME computeDistanceToPoint
+    #define angleToPoint INSERT_CONTROLLER_NAME angleToPoint
+    #define distanceToPoint INSERT_CONTROLLER_NAME distanceToPoint
 
     #define makeSettle INSERT_CONTROLLER_NAME makeSettle
     #define turnSettle OdomController::turnSettle

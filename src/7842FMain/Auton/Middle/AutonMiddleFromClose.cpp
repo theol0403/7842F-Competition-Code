@@ -12,7 +12,7 @@ void AutonMiddleFromClose(void* input)
   chassis.turnToPoint(middleFlagShoot); // turn to flag
   
   waitForLastMinute(timer);
-  robot.shooter->setDistanceToFlag(computeDistanceToPoint(middleFlagShoot));
+  robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 }

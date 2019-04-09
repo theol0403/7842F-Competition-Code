@@ -46,8 +46,8 @@ namespace lib7842
     void driveVector(double, double);
     void runActions(AsyncActionList);
 
-    QAngle computeAngleToPoint(qPoint);
-    QLength computeDistanceToPoint(qPoint);
+    QAngle angleToPoint(qPoint);
+    QLength distanceToPoint(qPoint);
 
     static settleFunc_t makeSettle(QAngle);
     static settleFunc_t makeSettle(QLength);

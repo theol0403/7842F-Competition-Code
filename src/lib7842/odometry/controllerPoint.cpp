@@ -11,21 +11,21 @@ namespace lib7842
     {
       qPoint closestPoint = closest(tracker->state, targetPoint);
 
-      QAngle angleToClose = computeAngleToPoint(closestPoint);
+      QAngle angleToClose = angleToPoint(closestPoint);
       if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg;
 
-      QLength distanceToClose = computeDistanceToPoint(closestPoint);
+      QLength distanceToClose = distanceToPoint(closestPoint);
       if(angleToClose.abs() >= 90_deg) distanceToClose = -distanceToClose;
 
-      angleErr = computeAngleToPoint(targetPoint);
+      angleErr = angleToPoint(targetPoint);
 
-      QLength distanceToTarget = computeDistanceToPoint(targetPoint);
+      QLength distanceToTarget = distanceToPoint(targetPoint);
 
       if(distanceToTarget.abs() < pointRadius) {
         angleErr = 0_deg;
         distanceErr = distanceToClose;
       } else {
-        angleErr = computeAngleToPoint(targetPoint);
+        angleErr = angleToPoint(targetPoint);
         lastTarget = angleErr + tracker->state.theta;
         distanceErr = distanceToTarget;
       }
@@ -52,8 +52,8 @@ namespace lib7842
     settleFunc_t exitFunc = makeSettle(pointRadius);
     do
     {
-      angleErr = computeAngleToPoint(targetPoint);
-      distanceErr = computeDistanceToPoint(targetPoint);
+      angleErr = angleToPoint(targetPoint);
+      distanceErr = distanceToPoint(targetPoint);
 
       if(angleErr.abs() > 90_deg) distanceErr = -distanceErr;
       angleErr = rollAngle90(angleErr);
@@ -67,7 +67,7 @@ namespace lib7842
     }
     while(!(exitFunc(this) || settleFunc(this)));
 
-    driveDistanceAtAngle(computeDistanceToPoint(targetPoint), angleCalc(computeAngleToPoint(targetPoint)), turnScale, settleFunc, actions);
+    driveDistanceAtAngle(distanceToPoint(targetPoint), angleCalc(angleToPoint(targetPoint)), turnScale, settleFunc, actions);
     driveVector(0, 0);
   }
 
