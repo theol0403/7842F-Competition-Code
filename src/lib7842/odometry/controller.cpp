@@ -77,24 +77,21 @@ namespace lib7842
       rightOutput /= maxInputMag;
     }
 
-    {
-      double increment = leftOutput - lastVelL;
-      if(std::abs(increment) > slewRate) {
-        lastVelL += slewRate * sgn(increment);
-      } else {
-        lastVelL = leftOutput;
-      }
+    double increment = 0;
+
+    increment = leftOutput - lastVelL;
+    if(std::abs(increment) > slewRate) {
+      lastVelL += slewRate * sgn(increment);
+    } else {
+      lastVelL = leftOutput;
     }
 
-    {
-      double increment = rightOutput - lastVelR;
-      if(std::abs(increment) > slewRate) {
-        lastVelR += slewRate * sgn(increment);
-      } else {
-        lastVelR = rightOutput;
-      }
+    increment = rightOutput - lastVelR;
+    if(std::abs(increment) > slewRate) {
+      lastVelR += slewRate * sgn(increment);
+    } else {
+      lastVelR = rightOutput;
     }
-
 
     tracker->model->tank(lastVelL, lastVelR);
     // tracker->model->left(leftOutput);
