@@ -29,6 +29,7 @@ namespace lib7842
     anglePid->reset();
     angleErr = 0_deg;
     distanceErr = 0_in;
+    abortTimer.clearHardMark();
   }
 
   /**
@@ -57,7 +58,7 @@ namespace lib7842
   bool OdomController::checkEmergencyAbort() {
     //only applies when driving and not turning, and not when settling
     if(distanceErr != 0_in) {
-      return checkAbort(5, 1_s);
+      return checkAbort(5, 2_s);
     }
     return false;
   }
@@ -102,8 +103,7 @@ namespace lib7842
   * execute a list of actions
   * @param actions
   */
-  void OdomController::runActions(AsyncActionList actions)
-  {
+  void OdomController::runActions(AsyncActionList actions) {
     for(AsyncActionRef action : actions) { action.get().run(this); }
   }
 

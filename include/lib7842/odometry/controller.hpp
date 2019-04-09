@@ -37,7 +37,7 @@ namespace lib7842
     double lastVelL = 0;
     double lastVelR = 0;
 
-    OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*, double);
+    OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*, double = 1);
 
     void resetPid();
     bool checkAbort(double, QTime);

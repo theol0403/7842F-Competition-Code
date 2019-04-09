@@ -168,7 +168,7 @@ void initializeBase()
 
 	robot.chassis = new lib7842::OdomController (
 		robot.tracker,
-		new IterativePosPIDController(0.0022, 0.0002, 0.00013, 0, TimeUtilFactory::withSettledUtilParams(10, 5, 50_ms)), //Distance PID - To mm
+		new IterativePosPIDController(0.0022, 0.0002, 0.00013, 0, TimeUtilFactory::withSettledUtilParams(20, 5, 50_ms)), //Distance PID - To mm
 		new IterativePosPIDController(0.007, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
 		new IterativePosPIDController(0.0105, 0.0012, 0.0004, 0, TimeUtilFactory::withSettledUtilParams(2, 2, 100_ms)), //Turn PID - To Degree
 		0.02
@@ -276,7 +276,7 @@ const int globalFlywheelRPM = 2800;
 void initializeDevices()
 {
 
-	//	robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
+	//robot.vision = new VisionController(new pros::Vision(4), display.main->newTab("Vision"));
 
 	display.odom = new OdomDisplay(display.main->newTab("Odom"), robot.tracker);
 

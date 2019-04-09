@@ -13,8 +13,8 @@ namespace lib7842
   m_wheelDiam(wheelDiam),
   m_degToInch(wheelDiam.convert(inch) * 1_pi / ticksPerRotation),
   m_trackerFunc(trackerFunc),
-  m_leftVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
-  m_rightVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<4>>(), 10_ms, std::make_unique<Timer>()),
+  m_leftVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<2>>(), 40_ms, std::make_unique<Timer>()),
+  m_rightVelMath(ticksPerRotation, std::make_shared<okapi::AverageFilter<2>>(), 40_ms, std::make_unique<Timer>()),
   m_task(taskFnc, this)
   {
     reset();
