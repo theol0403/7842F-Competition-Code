@@ -2,7 +2,7 @@
 #include <sstream>
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
-static okapi::ControllerButton partnerFlywheelTrigger = j_Parter[ControllerDigital::B];
+static okapi::ControllerButton partnerFlywheelTrigger = j_Partner[ControllerDigital::B];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
@@ -14,7 +14,7 @@ void angleControl()
 	* Angling Abort
 	* Arm Abort
 	*/
-	if(flywheelTrigger.changedToPressed() || partnerFlywheelTrigger.changedToPressed()) {
+	if(flywheelTrigger.changedToPressed()){// || partnerFlywheelTrigger.changedToPressed()) {
 		robot.mPrinter->rumble("-");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);

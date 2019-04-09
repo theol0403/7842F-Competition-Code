@@ -56,8 +56,9 @@ void FlywheelController::run()
       lastPower = motorPower;
 
       //moves whatever motor is available
-      if(!disabled) flywheel->move(0);
+      if(!disabled) flywheel->move(motorPower);
       if(intake->indexerSlave) intake->indexer->move(-motorPower);
+      //std::cout << motorPower << std::endl;
     }
     else //If no motors are available, approximate how much the flywheel slows down
     {
