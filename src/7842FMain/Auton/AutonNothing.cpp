@@ -10,7 +10,7 @@ void AutonTest(void* input)
   auto &[chassis, timer] = *passer;
 
   firstCapMovement(chassis, 7_ft);
-  chassis.driveToPoint({0.9_ft, 7_ft}, 1.5, makeSettle(2_in));
+  chassis.driveToPoint({0.9_ft, 7_ft});
 
   //robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothFlags);
 

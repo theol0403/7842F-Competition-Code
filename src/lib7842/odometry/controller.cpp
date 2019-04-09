@@ -46,7 +46,8 @@ namespace lib7842
     //if it has been in velocity for long enough
     if(abortTimer.getDtFromHardMark() > time) {
       return true;
-      std::cout << "Abort" << std::endl;
+      std::cerr << "Abort" << std::endl;
+      abortTimer.clearHardMark();
     }
     return false;
   }
@@ -64,6 +65,9 @@ namespace lib7842
   * @param forwardSpeed
   * @param yaw
   */
+  double lastVelL = 0;
+  double lastVelR = 0;
+  double slewRate = 0.03;
   void OdomController::driveVector(double forwardSpeed, double yaw)
   {
     double leftOutput = forwardSpeed + yaw;
@@ -73,7 +77,27 @@ namespace lib7842
       leftOutput /= maxInputMag;
       rightOutput /= maxInputMag;
     }
-    tracker->model->tank(leftOutput, rightOutput);
+
+    {
+      double increment = leftOutput - lastVelL;
+      if(std::abs(increment) > slewRate) {
+        lastVelL += slewRate * sgn(increment);
+      } else {
+        lastVelL = leftOutput;
+      }
+    }
+
+    {
+      double increment = rightOutput - lastVelR;
+      if(std::abs(increment) > slewRate) {
+        lastVelR += slewRate * sgn(increment);
+      } else {
+        lastVelR = rightOutput;
+      }
+    }
+
+
+    tracker->model->tank(lastVelL, lastVelR);
     // tracker->model->left(leftOutput);
     // tracker->model->right(rightOutput);
   }

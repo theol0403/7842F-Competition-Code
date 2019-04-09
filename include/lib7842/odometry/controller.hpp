@@ -4,6 +4,7 @@
 #include "tracker.hpp"
 #include "asyncAction.hpp"
 #include "lib7842/filter/avgFilter.hpp"
+#include "lib7842/other/miscUtils.hpp"
 
 namespace lib7842
 {
