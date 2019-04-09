@@ -143,9 +143,9 @@ void opcontrol()
       robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
-    robot.pPrinter->print(0, robot.mPrinter->get(0));
-    robot.pPrinter->print(1, robot.mPrinter->get(1));
-    robot.pPrinter->print(2, robot.mPrinter->get(2));
+    // robot.pPrinter->print(0, robot.mPrinter->get(0));
+    // robot.pPrinter->print(1, robot.mPrinter->get(1));
+    // robot.pPrinter->print(2, robot.mPrinter->get(2));
 
     // if(true) {
     //   if(remaining == 60_s) {

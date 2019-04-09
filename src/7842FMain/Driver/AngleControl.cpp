@@ -2,7 +2,7 @@
 #include <sstream>
 
 static okapi::ControllerButton flywheelTrigger = j_Main[ControllerDigital::B];
-static okapi::ControllerButton partnerFlywheelTrigger = j_Partner[ControllerDigital::B];
+//static okapi::ControllerButton partnerFlywheelTrigger = j_Partner[ControllerDigital::B];
 
 static ShootController::shootMacros shootMacro = ShootController::shootMacros::off;
 static ShootController::shootMacros lastShootMacro = ShootController::shootMacros::off;
