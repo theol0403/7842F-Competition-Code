@@ -26,12 +26,16 @@ namespace lib7842
     IterativePosPIDController *distancePid = nullptr;
     IterativePosPIDController *anglePid = nullptr;
     IterativePosPIDController *turnPid = nullptr;
+    const double slewRate = 0.02;
 
     const QLength m_pointRadius; //radius to point before slowing down and ignoring angle
     QAngle m_angleErr = 0_deg;
     QLength m_distanceErr = 0_in;
 
     Timer abortTimer;
+
+    double lastVelL = 0;
+    double lastVelR = 0;
 
     OdomController(OdomTracker*, IterativePosPIDController*, IterativePosPIDController*, IterativePosPIDController*);
 

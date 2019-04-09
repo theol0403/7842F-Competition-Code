@@ -45,17 +45,17 @@ namespace lib7842
     }
     //if it has been in velocity for long enough
     if(abortTimer.getDtFromHardMark() > time) {
-      return true;
       std::cerr << "Abort" << std::endl;
       abortTimer.clearHardMark();
+      return true;
     }
     return false;
   }
 
   bool OdomController::checkEmergencyAbort() {
     //only applies when driving and not turning, and not when settling
-    if(m_distanceErr > 1_in) {
-      return checkAbort(0, 2_s);
+    if(m_distanceErr != 0_in) {
+      return checkAbort(5, 1_s);
     }
     return false;
   }
@@ -65,9 +65,6 @@ namespace lib7842
   * @param forwardSpeed
   * @param yaw
   */
-  double lastVelL = 0;
-  double lastVelR = 0;
-  double slewRate = 0.03;
   void OdomController::driveVector(double forwardSpeed, double yaw)
   {
     double leftOutput = forwardSpeed + yaw;
@@ -146,7 +143,7 @@ namespace lib7842
   }
 
   bool OdomController::driveSettle(OdomController* that) {
-    return (that->distancePid->isSettled() && that->anglePid->isSettled()) || that->checkEmergencyAbort();
+    return (that->distancePid->isSettled() /*&& that->anglePid->isSettled()*/) || that->checkEmergencyAbort();
   }
 
 
