@@ -60,7 +60,7 @@ void initializeBase()
 	robot.tracker->resetState();
 }
 
-const int globalFlywheelRPM = 2800;
+const int globalFlywheelRPM = 3000;
 
 void initializeDevices()
 {
