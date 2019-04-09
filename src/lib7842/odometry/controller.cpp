@@ -16,7 +16,7 @@ namespace lib7842
   distancePid(idistancePid),
   anglePid(ianglePid),
   turnPid(iturnPid),
-  m_pointRadius(1.5_ft)
+  pointRadius(1.5_ft)
   {
   };
 
@@ -25,8 +25,8 @@ namespace lib7842
     turnPid->reset();
     distancePid->reset();
     anglePid->reset();
-    m_angleErr = 0_deg;
-    m_distanceErr = 0_in;
+    angleErr = 0_deg;
+    distanceErr = 0_in;
   }
 
   /**
@@ -54,7 +54,7 @@ namespace lib7842
 
   bool OdomController::checkEmergencyAbort() {
     //only applies when driving and not turning, and not when settling
-    if(m_distanceErr != 0_in) {
+    if(distanceErr != 0_in) {
       return checkAbort(5, 1_s);
     }
     return false;
@@ -127,15 +127,15 @@ namespace lib7842
   * Settle Functions
   */
   settleFunc_t OdomController::makeSettle(QAngle threshold) {
-    return [=](OdomController* that){ return that->m_angleErr.abs() < threshold || that->checkEmergencyAbort(); };
+    return [=](OdomController* that){ return that->angleErr.abs() < threshold || that->checkEmergencyAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength threshold) {
-    return [=](OdomController* that){ return that->m_distanceErr.abs() < threshold || that->checkEmergencyAbort(); };
+    return [=](OdomController* that){ return that->distanceErr.abs() < threshold || that->checkEmergencyAbort(); };
   }
 
   settleFunc_t OdomController::makeSettle(QLength distanceThreshold, QAngle angleThreshold){
-    return [=](OdomController* that){ return (that->m_distanceErr.abs() < distanceThreshold && that->m_angleErr.abs() < angleThreshold) || that->checkEmergencyAbort(); };
+    return [=](OdomController* that){ return (that->distanceErr.abs() < distanceThreshold && that->angleErr.abs() < angleThreshold) || that->checkEmergencyAbort(); };
   }
 
   bool OdomController::turnSettle(OdomController* that) {

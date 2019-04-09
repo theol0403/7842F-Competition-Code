@@ -17,22 +17,22 @@ namespace lib7842
       QLength distanceToClose = computeDistanceToPoint(closestPoint);
       if(angleToClose.abs() >= 90_deg) distanceToClose = -distanceToClose;
 
-      m_angleErr = computeAngleToPoint(targetPoint);
+      angleErr = computeAngleToPoint(targetPoint);
 
       QLength distanceToTarget = computeDistanceToPoint(targetPoint);
 
-      if(distanceToTarget.abs() < m_pointRadius) {
-        m_angleErr = 0_deg;
-        m_distanceErr = distanceToClose;
+      if(distanceToTarget.abs() < pointRadius) {
+        angleErr = 0_deg;
+        distanceErr = distanceToClose;
       } else {
-        m_angleErr = computeAngleToPoint(targetPoint);
-        lastTarget = m_angleErr + tracker->state.theta;
-        m_distanceErr = distanceToTarget;
+        angleErr = computeAngleToPoint(targetPoint);
+        lastTarget = angleErr + tracker->state.theta;
+        distanceErr = distanceToTarget;
       }
 
-      m_angleErr = rollAngle90(m_angleErr);
+      angleErr = rollAngle90(angleErr);
 
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
+      double angleVel = anglePid->step(-angleErr.convert(degree));
       double distanceVel = distancePid->step(-distanceToClose.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
@@ -49,17 +49,17 @@ namespace lib7842
   void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetPid();
-    settleFunc_t exitFunc = makeSettle(m_pointRadius);
+    settleFunc_t exitFunc = makeSettle(pointRadius);
     do
     {
-      m_angleErr = computeAngleToPoint(targetPoint);
-      m_distanceErr = computeDistanceToPoint(targetPoint);
+      angleErr = computeAngleToPoint(targetPoint);
+      distanceErr = computeDistanceToPoint(targetPoint);
 
-      if(m_angleErr.abs() > 90_deg) m_distanceErr = -m_distanceErr;
-      m_angleErr = rollAngle90(m_angleErr);
+      if(angleErr.abs() > 90_deg) distanceErr = -distanceErr;
+      angleErr = rollAngle90(angleErr);
 
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
-      double distanceVel = distancePid->step(-m_distanceErr.convert(millimeter));
+      double angleVel = anglePid->step(-angleErr.convert(degree));
+      double distanceVel = distancePid->step(-distanceErr.convert(millimeter));
 
       driveVector(distanceVel, angleVel * turnScale);
       runActions(actions);

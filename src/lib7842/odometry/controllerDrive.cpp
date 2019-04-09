@@ -13,11 +13,11 @@ namespace lib7842
       QLength leftDistance = ((newTicks[0] - lastTicks[0]) * tracker->m_degToInch) * inch;
       QLength rightDistance = ((newTicks[1] - lastTicks[1]) * tracker->m_degToInch) * inch;
 
-      m_distanceErr = distance - ((leftDistance + rightDistance) / 2);
-      m_angleErr = turnCalc(this);
+      distanceErr = distance - ((leftDistance + rightDistance) / 2);
+      angleErr = turnCalc(this);
 
-      double distanceVel = distancePid->step(-m_distanceErr.convert(millimeter));
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
+      double distanceVel = distancePid->step(-distanceErr.convert(millimeter));
+      double angleVel = anglePid->step(-angleErr.convert(degree));
 
       driveVector(distanceVel, angleVel * turnScale);
       runActions(actions);
@@ -50,8 +50,8 @@ namespace lib7842
   void OdomController::driveForTimeAtAngle(int time, double vel, angleCalc_t turnCalc, double turnScale, AsyncActionList actions)
   {
     while(time > 0) {
-      m_angleErr = turnCalc(this);
-      double angleVel = anglePid->step(-m_angleErr.convert(degree));
+      angleErr = turnCalc(this);
+      double angleVel = anglePid->step(-angleErr.convert(degree));
       driveVector(vel, angleVel * turnScale);
       time -= 10;
       runActions(actions);

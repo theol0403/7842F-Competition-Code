@@ -53,8 +53,8 @@ namespace lib7842
   {
     resetPid();
     do {
-      m_angleErr = turnCalc(this);
-      double turnVel = turnPid->step(-m_angleErr.convert(degree));
+      angleErr = turnCalc(this);
+      double turnVel = turnPid->step(-angleErr.convert(degree));
       turnFunc(this, turnVel);
       runActions(actions);
       pros::delay(10);

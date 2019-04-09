@@ -28,9 +28,9 @@ namespace lib7842
     IterativePosPIDController *turnPid = nullptr;
     const double slewRate = 0.02;
 
-    const QLength m_pointRadius; //radius to point before slowing down and ignoring angle
-    QAngle m_angleErr = 0_deg;
-    QLength m_distanceErr = 0_in;
+    const QLength pointRadius; //radius to point before slowing down and ignoring angle
+    QAngle angleErr = 0_deg;
+    QLength distanceErr = 0_in;
 
     Timer abortTimer;
 
