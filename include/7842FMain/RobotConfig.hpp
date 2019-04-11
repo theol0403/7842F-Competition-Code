@@ -46,7 +46,7 @@ struct display_t
 struct robot_t
 {
   ControllerPrinter* mPrinter = nullptr;
-  //ControllerPrinter* pPrinter = nullptr;
+  ControllerPrinter* pPrinter = nullptr;
 
   std::shared_ptr<okapi::SkidSteerModel> model = nullptr;
   lib7842::OdomController* chassis = nullptr;

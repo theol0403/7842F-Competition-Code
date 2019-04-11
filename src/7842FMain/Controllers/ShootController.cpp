@@ -414,8 +414,7 @@ void ShootController::run()
 }
 
 
-void ShootController::taskFnc(void* input)
-{
+void ShootController::taskFnc(void* input) {
   pros::delay(500);
   ShootController* that = static_cast<ShootController*>(input);
   that->run();
