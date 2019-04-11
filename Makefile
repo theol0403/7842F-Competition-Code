@@ -21,13 +21,11 @@ EXTRA_CXXFLAGS=
 USE_PACKAGE:=1
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
-IS_LIBRARY:=0
+IS_LIBRARY:=1
 # TODO: CHANGE THIS!
 LIBNAME:=lib7842
 VERSION:=1.0.0
-EXCLUDE_SRC_FROM_LIB=
-# this line excludes opcontrol.c and similar files
-EXCLUDE_SRC_FROM_LIB+=$(shell find $(SRCDIR)/7842FMain/ ! -name "*.cpp")
+EXCLUDE_SRC_FROM_LIB=$(SRCDIR)/7842FMain/RobotConfig.cpp $(SRCDIR)/7842FMain/DriverControl.cpp $(SRCDIR)/7842FMain/7842FMain.cpp $(SRCDIR)/7842FMain/Auton/Close/AutonClose.cpp
 
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files
