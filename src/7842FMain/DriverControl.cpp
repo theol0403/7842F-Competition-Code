@@ -79,13 +79,13 @@ void driverControl()
 	/**
 	* Distance Control
 	*/
-	if(mDigital(DOWN)) {
+	if(pDigital(DOWN)) {
 		robot.shooter->setDistanceToFlag(3.5_ft);
-	} else if(mDigital(LEFT)) {
+	} else if(pDigital(LEFT)) {
 		robot.shooter->setDistanceToFlag(4.5_ft);
-	} else if(mDigital(UP)) {
+	} else if(pDigital(UP)) {
 		robot.shooter->setDistanceToFlag(8.5_ft);
-	} else if(mDigital(RIGHT)) {
+	} else if(pDigital(RIGHT)) {
 		robot.shooter->setDistanceToFlag(11_ft);
 	}
 
@@ -135,22 +135,27 @@ void driverControl()
 
 					case ShootController::shootMacros::shootOut : {
 						robot.shooter->doJob(ShootController::angleOut);
+						break;
 					}
 
 					case ShootController::shootMacros::shootBoth : {
 						robot.shooter->doJob(ShootController::angleTop);
+						break;
 					}
 
 					case ShootController::shootMacros::shootMiddle : {
 						robot.shooter->doJob(ShootController::angleMiddle);
+						break;
 					}
 
 					case ShootController::shootMacros::shootTop : {
 						robot.shooter->doJob(ShootController::angleTop);
+						break;
 					}
 
 					default: {
 						std::cerr << "DriverControl: Invalid wantedMacro" << std::endl;
+						break;
 					}
 				}
 
