@@ -109,48 +109,54 @@ void driverControl()
 	static ShootController::shootMacros lastWantedMacro = ShootController::shootMacros::off;
 
 	//set wanted action
-	if(mDigital(X)) {
+	if(pDigital(X)) {
 		shootMacro = ShootController::shootMacros::shootOut;
-	} else if(mDigital(L2) && mDigital(L1)) {
+	} else if(pDigital(L2) && pDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
-	} else if(mDigital(L2)) {
+	} else if(pDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
-	} else if(mDigital(L1)) {
+	} else if(pDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootTop;
 	} else {
 		wantedMacro = ShootController::shootMacros::off;
 	}
 
-	//if wanted changes
-	if(wantedMacro != lastWantedMacro) {
+	if(pDigitalPressed(R1)) {
+		robot.shooter->doJob(wantedMacro);
+	} else {
 
-		//if it is not off, just do the angling
-		if(wantedMacro != ShootController::shootMacros::off) {
-			switch(wantedMacro) {
+		//if wanted changes
+		if(wantedMacro != lastWantedMacro) {
 
-				case ShootController::shootMacros::shootOut : {
-					robot.shooter->doJob(ShootController::angleOut);
+			//if it is not off, just do the angling
+			if(wantedMacro != ShootController::shootMacros::off) {
+				switch(wantedMacro) {
+
+					case ShootController::shootMacros::shootOut : {
+						robot.shooter->doJob(ShootController::angleOut);
+					}
+
+					case ShootController::shootMacros::shootBoth : {
+						robot.shooter->doJob(ShootController::angleTop);
+					}
+
+					case ShootController::shootMacros::shootMiddle : {
+						robot.shooter->doJob(ShootController::angleMiddle);
+					}
+
+					case ShootController::shootMacros::shootTop : {
+						robot.shooter->doJob(ShootController::angleTop);
+					}
 				}
 
-				case ShootController::shootMacros::shootBoth : {
-					robot.shooter->doJob(ShootController::angleTop);
-				}
-
-				case ShootController::shootMacros::shootMiddle : {
-					robot.shooter->doJob(ShootController::angleMiddle);
-				}
-
-				case ShootController::shootMacros::shootTop : {
-					robot.shooter->doJob(ShootController::angleTop);
-				}
+			} else { //if it is off, standby (cycle)
+				robot.shooter->doJob(ShootController::standby);
 			}
 
-		} else { //if it is off, standby (cycle)
-			robot.shooter->doJob(ShootController::standby);
-		}
+			//update last
+			lastWantedMacro = wantedMacro;
 
-		//update last
-		lastWantedMacro = wantedMacro;
+		}
 
 	}
 
