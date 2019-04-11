@@ -55,25 +55,22 @@ namespace lib7842
   }
 
   QAngle mirrorSide(QAngle angle, autonSides side) {
-    if(side == autonSides::blue) { angle = -angle; }
+    if(side == autonSides::blue) angle = -angle;
     return angle;
   }
 
   Path mirrorSide(Path path, autonSides side) {
-    if(side == autonSides::blue) {
-      for(QPoint &point : path.wayPoints) { point = mirrorSide(point, side); }
-    }
+    if(side == autonSides::blue) { for(QPoint &point : path.wayPoints) { point = mirrorSide(point, side); } }
     return path;
   }
 
   QLength mirrorSide(QLength x, autonSides side) {
-    if(side == autonSides::blue) {
-      x = 12_ft - x;
-    }
+    if(side == autonSides::blue) x = 12_ft - x;
     return x;
   }
 
 }
+
 
 namespace lib7842::OdomMath
 {
@@ -128,11 +125,16 @@ namespace lib7842::OdomMath
   }
 
 
-  QLength distanceBetweenPoints(QPoint firstPoint, QPoint secondPoint)
-  {
+  QLength distanceBetweenPoints(QPoint firstPoint, QPoint secondPoint) {
     QLength xDiff = secondPoint.x - firstPoint.x;
     QLength yDiff = secondPoint.y - firstPoint.y;
     return std::sqrt(std::pow(xDiff.convert(inch), 2) + std::pow(yDiff.convert(inch), 2)) * inch;
+  }
+
+  QPoint distanceAtHeading(QLength dist, QAngle heading) {
+    QLength x = sin(heading.convert(radian)) * dist;
+    QLength y = cos(heading.convert(radian)) * dist;
+    return {x, y, heading};
   }
 
 
