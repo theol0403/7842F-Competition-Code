@@ -131,7 +131,7 @@ void opcontrol()
     }
 
     #ifndef TEST_ROBOT
-    //driverControl();
+    driverControl();
     #endif
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();

@@ -1,0 +1,1 @@
+arm-none-eabi-addr2line -faps -e ./bin/hot.package.elf 0x78043ec
