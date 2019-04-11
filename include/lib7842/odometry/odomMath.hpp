@@ -87,4 +87,6 @@ namespace lib7842::OdomMath
   QAngle rollAngle90(QAngle);
 
   QLength distanceBetweenPoints(qPoint, qPoint);
+  qPoint distanceAtHeading(QLength, QAngle);
+  
 }
