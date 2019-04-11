@@ -41,7 +41,8 @@ public:
     shootTarget,
     shootOut,
     shoot,
-    angle
+    angle,
+    nothing
   };
 
   IntakeController*& intake;

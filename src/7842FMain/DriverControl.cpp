@@ -4,6 +4,9 @@
 static IntakeController::intakeStates intakeState = IntakeController::off;
 static IntakeController::intakeStates lastIntakeState = IntakeController::off;
 
+static ShootController::shootMacros wantedMacro = ShootController::shootMacros::off;
+static ShootController::shootMacros lastWantedMacro = ShootController::shootMacros::off;
+
 void driverControl()
 {
 
@@ -103,11 +106,6 @@ void driverControl()
 	*                 |___/           |___/
 	*/
 
-
-
-	static ShootController::shootMacros wantedMacro = ShootController::shootMacros::off;
-	static ShootController::shootMacros lastWantedMacro = ShootController::shootMacros::off;
-
 	//set wanted action
 	if(pDigital(X)) {
 		shootMacro = ShootController::shootMacros::shootOut;
@@ -124,10 +122,10 @@ void driverControl()
 	//when button first pressed
 	if(pDigitalPressed(R1)) {
 		robot.shooter->doMacro(wantedMacro);
+		lastWantedMacro = ShootController::shootMacros::nothing;
 	} else if(pDigital(R1) && !robot.shooter->macroCompleted) { //when button held and it is still going
 		//nothing
 	} else {
-
 		//if wanted changes
 		if(wantedMacro != lastWantedMacro) {
 
@@ -157,9 +155,8 @@ void driverControl()
 			}
 
 			lastWantedMacro = wantedMacro;
-
 		}
-
 	}
+
 
 }
