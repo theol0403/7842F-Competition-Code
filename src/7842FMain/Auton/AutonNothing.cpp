@@ -25,6 +25,8 @@ void AutonDraft(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
+  chassis.driveToPoint(closeFlatCap + distanceAtHeading(1_ft, 90_deg));
+
   // //chassis.setState({1_ft, 7_ft, 90_deg}); //Robot is facing cap
   // robot.intake->setState(IntakeController::loading);
   //
