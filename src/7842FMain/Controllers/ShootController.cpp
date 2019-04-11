@@ -121,6 +121,9 @@ void ShootController::addMacro(shootMacros macro) {
     case shootMacros::angle :
     addJobs({angling});
     break;
+
+    case shootMacros::nothing :
+    break;
   }
 }
 

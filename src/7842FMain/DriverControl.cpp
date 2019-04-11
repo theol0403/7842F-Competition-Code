@@ -108,13 +108,13 @@ void driverControl()
 
 	//set wanted action
 	if(pDigital(X)) {
-		shootMacro = ShootController::shootMacros::shootOut;
+		wantedMacro = ShootController::shootMacros::shootOut;
 	} else if(pDigital(L2) && pDigital(L1)) {
-		shootMacro = ShootController::shootMacros::shootBoth;
+		wantedMacro = ShootController::shootMacros::shootBoth;
 	} else if(pDigital(L2)) {
-		shootMacro = ShootController::shootMacros::shootMiddle;
+		wantedMacro = ShootController::shootMacros::shootMiddle;
 	} else if(pDigital(L1)) {
-		shootMacro = ShootController::shootMacros::shootTop;
+		wantedMacro = ShootController::shootMacros::shootTop;
 	} else {
 		wantedMacro = ShootController::shootMacros::off;
 	}
@@ -147,6 +147,10 @@ void driverControl()
 
 					case ShootController::shootMacros::shootTop : {
 						robot.shooter->doJob(ShootController::angleTop);
+					}
+
+					default: {
+						std::cerr << "DriverControl: Invalid wantedMacro" << std::endl;
 					}
 				}
 
