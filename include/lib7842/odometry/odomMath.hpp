@@ -28,6 +28,8 @@ namespace lib7842
     qPoint(qPoint, QAngle);
 
     qPoint(dPoint);
+
+    qPoint operator+(qPoint);
   };
 
   struct dPoint
@@ -46,6 +48,8 @@ namespace lib7842
     dPoint(dPoint, double);
 
     dPoint(qPoint);
+
+    dPoint operator+(dPoint);
   };
 
   struct Path

@@ -17,6 +17,8 @@ namespace lib7842
 
   qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
 
+  qPoint qPoint::operator+(qPoint rhs) { return {x + rhs.x, y + rhs.y, theta + rhs.theta}; }
+
   /**
   * dPoint
   */
@@ -30,6 +32,8 @@ namespace lib7842
   dPoint::dPoint(dPoint ipoint, double itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
   dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
+
+  dPoint dPoint::operator+(dPoint rhs) { return {x + rhs.x, y + rhs.y, theta + rhs.theta}; }
 
   /**
   * Path
