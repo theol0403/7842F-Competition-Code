@@ -15,7 +15,7 @@ void driverControl()
 	*/
 	double rightY = mAnalog(RIGHT_Y);
 	double leftX = mAnalog(LEFT_X);
-	subsystem(model)->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
+	robot.model->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
 
 	/**
 	* Intake Control

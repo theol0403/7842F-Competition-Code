@@ -22,7 +22,7 @@ namespace lib7842
       return {};
     }
   }
-  
+
   visionObj ObjContainer::getTotal() {
     return std::accumulate(objects.begin(), objects.end(), visionObj{});
   }
@@ -62,7 +62,6 @@ namespace lib7842
   void ObjContainer::sortBy(sortFunc_t sortFunc) {
     std::stable_sort(objects.begin(), objects.end(), sortFunc);
   }
-
 
 
   ObjContainer ObjContainer::copy() {
@@ -140,15 +139,12 @@ namespace lib7842
 
 
   void ObjContainer::checkErrSig() {
-    for(visionObj &obj : objects) {
-      assert(obj.sig != VISION_OBJECT_ERR_SIG);
-    }
+    for(visionObj &obj : objects) { assert(obj.sig != VISION_OBJECT_ERR_SIG); }
   }
 
   int ObjContainer::getCount() {
     return objects.size();
   }
-
 
   ObjContainer ObjContainer::operator+(ObjContainer rhs) {
     addObj(rhs.objects);

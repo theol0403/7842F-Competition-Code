@@ -148,6 +148,9 @@ namespace lib7842
     if(layers.size() > 0) {
       lv_label_set_text(infoLabel, ("Count: " + std::to_string(layers.at(0).oContainer->getCount())).c_str());
       lv_obj_align(infoLabel, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+    } else {
+      lv_label_set_text(infoLabel, "No Layer");
+      lv_obj_align(infoLabel, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     }
   }
 
