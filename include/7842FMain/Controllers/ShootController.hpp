@@ -55,7 +55,7 @@ public:
   std::map<float, double> topAngles = {};
   std::map<float, double> middleAngles = {};
 
-  const shootStates defaultState = standby;
+  const shootStates defaultState = off;
 
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
