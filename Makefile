@@ -25,7 +25,7 @@ IS_LIBRARY:=1
 # TODO: CHANGE THIS!
 LIBNAME:=lib7842
 VERSION:=1.0.0
-EXCLUDE_SRC_FROM_LIB=$(SRCDIR)/7842FMain/RobotConfig.cpp $(SRCDIR)/7842FMain/DriverControl.cpp $(SRCDIR)/7842FMain/7842FMain.cpp $(SRCDIR)/7842FMain/Auton/Close/AutonClose.cpp
+EXCLUDE_SRC_FROM_LIB=$(SRCDIR)/7842FMain/RobotConfig.cpp $(SRCDIR)/7842FMain/DriverControl.cpp $(SRCDIR)/7842FMain/7842FMain.cpp $(wildcard $(SRCDIR)/7842FMain/Auton/**/*.cpp) $(wildcard $(SRCDIR)/7842FMain/Auton/*.cpp)
 
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files
