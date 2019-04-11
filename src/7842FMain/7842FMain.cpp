@@ -24,7 +24,7 @@ void initialize()
 
   display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
   LV_IMG_DECLARE(img_navigators);
-  display.main->splashScreen(&img_navigators, 1500);
+  display.main->splashScreen(&img_navigators, 1800);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
@@ -147,15 +147,13 @@ void opcontrol()
     // robot.pPrinter->print(1, robot.mPrinter->get(1));
     // robot.pPrinter->print(2, robot.mPrinter->get(2));
 
-    // if(true) {
-    //   if(remaining == 60_s) {
-    //     j_Main.rumble(".");
-    //   } else if(remaining == 30_s) {
-    //     j_Main.rumble(".-");
+    // if(true) { //isCompetition
+    //   if(remaining == 30_s) {
+    //     robot.mPrinter->rumble("-");
     //   } else if(remaining == 15_s) {
-    //     j_Main.rumble("..-");
+    //     robot.mPrinter->rumble("--");
     //   } else if(remaining == 10_s) {
-    //     j_Main.rumble("....");
+    //     robot.mPrinter->rumble("....");
     //   }
     // }
 
