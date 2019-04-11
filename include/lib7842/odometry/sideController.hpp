@@ -20,11 +20,11 @@ namespace lib7842
 
     AsyncAction makeAsyncAction();
 
-    void setState(qPoint);
+    void setState(QPoint);
     void setX(QLength);
 
-    QAngle angleToPoint(qPoint);
-    QLength distanceToPoint(qPoint);
+    QAngle angleToPoint(QPoint);
+    QLength distanceToPoint(QPoint);
 
     settleFunc_t makeSettle(QAngle);
     settleFunc_t makeSettle(QLength);
@@ -35,12 +35,12 @@ namespace lib7842
     void rightPivot(OdomController*, double);
 
     angleCalc_t angleCalc(QAngle);
-    angleCalc_t angleCalc(qPoint);
+    angleCalc_t angleCalc(QPoint);
 
     void turn(angleCalc_t, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
     void turnAngle(QAngle, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
-    void turnToPoint(qPoint, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
+    void turnToPoint(QPoint, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
 
     void driveDistanceAtAngle(QLength, angleCalc_t, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
@@ -48,13 +48,13 @@ namespace lib7842
     void driveForTimeAtAngle(int, double, angleCalc_t, double = 1, AsyncActionList = {});
     void allignToAngle(QAngle, double, double);
 
-    void driveToPoint(qPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
-    void driveToPoint2(qPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPoint(QPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPoint2(QPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
     void drivePath(Path, double = 1, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
     void drivePath2(Path, double = 1, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
-    void driveToPointSimple(qPoint, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPointSimple(QPoint, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
 
     #ifdef INSERT_CONTROLLER_NAME

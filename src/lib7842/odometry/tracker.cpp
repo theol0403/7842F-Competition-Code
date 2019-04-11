@@ -36,13 +36,13 @@ namespace lib7842
   }
 
 
-  void OdomTracker::setState(qPoint newState) {
+  void OdomTracker::setState(QPoint newState) {
     state.x = newState.x;
     state.y = newState.y;
     state.theta = newState.theta;
   }
 
-  qPoint& OdomTracker::getState() { return state; }
+  QPoint& OdomTracker::getState() { return state; }
 
   void OdomTracker::setX(QLength x) { state.x = x; }
   void OdomTracker::setY(QLength y) { state.y = y; }

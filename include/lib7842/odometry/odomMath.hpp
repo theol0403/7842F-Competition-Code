@@ -11,25 +11,25 @@ namespace lib7842
 
   struct dPoint; //Forward declare
 
-  struct qPoint
+  struct QPoint
   {
     QLength x {0_in};
     QLength y {0_in};
     QAngle theta {0_rad};
 
-    qPoint(const qPoint&); //Needs to be by reference to avoid enless loop
+    QPoint(const QPoint&); //Needs to be by reference to avoid enless loop
 
-    qPoint(QLength, QLength, QAngle);
-    qPoint(QLength, QLength);
-    qPoint(QAngle);
-    qPoint();
+    QPoint(QLength, QLength, QAngle);
+    QPoint(QLength, QLength);
+    QPoint(QAngle);
+    QPoint();
 
-    qPoint(qPoint, QLength, QLength);
-    qPoint(qPoint, QAngle);
+    QPoint(QPoint, QLength, QLength);
+    QPoint(QPoint, QAngle);
 
-    qPoint(dPoint);
+    QPoint(dPoint);
 
-    qPoint operator+(qPoint);
+    QPoint operator+(QPoint);
   };
 
   struct dPoint
@@ -47,21 +47,21 @@ namespace lib7842
     dPoint(dPoint, double, double);
     dPoint(dPoint, double);
 
-    dPoint(qPoint);
+    dPoint(QPoint);
 
     dPoint operator+(dPoint);
   };
 
   struct Path
   {
-    std::vector<qPoint> wayPoints;
-    Path(qPoint);
-    Path(std::initializer_list<qPoint>);
-    void add(qPoint);
+    std::vector<QPoint> wayPoints;
+    Path(QPoint);
+    Path(std::initializer_list<QPoint>);
+    void add(QPoint);
     void add(Path);
   };
 
-  qPoint mirrorSide(qPoint, autonSides);
+  QPoint mirrorSide(QPoint, autonSides);
   QAngle mirrorSide(QAngle, autonSides);
   Path mirrorSide(Path, autonSides);
   QLength mirrorSide(QLength, autonSides);
@@ -80,13 +80,13 @@ namespace lib7842::OdomMath
   double dot(dPoint, dPoint);
 
   dPoint closest(dPoint, dPoint, dPoint);
-  qPoint closest(qPoint, qPoint);
+  QPoint closest(QPoint, QPoint);
 
   QAngle rollAngle360(QAngle);
   QAngle rollAngle180(QAngle);
   QAngle rollAngle90(QAngle);
 
-  QLength distanceBetweenPoints(qPoint, qPoint);
-  qPoint distanceAtHeading(QLength, QAngle);
-  
+  QLength distanceBetweenPoints(QPoint, QPoint);
+  QPoint distanceAtHeading(QLength, QAngle);
+
 }

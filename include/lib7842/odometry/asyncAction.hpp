@@ -60,9 +60,9 @@ namespace lib7842
     AsyncAction &withAction(actionFunction, actionTypes = actionTypes::onceAfter);
 
     AsyncAction &withTrigger(triggerFunction, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QLength, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QLength, QAngle, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QAngle, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QLength, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QLength, QAngle, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QAngle, triggerTypes = triggerTypes::trigger);
     AsyncAction &withTrigger(QAngle, QAngle, triggerTypes = triggerTypes::trigger);
 
     AsyncAction &withSide(autonSides);

@@ -3,13 +3,13 @@
 namespace lib7842
 {
 
-  void OdomController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveToPoint(QPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetPid();
     QAngle lastTarget = tracker->state.theta;
     do
     {
-      qPoint closestPoint = closest(tracker->state, targetPoint);
+      QPoint closestPoint = closest(tracker->state, targetPoint);
 
       QAngle angleToClose = angleToPoint(closestPoint);
       if(std::isnan(angleToClose.convert(degree))) angleToClose = 0_deg;
@@ -46,7 +46,7 @@ namespace lib7842
 
 
 
-  void OdomController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::driveToPoint2(QPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions)
   {
     resetPid();
     settleFunc_t exitFunc = makeSettle(pointRadius);
@@ -75,7 +75,7 @@ namespace lib7842
 
   void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    for(qPoint &point : path.wayPoints)
+    for(QPoint &point : path.wayPoints)
     {
       driveToPoint(point, turnScale, moveOnSettle, actions);
     }
@@ -84,7 +84,7 @@ namespace lib7842
 
   void OdomController::drivePath2(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    for(qPoint &point : path.wayPoints)
+    for(QPoint &point : path.wayPoints)
     {
       driveToPoint2(point, turnScale, moveOnSettle, actions);
     }

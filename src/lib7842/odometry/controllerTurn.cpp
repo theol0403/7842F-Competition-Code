@@ -41,7 +41,7 @@ namespace lib7842
       return rollAngle180(angle - that->tracker->state.theta); };
   }
 
-  angleCalc_t OdomController::angleCalc(qPoint point) {
+  angleCalc_t OdomController::angleCalc(QPoint point) {
     return [=](OdomController* that) { return that->angleToPoint(point); };
   }
 
@@ -73,7 +73,7 @@ namespace lib7842
     turn(angleCalc(angle + tracker->state.theta), turnFunc, settleFunc, actions);
   }
 
-  void OdomController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
+  void OdomController::turnToPoint(QPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions)
   {
     turn(angleCalc(point), turnFunc, settleFunc, actions);
   }

@@ -46,8 +46,8 @@ namespace lib7842
     void driveVector(double, double);
     void runActions(AsyncActionList);
 
-    QAngle angleToPoint(qPoint);
-    QLength distanceToPoint(qPoint);
+    QAngle angleToPoint(QPoint);
+    QLength distanceToPoint(QPoint);
 
     static settleFunc_t makeSettle(QAngle);
     static settleFunc_t makeSettle(QLength);
@@ -61,13 +61,13 @@ namespace lib7842
     static void rightPivot(OdomController*, double);
 
     static angleCalc_t angleCalc(QAngle);
-    static angleCalc_t angleCalc(qPoint);
+    static angleCalc_t angleCalc(QPoint);
     static angleCalc_t angleDisable();
 
     void turn(angleCalc_t, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
     void turnAngle(QAngle, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
-    void turnToPoint(qPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
+    void turnToPoint(QPoint, turnFunc_t = pointTurn, settleFunc_t = turnSettle, AsyncActionList = {});
 
     void driveDistanceAtAngle(QLength, angleCalc_t, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = driveSettle, AsyncActionList = {});
@@ -75,8 +75,8 @@ namespace lib7842
     void driveForTimeAtAngle(int, double, angleCalc_t, double = 1, AsyncActionList = {});
     void allignToAngle(QAngle, double, double);
 
-    void driveToPoint(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
-    void driveToPoint2(qPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPoint(QPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
+    void driveToPoint2(QPoint, double = 1, settleFunc_t = driveSettle, AsyncActionList = {});
 
     void drivePath(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});
     void drivePath2(Path, double = 1, settleFunc_t = driveSettle, settleFunc_t = driveSettle, AsyncActionList = {});

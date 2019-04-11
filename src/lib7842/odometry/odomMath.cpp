@@ -3,21 +3,21 @@
 namespace lib7842
 {
   /**
-  * qPoint
+  * QPoint
   */
-  qPoint::qPoint(const qPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
+  QPoint::QPoint(const QPoint &ipoint) : x(ipoint.x), y(ipoint.y), theta(ipoint.theta) {}
 
-  qPoint::qPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
-  qPoint::qPoint(QLength ix, QLength iy) : x(ix), y(iy) {}
-  qPoint::qPoint(QAngle itheta) : theta(itheta) {}
-  qPoint::qPoint() {}
+  QPoint::QPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
+  QPoint::QPoint(QLength ix, QLength iy) : x(ix), y(iy) {}
+  QPoint::QPoint(QAngle itheta) : theta(itheta) {}
+  QPoint::QPoint() {}
 
-  qPoint::qPoint(qPoint ipoint, QLength ix, QLength iy) : x(ix), y(iy), theta(ipoint.theta) {}
-  qPoint::qPoint(qPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
+  QPoint::QPoint(QPoint ipoint, QLength ix, QLength iy) : x(ix), y(iy), theta(ipoint.theta) {}
+  QPoint::QPoint(QPoint ipoint, QAngle itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
-  qPoint::qPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
+  QPoint::QPoint(dPoint ipoint) : x(ipoint.x * inch), y(ipoint.y * inch), theta(ipoint.theta * radian) {}
 
-  qPoint qPoint::operator+(qPoint rhs) { return {x + rhs.x, y + rhs.y, theta + rhs.theta}; }
+  QPoint QPoint::operator+(QPoint rhs) { return {x + rhs.x, y + rhs.y, theta + rhs.theta}; }
 
   /**
   * dPoint
@@ -31,22 +31,22 @@ namespace lib7842
   dPoint::dPoint(dPoint ipoint, double ix, double iy) : x(ix), y(iy), theta(ipoint.theta) {}
   dPoint::dPoint(dPoint ipoint, double itheta) : x(ipoint.x), y(ipoint.y), theta(itheta) {}
 
-  dPoint::dPoint(qPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
+  dPoint::dPoint(QPoint ipoint) : x(ipoint.x.convert(inch)), y(ipoint.y.convert(inch)), theta(ipoint.theta.convert(radian)) {}
 
   dPoint dPoint::operator+(dPoint rhs) { return {x + rhs.x, y + rhs.y, theta + rhs.theta}; }
 
   /**
   * Path
   */
-  Path::Path(qPoint point) : wayPoints {point} {}
-  Path::Path(std::initializer_list<qPoint> points) : wayPoints {points} {}
-  void Path::add(qPoint point) { wayPoints.push_back(point); }
-  void Path::add(Path path) { for(const qPoint &point : path.wayPoints) { wayPoints.push_back(point); } }
+  Path::Path(QPoint point) : wayPoints {point} {}
+  Path::Path(std::initializer_list<QPoint> points) : wayPoints {points} {}
+  void Path::add(QPoint point) { wayPoints.push_back(point); }
+  void Path::add(Path path) { for(const QPoint &point : path.wayPoints) { wayPoints.push_back(point); } }
 
   /**
   * Sides
   */
-  qPoint mirrorSide(qPoint point, autonSides side) {
+  QPoint mirrorSide(QPoint point, autonSides side) {
     if(side == autonSides::blue) {
       point.x = 12_ft - point.x;
       point.theta *= -1;
@@ -61,7 +61,7 @@ namespace lib7842
 
   Path mirrorSide(Path path, autonSides side) {
     if(side == autonSides::blue) {
-      for(qPoint &point : path.wayPoints) { point = mirrorSide(point, side); }
+      for(QPoint &point : path.wayPoints) { point = mirrorSide(point, side); }
     }
     return path;
   }
@@ -103,7 +103,7 @@ namespace lib7842::OdomMath
     return add(current, multScalar(n, d));
   }
 
-  qPoint closest(qPoint current, qPoint target) {
+  QPoint closest(QPoint current, QPoint target) {
     return closest(current, dPoint{sin(current.theta.convert(radian)), cos(current.theta.convert(radian))}, target);
   }
 
@@ -128,7 +128,7 @@ namespace lib7842::OdomMath
   }
 
 
-  QLength distanceBetweenPoints(qPoint firstPoint, qPoint secondPoint)
+  QLength distanceBetweenPoints(QPoint firstPoint, QPoint secondPoint)
   {
     QLength xDiff = secondPoint.x - firstPoint.x;
     QLength yDiff = secondPoint.y - firstPoint.y;

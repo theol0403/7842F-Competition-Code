@@ -35,15 +35,15 @@ void AutonSkills(void*);
 extern QTime shootTime;
 extern QLength startX;
 
-extern qPoint sideFlagShoot;
-extern qPoint sideFlagPost;
+extern QPoint sideFlagShoot;
+extern QPoint sideFlagPost;
 
-extern qPoint middleFlagShoot;
-extern qPoint middleFlagPost;
+extern QPoint middleFlagShoot;
+extern QPoint middleFlagPost;
 
-extern qPoint closeFlatCap;
+extern QPoint closeFlatCap;
 
-extern qPoint sidePlatform;
+extern QPoint sidePlatform;
 
 
 /**

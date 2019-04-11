@@ -27,7 +27,7 @@ namespace lib7842
     okapi::VelMath m_rightVelMath;
     pros::Task m_task;
 
-    qPoint state {0_in, 0_in, 0_rad};
+    QPoint state {0_in, 0_in, 0_rad};
 
     OdomTracker (
       std::shared_ptr<okapi::SkidSteerModel>,
@@ -37,8 +37,8 @@ namespace lib7842
 
     void debug();
 
-    void setState(qPoint);
-    qPoint& getState();
+    void setState(QPoint);
+    QPoint& getState();
 
     void setX(QLength);
     void setY(QLength);

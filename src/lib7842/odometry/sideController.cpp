@@ -10,7 +10,7 @@ namespace lib7842
     return AsyncAction().withSide(side);
   }
   
-  void SideController::setState(qPoint point) {
+  void SideController::setState(QPoint point) {
     controller->tracker->setState(mirrorSide(point, side));
   }
 
@@ -18,10 +18,10 @@ namespace lib7842
     controller->tracker->setX(mirrorSide(x, side));
   }
 
-  QAngle SideController::angleToPoint(qPoint point) {
+  QAngle SideController::angleToPoint(QPoint point) {
     return controller->angleToPoint(mirrorSide(point, side));
   }
-  QLength SideController::distanceToPoint(qPoint point) {
+  QLength SideController::distanceToPoint(QPoint point) {
     return controller->distanceToPoint(mirrorSide(point, side));
   }
 
@@ -49,7 +49,7 @@ namespace lib7842
   angleCalc_t SideController::angleCalc(QAngle angle) {
     return OdomController::angleCalc(mirrorSide(angle, side));
   }
-  angleCalc_t SideController::angleCalc(qPoint point) {
+  angleCalc_t SideController::angleCalc(QPoint point) {
     return OdomController::angleCalc(mirrorSide(point, side));
   }
 
@@ -63,7 +63,7 @@ namespace lib7842
   void SideController::turnAngle(QAngle angle, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
     controller->turnAngle(mirrorSide(angle, side), turnFunc, settleFunc, actions);
   }
-  void SideController::turnToPoint(qPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
+  void SideController::turnToPoint(QPoint point, turnFunc_t turnFunc, settleFunc_t settleFunc, AsyncActionList actions) {
     controller->turnToPoint(mirrorSide(point, side), turnFunc, settleFunc, actions);
   }
 
@@ -83,10 +83,10 @@ namespace lib7842
     controller->allignToAngle(mirrorSide(angle, side), vel, velThresh);
   }
 
-  void SideController::driveToPoint(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
+  void SideController::driveToPoint(QPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
     controller->driveToPoint(mirrorSide(targetPoint, side), turnScale, settleFunc, actions);
   }
-  void SideController::driveToPoint2(qPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
+  void SideController::driveToPoint2(QPoint targetPoint, double turnScale, settleFunc_t settleFunc, AsyncActionList actions) {
     controller->driveToPoint2(mirrorSide(targetPoint, side), turnScale, settleFunc, actions);
   }
 
@@ -97,7 +97,7 @@ namespace lib7842
     controller->drivePath2(mirrorSide(path, side), turnScale, moveOnSettle, finalSettle, actions);
   }
 
-  void SideController::driveToPointSimple(qPoint point, settleFunc_t settleFunc, AsyncActionList actions)
+  void SideController::driveToPointSimple(QPoint point, settleFunc_t settleFunc, AsyncActionList actions)
   {
     int direction = 1;
     QAngle wantedAngle = angleToPoint(point);

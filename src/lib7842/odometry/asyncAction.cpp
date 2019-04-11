@@ -22,17 +22,17 @@ namespace lib7842
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, triggerTypes type) {
+  AsyncAction &AsyncAction::withTrigger(QPoint point, QLength distanceThresh, triggerTypes type) {
     m_triggers.push_back({[=](OdomController* that){ return that->distanceToPoint(mirrorSide(point, m_side)) < distanceThresh; }, type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QLength distanceThresh, QAngle angleThresh, triggerTypes type) {
+  AsyncAction &AsyncAction::withTrigger(QPoint point, QLength distanceThresh, QAngle angleThresh, triggerTypes type) {
     m_triggers.push_back({[=](OdomController* that){ return that->distanceToPoint(mirrorSide(point, m_side)) < distanceThresh && that->angleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
     return *this;
   }
 
-  AsyncAction &AsyncAction::withTrigger(qPoint point, QAngle angleThresh, triggerTypes type) {
+  AsyncAction &AsyncAction::withTrigger(QPoint point, QAngle angleThresh, triggerTypes type) {
     m_triggers.push_back({[=](OdomController* that){ return that->angleToPoint(mirrorSide(point, m_side)).abs() < angleThresh; }, type});
     return *this;
   }
