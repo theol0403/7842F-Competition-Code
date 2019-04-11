@@ -75,7 +75,7 @@ void initializeDevices()
 		new lib7842::velPID(0.073, 0.35, 0.04, 0.1), 0.6
 	);
 
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 32.5, new IterativePosPIDController(0.025, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 32.5, new IterativePosPIDController(0.024, 0, 0, 0, TimeUtilFactory::create()));
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.2, 0, 0, 0, TimeUtilFactory::create()));
 

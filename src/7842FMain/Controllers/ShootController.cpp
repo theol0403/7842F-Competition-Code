@@ -147,6 +147,7 @@ void ShootController::doJobLoop(shootStates state) {
 }
 
 void ShootController::doMacro(shootMacros macro) {
+  macroCompleted = false;
   clearQueue();
   addMacro(macro);
 }

@@ -121,8 +121,11 @@ void driverControl()
 		wantedMacro = ShootController::shootMacros::off;
 	}
 
+	//when button first pressed
 	if(pDigitalPressed(R1)) {
-		robot.shooter->doJob(wantedMacro);
+		robot.shooter->doMacro(wantedMacro);
+	} else if(pDigital(R1) && !robot.shooter->macroCompleted) { //when button held and it is still going
+		//nothing
 	} else {
 
 		//if wanted changes
@@ -153,28 +156,10 @@ void driverControl()
 				robot.shooter->doJob(ShootController::standby);
 			}
 
-			//update last
 			lastWantedMacro = wantedMacro;
 
 		}
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
