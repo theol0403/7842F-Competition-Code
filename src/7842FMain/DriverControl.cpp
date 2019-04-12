@@ -81,12 +81,16 @@ void driverControl()
 	*/
 	if(pDigital(DOWN)) {
 		robot.shooter->setDistanceToFlag(3.5_ft);
+		lastWantedMacro = ShootController::shootMacros::nothing;
 	} else if(pDigital(LEFT)) {
 		robot.shooter->setDistanceToFlag(4.5_ft);
+		lastWantedMacro = ShootController::shootMacros::nothing;
 	} else if(pDigital(UP)) {
 		robot.shooter->setDistanceToFlag(8.5_ft);
+		lastWantedMacro = ShootController::shootMacros::nothing;
 	} else if(pDigital(RIGHT)) {
 		robot.shooter->setDistanceToFlag(11_ft);
+		lastWantedMacro = ShootController::shootMacros::nothing;
 	}
 
 	std::stringstream distStr;
@@ -120,10 +124,14 @@ void driverControl()
 	}
 
 	//when button first pressed
-	if(pDigitalPressed(R1)) {
+	if(pDigitalPressed(Y)) {
+		robot.shooter->doJob(ShootController::standby);
+		robot.shooter->macroCompleted = false;
+	} else if(pDigitalPressed(R1)) {
 		robot.shooter->doMacro(wantedMacro);
+		robot.shooter->macroCompleted = false;
 		lastWantedMacro = ShootController::shootMacros::nothing;
-	} else if(pDigital(R1) && !robot.shooter->macroCompleted) { //when button held and it is still going
+	} else if((pDigital(R1) || pDigital(Y)) && !robot.shooter->macroCompleted) { //when button held and it is still going
 		//nothing
 	} else {
 		//if wanted changes
@@ -160,7 +168,7 @@ void driverControl()
 				}
 
 			} else { //if it is off, standby (cycle)
-				robot.shooter->doJob(ShootController::standby);
+				robot.shooter->doJob(ShootController::off);
 			}
 
 			lastWantedMacro = wantedMacro;

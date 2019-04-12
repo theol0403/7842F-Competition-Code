@@ -213,7 +213,8 @@ double ShootController::computeHoodPower(double target) {
 
 void ShootController::run()
 {
-  const double angleThresh = 3;
+  const double stopAngleThresh = 4;
+  const double angleThresh = 2;
   const double cycleVel = -50;
 
   const double extendPos = 45;
@@ -288,7 +289,7 @@ void ShootController::run()
       if(getHoodAngle() >= getTopFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= getTopFlagAngle() - angleThresh) {
+        if(getHoodAngle() >= getTopFlagAngle() - stopAngleThresh) {
           flywheel->enable();
           completeJob();
         } else {
@@ -304,7 +305,7 @@ void ShootController::run()
       if(getHoodAngle() >= getMiddleFlagAngle() + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= getMiddleFlagAngle() - angleThresh) {
+        if(getHoodAngle() >= getMiddleFlagAngle() - stopAngleThresh) {
           flywheel->enable();
           completeJob();
         } else {
@@ -320,7 +321,7 @@ void ShootController::run()
       if(getHoodAngle() >= targetAngle + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= targetAngle - angleThresh) {
+        if(getHoodAngle() >= targetAngle - stopAngleThresh) {
           flywheel->enable();
           completeJob();
         } else {
@@ -336,7 +337,7 @@ void ShootController::run()
       if(getHoodAngle() >= 33 + angleThresh) {
         addJob(cycle);
       } else {
-        if(getHoodAngle() >= 33 - angleThresh) {
+        if(getHoodAngle() >= 33 - stopAngleThresh) {
           flywheel->enable();
           completeJob();
         } else {
