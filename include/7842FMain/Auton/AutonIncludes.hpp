@@ -16,7 +16,6 @@ void AutonNothing(void*);
 
 void AutonClose(void*);
 void AutonCloseWithoutPush(void*);
-void AutonCloseExperimental(void*);
 void AutonFar(void*);
 void AutonCloseMiddle(void*);
 

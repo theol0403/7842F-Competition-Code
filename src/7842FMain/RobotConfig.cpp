@@ -105,7 +105,7 @@ void initializeDevices()
 	#ifdef F_ROBOT
 	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 75.3 - 61, new IterativePosPIDController(0.015, 0, 0, 0, TimeUtilFactory::create()));
 	#else
-	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 75.3, new IterativePosPIDController(0.04, 0, 0, 0, TimeUtilFactory::create()));
+	robot.shooter = new ShootController(robot.intake, robot.flywheel, new pros::ADIPotentiometer('C'), 75.3 - 6, new IterativePosPIDController(0.04, 0, 0, 0, TimeUtilFactory::create()));
 	#endif
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.2, 0, 0, 0, TimeUtilFactory::create()));

@@ -27,7 +27,7 @@ void initialize()
   display.main->splashScreen(&img_navigators, 1800);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
+    {"T", AutonTest}, {"C", AutonClose},
     {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
     {"F", AutonFar}, {"Pf", AutonPlatformFar}, {"S", AutonSkills}
   });
