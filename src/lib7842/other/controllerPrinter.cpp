@@ -7,13 +7,14 @@ namespace lib7842
   ControllerPrinter::ControllerPrinter() : task(taskFnc, this) {}
 
   void ControllerPrinter::print(int line, std::string str, pros::controller_id_e_t id) {
+    //std::cout << "print: \"" << str << "\" at: " << id << std::endl;
     lines[id].at(line) = str;
   }
 
   void ControllerPrinter::rumble(std::string str, pros::controller_id_e_t id) {
     rumbleTexts[id] = str;
   }
-  
+
   std::string ControllerPrinter::get(int line, pros::controller_id_e_t id) {
     return lines[id].at(line);
   }
@@ -61,6 +62,15 @@ namespace lib7842
         m_print(pros::E_CONTROLLER_PARTNER);
         controllerConnected = true;
       }
+
+      // int count = 0;
+      // for(auto &line : lines) {
+      //   std::cout << "newline: " << count << std::endl;
+      //   count++;
+      //   for(auto &str : line) {
+      //     std::cout << str << std::endl;
+      //   }
+      // }
 
       if(!controllerConnected) {
         pros::delay(52);

@@ -10,8 +10,8 @@ namespace lib7842
   private:
 
     pros::Task task;
-    std::map<pros::controller_id_e_t, std::array<std::string, 3>> lines = {};
-    std::map<pros::controller_id_e_t, std::string> rumbleTexts = {};
+    std::array<std::array<std::string, 3>, 2> lines = {};
+    std::array<std::string, 2> rumbleTexts = {};
 
   public:
 

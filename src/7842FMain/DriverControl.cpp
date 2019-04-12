@@ -90,7 +90,7 @@ void driverControl()
 	*                  __/ |           __/ |
 	*                 |___/           |___/
 	*/
-	if(pros::c::controller_is_connected(pros::E_CONTROLLER_PARTNER)) {
+	if(true) { //if(pros::c::controller_is_connected(pros::E_CONTROLLER_PARTNER)) {
 
 		/**
 		* Distance Control
@@ -130,7 +130,7 @@ void driverControl()
 		}
 		std::stringstream distStr;
 		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.printer->print(2, distStr.str() + "\' to " + flagString);
+		robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_PARTNER);
 
 		//cycle, then wait for button released, then go back to action
 		if(pDigitalPressed(Y)) {

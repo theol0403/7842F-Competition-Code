@@ -109,7 +109,7 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_style_copy(&oStyle, &lv_style_pretty_color);
     oStyle.body.main_color = display->mainColor;
     oStyle.body.grad_color = display->mainColor;
-    oStyle.body.border.width = 3;
+    oStyle.body.border.width = 0;
     oStyle.body.border.color = LV_COLOR_WHITE;
     oStyle.body.border.opa = LV_OPA_100;
     oStyle.body.radius = 0;
@@ -122,20 +122,6 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_style_t iStyle;
     lv_style_copy(&iStyle, &lv_style_plain);
     lv_img_set_style(img, &iStyle);
-
-    lv_anim_t bAnim;
-    bAnim.var = overlay; bAnim.start = 0; bAnim.end = 255;
-    bAnim.fp = [](void* ioverlay, int32_t val)
-    {
-      lv_obj_t* overlay = static_cast<lv_obj_t*>(ioverlay);
-      lv_style_t* oStyle = lv_obj_get_style(overlay);
-      oStyle->body.border.opa = val;
-      lv_obj_set_style(overlay, oStyle);
-    };
-    bAnim.path = lv_anim_path_linear;
-    bAnim.time = time/2;
-    bAnim.end_cb = NULL; bAnim.act_time = 0; bAnim.playback = 1; bAnim.playback_pause = 0; bAnim.repeat = 0; bAnim.repeat_pause = 0;
-    lv_anim_create(&bAnim);
 
     lv_anim_t iAnim;
     iAnim.var = img; iAnim.start = 0; iAnim.end = 255;
