@@ -9,24 +9,28 @@ namespace lib7842
 
   private:
 
-    pros::controller_id_e_t controller;
     pros::Task task;
 
-    std::array<std::string, 3> lines = {};
-    bool doRumble = false;
-    std::string rumbleText = {};
-    bool paused = true;
+    std::array<std::string, 3> mLines = {};
+    std::array<std::string, 3> pLines = {};
+
+    std::string mRumbleText = "";
+    std::string pRumbleText = "";
 
   public:
 
-    ControllerPrinter(pros::controller_id_e_t);
-    void print(int, std::string);
-    std::string get(int);
-    void rumble(std::string);
-    void pause();
+    ControllerPrinter();
+
+    void print(int, std::string, pros::controller_id_e_t = pros::E_CONTROLLER_MASTER);
+    std::string get(int, pros::controller_id_e_t);
+    void rumble(std::string, pros::controller_id_e_t);
 
     void run();
     static void taskFnc(void*);
+
+  private:
+
+    void m_print(std::array<std::string, 3>&, pros::controller_id_e_t);
 
   };
 
