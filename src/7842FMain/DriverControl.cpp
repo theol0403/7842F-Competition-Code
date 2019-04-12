@@ -54,12 +54,15 @@ void driverControl()
 	* Arm Abort
 	*/
 	if(mDigitalPressed(B) || pDigitalPressed(B)) {
-		robot.mPrinter->rumble("-");
+		robot.mPrinter->rumble(".");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
 		} else {
 			robot.flywheel->setRpm(0);
 		}
+		shootMacro = ShootController::shootMacros::off;
+		lastShootMacro = ShootController::shootMacros::off;
+		robot.shooter->doJob(ShootController::off);
 
 		robot.arm->setState(ArmController::off);
 	}
@@ -106,10 +109,6 @@ void driverControl()
 			lastShootMacro = ShootController::shootMacros::nothing;
 		}
 
-		std::stringstream distStr;
-		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.mPrinter->print(2, distStr.str() + "\' to flag");
-
 		//set wanted action
 		if(pDigital(X)) {
 			shootMacro = ShootController::shootMacros::shootOut;
@@ -119,69 +118,58 @@ void driverControl()
 			shootMacro = ShootController::shootMacros::shootMiddle;
 		} else if(pDigital(L1)) {
 			shootMacro = ShootController::shootMacros::shootTop;
-		} else {
-			shootMacro = ShootController::shootMacros::off;
 		}
 
-		//when button first pressed
-		if(pDigitalPressed(Y)) {
-			robot.shooter->doJob(ShootController::cycle);
-			robot.shooter->macroCompleted = false;
-		} else if(pDigitalPressed(R1)) {
-			if(shootMacro == ShootController::shootMacros::off) {
-				robot.shooter->doMacro(ShootController::shootMacros::shoot);
-			} else {
-				robot.shooter->doMacro(shootMacro);
-			}
+		std::string flagString;
+		switch(shootMacro) {
+			case ShootController::shootMacros::shootOut : flagString = "bottom"; break;
+			case ShootController::shootMacros::shootBoth : flagString = "both"; break;
+			case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
+			case ShootController::shootMacros::shootTop : flagString = "top"; break;
+			default: flagString = "invalid"; break;
+		}
+		std::stringstream distStr;
+		distStr << robot.shooter->distanceToFlag.convert(foot);
+		robot.mPrinter->print(2, distStr.str() + "\' to " + flagString);
 
-			robot.shooter->macroCompleted = false;
+		//cycle, then wait for button released, then go back to action
+		if(pDigitalPressed(Y)) {
+			robot.shooter->doMacro(ShootController::shootMacros::cycle);
+			//cause it to go until pressed unless trigger pressed
+			shootMacro = ShootController::shootMacros::nothing;
 			lastShootMacro = ShootController::shootMacros::nothing;
-		} else if((pDigital(R1) || pDigital(Y)) && !robot.shooter->macroCompleted) { //when button held and it is still going
+		} else if(pDigitalPressed(R1)) {
+			robot.shooter->doMacro(shootMacro);
+			//when let go or completed it will go back to other action
+			lastShootMacro = ShootController::shootMacros::nothing;
+		} else if(!robot.shooter->macroCompleted) { //not completed
+			//} else if((pDigital(R1) || pDigital(Y)) && !robot.shooter->macroCompleted) { //when button held and it is still going
 			//nothing
 		} else {
-			//if wanted changes
 			if(shootMacro != lastShootMacro) {
-
-				//if it is not off, just do the angling
-				if(shootMacro != ShootController::shootMacros::off) {
-					switch(shootMacro) {
-
-						case ShootController::shootMacros::shootOut : {
-							robot.shooter->doJob(ShootController::angleOut);
-							break;
-						}
-
-						case ShootController::shootMacros::shootBoth : {
-							robot.shooter->doJob(ShootController::angleTop);
-							break;
-						}
-
-						case ShootController::shootMacros::shootMiddle : {
-							robot.shooter->doJob(ShootController::angleMiddle);
-							break;
-						}
-
-						case ShootController::shootMacros::shootTop : {
-							robot.shooter->doJob(ShootController::angleTop);
-							break;
-						}
-
-						default: {
-							std::cerr << "DriverControl: Invalid shootMacro" << std::endl;
-							break;
-						}
+				switch(shootMacro) {
+					case ShootController::shootMacros::shootOut : {
+						robot.shooter->doJob(ShootController::angleOut);
+						break;
+					} case ShootController::shootMacros::shootBoth : {
+						robot.shooter->doJob(ShootController::angleTop);
+						break;
+					} case ShootController::shootMacros::shootMiddle : {
+						robot.shooter->doJob(ShootController::angleMiddle);
+						break;
+					} case ShootController::shootMacros::shootTop : {
+						robot.shooter->doJob(ShootController::angleTop);
+						break;
+					} default: {
+						std::cerr << "DriverControl: Invalid shootMacro" << std::endl;
+						break;
 					}
-
-				} else { //if it is off, standby (cycle)
-					robot.shooter->doJob(ShootController::off);
 				}
-
 				lastShootMacro = shootMacro;
 			}
 		}
 
-	} else {
-
+	} else { //parter not connected
 
 		/**
 		* Automatic Shoot Control
@@ -229,8 +217,6 @@ void driverControl()
 		std::stringstream distStr;
 		distStr << robot.shooter->distanceToFlag.convert(foot);
 		robot.mPrinter->print(2, distStr.str() + "\' to flag");
-
-
 	}
 
 

@@ -42,6 +42,7 @@ public:
     shootOut,
     shoot,
     angle,
+    cycle,
     nothing
   };
 
