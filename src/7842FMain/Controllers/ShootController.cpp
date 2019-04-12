@@ -115,11 +115,11 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shoot :
-    addJobs({enableShoot});
+    addJobs({reportDone, enableShoot});
     break;
 
     case shootMacros::angle :
-    addJobs({angling});
+    addJobs({reportDone, angling});
     break;
 
     case shootMacros::nothing :
@@ -387,7 +387,7 @@ void ShootController::run()
       } else {
         flywheel->enable();
         intake->disable();
-        intake->intake->moveVelocity(50);
+        intake->intake->moveVelocity(200);
         intake->indexer->moveVelocity(200);
         intake->indexerSlave = false;
       }
