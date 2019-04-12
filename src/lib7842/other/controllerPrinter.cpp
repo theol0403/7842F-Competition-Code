@@ -19,6 +19,10 @@ namespace lib7842
     return lines[id].at(line);
   }
 
+  void ControllerPrinter::copy(int line, pros::controller_id_e_t source, pros::controller_id_e_t dest) {
+    lines[dest].at(line) = lines[source].at(line);
+  }
+  
 
   void ControllerPrinter::m_print(pros::controller_id_e_t id) {
     const int maxWidth = 15;

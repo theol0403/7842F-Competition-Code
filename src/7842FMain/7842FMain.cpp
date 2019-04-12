@@ -143,6 +143,10 @@ void opcontrol()
       robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
 
+    robot.printer->copy(0, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+    robot.printer->copy(1, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+    robot.printer->copy(2, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+
     // if(true) { //isCompetition
     //   if(remaining == 30_s) {
     //     robot.printer->rumble("-");

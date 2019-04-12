@@ -90,7 +90,7 @@ void driverControl()
 	*                  __/ |           __/ |
 	*                 |___/           |___/
 	*/
-	if(true) { //if(pros::c::controller_is_connected(pros::E_CONTROLLER_PARTNER)) {
+	if(pros::c::controller_is_connected(pros::E_CONTROLLER_PARTNER)) {
 
 		/**
 		* Distance Control
@@ -119,18 +119,6 @@ void driverControl()
 		} else if(pDigital(L1)) {
 			shootMacro = ShootController::shootMacros::shootTop;
 		}
-
-		std::string flagString;
-		switch(shootMacro) {
-			case ShootController::shootMacros::shootOut : flagString = "bottom"; break;
-			case ShootController::shootMacros::shootBoth : flagString = "both"; break;
-			case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
-			case ShootController::shootMacros::shootTop : flagString = "top"; break;
-			default: flagString = "invalid"; break;
-		}
-		std::stringstream distStr;
-		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_PARTNER);
 
 		//cycle, then wait for button released, then go back to action
 		if(pDigitalPressed(Y)) {
@@ -213,11 +201,19 @@ void driverControl()
 		} else if(mDigital(RIGHT)) {
 			robot.shooter->setDistanceToFlag(11_ft);
 		}
-
-		std::stringstream distStr;
-		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.printer->print(2, distStr.str() + "\' to flag");
 	}
 
+
+	std::string flagString;
+	switch(shootMacro) {
+		case ShootController::shootMacros::shootOut : flagString = "bottom"; break;
+		case ShootController::shootMacros::shootBoth : flagString = "both"; break;
+		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
+		case ShootController::shootMacros::shootTop : flagString = "top"; break;
+		default: flagString = "invalid"; break;
+	}
+	std::stringstream distStr;
+	distStr << robot.shooter->distanceToFlag.convert(foot);
+	robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_PARTNER);
 
 }

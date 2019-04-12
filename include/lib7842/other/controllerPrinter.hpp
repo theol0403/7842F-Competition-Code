@@ -20,6 +20,7 @@ namespace lib7842
     void print(int, std::string, pros::controller_id_e_t = pros::E_CONTROLLER_MASTER);
     void rumble(std::string, pros::controller_id_e_t = pros::E_CONTROLLER_MASTER);
     std::string get(int, pros::controller_id_e_t);
+    void copy(int, pros::controller_id_e_t, pros::controller_id_e_t);
 
     void run();
     static void taskFnc(void*);
