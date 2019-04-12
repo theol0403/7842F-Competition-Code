@@ -54,7 +54,7 @@ void driverControl()
 	* Arm Abort
 	*/
 	if(mDigitalPressed(B) || pDigitalPressed(B)) {
-		robot.joystickPrinter->rumble(".");
+		robot.printer->rumble(".");
 		if(robot.flywheel->getTargetRpm() == 0) {
 			robot.flywheel->setRpm(globalFlywheelRPM);
 		} else {
@@ -71,10 +71,10 @@ void driverControl()
 	* Flywheel Ready Printing
 	*/
 	if((robot.flywheel->targetRpm - robot.flywheel->currentRpm) < 50) {
-		robot.joystickPrinter->print(1, "Flywheel Ready");
+		robot.printer->print(1, "Flywheel Ready");
 		display.driverDisplay->setColor(LV_COLOR_LIME);
 	} else {
-		robot.joystickPrinter->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
+		robot.printer->print(1, "NOT READY: " + std::to_string((int)(robot.flywheel->targetRpm - robot.flywheel->currentRpm)));
 		display.driverDisplay->setColor(LV_COLOR_MAGENTA);
 	}
 
@@ -130,7 +130,7 @@ void driverControl()
 		}
 		std::stringstream distStr;
 		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.joystickPrinter->print(2, distStr.str() + "\' to " + flagString);
+		robot.printer->print(2, distStr.str() + "\' to " + flagString);
 
 		//cycle, then wait for button released, then go back to action
 		if(pDigitalPressed(Y)) {
@@ -216,7 +216,7 @@ void driverControl()
 
 		std::stringstream distStr;
 		distStr << robot.shooter->distanceToFlag.convert(foot);
-		robot.joystickPrinter->print(2, distStr.str() + "\' to flag");
+		robot.printer->print(2, distStr.str() + "\' to flag");
 	}
 
 
