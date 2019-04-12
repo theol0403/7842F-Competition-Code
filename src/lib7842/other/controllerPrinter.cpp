@@ -10,12 +10,12 @@ namespace lib7842
     lines[id].at(line) = str;
   }
 
-  std::string ControllerPrinter::get(int line, pros::controller_id_e_t id) {
-    return lines[id].at(line);
-  }
-
   void ControllerPrinter::rumble(std::string str, pros::controller_id_e_t id) {
     rumbleTexts[id] = str;
+  }
+  
+  std::string ControllerPrinter::get(int line, pros::controller_id_e_t id) {
+    return lines[id].at(line);
   }
 
 

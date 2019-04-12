@@ -18,8 +18,8 @@ namespace lib7842
     ControllerPrinter();
 
     void print(int, std::string, pros::controller_id_e_t = pros::E_CONTROLLER_MASTER);
+    void rumble(std::string, pros::controller_id_e_t = pros::E_CONTROLLER_MASTER);
     std::string get(int, pros::controller_id_e_t);
-    void rumble(std::string, pros::controller_id_e_t);
 
     void run();
     static void taskFnc(void*);
