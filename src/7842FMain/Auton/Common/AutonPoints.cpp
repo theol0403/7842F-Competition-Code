@@ -5,7 +5,7 @@
  * It is assumed they will mirror perfectly along the middle of the court
  */
 
-QLength startX {2_in}; //The X of the robot in the setup position
+QLength startX {2.5_in}; //The X of the robot in the setup position
 
 QPoint sideFlagShoot {1.35_ft, 11.2_ft}; //The shooting target for the flag
 QPoint sideFlagPost {2_ft, 11_ft}; //The flag post

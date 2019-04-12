@@ -68,5 +68,5 @@ void initializeDevices();
 void initializeBase();
 
 //#define TEST_ROBOT
-//#define B_ROBOT
-#define F_ROBOT
+#define B_ROBOT
+//#define F_ROBOT
