@@ -10,12 +10,8 @@ namespace lib7842
   private:
 
     pros::Task task;
-
-    std::array<std::string, 3> mLines = {};
-    std::array<std::string, 3> pLines = {};
-
-    std::string mRumbleText = "";
-    std::string pRumbleText = "";
+    std::map<pros::controller_id_e_t, std::array<std::string, 3>> lines = {};
+    std::map<pros::controller_id_e_t, std::string> rumbleTexts = {};
 
   public:
 
@@ -30,7 +26,7 @@ namespace lib7842
 
   private:
 
-    void m_print(std::array<std::string, 3>&, pros::controller_id_e_t);
+    void m_print(pros::controller_id_e_t);
 
   };
 
