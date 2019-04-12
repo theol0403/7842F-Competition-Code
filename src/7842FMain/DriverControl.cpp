@@ -210,10 +210,10 @@ void driverControl()
 		case ShootController::shootMacros::shootBoth : flagString = "both"; break;
 		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
 		case ShootController::shootMacros::shootTop : flagString = "top"; break;
-		default: flagString = "invalid"; break;
+		default: flagString = "none"; break;
 	}
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
-	robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_PARTNER);
+	robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_MASTER);
 
 }
