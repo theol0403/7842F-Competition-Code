@@ -118,7 +118,7 @@ void opcontrol()
     subsystem(flywheel)->setRpm(globalFlywheelRPM);
   }
 
-  robot.mPrinter->rumble(".");
+  robot.joystickPrinter->rumble(".");
 
   Timer opTimer;
   opTimer.placeMark();
@@ -126,7 +126,7 @@ void opcontrol()
   while(true) {
 
     if(mDigital(A)) {
-      robot.mPrinter->rumble("-");
+      robot.joystickPrinter->rumble("-");
       autonomous();
     }
 
@@ -136,24 +136,20 @@ void opcontrol()
 
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.mPrinter->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.joystickPrinter->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else if(remaining > 1_min) {
-      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.joystickPrinter->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     } else {
-      robot.mPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      robot.joystickPrinter->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
     }
-
-    // robot.pPrinter->print(0, robot.mPrinter->get(0));
-    // robot.pPrinter->print(1, robot.mPrinter->get(1));
-    // robot.pPrinter->print(2, robot.mPrinter->get(2));
 
     // if(true) { //isCompetition
     //   if(remaining == 30_s) {
-    //     robot.mPrinter->rumble("-");
+    //     robot.joystickPrinter->rumble("-");
     //   } else if(remaining == 15_s) {
-    //     robot.mPrinter->rumble("--");
+    //     robot.joystickPrinter->rumble("--");
     //   } else if(remaining == 10_s) {
-    //     robot.mPrinter->rumble("....");
+    //     robot.joystickPrinter->rumble("....");
     //   }
     // }
 

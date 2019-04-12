@@ -90,7 +90,7 @@ void initializeBase()
 
 void initializeDevices()
 {
-	robot.mPrinter = new ControllerPrinter(pros::E_CONTROLLER_MASTER);
+	robot.joystickPrinter = new ControllerPrinter(pros::E_CONTROLLER_PARTNER);
 
 	robot.intake = new IntakeController(new okapi::Motor(mIntake), new okapi::Motor(mIndexer), new pros::ADILineSensor('D'), 1);
 
