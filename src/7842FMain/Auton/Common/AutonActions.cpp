@@ -3,13 +3,15 @@
 void firstCapMovement(SideController& chassis, QLength y) {
   chassis.setState({startX, y, 90_deg}); // Robot is facing cap
 
+  QPoint drivePoint {3.8_ft, y};
+
   //this will make the robot intake when it is a distance from the cap
   AsyncAction intake = chassis.makeAsyncAction()
-  .withTrigger({3.9_ft, y}, 2_ft)
+  .withTrigger(drivePoint, 2_ft)
   .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   // Move to ball under cap while intaking
-  chassis.driveToPoint({4_ft, y}, 1, driveSettle, {intake});
+  chassis.driveToPoint(drivePoint, 1, driveSettle, {intake});
 }
 
 

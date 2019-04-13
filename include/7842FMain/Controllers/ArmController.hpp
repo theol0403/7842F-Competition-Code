@@ -13,6 +13,7 @@ public:
     holdAtPos,
     down,
     carry,
+    balance,
     on
   };
 

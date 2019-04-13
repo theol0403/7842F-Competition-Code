@@ -55,6 +55,11 @@ void ArmController::run()
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
+      case balance:
+      pid->setTarget(380);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
       case on:
       arm->move(127);
       break;

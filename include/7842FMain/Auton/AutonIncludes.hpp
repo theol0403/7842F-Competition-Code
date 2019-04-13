@@ -16,13 +16,15 @@ void AutonNothing(void*);
 
 void AutonClose(void*);
 void AutonCloseWithoutPush(void*);
-void AutonFar(void*);
 void AutonCloseMiddle(void*);
+
+void AutonFar(void*);
+void AutonPlatformFar(void*);
+void AutonFarDescore(void*);
 
 void AutonMiddleFromClose(void*);
 void AutonMiddleFromFar(void*);
 
-void AutonPlatformFar(void*);
 
 void AutonTest(void*);
 
@@ -39,6 +41,9 @@ extern QPoint sideFlagPost;
 
 extern QPoint middleFlagShoot;
 extern QPoint middleFlagPost;
+
+extern QPoint farFlagShoot;
+extern QPoint farFlagPost;
 
 extern QPoint closeFlatCap;
 
