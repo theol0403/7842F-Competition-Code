@@ -22,59 +22,42 @@ namespace lib7842
   void ControllerPrinter::copy(int line, pros::controller_id_e_t source, pros::controller_id_e_t dest) {
     lines[dest].at(line) = lines[source].at(line);
   }
-  
-
-  void ControllerPrinter::m_print(pros::controller_id_e_t id) {
-    const int maxWidth = 15;
-    for(int i = 0; i < lines[id].size(); i++) {
-
-      std::string str = lines[id].at(i);
-      if(str.size() < maxWidth) {
-        str.insert(str.end(), maxWidth - str.size(), ' ');
-      } else {
-        str.erase(str.begin() + maxWidth, str.end());
-      }
-
-      if(lines[id].at(i) == "") {
-        controller_clear_line(id, i);
-      } else {
-        controller_set_text(id, i, 0, str.c_str());
-      }
-
-      pros::delay(52);
-
-      if(rumbleTexts[id] != "") {
-        controller_rumble(id, rumbleTexts[id].c_str());
-        pros::delay(52);
-        rumbleTexts[id] = "";
-      }
-    }
-  }
-
 
   void ControllerPrinter::run() {
+
+    const int maxWidth = 15;
 
     while(true) {
       bool controllerConnected = false;
 
-      if(pros::c::controller_is_connected(pros::E_CONTROLLER_MASTER)) {
-        m_print(pros::E_CONTROLLER_MASTER);
-        controllerConnected = true;
-      }
+      for(int id = 0; id < lines.size(); id++) {
+        if(pros::c::controller_is_connected((pros::controller_id_e_t)id)) {
+          controllerConnected = true;
 
-      if(pros::c::controller_is_connected(pros::E_CONTROLLER_PARTNER)) {
-        m_print(pros::E_CONTROLLER_PARTNER);
-        controllerConnected = true;
-      }
+          for(int i = 0; i < lines[id].size(); i++) {
 
-      // int count = 0;
-      // for(auto &line : lines) {
-      //   std::cout << "newline: " << count << std::endl;
-      //   count++;
-      //   for(auto &str : line) {
-      //     std::cout << str << std::endl;
-      //   }
-      // }
+            std::string str = lines[id].at(i);
+            if(str.size() < maxWidth) {
+              str.insert(str.end(), maxWidth - str.size(), ' ');
+            } else {
+              str.erase(str.begin() + maxWidth, str.end());
+            }
+
+            if(lines[id].at(i) != "") {
+              controller_set_text((pros::controller_id_e_t)id, i, 0, str.c_str());
+            }
+
+            pros::delay(52);
+
+            if(rumbleTexts[id] != "") {
+              controller_rumble((pros::controller_id_e_t)id, rumbleTexts[id].c_str());
+              pros::delay(52);
+              rumbleTexts[id] = "";
+            }
+          }
+
+        }
+      }
 
       if(!controllerConnected) {
         pros::delay(52);

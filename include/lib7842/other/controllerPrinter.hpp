@@ -25,10 +25,6 @@ namespace lib7842
     void run();
     static void taskFnc(void*);
 
-  private:
-
-    void m_print(pros::controller_id_e_t);
-
   };
 
 }
