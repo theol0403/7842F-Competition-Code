@@ -68,7 +68,7 @@ namespace lib7842
   * @param forwardSpeed
   * @param yaw
   */
-  void OdomController::driveVector(double forwardSpeed, double yaw)
+  void OdomController::driveVector(double forwardSpeed, double yaw, bool noSlew)
   {
     double leftOutput = forwardSpeed + yaw;
     double rightOutput = forwardSpeed - yaw;
@@ -78,25 +78,28 @@ namespace lib7842
       rightOutput /= maxInputMag;
     }
 
-    double increment = 0;
+    if(!noSlew) {
+      double increment = 0;
 
-    increment = leftOutput - lastVelL;
-    if(std::abs(increment) > slewRate) {
-      lastVelL += slewRate * sgn(increment);
+      increment = leftOutput - lastVelL;
+      if(std::abs(increment) > slewRate) {
+        lastVelL += slewRate * sgn(increment);
+      } else {
+        lastVelL = leftOutput;
+      }
+
+      increment = rightOutput - lastVelR;
+      if(std::abs(increment) > slewRate) {
+        lastVelR += slewRate * sgn(increment);
+      } else {
+        lastVelR = rightOutput;
+      }
+
+      tracker->model->tank(lastVelL, lastVelR);
     } else {
-      lastVelL = leftOutput;
+      tracker->model->tank(leftOutput, rightOutput);
     }
 
-    increment = rightOutput - lastVelR;
-    if(std::abs(increment) > slewRate) {
-      lastVelR += slewRate * sgn(increment);
-    } else {
-      lastVelR = rightOutput;
-    }
-
-    tracker->model->tank(lastVelL, lastVelR);
-    // tracker->model->left(leftOutput);
-    // tracker->model->right(rightOutput);
   }
 
   /**

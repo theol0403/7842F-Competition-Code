@@ -43,7 +43,7 @@ namespace lib7842
     bool checkAbort(double, QTime);
     bool checkEmergencyAbort();
 
-    void driveVector(double, double);
+    void driveVector(double, double, bool = false);
     void runActions(AsyncActionList);
 
     QAngle angleToPoint(QPoint);

@@ -38,12 +38,12 @@ namespace lib7842
   void OdomController::driveForTime(int time, double vel, AsyncActionList actions)
   {
     while(time > 0) {
-      driveVector(vel, 0);
+      driveVector(vel, 0, true);
       time -= 10;
       runActions(actions);
       pros::delay(10);
     }
-    driveVector(0, 0);
+    driveVector(0, 0, true);
   }
 
 

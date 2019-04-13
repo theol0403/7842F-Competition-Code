@@ -21,6 +21,7 @@ void AutonCloseMiddle(void*);
 void AutonFar(void*);
 void AutonPlatformFar(void*);
 void AutonFarDescore(void*);
+void AutonFarPost(void*);
 
 void AutonMiddleFromClose(void*);
 void AutonMiddleFromFar(void*);
