@@ -64,7 +64,7 @@ public:
   shootMacros currentMacro = shootMacros::off;
   double targetAngle = 0;
   QLength distanceToFlag = 0_in;
-  bool macroCompleted = false;
+  bool macroCompleted = true;;
 
   ShootController(IntakeController*&, FlywheelController*&, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 

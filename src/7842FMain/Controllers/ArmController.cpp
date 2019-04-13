@@ -5,6 +5,7 @@ arm(iarm), pid(ipid),
 task(taskFnc, this)
 {
   arm->setBrakeMode(AbstractMotor::brakeMode::coast);
+  arm->setEncoderUnits(AbstractMotor::encoderUnits::degrees);
   startAngle = arm->getPosition();
 }
 
@@ -17,12 +18,13 @@ ArmController::armStates ArmController::getState() {
 }
 
 double ArmController::getArmAngle() {
-  return (arm->getPosition() / 4095.0 * 265.0) - startAngle;
+  return arm->getPosition() - startAngle;
 }
 
 
 void ArmController::run()
 {
+  double holdPos = 0;
 
   while(true)
   {
@@ -33,19 +35,28 @@ void ArmController::run()
       arm->move(0);
       break;
 
+      case hold:
+      holdPos = getArmAngle();
+      armState = holdAtPos;
+      break;
+
+      case holdAtPos:
+      pid->setTarget(holdPos);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
       case down:
-      pid->setTarget(0);
+      pid->setTarget(10);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
-      case aboveWall:
-      pid->setTarget(20);
+      case carry:
+      pid->setTarget(340);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
-      case descore:
-      pid->setTarget(50);
-      arm->move(pid->step(getArmAngle()) * 127);
+      case on:
+      arm->move(127);
       break;
     }
 
