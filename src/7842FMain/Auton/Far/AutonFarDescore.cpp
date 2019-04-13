@@ -6,6 +6,7 @@ void AutonFarDescore(void* input)
   auto &[chassis, timer] = *passer;
 
   firstCapMovement(chassis, 3_ft);
+  //chassis.driveDistance(5_in, makeSettle(4_in));
 
   //chassis.driveToPoint({0.9_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
 
@@ -22,8 +23,8 @@ void AutonFarDescore(void* input)
   robot.arm->setState(ArmController::balance);
 
   chassis.turnToAngle(-180_deg);
-  chassis.driveForTime(200, 0.7);
-  chassis.driveForTime(2000, -1);
+  chassis.driveForTime(100, 0.7);
+  chassis.driveForTime(2500, -1);
   robot.arm->setState(ArmController::off);
   //chassis.driveDistance(-0.1_ft);
 
