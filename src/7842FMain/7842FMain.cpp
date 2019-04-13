@@ -134,16 +134,19 @@ void opcontrol()
     driverControl();
     #endif
 
+    std::string str;
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     } else if(remaining > 1_min) {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     } else {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     }
 
-    robot.printer->copy(0, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+    robot.printer->print(0, str + "  M", pros::E_CONTROLLER_MASTER);
+    robot.printer->print(0, str + "  P", pros::E_CONTROLLER_PARTNER);
+
     robot.printer->copy(1, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
     robot.printer->copy(2, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
 
