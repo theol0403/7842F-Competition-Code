@@ -39,7 +39,7 @@ const int8_t mLeftBack = 17;
 #endif
 
 
-const int globalFlywheelRPM = 3000;
+const int globalFlywheelRPM = 2950;
 
 
 void initializeBase()
@@ -56,7 +56,7 @@ void initializeBase()
 
 	robot.tracker = new lib7842::OdomTracker (
 		robot.model,
-		6.035_in, 2.75_in, 360,
+		6.472_in, 2.75_in, 360,
 		lib7842::OdomTracker::mdTracking
 	);
 
@@ -126,7 +126,7 @@ void initializeDevices()
 
 	display.graph = new Graph(display.main->newTab("Graph"), LV_COLOR_WHITE);
 	(*display.graph)
-	.withRange(-50, 3100/6)
+	.withRange(-50, 3200/6)
 	.withRes(300)
 	.withLines(10, 8)
 	.withRefresh(20)
