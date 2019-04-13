@@ -11,6 +11,7 @@ namespace lib7842
 
     pros::Task task;
     std::array<std::array<std::string, 3>, 2> lines = {};
+    std::array<std::array<std::string, 3>, 2> lastLines = {};
     std::array<std::string, 2> rumbleTexts = {};
 
   public:

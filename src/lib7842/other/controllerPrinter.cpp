@@ -28,30 +28,32 @@ namespace lib7842
     const int maxWidth = 15;
 
     while(true) {
-      bool controllerConnected = false;
+      bool delayed = false; //make sure there is no starving
 
       for(int id = 0; id < lines.size(); id++) {
         if(pros::c::controller_is_connected((pros::controller_id_e_t)id)) {
-          controllerConnected = true;
 
           for(int i = 0; i < lines[id].size(); i++) {
 
-            std::string str = lines[id].at(i);
-            if(str.size() < maxWidth) {
-              str.insert(str.end(), maxWidth - str.size(), ' ');
-            } else {
-              str.erase(str.begin() + maxWidth, str.end());
-            }
+            if(lines[id].at(i) != lastLines[id].at(i)) {
 
-            if(lines[id].at(i) != "") {
+              std::string str = lines[id].at(i);
+              if(str.size() < maxWidth) {
+                str.insert(str.end(), maxWidth - str.size(), ' ');
+              } else {
+                str.erase(str.begin() + maxWidth, str.end());
+              }
+
               controller_set_text((pros::controller_id_e_t)id, i, 0, str.c_str());
+              lastLines[id].at(i) = lines[id].at(i);
+              pros::delay(52);
+              delayed = true;
             }
-
-            pros::delay(52);
 
             if(rumbleTexts[id] != "") {
               controller_rumble((pros::controller_id_e_t)id, rumbleTexts[id].c_str());
               pros::delay(52);
+              delayed = true;
               rumbleTexts[id] = "";
             }
           }
@@ -59,7 +61,7 @@ namespace lib7842
         }
       }
 
-      if(!controllerConnected) {
+      if(!delayed) {
         pros::delay(52);
       }
     }
