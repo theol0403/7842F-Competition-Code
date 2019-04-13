@@ -100,7 +100,7 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
   void (*func)(void*) = [](void* input){
     auto [display, imgPtr, time] = *static_cast<Passer*>(input);
 
-    lv_obj_t* parent = lv_layer_top();
+    lv_obj_t* parent = lv_scr_act();
 
     lv_obj_t* overlay = lv_obj_create(parent, NULL);
     lv_obj_set_size(overlay, lv_obj_get_width(parent), lv_obj_get_height(parent));
@@ -133,11 +133,11 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
       lv_img_set_style(img, iStyle);
     };
     iAnim.path = lv_anim_path_linear;
-    iAnim.time = time/3.0;
-    iAnim.end_cb = NULL; iAnim.act_time = 0; iAnim.playback = 1; iAnim.playback_pause = time/3.0; iAnim.repeat = 0; iAnim.repeat_pause = 0;
+    iAnim.time = time/3;
+    iAnim.end_cb = NULL; iAnim.act_time = 0; iAnim.playback = 1; iAnim.playback_pause = time/3; iAnim.repeat = 0; iAnim.repeat_pause = 0;
     lv_anim_create(&iAnim);
 
-    pros::delay(time);
+    pros::delay(time + 5);
 
     lv_obj_del(overlay);
     delete static_cast<Passer*>(input);
@@ -147,6 +147,6 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
   };
 
   Passer* passer = new Passer(this, imgPtr, time);
-  pros::c::task_create(func, passer, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "");
+  pros::c::task_create(func, passer, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "SpashScreen");
 
 }
