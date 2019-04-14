@@ -31,6 +31,7 @@ namespace lib7842
     angleErr = 0_deg;
     distanceErr = 0_in;
     abortTimer.clearHardMark();
+    enableVector = false;
   }
 
   /**
@@ -66,8 +67,8 @@ namespace lib7842
 
   void OdomController::driveVectorTask() {
     while(true) {
-
       double increment = 0;
+
       increment = wantedVelL - lastVelL;
       if(std::abs(increment) > slewRate) {
         lastVelL += slewRate * sgn(increment);
@@ -82,8 +83,9 @@ namespace lib7842
         lastVelR = wantedVelR;
       }
 
-      tracker->model->tank(lastVelL, lastVelR);
-
+      if(enableVector) {
+        tracker->model->tank(lastVelL, lastVelR);
+      }
       pros::delay(10);
     }
   }
@@ -100,10 +102,11 @@ namespace lib7842
   * @param yaw
   */
   void OdomController::driveVector(double forwardSpeed, double yaw, bool noSlew) {
+    enableVector = true;
 
     double leftOutput = forwardSpeed + yaw;
     double rightOutput = forwardSpeed - yaw;
-    double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
+    double maxInputMag = std::max(std::abs(leftOutput), std::abs(rightOutput));
     if (maxInputMag > 1) {
       leftOutput /= maxInputMag;
       rightOutput /= maxInputMag;

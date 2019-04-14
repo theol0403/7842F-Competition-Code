@@ -35,6 +35,7 @@ namespace lib7842
 
     Timer abortTimer;
 
+    bool enableVector = false;
     double wantedVelL = 0;
     double wantedVelR = 0;
     double lastVelL = 0;
