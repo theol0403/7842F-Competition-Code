@@ -5,14 +5,13 @@ void AutonFarPost(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  chassis.setState({5_in, 2_ft + 9.5_in, -63_deg}); // Robot is facing cap
+  firstCapMovement(chassis, 3_ft);
 
-  chassis.driveToPoint(farFlatCap, 0); // Move to shooting position
-  robot.arm->setState(ArmController::carry);
-
-  pros::delay(20000000);
-  chassis.turnToAngle(angleToPoint(farFlatCap) - 180_deg);
+  chassis.driveToPoint({3_ft, 3_ft}, 1, makeSettle(2_in)); // Move to shooting position
+  chassis.turnAngle(angleToPoint(farFlatCap) + 180_deg);
   chassis.driveDistance(1_ft);
+  robot.arm->setState(ArmController::carry);
+  pros::delay(20000000);
 
 
 
