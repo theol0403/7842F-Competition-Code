@@ -18,6 +18,7 @@ namespace lib7842
   anglePid(ianglePid),
   turnPid(iturnPid),
   slewRate(islewRate),
+  slewTask(driveVectorTaskFnc, this),
   pointRadius(1.5_ft)
   {
   };
@@ -63,13 +64,43 @@ namespace lib7842
     return false;
   }
 
+  void OdomController::driveVectorTask() {
+    while(true) {
+
+      double increment = 0;
+      increment = wantedVelL - lastVelL;
+      if(std::abs(increment) > slewRate) {
+        lastVelL += slewRate * sgn(increment);
+      } else {
+        lastVelL = wantedVelL;
+      }
+
+      increment = wantedVelR - lastVelR;
+      if(std::abs(increment) > slewRate) {
+        lastVelR += slewRate * sgn(increment);
+      } else {
+        lastVelR = wantedVelR;
+      }
+
+      tracker->model->tank(lastVelL, lastVelR);
+
+      pros::delay(10);
+    }
+  }
+
+  void OdomController::driveVectorTaskFnc(void* input) {
+    OdomController* that = static_cast<OdomController*>(input);
+    pros::delay(500);
+    that->driveVectorTask();
+  }
+
   /**
-  * custom vector control which allows yaw to have priority over forwardSped
+  * custom vector control which allows yaw to have priority over forwardSpeed
   * @param forwardSpeed
   * @param yaw
   */
-  void OdomController::driveVector(double forwardSpeed, double yaw, bool noSlew)
-  {
+  void OdomController::driveVector(double forwardSpeed, double yaw, bool noSlew) {
+
     double leftOutput = forwardSpeed + yaw;
     double rightOutput = forwardSpeed - yaw;
     double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
@@ -78,28 +109,13 @@ namespace lib7842
       rightOutput /= maxInputMag;
     }
 
-    if(!noSlew) {
-      double increment = 0;
+    wantedVelL = leftOutput;
+    wantedVelR = rightOutput;
 
-      increment = leftOutput - lastVelL;
-      if(std::abs(increment) > slewRate) {
-        lastVelL += slewRate * sgn(increment);
-      } else {
-        lastVelL = leftOutput;
-      }
-
-      increment = rightOutput - lastVelR;
-      if(std::abs(increment) > slewRate) {
-        lastVelR += slewRate * sgn(increment);
-      } else {
-        lastVelR = rightOutput;
-      }
-
-      tracker->model->tank(lastVelL, lastVelR);
-    } else {
-      tracker->model->tank(leftOutput, rightOutput);
+    if(noSlew) {
+      lastVelL = leftOutput;
+      lastVelR = rightOutput;
     }
-
   }
 
   /**

@@ -27,6 +27,7 @@ namespace lib7842
     IterativePosPIDController *anglePid = nullptr;
     IterativePosPIDController *turnPid = nullptr;
     const double slewRate;
+    pros::Task slewTask;
 
     const QLength pointRadius; //radius to point before slowing down and ignoring angle
     QAngle angleErr = 0_deg;
@@ -34,6 +35,8 @@ namespace lib7842
 
     Timer abortTimer;
 
+    double wantedVelL = 0;
+    double wantedVelR = 0;
     double lastVelL = 0;
     double lastVelR = 0;
 
@@ -43,7 +46,10 @@ namespace lib7842
     bool checkAbort(double, QTime);
     bool checkEmergencyAbort();
 
+    void driveVectorTask();
+    static void driveVectorTaskFnc(void*);
     void driveVector(double, double, bool = false);
+
     void runActions(AsyncActionList);
 
     QAngle angleToPoint(QPoint);
