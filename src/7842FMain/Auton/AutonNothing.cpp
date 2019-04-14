@@ -9,10 +9,10 @@ void AutonTest(void* input)
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
 
-  robot.arm->setState(ArmController::carry);
+  //robot.arm->setState(ArmController::carry);
 
-  // firstCapMovement(chassis, 7_ft);
-  // chassis.driveToPoint({startX, 7_ft});
+  firstCapMovement(chassis, 7_ft);
+  chassis.driveToPoint({startX, 7_ft});
 
   //robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothFlags);
 

@@ -50,6 +50,7 @@ namespace lib7842
     void driveVectorTask();
     static void driveVectorTaskFnc(void*);
     void driveVector(double, double, bool = false);
+    void stop();
 
     void runActions(AsyncActionList);
 

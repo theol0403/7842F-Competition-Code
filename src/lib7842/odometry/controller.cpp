@@ -121,6 +121,11 @@ namespace lib7842
     }
   }
 
+  void OdomController::stop() {
+    enableVector = false;
+    tracker->model->stop();
+  }
+
   /**
   * execute a list of actions
   * @param actions

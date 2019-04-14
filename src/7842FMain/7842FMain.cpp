@@ -79,7 +79,7 @@ void disabled()
   subsystem(flywheel)->resetSlew();
   subsystem(arm)->setState(ArmController::off);
   #endif
-  subsystem(model)->stop();
+  subsystem(chassis)->stop();
 }
 
 /***
@@ -103,7 +103,7 @@ void disabled()
 */
 void opcontrol()
 {
-  subsystem(model)->stop();
+  subsystem(chassis)->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
   subsystem(shooter)->clearQueue();
