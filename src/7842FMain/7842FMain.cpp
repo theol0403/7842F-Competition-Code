@@ -191,7 +191,6 @@ void autonomous()
   subsystem(flywheel)->resetSlew();
   subsystem(flywheel)->enable();
   subsystem(flywheel)->setRpm(globalFlywheelRPM);
-  //subsystem(arm)->setState(ArmController::unfold);
   #endif
 
   isCompetition = true;
@@ -204,8 +203,6 @@ void autonomous()
   );
 
   display.selector->getSelectedAuton().autonFunc(&passer);
-
-  std::cout << "Exit Auton" << std::endl;
 
   subsystem(flywheel)->setRpm(0);
 }
