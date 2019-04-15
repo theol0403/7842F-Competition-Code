@@ -11,7 +11,7 @@ namespace lib7842
   AutonSelector::AutonSelector(lv_obj_t *parent, lv_color_t mainColor, std::initializer_list<autonPair> autonPairs)
   : m_autonPairs(autonPairs)
   {
-    
+
     m_screenContainer = lv_obj_create(parent, NULL);
 
     lv_obj_set_size(m_screenContainer, lv_obj_get_width(parent), lv_obj_get_height(parent));
@@ -23,21 +23,27 @@ namespace lib7842
     screenStyle->body.grad_color = mainColor;
     lv_obj_set_style(m_screenContainer, screenStyle);
 
+    std::vector<const char*>* buttonNames = new std::vector<const char*>;
 
-    int autonCount = m_autonPairs.size();
-    const char** buttonNames = new const char* [autonCount + 1];
-
-    for(int autonNum = 0; autonNum < autonCount; autonNum++)
-    {
-      buttonNames[autonNum] = &m_autonPairs[autonNum].autonName[0];
+    for(auto&& button : m_autonPairs) {
+      buttonNames->push_back(button.autonName.c_str());
     }
 
-    buttonNames[autonCount] = "";
+    int buttonHeight = 0;
 
+    const int limit = 6;
+    if(m_autonPairs.size() > limit) {
+      buttonNames->insert(buttonNames->begin() + m_autonPairs.size()/2, "\n");
+      buttonHeight = lv_obj_get_height(parent) / 3.0 * 2.0;
+    } else {
+      buttonHeight = lv_obj_get_height(parent) / 2.0;
+    }
+
+    buttonNames->push_back("");
 
     lv_obj_t* btnm = lv_btnm_create(m_screenContainer, NULL);
-    lv_btnm_set_map(btnm, buttonNames);
-    lv_obj_set_size(btnm, lv_obj_get_width(parent), lv_obj_get_height(parent) / 2);
+    lv_btnm_set_map(btnm, buttonNames->data());
+    lv_obj_set_size(btnm, lv_obj_get_width(parent), buttonHeight);
     lv_btnm_set_toggle(btnm, true, m_currentAutonIndex);
     lv_btnm_set_action(btnm, matrixAction);
     lv_obj_set_free_ptr(btnm, this);
@@ -82,11 +88,14 @@ namespace lib7842
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_REL, style_ina);
 
     //SWITCH
+    lv_obj_t* switchContainer = lv_obj_create(m_screenContainer, m_screenContainer);
+    lv_obj_set_size(switchContainer, lv_obj_get_width(m_screenContainer), lv_obj_get_height(parent) - buttonHeight);
+    lv_obj_align(switchContainer, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
 
-    lv_obj_t *colorSwitch = lv_sw_create(m_screenContainer, NULL);
-    lv_obj_set_size(colorSwitch, lv_obj_get_width(parent)/3, lv_obj_get_height(parent)/4);
-    lv_obj_align(colorSwitch, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, -lv_obj_get_height(parent)/8);
-    //  lv_sw_set_anim_time(colorSwitch, 200);
+    lv_obj_t *colorSwitch = lv_sw_create(switchContainer, NULL);
+    int switchHeight = std::max(lv_obj_get_height(switchContainer)/2, 60);
+    lv_obj_set_size(colorSwitch, lv_obj_get_width(switchContainer)/3, switchHeight);
+    lv_obj_align(colorSwitch, NULL, LV_ALIGN_CENTER, 0, 0);
     lv_sw_set_action(colorSwitch, sliderAction);
     lv_obj_set_free_ptr(colorSwitch, this);
 
@@ -122,14 +131,11 @@ namespace lib7842
   }
 
 
-  lv_res_t AutonSelector::matrixAction(lv_obj_t* btnm, const char *txt)
-  {
+  lv_res_t AutonSelector::matrixAction(lv_obj_t* btnm, const char *txt) {
     AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(btnm));
 
-    for(int autonNum = 0; autonNum < that->m_autonPairs.size(); autonNum++)
-    {
-      if(strcmp(txt, &that->m_autonPairs[autonNum].autonName[0]) == 0)
-      {
+    for(int autonNum = 0; autonNum < that->m_autonPairs.size(); autonNum++) {
+      if(strcmp(txt, &that->m_autonPairs[autonNum].autonName[0]) == 0) {
         std::cout << "Auton: " << autonNum << std::endl;
         that->m_currentAutonIndex = autonNum;
       }
@@ -139,8 +145,7 @@ namespace lib7842
   }
 
 
-  lv_res_t AutonSelector::sliderAction(lv_obj_t* slider)
-  {
+  lv_res_t AutonSelector::sliderAction(lv_obj_t* slider) {
     AutonSelector* that = static_cast<AutonSelector*>(lv_obj_get_free_ptr(slider));
 
     that->m_currentSide = lv_sw_get_state(slider) ? autonSides::blue : autonSides::red;
@@ -151,13 +156,11 @@ namespace lib7842
   }
 
 
-  autonPair AutonSelector::getSelectedAuton()
-  {
+  autonPair AutonSelector::getSelectedAuton() {
     return m_autonPairs[m_currentAutonIndex];
   }
 
-  autonSides AutonSelector::getSelectedSide()
-  {
+  autonSides AutonSelector::getSelectedSide() {
     return m_currentSide;
   }
 
