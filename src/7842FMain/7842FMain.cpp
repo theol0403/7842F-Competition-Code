@@ -205,4 +205,5 @@ void autonomous()
   display.selector->getSelectedAuton().autonFunc(&passer);
 
   subsystem(flywheel)->setRpm(0);
+  subsystem(chassis)->stop();
 }

@@ -41,10 +41,10 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(mDigital(L1) && mDigital(L2)) {
-		armState = ArmController::on;
-	} else if(mDigital(L1)) {
+	if(mDigital(DOWN)) {
 		armState = ArmController::carry;
+	} else if(mDigital(L1)) {
+		armState = ArmController::on;
 	} else if(mDigital(L2)) {
 		armState = ArmController::down;
 	} else {
