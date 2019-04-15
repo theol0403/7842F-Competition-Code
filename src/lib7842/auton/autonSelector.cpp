@@ -93,7 +93,7 @@ namespace lib7842
     lv_obj_align(switchContainer, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
 
     lv_obj_t *colorSwitch = lv_sw_create(switchContainer, NULL);
-    int switchHeight = std::max(lv_obj_get_height(switchContainer)/2, 60);
+    int switchHeight = std::max(lv_obj_get_height(switchContainer)/2, 50);
     lv_obj_set_size(colorSwitch, lv_obj_get_width(switchContainer)/3, switchHeight);
     lv_obj_align(colorSwitch, NULL, LV_ALIGN_CENTER, 0, 0);
     lv_sw_set_action(colorSwitch, sliderAction);
