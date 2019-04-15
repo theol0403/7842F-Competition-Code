@@ -14,7 +14,8 @@ public:
     down,
     carry,
     balance,
-    on
+    up,
+    upSlow
   };
 
   Motor* arm = nullptr;

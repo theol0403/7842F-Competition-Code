@@ -60,8 +60,12 @@ void ArmController::run()
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
-      case on:
+      case up:
       arm->move(127);
+      break;
+
+      case upSlow:
+      arm->move(20);
       break;
     }
 
