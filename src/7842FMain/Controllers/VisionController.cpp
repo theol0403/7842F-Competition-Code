@@ -28,6 +28,7 @@ void VisionController::allign() {
 void VisionController::run()
 {
 
+  sensor->set_wifi_mode(0);
   sensor->set_exposure(150);
   pros::vision_signature_s_t SIG_1 = {1, {1, 0, 0}, 2.800, -2129, -1369, -1749, 3221, 4401, 3811, 0, 0}; sensor->set_signature(1, &SIG_1);
   pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 7.600, 6823, 7385, 7104, -2009, -1543, -1776, 0, 0}; sensor->set_signature(2, &SIG_2);
@@ -61,8 +62,7 @@ void VisionController::run()
 }
 
 
-void VisionController::taskFnc(void* input)
-{
+void VisionController::taskFnc(void* input) {
   pros::delay(500);
   VisionController* that = static_cast<VisionController*>(input);
   that->run();

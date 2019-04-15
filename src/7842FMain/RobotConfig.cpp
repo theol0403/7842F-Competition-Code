@@ -15,27 +15,31 @@ robot_t robot;
 *                          |_|
 */
 #ifdef F_ROBOT //Competition
-const int8_t mFlywheel = -1;
-const int8_t mIntake = -9;
-const int8_t mIndexer = 10;
-const int8_t mArm = 2;
+const int mFlywheel = -1;
+const int mIntake = -9;
+const int mIndexer = 10;
+const int mArm = 2;
 
-const int8_t mRightFront = -19;
-const int8_t mRightBack = -20;
-const int8_t mLeftFront = 12;
-const int8_t mLeftBack = 11;
+const int mRightFront = -19;
+const int mRightBack = -20;
+const int mLeftFront = 12;
+const int mLeftBack = 11;
+
+const int mVision = 3;
 #endif
 
 #ifdef B_ROBOT
-const int8_t mFlywheel = -8;
-const int8_t mIntake = 7;
-const int8_t mIndexer = 9;
-const int8_t mArm = 2;
+const int mFlywheel = -8;
+const int mIntake = 7;
+const int mIndexer = 9;
+const int mArm = 2;
 
-const int8_t mRightFront = -20;
-const int8_t mRightBack = -19;
-const int8_t mLeftFront = 18;
-const int8_t mLeftBack = 17;
+const int mRightFront = -20;
+const int mRightBack = -19;
+const int mLeftFront = 18;
+const int mLeftBack = 17;
+
+const int mVision = 3;
 #endif
 
 
@@ -109,6 +113,8 @@ void initializeDevices()
 	#endif
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.01, 0, 0, 0, TimeUtilFactory::create()));
+
+	robot.vision = new VisionController(new pros::Vision(mVision), display.main->newTab("Vision"), robot.model);
 
 	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
 	(*display.flywheel)

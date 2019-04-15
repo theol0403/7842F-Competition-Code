@@ -16,9 +16,13 @@ void driverControl()
 	/**
 	* Base Control
 	*/
-	double rightY = mAnalog(RIGHT_Y);
-	double leftX = mAnalog(LEFT_X);
-	robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
+	if(mDigital(RIGHT)) {
+		robot.vision->allign();
+	} else {
+		double rightY = mAnalog(RIGHT_Y);
+		double leftX = mAnalog(LEFT_X);
+		robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
+	}
 
 	/**
 	* Intake Control
