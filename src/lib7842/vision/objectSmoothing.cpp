@@ -268,7 +268,7 @@
 //     for(int masterNum = 0; masterNum < m_masterLength; masterNum++)
 //     {
 //       m_masterObjects.at(masterNum).matchFound = false;
-//       for(bool &matchFound : m_masterObjects.at(masterNum).sigFound)
+//       for(auto&& matchFound : m_masterObjects.at(masterNum).sigFound)
 //       {
 //         matchFound = false;
 //       }

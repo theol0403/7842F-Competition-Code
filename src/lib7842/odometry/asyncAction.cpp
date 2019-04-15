@@ -55,7 +55,7 @@ namespace lib7842
     /**
     * Exclusions
     */
-    for(exclusionGroup &exclusion : m_exclusions)
+    for(auto&& exclusion : m_exclusions)
     {
       switch(std::get<1>(exclusion))
       {
@@ -77,7 +77,7 @@ namespace lib7842
     * Triggers
     * This goes through all the onlyBefores and Afters before checking the actual trigger
     */
-    for(triggerGroup &trigger : m_triggers)
+    for(auto&& trigger : m_triggers)
     {
       switch(std::get<1>(trigger))
       {
@@ -94,7 +94,7 @@ namespace lib7842
         default: break;
       }
     }
-    for(triggerGroup &trigger : m_triggers)
+    for(auto&& trigger : m_triggers)
     {
       switch(std::get<1>(trigger))
       {
@@ -110,7 +110,7 @@ namespace lib7842
     /**
     * Actions
     */
-    for(actionGroup &action : m_actions)
+    for(auto&& action : m_actions)
     {
       switch(std::get<1>(action))
       {

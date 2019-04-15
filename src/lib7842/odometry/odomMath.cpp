@@ -60,7 +60,7 @@ namespace lib7842
   }
 
   Path mirrorSide(Path path, autonSides side) {
-    if(side == autonSides::blue) { for(QPoint &point : path.wayPoints) { point = mirrorSide(point, side); } }
+    if(side == autonSides::blue) { for(auto&& point : path.wayPoints) { point = mirrorSide(point, side); } }
     return path;
   }
 

@@ -100,7 +100,7 @@ void Graph::build() {
 
 void Graph::run() {
   while(true) {
-    for(auto &[ser, variable, scale] : series) {
+    for(auto&& [ser, variable, scale] : series) {
       lv_chart_set_next(graph, ser, *variable / scale);
     }
     pros::delay(refresh);

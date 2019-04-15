@@ -45,13 +45,13 @@ void FlywheelTuner::build() {
 
   std::vector<const char*>* btnLabels = new std::vector<const char*>;
 
-  for(auto &button : buttons) {
+  for(auto&& button : buttons) {
     std::string* str = new std::string;
     *str = std::get<0>(button) + "+";
     btnLabels->push_back(str->c_str());
   }
   btnLabels->push_back("\n");
-  for(auto &button : buttons) {
+  for(auto&& button : buttons) {
     std::string* str = new std::string;
     *str = std::get<0>(button) + "-";
     btnLabels->push_back(str->c_str());
@@ -110,7 +110,7 @@ void FlywheelTuner::build() {
   style_label->text.letter_space = 1;
   style_label->text.color = LV_COLOR_BLACK;
 
-  for(auto &button : buttons) {
+  for(auto&& button : buttons) {
     lv_obj_t* label = lv_label_create(container, NULL);
     lv_obj_set_style(label, style_label);
     std::get<2>(button) = label;
@@ -137,7 +137,7 @@ void FlywheelTuner::build() {
   double gaugeSize = std::min((double)lv_obj_get_width(container) / gauges.size(), lv_obj_get_height(container) - lv_obj_get_height(container)/5.0);
 
   double offset = 0.0;
-  for(auto &[name, variables, gauge] : gauges) {
+  for(auto&& [name, variables, gauge] : gauges) {
     lv_obj_set_size(gauge, gaugeSize, gaugeSize);
     lv_gauge_set_needle_count(gauge, variables.size(), needleColors);
     lv_gauge_set_style(gauge, style_gauge);
@@ -155,7 +155,7 @@ void FlywheelTuner::build() {
 
 void FlywheelTuner::calcLabels() {
   double offset = 0.0;
-  for(auto &[name, button, label] : buttons) {
+  for(auto&& [name, button, label] : buttons) {
     std::stringstream str;
     int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal
     str << std::setprecision(width) << *button.variable;
@@ -224,7 +224,7 @@ void FlywheelTuner::taskFnc(void* input) {
   while(true) {
     that->calcLabels();
 
-    for(auto &[name, variables, gauge] : that->gauges) {
+    for(auto&& [name, variables, gauge] : that->gauges) {
       int i = 0;
       for(double* variable : variables) {
         lv_gauge_set_value(gauge, i, *variable);

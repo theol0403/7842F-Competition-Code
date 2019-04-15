@@ -79,7 +79,7 @@ void ShootController::addJob(shootStates state) {
 }
 
 void ShootController::addJobs(std::vector<shootStates> states) {
-  for(shootStates &state : states) addJob(state);
+  for(auto&& state : states) addJob(state);
 }
 
 void ShootController::addJobLoop(shootStates state) {

@@ -117,7 +117,7 @@
 //
 //   std::vector<
 //
-//   for(auto &[name, button, label] : buttons) {
+//   for(auto&& [name, button, label] : buttons) {
 //     std::stringstream str;
 //     int width = 1 + ((double)lv_obj_get_width(container)/buttons.size())/20; //this is very guessy, trying to account for decimal
 //     str << std::setprecision(width) << *button.variable;

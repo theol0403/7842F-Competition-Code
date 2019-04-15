@@ -70,7 +70,7 @@ namespace lib7842
     expandTo(oContainer->objects.size());
 
     int dIndex = 0;
-    for(visionObj &obj : oContainer->objects) {
+    for(auto&& obj : oContainer->objects) {
       lv_obj_set_hidden(dObjects.at(dIndex), false); // make visible
 
       auto search = sigStyles.find(obj.sig);
@@ -141,7 +141,7 @@ namespace lib7842
   }
 
   void ObjDrawer::draw() {
-    for(ObjRenderer &layer : layers) {
+    for(auto&& layer : layers) {
       layer.draw();
     }
 

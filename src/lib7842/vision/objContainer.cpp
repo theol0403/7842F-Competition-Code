@@ -11,7 +11,7 @@ namespace lib7842
   }
 
   void ObjContainer::addObj(std::vector<visionObj> objs) {
-    for(visionObj &obj : objs) addObj(obj);
+    for(auto&& obj : objs) addObj(obj);
   }
 
   visionObj ObjContainer::get(int index) {
@@ -134,12 +134,12 @@ namespace lib7842
 
   void ObjContainer::print() {
     std::cout << "Count:" << objects.size() << std::endl;
-    for(visionObj &obj : objects) obj.print();
+    for(auto&& obj : objects) obj.print();
   }
 
 
   void ObjContainer::checkErrSig() {
-    for(visionObj &obj : objects) { assert(obj.sig != VISION_OBJECT_ERR_SIG); }
+    for(auto&& obj : objects) { assert(obj.sig != VISION_OBJECT_ERR_SIG); }
   }
 
   int ObjContainer::getCount() {

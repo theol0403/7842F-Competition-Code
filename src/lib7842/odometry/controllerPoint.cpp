@@ -75,7 +75,7 @@ namespace lib7842
 
   void OdomController::drivePath(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    for(QPoint &point : path.wayPoints)
+    for(auto&& point : path.wayPoints)
     {
       driveToPoint(point, turnScale, moveOnSettle, actions);
     }
@@ -84,7 +84,7 @@ namespace lib7842
 
   void OdomController::drivePath2(Path path, double turnScale, settleFunc_t moveOnSettle, settleFunc_t finalSettle, AsyncActionList actions)
   {
-    for(QPoint &point : path.wayPoints)
+    for(auto&& point : path.wayPoints)
     {
       driveToPoint2(point, turnScale, moveOnSettle, actions);
     }

@@ -28,7 +28,7 @@ namespace lib7842
   }
 
   void avgFilter::resetTo(double input) {
-    for(double &val : data) {
+    for(auto&& val : data) {
       val = input;
     }
     if(filter(input) != input) std::cout << "AvgFilter Not Reset" << std::endl;
