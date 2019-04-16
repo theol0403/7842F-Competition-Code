@@ -125,7 +125,7 @@ void ShootController::addMacro(shootMacros macro) {
     case shootMacros::cycle :
     addJobs({reportDone, cycle});
     break;
-    
+
   }
 }
 
@@ -208,8 +208,7 @@ double ShootController::computeHoodPower(double target) {
     output = 0;
     std::cerr << "computeHoodPower: angler pid < 0" << std::endl;
   }
-  //if(output > 100) output = 100;
-  if(output < 40) output = 40;
+  if(output < 45) output = 45;
   return output;
 }
 
