@@ -10,8 +10,9 @@ void AutonFarDescore(void* input)
 
   //chassis.driveToPoint({0.9_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
 
-  chassis.turnToPoint(farFlagShoot); // turn to flag
   pros::delay(4000);
+  chassis.turnToPoint(farFlagShoot); // turn to flag
+  pros::delay(1000);
 
   //waitForLastMinute(timer);
 
@@ -23,8 +24,7 @@ void AutonFarDescore(void* input)
   robot.arm->setState(ArmController::balance);
 
   chassis.turnToAngle(-180_deg);
-  chassis.driveForTime(100, 0.7);
-  chassis.driveForTime(2500, -1);
+  chassis.driveForTime(1500, -1);
   robot.arm->setState(ArmController::off);
   //chassis.driveDistance(-0.1_ft);
 
