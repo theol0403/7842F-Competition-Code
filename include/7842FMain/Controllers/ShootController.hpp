@@ -42,6 +42,8 @@ public:
     shootBoth,
     shootTarget,
     shootOut,
+    shootTopPlatform,
+    shootMiddlePlatform,
     shoot,
     angle,
     cycle
