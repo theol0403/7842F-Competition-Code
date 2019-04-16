@@ -27,9 +27,10 @@ void initialize()
   display.main->splashScreen(&img_navigators, 1800);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"T", AutonTest}, {"C", AutonClose},
-    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-    {"Fd", AutonFarDescore}, {"Fp", AutonFarPost}
+    {"T", AutonTest},
+    {"C_NP", AutonClose_NearPark}, {"C_MP", AutonClose_MiddlePark},
+    {"F_CP", AutonFar_CrossPark}, {"F_MP", AutonFar_MiddlePark}, {"F_NP", AutonFar_NearPark},
+    {"FC_CP", AutonFar_CapCrossPark}
   });
 
   pros::delay(500); //Give the legacy ports time to start up
