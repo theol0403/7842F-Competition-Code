@@ -1,6 +1,6 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonClose(void* input)
+void AutonClose_NearPark(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
@@ -16,18 +16,19 @@ void AutonClose(void* input)
   // Move forward towards flags and push bottom flag
   chassis.driveToPoint({0.9_ft, 11_ft}, 3, makeSettle(4_in));
 
+  //back up and drive to plaform
   chassis.driveToPoint({3.6_ft, 8_ft}, 2, makeSettle(4_in));
-  chassis.turnToAngle(0_deg);
+  chassis.turnToAngle(0_deg); //turn to platform
+
+  //drive up
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3.6_ft, 7_ft}, 1, makeSettle(4_in));
   chassis.driveForTime(1900, -1);
   chassis.driveDistance(0_in);
-  chassis.turnAngle(10_deg);
 
+  //shoot middle flags from platform
+  chassis.turnAngle(10_deg);
   waitForLastMinute(timer);
-  robot.shooter->setTarget(15);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
-  robot.shooter->setTarget(20);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTarget);
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothPlatform);
 
 }
