@@ -54,7 +54,9 @@ void driverControl()
 	} else if(mDigital(L2)) {
 		armState = ArmController::down;
 	} else {
-		armState = ArmController::hold;
+		if(armState != ArmController::carry) {
+			armState = ArmController::hold;
+		}
 	}
 
 	if(armState != lastArmState) {
@@ -93,7 +95,6 @@ void driverControl()
 	}
 
 
-
 	/***
 	*      ___              _ _
 	*     / _ \            | (_)
@@ -104,6 +105,7 @@ void driverControl()
 	*                  __/ |           __/ |
 	*                 |___/           |___/
 	*/
+
 	/**
 	* Distance Control
 	*/
