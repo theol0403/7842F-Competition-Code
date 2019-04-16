@@ -21,10 +21,10 @@ public:
     waitForRetract, //wait until hood back to 0 pos
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
-    angleTarget, //drop hood to target angle
     angleTopPlatform, //angle top from platform
     angleMiddlePlatform, //angle middle from platform
     angleOut, //drop hood to out (ground flag) angle
+    angleTarget, //drop hood to target angle
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
@@ -40,10 +40,11 @@ public:
     shootTop,
     shootMiddle,
     shootBoth,
-    shootTarget,
     shootTopPlatform,
     shootMiddlePlatform,
+    shootBothPlatform,
     shootOut,
+    shootTarget,
     shoot,
     angle,
     cycle

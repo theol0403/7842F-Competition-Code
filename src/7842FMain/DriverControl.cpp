@@ -124,12 +124,14 @@ void driverControl()
 	}
 
 	//set wanted action
-	if(pDigital(L2) && pDigital(L1)) {
+	if(pDigital(L1) && pDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
 	} else if(pDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootTop;
 	} else if(pDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
+	} else if(pDigital(Y) && pDigital(X)) {
+		shootMacro = ShootController::shootMacros::shootBothPlatform;
 	} else if(pDigital(Y)) {
 		shootMacro = ShootController::shootMacros::shootTopPlatform;
 	} else if(pDigital(X)) {
@@ -166,6 +168,9 @@ void driverControl()
 				} case ShootController::shootMacros::shootMiddle : {
 					robot.shooter->doJob(ShootController::angleMiddle);
 					break;
+				} case ShootController::shootMacros::shootBothPlatform : {
+					robot.shooter->doJob(ShootController::angleTopPlatform);
+					break;
 				} case ShootController::shootMacros::shootTopPlatform : {
 					robot.shooter->doJob(ShootController::angleTopPlatform);
 					break;
@@ -189,6 +194,7 @@ void driverControl()
 		case ShootController::shootMacros::shootBoth : flagString = "both"; break;
 		case ShootController::shootMacros::shootTop : flagString = "top"; break;
 		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
+		case ShootController::shootMacros::shootBothPlatform : flagString = "bothPlat"; break;
 		case ShootController::shootMacros::shootTopPlatform : flagString = "topPlat"; break;
 		case ShootController::shootMacros::shootMiddlePlatform : flagString = "middlePlat"; break;
 		case ShootController::shootMacros::shootOut : flagString = "out"; break;
