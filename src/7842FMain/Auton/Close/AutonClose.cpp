@@ -14,19 +14,14 @@ void AutonClose(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.driveToPoint({1_ft, 10.5_ft}, 3, makeSettle(4_in));
+  chassis.driveToPoint({0.9_ft, 10.8_ft}, 3, makeSettle(4_in));
 
-  chassis.driveToPoint({1_ft, 9_ft}, 1, makeSettle(4_in));
-  chassis.turnToPoint(closeFlatCap);
-
-  chassis.driveDistance(1_ft, makeSettle(2_in)); //forward
-  chassis.driveDistance(-1_ft, makeSettle(2_in)); //back
-  pros::delay(500);
-  robot.intake->setState(IntakeController::outIntake); //flip
-  chassis.driveDistance(2_ft, makeSettle(2_in)); //forward
-
-  robot.intake->setState(IntakeController::intakeBall);
-  chassis.turnToPoint(middleFlagShoot);
+  chassis.driveToPoint({3.7_ft, 8_ft}, 2, makeSettle(4_in));
+  chassis.turnToAngle(0_deg);
+  chassis.driveToPoint({3.7_ft, 7_ft}, 1, makeSettle(4_in));
+  robot.arm->setState(ArmController::balance);
+  chassis.driveForTime(1500, -1);
+  chassis.turnAngle(20_deg);
 
   waitForLastMinute(timer);
   robot.shooter->setDistanceToFlag(5.5_ft);

@@ -7,7 +7,7 @@
 
 QLength startX {9_in}; //The X of the robot in the setup position
 
-QPoint sideFlagShoot {1.35_ft, 11_ft}; //The shooting target for the flag
+QPoint sideFlagShoot {1.3_ft, 11_ft}; //The shooting target for the flag
 QPoint sideFlagPost {2_ft, 11_ft}; //The flag post
 
 QPoint middleFlagShoot {5.45_ft, 11_ft}; //The shooting target for the flag
