@@ -7,31 +7,15 @@ void AutonFarPost(void* input)
 
   firstCapMovement(chassis, 3_ft);
 
-  chassis.driveToPoint({3_ft, 3_ft}, 1, makeSettle(2_in)); // Move to shooting position
-  chassis.turnAngle(angleToPoint(farFlatCap) + 180_deg);
-  chassis.driveDistance(1_ft);
+  chassis.driveToPoint({2.8_ft, 3_ft}, 1, makeSettle(2_in)); // Move to shooting position
+  chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg, pointTurn, makeSettle(2_deg));
+  chassis.driveDistance(-2_ft);
   robot.arm->setState(ArmController::carry);
-  pros::delay(20000000);
+  pros::delay(500);
 
-
-
-  chassis.turnToPoint(farFlagShoot); // turn to flag
-  pros::delay(4000);
-
-  //waitForLastMinute(timer);
-
-  robot.shooter->setDistanceToFlag(9_ft);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
-  pros::delay(2000);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
-
-  robot.arm->setState(ArmController::balance);
-
-  chassis.turnToAngle(-180_deg);
-  chassis.driveForTime(100, 0.7);
-  chassis.driveForTime(2400, -1);
-  robot.arm->setState(ArmController::off);
-  chassis.driveDistance(0.1_ft);
+  chassis.driveToPoint({2_ft, 2_ft});
+  chassis.turnToAngle(180_deg);
+  
 
 
 }

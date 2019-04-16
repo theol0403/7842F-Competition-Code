@@ -17,7 +17,7 @@ void driverControl()
 	* Base Control
 	*/
 	if(mDigital(RIGHT)) {
-		robot.vision->allign();
+		robot.vision->allign(display.selector->getSelectedSide());
 	} else {
 		double rightY = mAnalog(RIGHT_Y);
 		double leftX = mAnalog(LEFT_X);
