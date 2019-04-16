@@ -1,4 +1,4 @@
-#include "7842FMain/Auton/AutonIncludes.hpp"
+#include "7842FMain/AutonIncludes.hpp"
 
 void firstCapMovement(SideController& chassis, QLength y) {
   chassis.setState({startX, y, 90_deg}); // Robot is facing cap

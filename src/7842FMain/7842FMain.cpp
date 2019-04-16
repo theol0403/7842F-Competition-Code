@@ -1,7 +1,7 @@
 
 #include "RobotConfig.hpp"
 
-#include "7842FMain/Auton/AutonIncludes.hpp"
+#include "7842FMain/AutonIncludes.hpp"
 #include "DriverControl.hpp"
 
 static bool isCompetition = false; //will be toggled when autonomous is run
