@@ -18,5 +18,3 @@ QPoint farFlagPost {10_ft, 11_ft}; //The flag post
 
 QPoint closeFlatCap {3_ft, 9_ft}; //The close cap with the balls on it
 QPoint farFlatCap {5_ft, 1_ft}; //The far cap with the balls on it
-
-QPoint sidePlatform {4.2_ft, 5_ft}; //The driving position to get ready to climb platform

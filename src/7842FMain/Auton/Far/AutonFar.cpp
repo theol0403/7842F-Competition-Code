@@ -9,9 +9,8 @@ void AutonFar(void* input)
 
   chassis.driveToPoint({1_ft, 3_ft}); // Move to shooting position
 
-  chassis.turnToPoint({1.9_ft, 11.2_ft}); // turn to flag
+  chassis.turnToPoint(sideFlagShoot); // turn to flag
 
-  robot.shooter->setDistanceToFlag(8.5_ft);
+  robot.shooter->setDistanceToFlag(distanceToPoint(sideFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
-
 }

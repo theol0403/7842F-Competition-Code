@@ -65,7 +65,7 @@ void ArmController::run()
       break;
 
       case upSlow:
-      arm->move(-60);
+      arm->move(-70);
       break;
     }
 
@@ -75,8 +75,7 @@ void ArmController::run()
 }
 
 
-void ArmController::taskFnc(void* input)
-{
+void ArmController::taskFnc(void* input) {
   pros::delay(500);
   ArmController* that = static_cast<ArmController*>(input);
   that->run();
