@@ -12,19 +12,23 @@ using AutonPasser = std::tuple<SideController, Timer>;
 /**
 * Functions
 */
-void AutonNothing(void*);
-void AutonTest(void*);
+void AutonNothing(void*); //Nothing happens
+void AutonTest(void*); //Tests
 
-void AutonClose(void*);
+void AutonClose_NearPark(void*);
+void AutonClose_MiddlePark(void*);
+void AutonClose_MiddleNear(void*);
+void AutonClose_NearCrossPark(void*);
+
+void AutonFar_NearPark(void*);
+void AutonFar_MiddlePark(void*);
+void AutonFar_CrossPark(void*);
+
+void AutonFar_CapCrossPark(void*);
+void AutonFar_CapMiddlePark(void*);
+void AutonFar_CapNearPark(void*);
+
 void AutonSkills(void*);
-
-void AutonFar(void*);
-void AutonFarDescore(void*);
-void AutonFarPost(void*);
-
-void AutonMiddleFromClose(void*);
-void AutonMiddleFromFar(void*);
-
 
 /**
 * Points
