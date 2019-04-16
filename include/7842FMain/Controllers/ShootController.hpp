@@ -92,6 +92,7 @@ public:
   void setDistanceToFlag(QLength);
 
   double computeHoodPower(double);
+  void angleTo(double);
 
   void run();
   static void taskFnc(void*);

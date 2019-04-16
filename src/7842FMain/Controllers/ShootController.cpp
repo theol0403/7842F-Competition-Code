@@ -212,13 +212,28 @@ double ShootController::computeHoodPower(double target) {
   return output;
 }
 
+void ShootController::angleTo(double angle) {
+  if(getHoodAngle() >= angle + 2) { //how much forward before cycle
+    addJob(cycle);
+  } else {
+    if(getHoodAngle() >= angle - 4) { //how much back before stop
+      flywheel->enable();
+      completeJob();
+    } else {
+      intake->enable();
+      flywheel->disable();
+      flywheel->flywheel->move(-computeHoodPower(angle));
+    }
+  }
+}
+
+
 void ShootController::run()
 {
-  const double stopAngleThresh = 4;
   const double angleThresh = 2;
   const double cycleVel = -50;
 
-  const double extendPos = 45;
+  const double extendPos = 45; //a bit less than the angle right before it slips
 
   Timer shootTimer;
 
@@ -287,66 +302,22 @@ void ShootController::run()
 
 
       case angleTop:
-      if(getHoodAngle() >= getTopFlagAngle() + angleThresh) {
-        addJob(cycle);
-      } else {
-        if(getHoodAngle() >= getTopFlagAngle() - stopAngleThresh) {
-          flywheel->enable();
-          completeJob();
-        } else {
-          intake->enable();
-          flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(getTopFlagAngle()));
-        }
-      }
+      angleTo(getTopFlagAngle());
       break;
 
 
       case angleMiddle:
-      if(getHoodAngle() >= getMiddleFlagAngle() + angleThresh) {
-        addJob(cycle);
-      } else {
-        if(getHoodAngle() >= getMiddleFlagAngle() - stopAngleThresh) {
-          flywheel->enable();
-          completeJob();
-        } else {
-          intake->enable();
-          flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(getMiddleFlagAngle()));
-        }
-      }
+      angleTo(getMiddleFlagAngle());
       break;
 
 
       case angleTarget:
-      if(getHoodAngle() >= targetAngle + angleThresh) {
-        addJob(cycle);
-      } else {
-        if(getHoodAngle() >= targetAngle - stopAngleThresh) {
-          flywheel->enable();
-          completeJob();
-        } else {
-          intake->enable();
-          flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(targetAngle));
-        }
-      }
+      angleTo(targetAngle);
       break;
 
 
       case angleOut:
-      if(getHoodAngle() >= 33 + angleThresh) {
-        addJob(cycle);
-      } else {
-        if(getHoodAngle() >= 33 - stopAngleThresh) {
-          flywheel->enable();
-          completeJob();
-        } else {
-          intake->enable();
-          flywheel->disable();
-          flywheel->flywheel->move(-computeHoodPower(33));
-        }
-      }
+      angleTo(35);
       break;
 
 
