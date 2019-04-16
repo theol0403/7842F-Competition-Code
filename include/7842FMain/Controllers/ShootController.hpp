@@ -22,7 +22,9 @@ public:
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
     angleTarget, //drop hood to target angle
-    angleOut, //drop hood to out angle
+    angleOut, //drop hood to out (ground flag) angle
+    angleTopPlatform, //angle top from platform
+    angleMiddlePlatform, //angle middle from platform
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer

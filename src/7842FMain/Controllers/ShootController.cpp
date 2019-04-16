@@ -320,6 +320,14 @@ void ShootController::run()
       angleTo(35);
       break;
 
+      case angleTopPlatform:
+      angleTo(20);
+      break;
+
+      case angleMiddlePlatform:
+      angleTo(32);
+      break;
+
 
       case waitForBall: {
         flywheel->enable();
