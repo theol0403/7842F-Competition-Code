@@ -106,16 +106,16 @@ void ShootController::addMacro(shootMacros macro) {
     addJobs({reportDone, enableShoot, angleTarget});
     break;
 
-    case shootMacros::shootOut :
-    addJobs({reportDone, enableShoot, angleOut});
-    break;
-
     case shootMacros::shootTopPlatform :
     addJobs({reportDone, enableShoot, angleTopPlatform});
     break;
 
     case shootMacros::shootMiddlePlatform :
     addJobs({reportDone, enableShoot, angleMiddlePlatform});
+    break;
+
+    case shootMacros::shootOut :
+    addJobs({reportDone, enableShoot, angleOut});
     break;
 
     case shootMacros::shootBoth :
@@ -313,19 +313,12 @@ void ShootController::run()
       angleTo(getTopFlagAngle());
       break;
 
-
       case angleMiddle:
       angleTo(getMiddleFlagAngle());
       break;
 
-
       case angleTarget:
       angleTo(targetAngle);
-      break;
-
-
-      case angleOut:
-      angleTo(35);
       break;
 
       case angleTopPlatform:
@@ -334,6 +327,10 @@ void ShootController::run()
 
       case angleMiddlePlatform:
       angleTo(32);
+      break;
+
+      case angleOut:
+      angleTo(35);
       break;
 
 

@@ -122,14 +122,18 @@ void driverControl()
 	}
 
 	//set wanted action
-	if(pDigital(X)) {
-		shootMacro = ShootController::shootMacros::shootOut;
-	} else if(pDigital(L2) && pDigital(L1)) {
+	if(pDigital(L2) && pDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootBoth;
-	} else if(pDigital(L2)) {
-		shootMacro = ShootController::shootMacros::shootMiddle;
 	} else if(pDigital(L1)) {
 		shootMacro = ShootController::shootMacros::shootTop;
+	} else if(pDigital(L2)) {
+		shootMacro = ShootController::shootMacros::shootMiddle;
+	} else if(pDigital(Y)) {
+		shootMacro = ShootController::shootMacros::shootTopPlatform;
+	} else if(pDigital(X)) {
+		shootMacro = ShootController::shootMacros::shootMiddlePlatform;
+	} else if(pDigital(A)) {
+		shootMacro = ShootController::shootMacros::shootOut;
 	}
 
 	//cycle, then wait for button released, then go back to action
@@ -151,17 +155,23 @@ void driverControl()
 	} else {
 		if(shootMacro != lastShootMacro) {
 			switch(shootMacro) {
-				case ShootController::shootMacros::shootOut : {
-					robot.shooter->doJob(ShootController::angleOut);
+				case ShootController::shootMacros::shootBoth : {
+					robot.shooter->doJob(ShootController::angleTop);
 					break;
-				} case ShootController::shootMacros::shootBoth : {
+				} case ShootController::shootMacros::shootTop : {
 					robot.shooter->doJob(ShootController::angleTop);
 					break;
 				} case ShootController::shootMacros::shootMiddle : {
 					robot.shooter->doJob(ShootController::angleMiddle);
 					break;
-				} case ShootController::shootMacros::shootTop : {
-					robot.shooter->doJob(ShootController::angleTop);
+				} case ShootController::shootMacros::shootTopPlatform : {
+					robot.shooter->doJob(ShootController::angleTopPlatform);
+					break;
+				} case ShootController::shootMacros::shootMiddlePlatform : {
+					robot.shooter->doJob(ShootController::angleMiddlePlatform);
+					break;
+				} case ShootController::shootMacros::shootOut : {
+					robot.shooter->doJob(ShootController::angleOut);
 					break;
 				} default: {
 					std::cerr << "DriverControl: Invalid shootMacro" << std::endl;
@@ -174,10 +184,12 @@ void driverControl()
 
 	std::string flagString;
 	switch(shootMacro) {
-		case ShootController::shootMacros::shootOut : flagString = "bottom"; break;
 		case ShootController::shootMacros::shootBoth : flagString = "both"; break;
-		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
 		case ShootController::shootMacros::shootTop : flagString = "top"; break;
+		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
+		case ShootController::shootMacros::shootTopPlatform : flagString = "topPlat"; break;
+		case ShootController::shootMacros::shootMiddlePlatform : flagString = "middlePlat"; break;
+		case ShootController::shootMacros::shootOut : flagString = "out"; break;
 		default: flagString = "none"; break;
 	}
 	std::stringstream distStr;
