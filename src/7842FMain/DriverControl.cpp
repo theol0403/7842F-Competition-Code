@@ -29,7 +29,7 @@ void driverControl()
 	*/
 	if(mDigital(R2) && mDigital(R1)) {
 		intakeState = IntakeController::outSlow;
-	} else if(mDigital(R2) || pDigital(R2)) {
+	} else if(mDigital(R2) || pDigital(R2) || pDigital(R1)) {
 		intakeState = IntakeController::intakeBall;
 	} else if(mDigital(R1)) {
 		intakeState = IntakeController::outIntake;
@@ -78,7 +78,7 @@ void driverControl()
 		lastShootMacro = ShootController::shootMacros::off;
 		robot.shooter->doJob(ShootController::off);
 
-		robot.arm->setState(ArmController::off);
+		//robot.arm->setState(ArmController::off);
 	}
 
 	/**

@@ -19,7 +19,7 @@ void VisionController::allign() {
   if(targetObj.sig == VISION_OBJECT_ERR_SIG) {
     power = 0;
   } else {
-    power = error * 0.005;
+    power = error * 0.0015;
   }
   chassis->rotate(power);
 }
@@ -29,9 +29,8 @@ void VisionController::run()
 {
 
   sensor->set_wifi_mode(0);
-  sensor->set_exposure(150);
-  pros::vision_signature_s_t SIG_1 = {1, {1, 0, 0}, 2.800, -2129, -1369, -1749, 3221, 4401, 3811, 0, 0}; sensor->set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = {2, {1, 0, 0}, 7.600, 6823, 7385, 7104, -2009, -1543, -1776, 0, 0}; sensor->set_signature(2, &SIG_2);
+  sensor->set_exposure(30);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3731, -2579, -3154, -5505, -4991, -5248, 7.100, 0); sensor->set_signature(1, &SIG_1);
 
   lib7842::VisionReader reader(sensor);
   lib7842::ObjContainer target;
@@ -44,7 +43,8 @@ void VisionController::run()
   .withStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
 
   drawer.withLayer(target)
-  .withStyle(1, LV_COLOR_BLUE, LV_COLOR_BLACK);
+  .withStyle(1, LV_COLOR_BLACK, LV_COLOR_BLACK)
+  .withStyle(2, LV_COLOR_BLACK, LV_COLOR_BLACK);
 
   while(true)
   {

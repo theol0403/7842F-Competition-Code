@@ -46,12 +46,12 @@ void ArmController::run()
       break;
 
       case down:
-      pid->setTarget(20);
+      pid->setTarget(0);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
       case carry:
-      pid->setTarget(340);
+      pid->setTarget(450);
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
@@ -65,7 +65,7 @@ void ArmController::run()
       break;
 
       case upSlow:
-      arm->move(20);
+      arm->move(-60);
       break;
     }
 

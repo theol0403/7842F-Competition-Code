@@ -18,7 +18,7 @@ namespace lib7842
     if(index < objects.size()) {
       return objects.at(index);
     } else {
-      std::cerr << "get: Invalid Index" << std::endl;
+      //std::cerr << "get: Invalid Index" << std::endl;
       return {};
     }
   }
