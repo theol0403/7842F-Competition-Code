@@ -1,6 +1,6 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFarPost(void* input)
+void AutonFar_CapCrossPark(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
@@ -15,7 +15,7 @@ void AutonFarPost(void* input)
 
   chassis.driveToPoint({2_ft, 2_ft});
   chassis.turnToAngle(180_deg);
-  
+
 
 
 }

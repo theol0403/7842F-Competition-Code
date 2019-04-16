@@ -1,6 +1,6 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFarDescore(void* input)
+void AutonFar_CrossPark(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
