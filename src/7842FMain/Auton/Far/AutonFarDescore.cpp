@@ -25,6 +25,7 @@ void AutonFarDescore(void* input)
 
   chassis.turnToAngle(-180_deg);
   chassis.driveForTime(1500, -1);
+  chassis.driveDistance(0_in);
   robot.arm->setState(ArmController::off);
   //chassis.driveDistance(-0.1_ft);
 

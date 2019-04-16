@@ -21,6 +21,7 @@ void AutonClose(void* input)
   chassis.driveToPoint({3.7_ft, 7_ft}, 1, makeSettle(4_in));
   robot.arm->setState(ArmController::balance);
   chassis.driveForTime(1500, -1);
+  chassis.driveDistance(0_in);
   chassis.turnAngle(20_deg);
 
   waitForLastMinute(timer);
