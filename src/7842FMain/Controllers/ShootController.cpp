@@ -125,9 +125,7 @@ void ShootController::addMacro(shootMacros macro) {
     case shootMacros::cycle :
     addJobs({reportDone, cycle});
     break;
-
-    case shootMacros::nothing :
-    break;
+    
   }
 }
 

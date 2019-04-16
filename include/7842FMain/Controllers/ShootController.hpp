@@ -42,8 +42,7 @@ public:
     shootOut,
     shoot,
     angle,
-    cycle,
-    nothing
+    cycle
   };
 
   IntakeController*& intake;

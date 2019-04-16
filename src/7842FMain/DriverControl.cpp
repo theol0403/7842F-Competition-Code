@@ -109,16 +109,16 @@ void driverControl()
 	*/
 	if(pDigital(DOWN)) {
 		robot.shooter->setDistanceToFlag(3.5_ft);
-		lastShootMacro = ShootController::shootMacros::nothing;
+		lastShootMacro = ShootController::shootMacros::off;
 	} else if(pDigital(LEFT)) {
 		robot.shooter->setDistanceToFlag(4.5_ft);
-		lastShootMacro = ShootController::shootMacros::nothing;
+		lastShootMacro = ShootController::shootMacros::off;
 	} else if(pDigital(UP)) {
 		robot.shooter->setDistanceToFlag(8.5_ft);
-		lastShootMacro = ShootController::shootMacros::nothing;
+		lastShootMacro = ShootController::shootMacros::off;
 	} else if(pDigital(RIGHT)) {
 		robot.shooter->setDistanceToFlag(11_ft);
-		lastShootMacro = ShootController::shootMacros::nothing;
+		lastShootMacro = ShootController::shootMacros::off;
 	}
 
 	//set wanted action
@@ -136,14 +136,17 @@ void driverControl()
 	if(pDigitalPressed(Y)) {
 		robot.shooter->doMacro(ShootController::shootMacros::cycle);
 		//cause it to go until pressed unless trigger pressed
-		shootMacro = ShootController::shootMacros::nothing;
-		lastShootMacro = ShootController::shootMacros::nothing;
+		shootMacro = ShootController::shootMacros::off;
+		lastShootMacro = ShootController::shootMacros::off;
 	} else if(pDigitalPressed(R1)) {
-		robot.shooter->doMacro(shootMacro);
-		//when let go or completed it will go back to other action
-		lastShootMacro = ShootController::shootMacros::nothing;
+		if(shootMacro == ShootController::shootMacros::off) {
+			robot.shooter->doMacro(ShootController::shootMacros::shoot);
+		} else {
+			robot.shooter->doMacro(shootMacro);
+		}
+		//when completed it will go back to other action
+		lastShootMacro = ShootController::shootMacros::off;
 	} else if(!robot.shooter->macroCompleted) { //not completed
-		//} else if((pDigital(R1) || pDigital(Y)) && !robot.shooter->macroCompleted) { //when button held and it is still going
 		//nothing
 	} else {
 		if(shootMacro != lastShootMacro) {
