@@ -13,7 +13,7 @@ QPoint sideFlagPost {2_ft, 11_ft}; //The flag post
 QPoint middleFlagShoot {5.4_ft, 11_ft}; //The shooting target for the flag
 QPoint middleFlagPost {6_ft, 11_ft}; //The flag post
 
-QPoint farFlagShoot {8.9_ft, 11_ft}; //The shooting target for the flag
+QPoint farFlagShoot {9.2_ft, 11_ft}; //The shooting target for the flag
 QPoint farFlagPost {10_ft, 11_ft}; //The flag post
 
 QPoint closeFlatCap {3_ft, 9_ft}; //The close cap with the balls on it

@@ -31,7 +31,7 @@ void AutonFar_CapCrossPark(void* input)
   robot.arm->setState(ArmController::down);
 
   if(chassis.side == autonSides::red) {
-    chassis.turnToPoint({12.3_ft, 11_ft}); // turn to flag
+    chassis.turnToPoint({12.5_ft, 11_ft}); // turn to flag
   } else {
     chassis.turnToPoint({10.9_ft, 11_ft}); // turn to flag
   }
