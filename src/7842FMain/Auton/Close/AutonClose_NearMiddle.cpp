@@ -27,8 +27,9 @@ void AutonClose_NearMiddle(void* input)
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
-  chassis.turnAngle(-5_deg);
-  chassis.driveDistance(3_ft);
-  chassis.driveDistance(-2_ft);
+  chassis.driveDistance(2_ft);
+
+  robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
+  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 }
