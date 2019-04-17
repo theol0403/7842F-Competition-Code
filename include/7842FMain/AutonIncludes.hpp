@@ -19,7 +19,7 @@ void AutonClose_NearPark(void*);
 void AutonClose_MiddlePark(void*);
 void AutonClose_MiddleNear(void*);
 void AutonClose_NearMiddle(void*);
-void AutonClose_NearCrossPark(void*);
+void AutonClose_NearCross(void*);
 
 void AutonFar_NearPark(void*);
 void AutonFar_MiddlePark(void*);
