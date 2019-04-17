@@ -47,6 +47,8 @@ extern QPoint farFlagPost;
 extern QPoint closeFlatCap;
 extern QPoint farFlatCap;
 
+extern QPoint farPost;
+
 
 /**
 * Actions

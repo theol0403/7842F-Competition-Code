@@ -69,6 +69,7 @@ namespace lib7842
     #define pointTurn OdomController::pointTurn
     #define leftPivot INSERT_CONTROLLER_NAME leftPivot
     #define rightPivot INSERT_CONTROLLER_NAME rightPivot
+    #define capTurn OdomController::capTurn
 
     #define angleCalc INSERT_CONTROLLER_NAME angleCalc
 

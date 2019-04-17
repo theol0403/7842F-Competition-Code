@@ -141,12 +141,13 @@ void driverControl()
 	}
 
 	//cycle, then wait for button released, then go back to action
-	if(pDigitalPressed(Y)) {
-		robot.shooter->doMacro(ShootController::shootMacros::cycle);
-		//cause it to go until pressed unless trigger pressed
-		shootMacro = ShootController::shootMacros::off;
-		lastShootMacro = ShootController::shootMacros::off;
-	} else if(pDigitalPressed(R1)) {
+	// if(pDigitalPressed(Y)) {
+	// 	robot.shooter->doMacro(ShootController::shootMacros::cycle);
+	// 	//cause it to go until pressed unless trigger pressed
+	// 	shootMacro = ShootController::shootMacros::off;
+	// 	lastShootMacro = ShootController::shootMacros::off;
+	// } else
+	if(pDigitalPressed(R1)) {
 		if(shootMacro == ShootController::shootMacros::off) {
 			robot.shooter->doMacro(ShootController::shootMacros::shoot);
 		} else {

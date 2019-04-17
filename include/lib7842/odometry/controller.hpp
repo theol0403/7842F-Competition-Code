@@ -67,6 +67,7 @@ namespace lib7842
     static void pointTurn(OdomController*, double);
     static void leftPivot(OdomController*, double);
     static void rightPivot(OdomController*, double);
+    static void capTurn(OdomController*, double);
 
     static angleCalc_t angleCalc(QAngle);
     static angleCalc_t angleCalc(QPoint);

@@ -17,17 +17,17 @@ void AutonClose_NearPark(void* input)
   chassis.driveToPoint({0.9_ft, 11_ft}, 3, makeSettle(4_in));
 
   //back up and drive to plaform
-  chassis.driveToPoint({3.6_ft, 8_ft}, 2, makeSettle(4_in));
+  chassis.driveToPoint({3.65_ft, 8_ft}, 2, makeSettle(4_in));
   chassis.turnToAngle(0_deg); //turn to platform
 
   //drive up
   robot.arm->setState(ArmController::balance);
-  chassis.driveToPoint({3.6_ft, 7_ft}, 1, makeSettle(4_in));
-  chassis.driveForTime(1900, -1);
+  chassis.driveToPoint({3.65_ft, 7_ft}, 1, makeSettle(4_in));
+  chassis.driveForTime(1850, -1);
   chassis.driveDistance(0_in);
 
   //shoot middle flags from platform
-  chassis.turnAngle(10_deg);
+  chassis.turnAngle(15_deg);
   waitForLastMinute(timer);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothPlatform);
 

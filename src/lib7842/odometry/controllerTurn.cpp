@@ -35,6 +35,10 @@ namespace lib7842
     that->tracker->model->right(-turnVel * 2);
   }
 
+  void OdomController::capTurn(OdomController* that, double turnVel) {
+    that->tracker->model->rotate(turnVel/2);
+  }
+
   angleCalc_t OdomController::angleCalc(QAngle angle) {
     angle = rollAngle180(angle);
     return [=](OdomController* that) {
