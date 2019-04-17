@@ -14,14 +14,12 @@ void AutonClose_MiddleNear(void* input)
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
-  chassis.driveDistance(3.8_ft);
-
   chassis.driveToPoint({0.9_ft, 7_ft}, 2); // Move to shooting position
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
 
   // Move forward towards flags and push bottom flag
-  chassis.driveToPoint({1_ft, 11_ft}, 3, makeSettle(4_in));
+  chassis.driveToPoint({1_ft, 11_ft}, 2, makeSettle(4_in));
 
   chassis.driveToPoint({0.9_ft, 7_ft}, 2); // Move to shooting position
 
@@ -41,7 +39,7 @@ void AutonClose_MiddleNear(void* input)
   //drive up
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3.65_ft, 7_ft}, 1, makeSettle(4_in));
-  chassis.driveForTime(1700, -1);
+  chassis.driveForTime(1600, -1);
   chassis.driveDistance(0_in);
 
   //shoot middle flags from platform
