@@ -16,18 +16,18 @@ void AutonNothing(void*); //Nothing happens
 void AutonTest(void*); //Tests
 
 void AutonClose_NearPark(void*);
-void AutonClose_MiddlePark(void*);
-void AutonClose_MiddleNear(void*);
 void AutonClose_NearMiddle(void*);
 void AutonClose_NearCross(void*);
+void AutonClose_MiddlePark(void*);
+void AutonClose_MiddleNear(void*);
 
 void AutonFar_NearPark(void*);
 void AutonFar_MiddlePark(void*);
 void AutonFar_CrossPark(void*);
 
-void AutonFar_CapCross(void*);
-void AutonFar_CapMiddle(void*);
 void AutonFar_CapNear(void*);
+void AutonFar_CapMiddle(void*);
+void AutonFar_CapCross(void*);
 
 void AutonSkills(void*);
 
