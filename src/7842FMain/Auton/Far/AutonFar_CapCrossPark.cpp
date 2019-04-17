@@ -30,7 +30,12 @@ void AutonFar_CapCrossPark(void* input)
   chassis.driveDistance(-1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint({11_ft, 11_ft}); // turn to flag
+  if(chassis.side == autonSides::red) {
+    chassis.turnToPoint({12.3_ft, 11_ft}); // turn to flag
+  } else {
+    chassis.turnToPoint({10.9_ft, 11_ft}); // turn to flag
+  }
+
   robot.shooter->setDistanceToFlag(9.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);

@@ -14,16 +14,21 @@ void AutonClose_NearPark(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   // Move forward towards flags and push bottom flag
-  chassis.driveToPoint({0.9_ft, 11_ft}, 3, makeSettle(4_in));
+  chassis.driveToPoint({1_ft, 11_ft}, 3, makeSettle(4_in));
 
   //back up and drive to plaform
-  chassis.driveToPoint({3.65_ft, 8_ft}, 2, makeSettle(4_in));
+  if(chassis.side == autonSides::red) {
+    chassis.driveToPoint({4.2_ft, 7.5_ft}, 2, makeSettle(4_in));
+  } else {
+    chassis.driveToPoint({3.8_ft, 7.5_ft}, 2, makeSettle(4_in));
+  }
+
   chassis.turnToAngle(0_deg); //turn to platform
 
   //drive up
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3.65_ft, 7_ft}, 1, makeSettle(4_in));
-  chassis.driveForTime(1850, -1);
+  chassis.driveForTime(1900, -1);
   chassis.driveDistance(0_in);
 
   //shoot middle flags from platform
