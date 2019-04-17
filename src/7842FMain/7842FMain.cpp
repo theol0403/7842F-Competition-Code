@@ -28,9 +28,9 @@ void initialize()
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
     {"N", AutonNothing},
-    {"C-NrPk", AutonClose_NearPark}, {"C-NrMd", AutonClose_NearMiddle}, {"C-NrCr", AutonClose_NearCross}, {"C-MdPk", AutonClose_MiddlePark}, {"C-MdNr", AutonClose_MiddleNear},
-    {"F-NrPk", AutonFar_NearPark}, {"F-MdPk", AutonFar_MiddlePark}, {"F-CrPk", AutonFar_CrossPark},
-    {"F-CapNr", AutonFar_CapNear}, {"F-CapMd", AutonFar_CapMiddle}, {"F-CapCr", AutonFar_CapCross},
+    {"c.NrPk", AutonClose_NearPark}, {"c.NrMd", AutonClose_NearMiddle}, {"c.NrCr", AutonClose_NearCross}, {"c.MdPk", AutonClose_MiddlePark}, {"c.MdNr", AutonClose_MiddleNear},
+    {"f.NrPk", AutonFar_NearPark}, {"f.MdPk", AutonFar_MiddlePark}, {"f.CrPk", AutonFar_CrossPark},
+    {"f.CapNr", AutonFar_CapNear}, {"f.CapMd", AutonFar_CapMiddle}, {"f.CapCr", AutonFar_CapCross},
   });
 
   pros::delay(500); //Give the legacy ports time to start up
