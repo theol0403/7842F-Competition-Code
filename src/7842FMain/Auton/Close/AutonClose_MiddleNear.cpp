@@ -14,6 +14,8 @@ void AutonClose_MiddleNear(void* input)
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
+  chassis.driveDistance(2_ft, makeSettle(5_in));
+
   chassis.turnToPoint(closeFlatCap);
   robot.intake->setState(IntakeController::outIntake);
   chassis.driveDistance(2_ft, makeSettle(5_in));
