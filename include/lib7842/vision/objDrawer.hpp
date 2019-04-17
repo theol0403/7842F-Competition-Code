@@ -55,10 +55,10 @@ namespace lib7842
     ObjDrawer(lv_obj_t*);
     ~ObjDrawer();
 
-    ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
+    ObjDrawer &withContainerStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
     ObjRenderer &withLayer(ObjContainer&);
 
-    void draw();
+    void draw(ObjContainer&);
 
   };
 

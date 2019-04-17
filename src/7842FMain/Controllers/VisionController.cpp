@@ -16,9 +16,9 @@ void VisionController::allign(lib7842::autonSides side) {
 
   lib7842::visionObj targetObj;
   if(side == lib7842::autonSides::red) {
-    targetObj = target.removeWithout(objAttr::sig, 1).get(0);
-  } else {
     targetObj = target.removeWithout(objAttr::sig, 2).get(0);
+  } else {
+    targetObj = target.removeWithout(objAttr::sig, 1).get(0);
   }
 
   double error = targetObj.centerX - VISION_FOV_WIDTH/2;
@@ -38,13 +38,13 @@ void VisionController::run()
 
   sensor->set_wifi_mode(0);
   sensor->set_exposure(30);
-  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, 8785, 9309, 9048, -585, -187, -386, 8.600, 0); sensor->set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, -3189, -2595, -2892, 11723, 13047, 12384, 10.100, 0); sensor->set_signature(2, &SIG_2);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3189, -2595, -2892, 11723, 13047, 12384, 10.100, 0); sensor->set_signature(1, &SIG_1);
+  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 8785, 9309, 9048, -585, -187, -386, 8.600, 0); sensor->set_signature(2, &SIG_2);
 
   lib7842::VisionReader reader(sensor);
 
   ObjDrawer drawer(parent);
-  drawer.withStyle(lv_obj_get_style(parent)->body.main_color, LV_COLOR_WHITE);
+  drawer.withContainerStyle(lv_obj_get_style(parent)->body.main_color, LV_COLOR_WHITE);
 
   drawer.withLayer(reader)
   .withStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)

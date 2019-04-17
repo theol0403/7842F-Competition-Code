@@ -126,7 +126,7 @@ namespace lib7842
     lv_obj_del(dContainer);
   }
 
-  ObjDrawer &ObjDrawer::withStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
+  ObjDrawer &ObjDrawer::withContainerStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
     cStyle.body.main_color = main;
     cStyle.body.grad_color = main;
     cStyle.body.border.color = border;
@@ -140,9 +140,13 @@ namespace lib7842
     return layers.back();
   }
 
-  void ObjDrawer::draw() {
-    for(auto&& layer : layers) {
-      layer.draw();
+  void ObjDrawer::draw(ObjContainer& oContainer) {
+
+    auto it = std::find(layers.begin(), layers.end(), [&](auto&& layer){ return layer.oContainer == &oContainer;});
+    if(it != layers.end()) {
+      it->draw();
+    } else {
+      std::cerr << "ObjDrawer::draw: no container found" << std::endl;
     }
 
     if(layers.size() > 0) {
