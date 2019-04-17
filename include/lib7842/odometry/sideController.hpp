@@ -67,8 +67,8 @@ namespace lib7842
 
     #define makeArc INSERT_CONTROLLER_NAME makeArc
     #define pointTurn OdomController::pointTurn
-    #define leftPivot INSERT_CONTROLLER_NAME leftPivot
-    #define rightPivot INSERT_CONTROLLER_NAME rightPivot
+    #define leftPivot OdomController::leftPivot
+    #define rightPivot OdomController::rightPivot
     #define capTurn OdomController::capTurn
 
     #define angleCalc INSERT_CONTROLLER_NAME angleCalc

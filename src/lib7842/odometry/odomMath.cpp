@@ -9,7 +9,6 @@ namespace lib7842
 
   QPoint::QPoint(QLength ix, QLength iy, QAngle itheta) : x(ix), y(iy), theta(itheta) {}
   QPoint::QPoint(QLength ix, QLength iy) : x(ix), y(iy) {}
-  QPoint::QPoint(QAngle itheta) : theta(itheta) {}
   QPoint::QPoint() {}
 
   QPoint::QPoint(QPoint ipoint, QLength ix, QLength iy) : x(ix), y(iy), theta(ipoint.theta) {}

@@ -21,7 +21,6 @@ namespace lib7842
 
     QPoint(QLength, QLength, QAngle);
     QPoint(QLength, QLength);
-    QPoint(QAngle);
     QPoint();
 
     QPoint(QPoint, QLength, QLength);
