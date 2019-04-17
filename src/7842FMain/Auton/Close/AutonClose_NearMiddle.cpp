@@ -7,14 +7,7 @@ void AutonClose_NearMiddle(void* input)
 
   firstCapMovement(chassis, 7_ft);
 
-  chassis.driveToPoint({0.9_ft, 7_ft}, 2); // Move to shooting position
-
-  chassis.turnToPoint(sideFlagShoot); // turn to flag
-  robot.shooter->setDistanceToFlag(7_ft);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
-
-  // Move forward towards flags and push bottom flag
-  chassis.driveToPoint({1_ft, 11_ft}, 3, makeSettle(4_in));
+  closeShootFlagsPush(chassis);
 
   chassis.driveDistance(-3_ft, makeSettle(4_in));
 

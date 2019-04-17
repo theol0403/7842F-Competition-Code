@@ -56,3 +56,4 @@ extern QPoint farPost;
 */
 void firstCapMovement(SideController& chassis, QLength y);
 void waitForLastMinute(Timer& timer);
+void closeShootFlagsPush(SideController& chassis);
