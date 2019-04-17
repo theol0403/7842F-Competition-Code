@@ -28,7 +28,7 @@ void AutonClose_NearPark(void* input)
   //drive up
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3.65_ft, 7_ft}, 1, makeSettle(4_in));
-  chassis.driveForTime(1800, -1);
+  chassis.driveForTime(1700, -1);
   chassis.driveDistance(0_in);
 
   //shoot middle flags from platform

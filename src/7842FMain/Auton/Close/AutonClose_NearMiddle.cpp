@@ -18,8 +18,10 @@ void AutonClose_NearMiddle(void* input)
 
   chassis.driveDistance(-2_ft, makeSettle(4_in));
 
-  chassis.driveToPoint({3_ft, 8_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
-
+  robot.intake->setState(IntakeController::outIntake);
+  chassis.driveToPoint({3_ft, 9_ft}, 1.5, makeSettle(2_in)); // Move to shooting position
+  robot.intake->setState(IntakeController::intakeBall);
+  
   chassis.turnToPoint(middleFlagShoot); // turn to flag
 
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
