@@ -103,7 +103,7 @@ void ShootController::addMacro(shootMacros macro) {
     break;
 
     case shootMacros::shootBoth :
-    addJobs({reportDone, enableShoot, enableShoot, angleMiddle, enableShoot, angleTop});
+    addJobs({reportDone, enableShoot, enableShoot, waitForDoubleShot, angleMiddle, enableShoot, angleTop});
     break;
 
     case shootMacros::shootTopPlatform :
@@ -335,6 +335,16 @@ void ShootController::run()
 
       case angleTarget:
       angleTo(targetAngle);
+      break;
+
+
+      case waitForDoubleShot:
+      flywheel->enable();
+      intake->enable();
+      if(distanceToFlag > 6_ft) {
+        pros::delay(500);
+      }
+      completeJob();
       break;
 
 

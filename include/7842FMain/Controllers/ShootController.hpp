@@ -25,6 +25,7 @@ public:
     angleMiddlePlatform, //angle middle from platform
     angleOut, //drop hood to out (ground flag) angle
     angleTarget, //drop hood to target angle
+    waitForDoubleShot, //if distance is large enough, wait before second shot
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer

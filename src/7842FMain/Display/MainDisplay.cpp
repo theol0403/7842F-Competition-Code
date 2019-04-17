@@ -137,7 +137,7 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     iAnim.end_cb = NULL; iAnim.act_time = 0; iAnim.playback = 1; iAnim.playback_pause = time/3; iAnim.repeat = 0; iAnim.repeat_pause = 0;
     lv_anim_create(&iAnim);
 
-    pros::delay(time + 10);
+    pros::delay(time + 20);
 
     lv_obj_del(overlay);
     delete static_cast<Passer*>(input);
