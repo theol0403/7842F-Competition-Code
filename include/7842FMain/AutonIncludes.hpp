@@ -25,9 +25,9 @@ void AutonFar_NearPark(void*);
 void AutonFar_MiddlePark(void*);
 void AutonFar_CrossPark(void*);
 
-void AutonFar_CapCrossPark(void*);
-void AutonFar_CapMiddlePark(void*);
-void AutonFar_CapNearPark(void*);
+void AutonFar_CapCross(void*);
+void AutonFar_CapMiddle(void*);
+void AutonFar_CapNear(void*);
 
 void AutonSkills(void*);
 

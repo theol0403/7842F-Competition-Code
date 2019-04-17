@@ -1,6 +1,6 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFar_CapCrossPark(void* input)
+void AutonFar_CapMiddle(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
@@ -28,16 +28,16 @@ void AutonFar_CapCrossPark(void* input)
   chassis.driveForTime(500, 0.5);
   robot.arm->setState(ArmController::off);
 
-  chassis.driveDistance(-1_ft, makeSettle(2_in));
+  chassis.driveToPoint({1_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
   robot.arm->setState(ArmController::down);
 
   if(chassis.side == autonSides::red) {
-    chassis.turnToPoint({12.8_ft, 11_ft}); // turn to flag
+    chassis.turnToPoint(middleFlagShoot); // turn to flag
   } else {
-    chassis.turnToPoint({10.9_ft, 11_ft}); // turn to flag
+    chassis.turnToPoint(middleFlagShoot); // turn to flag
   }
 
-  robot.shooter->setDistanceToFlag(9.5_ft);
+  robot.shooter->setDistanceToFlag(9_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);

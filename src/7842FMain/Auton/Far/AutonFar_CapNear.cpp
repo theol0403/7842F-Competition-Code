@@ -1,6 +1,6 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFar_CapNearPark(void* input)
+void AutonFar_CapNear(void* input)
 {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
   auto &[chassis, timer] = *passer;
