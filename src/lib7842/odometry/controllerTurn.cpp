@@ -36,7 +36,7 @@ namespace lib7842
   }
 
   void OdomController::capTurn(OdomController* that, double turnVel) {
-    that->tracker->model->rotate(turnVel/2);
+    that->tracker->model->rotate(turnVel/1.8);
   }
 
   angleCalc_t OdomController::angleCalc(QAngle angle) {

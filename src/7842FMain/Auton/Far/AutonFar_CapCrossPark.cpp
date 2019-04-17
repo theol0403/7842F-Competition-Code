@@ -14,23 +14,24 @@ void AutonFar_CapCrossPark(void* input)
   robot.intake->setState(IntakeController::off);
   robot.arm->setState(ArmController::down);
 
-  chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg, pointTurn);
-  chassis.driveDistance(-2_ft);
+  chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg);
+  chassis.driveDistance(-2_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::carry);
-  pros::delay(500);
+  pros::delay(300);
 
-  chassis.driveToPoint({2.7_ft, 1_ft});
+  chassis.driveToPoint({2.5_ft, 1.3_ft}, 2, makeSettle(3_in));
   chassis.turnToPoint(farPost, capTurn);
-  chassis.driveForTime(800, 0.7);
+  chassis.driveForTime(500, 0.5);
 
   robot.arm->setState(ArmController::up);
   pros::delay(800);
+  //chassis.setState({3_ft, 16_in, 180_deg});
   robot.arm->setState(ArmController::off);
-  chassis.driveDistance(-1_ft);
+  chassis.driveDistance(-1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint(farFlagPost); // turn to flag
-  robot.shooter->setDistanceToFlag(9_ft);
+  chassis.turnToPoint({11_ft, 11_ft}); // turn to flag
+  robot.shooter->setDistanceToFlag(9.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
