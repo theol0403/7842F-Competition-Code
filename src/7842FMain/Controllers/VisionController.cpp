@@ -6,9 +6,9 @@
 
 using namespace lib7842;
 
-VisionController::VisionController(pros::Vision* isensor, lv_obj_t* iparent, std::shared_ptr<okapi::SkidSteerModel> ichassis) :
+VisionController::VisionController(pros::Vision* isensor, lv_obj_t* iparent, IterativePosPIDController* ipid) :
 sensor(isensor), reader(sensor), drawer(iparent),
-chassis(ichassis),
+pid(ipid),
 task(taskFnc, this)
 {
   //set up vision
@@ -31,17 +31,9 @@ task(taskFnc, this)
 double VisionController::allign() {
 
   lib7842::visionObj targetObj = target.get(0);
-
-  double error = targetObj.centerX - VISION_FOV_WIDTH/2;
-  double power = 0;
-
-  if(targetObj.sig == VISION_OBJECT_ERR_SIG) {
-    power = 0;
-  } else {
-    power = error * 0.0014;
-  }
-  return power;
-
+  double error = targetObj.sig == VISION_OBJECT_ERR_SIG ? 0 : targetObj.fromMidX;
+  return pid->step(error);
+  
 }
 
 
@@ -63,7 +55,8 @@ void VisionController::run() {
       target = target.removeWithout(objAttr::sig, 1);
     }
 
-    target.shrinkTo(3).sortBy(objAttr::fromMidY);
+    target.shrinkTo(3).sortBy(objAttr::absFromMidY);
+    target.shrinkTo(1);
 
     drawer.drawAll();
 

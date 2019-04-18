@@ -14,12 +14,12 @@ public:
   pros::Vision* sensor = nullptr;
   lib7842::VisionReader reader;
   lib7842::ObjDrawer drawer;
-  std::shared_ptr<okapi::SkidSteerModel> chassis;
+  IterativePosPIDController* pid = nullptr;
   pros::Task task;
 
   lib7842::ObjContainer target;
 
-  VisionController(pros::Vision*, lv_obj_t*, std::shared_ptr<okapi::SkidSteerModel>);
+  VisionController(pros::Vision*, lv_obj_t*, IterativePosPIDController*);
 
   double allign();
 
