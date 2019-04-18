@@ -73,18 +73,18 @@ namespace lib7842
     for(auto&& obj : oContainer->objects) {
       lv_obj_set_hidden(dObjects.at(dIndex), false); // make visible
 
-      auto search = sigStyles.find(obj.sig);
+      auto search = sigStyles.find(obj.getAttr(objAttr::sig));
       if (search != sigStyles.end()) {
         lv_obj_set_style(dObjects.at(dIndex), &search->second);
       } else {
         lv_obj_set_style(dObjects.at(dIndex), &objStyle);
       }
 
-      lv_obj_set_x(dObjects.at(dIndex), obj.x * wScale);
-      lv_obj_set_y(dObjects.at(dIndex), obj.y * hScale);
+      lv_obj_set_x(dObjects.at(dIndex), obj.getAttr(objAttr::x) * wScale);
+      lv_obj_set_y(dObjects.at(dIndex), obj.getAttr(objAttr::y) * hScale);
 
-      lv_obj_set_width(dObjects.at(dIndex), obj.width * wScale);
-      lv_obj_set_height(dObjects.at(dIndex), obj.height * hScale);
+      lv_obj_set_width(dObjects.at(dIndex), obj.getAttr(objAttr::width) * wScale);
+      lv_obj_set_height(dObjects.at(dIndex), obj.getAttr(objAttr::height) * hScale);
 
       dIndex++;
     }
