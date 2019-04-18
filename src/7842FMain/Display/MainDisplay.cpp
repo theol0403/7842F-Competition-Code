@@ -92,10 +92,10 @@ lv_obj_t* MainDisplay::getParent() {
 
 
 
-void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
+void MainDisplay::splashScreen(const lv_img_dsc_t* imgPtr, int time) {
 
   //the task needs to know information
-  using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
+  using Passer = std::tuple<MainDisplay*, const lv_img_dsc_t*, int>;
 
   void (*func)(void*) = [](void* input){
     auto [display, imgPtr, time] = *static_cast<Passer*>(input);

@@ -15,6 +15,6 @@ public:
 
   lv_obj_t* newTab(std::string);
   lv_obj_t* getParent();
-  void splashScreen(const lv_img_t*, int);
+  void splashScreen(const lv_img_dsc_t*, int);
 
 };
