@@ -21,6 +21,8 @@ namespace lib7842
     centerY = centerY op rhs.centerY;  \
     fromMidX = fromMidX op rhs.fromMidX;  \
     fromMidY = fromMidY op rhs.fromMidY;  \
+    absFromMidX = absFromMidX op rhs.absFromMidX;  \
+    absFromMidY = absFromMidY op rhs.absFromMidY;  \
     return *this; \
   }
 
@@ -35,6 +37,8 @@ namespace lib7842
     centerY = centerY op rhs; \
     fromMidX = fromMidX op rhs; \
     fromMidY = fromMidY op rhs; \
+    absFromMidX = absFromMidX op rhs; \
+    absFromMidY = absFromMidY op rhs; \
     return *this; \
   }
 
@@ -55,6 +59,8 @@ namespace lib7842
       case objAttr::centerY: return centerY; break;
       case objAttr::fromMidX: return fromMidX; break;
       case objAttr::fromMidY: return fromMidY; break;
+      case objAttr::absFromMidX: return absFromMidX; break;
+      case objAttr::absFromMidY: return absFromMidY; break;
     }
     std::cerr << "GetAttr: Invalid Attr" << std::endl;
     return 0;
@@ -70,8 +76,10 @@ namespace lib7842
     std::cout << "Area: " << area << " | ";
     std::cout << "CenterX: " << centerX << " | ";
     std::cout << "CenterY: " << centerY << " | ";
-    std::cout << "ToCenterX: " << fromMidX << " | ";
-    std::cout << "ToCenterY: " << fromMidY << std::endl;
+    std::cout << "FromMidX: " << fromMidX << " | ";
+    std::cout << "FromMidY: " << fromMidY << " | ";
+    std::cout << "AbsFromMidX: " << absFromMidX << " | ";
+    std::cout << "AbsFromMidY: " << absFromMidY << std::endl;
   }
 
 
@@ -82,15 +90,16 @@ namespace lib7842
     width = obj.width;
     height = obj.height;
     area = obj.width * obj.height;
-    centerX = obj.x_middle_coord;
-    centerY = obj.y_middle_coord;
+    centerX = x + width/2.0;
+    centerY = y + height/2.0;
     fromMidX = centerX - VISION_FOV_WIDTH/2.0;
     fromMidY = centerY - VISION_FOV_WIDTH/2.0;
+    absFromMidX = std::abs(fromMidX);
+    absFromMidY = std::abs(fromMidY);
 
-    //std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
     assert(sig != VISION_OBJECT_ERR_SIG);
     assert((int)centerX == (int)x + ((int)width/2));
-    assert((int)centerY == (int)y - ((int)height/2));
+    assert((int)centerY == (int)y + ((int)height/2));
   }
 
 }

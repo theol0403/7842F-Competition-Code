@@ -16,8 +16,8 @@ namespace lib7842
     centerY,
     fromMidX,
     fromMidY,
-    fromMidXabs,
-    fromMidYabs
+    absFromMidX,
+    absFromMidY
   };
 
   struct visionObj
@@ -32,6 +32,8 @@ namespace lib7842
     double centerY = 0;
     double fromMidX = 0;
     double fromMidY = 0;
+    double absFromMidX = 0;
+    double absFromMidY = 0;
 
     const visionObj& operator+(const visionObj&);
     const visionObj& operator-(const visionObj&);
