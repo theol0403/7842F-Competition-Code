@@ -12,6 +12,7 @@ namespace lib7842
     width,
     height,
     area,
+    avgDim,
     centerX,
     centerY,
     fromMidX,
@@ -28,6 +29,7 @@ namespace lib7842
     double width = 0;
     double height = 0;
     double area = 0;
+    double avgDim = 0;
     double centerX = 0;
     double centerY = 0;
     double fromMidX = 0;

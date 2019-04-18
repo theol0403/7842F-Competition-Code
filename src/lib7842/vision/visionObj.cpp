@@ -17,6 +17,7 @@ namespace lib7842
     width = width op rhs.width;  \
     height = height op rhs.height; \
     area = area op rhs.area; \
+    avgDim = avgDim op rhs.avgDim; \
     centerX = centerX op rhs.centerX;  \
     centerY = centerY op rhs.centerY;  \
     fromMidX = fromMidX op rhs.fromMidX;  \
@@ -33,6 +34,7 @@ namespace lib7842
     width = width op rhs; \
     height = height op rhs; \
     area = area op rhs; \
+    avgDim = avgDim op rhs; \
     centerX = centerX op rhs; \
     centerY = centerY op rhs; \
     fromMidX = fromMidX op rhs; \
@@ -55,6 +57,7 @@ namespace lib7842
       case objAttr::width: return width; break;
       case objAttr::height: return height; break;
       case objAttr::area: return area; break;
+      case objAttr::avgDim: return avgDim; break;
       case objAttr::centerX: return centerX; break;
       case objAttr::centerY: return centerY; break;
       case objAttr::fromMidX: return fromMidX; break;
@@ -74,6 +77,7 @@ namespace lib7842
     std::cout << "X: " << x << " | ";
     std::cout << "Y: " << y << " | ";
     std::cout << "Area: " << area << " | ";
+    std::cout << "AvgDim: " << avgDim << " | ";
     std::cout << "CenterX: " << centerX << " | ";
     std::cout << "CenterY: " << centerY << " | ";
     std::cout << "FromMidX: " << fromMidX << " | ";
@@ -90,6 +94,7 @@ namespace lib7842
     width = obj.width;
     height = obj.height;
     area = obj.width * obj.height;
+    avgDim = (obj.width + obj.height)/2;
     centerX = x + width/2.0;
     centerY = y + height/2.0;
     fromMidX = centerX - VISION_FOV_WIDTH/2.0;
