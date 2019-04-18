@@ -13,7 +13,9 @@ namespace lib7842
     height,
     area,
     centerX,
-    centerY
+    centerY,
+    toCenterX,
+    toCenterY
   };
 
   struct visionObj
@@ -26,6 +28,8 @@ namespace lib7842
     double area = 0;
     double centerX = 0;
     double centerY = 0;
+    double toCenterX = 0;
+    double toCenterY = 0;
 
     visionObj operator+(visionObj);
     visionObj operator-(visionObj);

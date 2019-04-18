@@ -145,7 +145,7 @@ namespace lib7842
     if(it != layers.end()) {
       it->draw();
     } else {
-      std::cerr << "ObjDrawer::draw: no container found" << std::endl;
+      std::cerr << "ObjDrawer::draw: container not found" << std::endl;
     }
 
     if(useLabel) {

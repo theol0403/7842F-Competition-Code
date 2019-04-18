@@ -12,6 +12,8 @@ namespace lib7842
     area = area + rhs.area;
     centerX = centerX + rhs.centerX;
     centerY = centerY + rhs.centerY;
+    toCenterX = toCenterX + rhs.toCenterX;
+    toCenterY = toCenterY + rhs.toCenterY;
     return *this;
   }
 
@@ -23,6 +25,8 @@ namespace lib7842
     area = area + rhs.area;
     centerX = centerX - rhs.centerX;
     centerY = centerY - rhs.centerY;
+    toCenterX = toCenterX - rhs.toCenterX;
+    toCenterY = toCenterY - rhs.toCenterY;
     return *this;
   }
 
@@ -34,6 +38,8 @@ namespace lib7842
     area = area * rhs.area;
     centerX = centerX * rhs.centerX;
     centerY = centerY * rhs.centerY;
+    toCenterX = toCenterX * rhs.toCenterX;
+    toCenterY = toCenterY * rhs.toCenterY;
     return *this;
   }
 
@@ -45,6 +51,8 @@ namespace lib7842
     area = area / rhs.area;
     centerX = centerX / rhs.centerX;
     centerY = centerY / rhs.centerY;
+    toCenterX = toCenterX / rhs.toCenterX;
+    toCenterY = toCenterY / rhs.toCenterY;
     return *this;
   }
 
@@ -56,6 +64,8 @@ namespace lib7842
     area = area + rhs;
     centerX = centerX + rhs;
     centerY = centerY + rhs;
+    toCenterX = toCenterX + rhs;
+    toCenterY = toCenterY + rhs;
     return *this;
   }
 
@@ -67,6 +77,8 @@ namespace lib7842
     area = area + rhs;
     centerX = centerX - rhs;
     centerY = centerY - rhs;
+    toCenterX = toCenterX - rhs;
+    toCenterY = toCenterY - rhs;
     return *this;
   }
 
@@ -78,6 +90,8 @@ namespace lib7842
     area = area * rhs;
     centerX = centerX * rhs;
     centerY = centerY * rhs;
+    toCenterX = toCenterX * rhs;
+    toCenterY = toCenterY * rhs;
     return *this;
   }
 
@@ -89,6 +103,8 @@ namespace lib7842
     area = area / rhs;
     centerX = centerX / rhs;
     centerY = centerY / rhs;
+    toCenterX = toCenterX / rhs;
+    toCenterY = toCenterY / rhs;
     return *this;
   }
 
@@ -102,6 +118,8 @@ namespace lib7842
       case objAttr::area: return area; break;
       case objAttr::centerX: return centerX; break;
       case objAttr::centerY: return centerY; break;
+      case objAttr::toCenterX: return toCenterX; break;
+      case objAttr::toCenterY: return toCenterY; break;
     }
     std::cerr << "GetAttr: Invalid Attr" << std::endl;
     return 0;
@@ -116,7 +134,9 @@ namespace lib7842
     std::cout << "Y: " << y << " | ";
     std::cout << "Area: " << area << " | ";
     std::cout << "CenterX: " << centerX << " | ";
-    std::cout << "CenterY: " << centerY << std::endl;
+    std::cout << "CenterY: " << centerY << " | ";
+    std::cout << "ToCenterX: " << toCenterX << " | ";
+    std::cout << "ToCenterY: " << toCenterY << std::endl;
   }
 
 
@@ -129,6 +149,8 @@ namespace lib7842
     area = obj.width * obj.height;
     centerX = obj.x_middle_coord;
     centerY = obj.y_middle_coord;
+    toCenterX = centerX - VISION_FOV_WIDTH/2.0;
+    toCenterY = centerY - VISION_FOV_WIDTH/2.0;
 
     //std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
     assert(sig != VISION_OBJECT_ERR_SIG);
