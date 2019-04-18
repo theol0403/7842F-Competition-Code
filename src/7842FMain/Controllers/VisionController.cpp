@@ -1,6 +1,8 @@
 #include "VisionController.hpp"
 #include <sstream>
 #include <iomanip>
+#include "7842FMain/RobotConfig.hpp"
+#include "lib7842/odometry/controller.hpp"
 
 using namespace lib7842;
 
@@ -20,29 +22,26 @@ task(taskFnc, this)
   drawer.makeLayer(reader)
   .setStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
   .setStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
+
+  drawer.makeLayer(target)
+  .setStyle(1, LV_COLOR_BLACK, LV_COLOR_BLUE)
+  .setStyle(2, LV_COLOR_BLACK, LV_COLOR_RED);
 }
 
-void VisionController::allign(lib7842::autonSides side) {
-
-  if(side == lib7842::autonSides::red) {
-    target = target.removeWithout(objAttr::sig, 2);
-  } else {
-    target = target.removeWithout(objAttr::sig, 1);
-  }
-
-  target.shrinkTo(3).sortBy(objAttr::middleY);
+double VisionController::allign() {
 
   lib7842::visionObj targetObj = target.get(0);
 
   double error = targetObj.centerX - VISION_FOV_WIDTH/2;
+  double power = 0;
 
-  double power;
   if(targetObj.sig == VISION_OBJECT_ERR_SIG) {
     power = 0;
   } else {
     power = error * 0.0014;
   }
-  chassis->rotate(power);
+  return power;
+
 }
 
 
@@ -50,11 +49,23 @@ void VisionController::run() {
 
   while(true)
   {
+    //reading and simple filtering
     reader.reset();
     reader.getAll();
     reader.removeWith(objAttr::area, 0, 200);
     reader.sortBy(objAttr::area);
-    drawer.draw(reader);
+    target = reader;
+
+    //target finding
+    if(display.selector->getSelectedSide() == lib7842::autonSides::red) {
+      target = target.removeWithout(objAttr::sig, 2);
+    } else {
+      target = target.removeWithout(objAttr::sig, 1);
+    }
+
+    target.shrinkTo(3).sortBy(objAttr::middleY);
+
+    drawer.drawAll();
 
     pros::delay(10);
   }
