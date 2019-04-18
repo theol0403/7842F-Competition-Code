@@ -19,7 +19,7 @@ task(taskFnc, this)
     {5.5, 5.3},
     {6, 6},
     {6.5, 6.5},
-    {7, 7},
+    {7, 7.5},
     {7.5, 5.2},
     {8, 6.1},
     {8.5, 14.5},
@@ -225,7 +225,7 @@ double ShootController::computeHoodPower(double target) {
 }
 
 void ShootController::angleTo(double angle) {
-  if(getHoodAngle() >= angle + 2) { //how much forward before cycle
+  if(getHoodAngle() >= angle + 1) { //how much forward before cycle
     addJob(cycle);
   } else {
     if(getHoodAngle() >= angle - 4) { //how much back before stop

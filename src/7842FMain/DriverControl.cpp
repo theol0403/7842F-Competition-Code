@@ -130,14 +130,13 @@ void driverControl()
 		shootMacro = ShootController::shootMacros::shootTop;
 	} else if(pDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
-	}
-	// else if(pDigital(Y) && pDigital(X)) {
+	// } else if(pDigital(Y) && pDigital(X)) {
 	// 	shootMacro = ShootController::shootMacros::shootBothPlatform;
 	// } else if(pDigital(Y)) {
 	// 	shootMacro = ShootController::shootMacros::shootTopPlatform;
 	// } else if(pDigital(X)) {
-	// 	shootMacro = ShootController::shootMacros::shootMiddlePlatform; }
-	else if(pDigital(X)) {
+	// 	shootMacro = ShootController::shootMacros::shootMiddlePlatform;
+}	else if(pDigital(X)) {
 		shootMacro = ShootController::shootMacros::shootOut;
 	}
 
@@ -171,15 +170,15 @@ void driverControl()
 				} case ShootController::shootMacros::shootMiddle : {
 					robot.shooter->doJob(ShootController::angleMiddle);
 					break;
-				} case ShootController::shootMacros::shootBothPlatform : {
-					robot.shooter->doJob(ShootController::angleTopPlatform);
-					break;
-				} case ShootController::shootMacros::shootTopPlatform : {
-					robot.shooter->doJob(ShootController::angleTopPlatform);
-					break;
-				} case ShootController::shootMacros::shootMiddlePlatform : {
-					robot.shooter->doJob(ShootController::angleMiddlePlatform);
-					break;
+				// } case ShootController::shootMacros::shootBothPlatform : {
+				// 	robot.shooter->doJob(ShootController::angleTopPlatform);
+				// 	break;
+				// } case ShootController::shootMacros::shootTopPlatform : {
+				// 	robot.shooter->doJob(ShootController::angleTopPlatform);
+				// 	break;
+				// } case ShootController::shootMacros::shootMiddlePlatform : {
+				// 	robot.shooter->doJob(ShootController::angleMiddlePlatform);
+				// 	break;
 				} case ShootController::shootMacros::shootOut : {
 					robot.shooter->doJob(ShootController::angleOut);
 					break;
