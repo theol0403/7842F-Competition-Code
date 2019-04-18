@@ -170,7 +170,7 @@
                 "version": "3.1.9"
             },
             "lib7842Fstatic": {
-                "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\lib7842Fstatic@1.0.2",
+                "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\lib7842Fstatic@1.0.1",
                 "metadata": {
                     "origin": "local"
                 },
@@ -182,7 +182,7 @@
                 ],
                 "target": "v5",
                 "user_files": [],
-                "version": "1.0.2"
+                "version": "1.0.1"
             },
             "okapilib": {
                 "location": "C:\\Users\\theol\\AppData\\Roaming\\PROS\\templates\\okapilib@3.3.12",
