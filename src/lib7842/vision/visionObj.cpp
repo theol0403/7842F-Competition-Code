@@ -4,109 +4,44 @@
 namespace lib7842
 {
 
-  visionObj visionObj::operator+(visionObj rhs) {
-    x = x + rhs.x;
-    y = y + rhs.y;
-    width = width + rhs.width;
-    height = height + rhs.height;
-    area = area + rhs.area;
-    centerX = centerX + rhs.centerX;
-    centerY = centerY + rhs.centerY;
-    toCenterX = toCenterX + rhs.toCenterX;
-    toCenterY = toCenterY + rhs.toCenterY;
-    return *this;
+  #define makeOperators(x) \
+  x (+) \
+  x (-) \
+  x (*) \
+  x (/)
+
+  #define objOperator(op) \
+  const visionObj& visionObj::operator op(const visionObj& rhs) { \
+    x = x op rhs.x;  \
+    y = y op rhs.y;  \
+    width = width op rhs.width;  \
+    height = height op rhs.height; \
+    area = area op rhs.area; \
+    centerX = centerX op rhs.centerX;  \
+    centerY = centerY op rhs.centerY;  \
+    toCenterX = toCenterX op rhs.toCenterX;  \
+    toCenterY = toCenterY op rhs.toCenterY;  \
+    return *this; \
   }
 
-  visionObj visionObj::operator-(visionObj rhs) {
-    x = x - rhs.x;
-    y = y - rhs.y;
-    width = width - rhs.width;
-    height = height - rhs.height;
-    area = area + rhs.area;
-    centerX = centerX - rhs.centerX;
-    centerY = centerY - rhs.centerY;
-    toCenterX = toCenterX - rhs.toCenterX;
-    toCenterY = toCenterY - rhs.toCenterY;
-    return *this;
+  #define doubleOperator(op) \
+  const visionObj& visionObj::operator op(const double& rhs) { \
+    x = x op rhs; \
+    y = y op rhs; \
+    width = width op rhs; \
+    height = height op rhs; \
+    area = area op rhs; \
+    centerX = centerX op rhs; \
+    centerY = centerY op rhs; \
+    toCenterX = toCenterX op rhs; \
+    toCenterY = toCenterY op rhs; \
+    return *this; \
   }
 
-  visionObj visionObj::operator*(visionObj rhs) {
-    x = x * rhs.x;
-    y = y * rhs.y;
-    width = width * rhs.width;
-    height = height * rhs.height;
-    area = area * rhs.area;
-    centerX = centerX * rhs.centerX;
-    centerY = centerY * rhs.centerY;
-    toCenterX = toCenterX * rhs.toCenterX;
-    toCenterY = toCenterY * rhs.toCenterY;
-    return *this;
-  }
 
-  visionObj visionObj::operator/(visionObj rhs) {
-    x = x / rhs.x;
-    y = y / rhs.y;
-    width = width / rhs.width;
-    height = height / rhs.height;
-    area = area / rhs.area;
-    centerX = centerX / rhs.centerX;
-    centerY = centerY / rhs.centerY;
-    toCenterX = toCenterX / rhs.toCenterX;
-    toCenterY = toCenterY / rhs.toCenterY;
-    return *this;
-  }
+  makeOperators(objOperator)
+  makeOperators(doubleOperator)
 
-  visionObj visionObj::operator+(double rhs) {
-    x = x + rhs;
-    y = y + rhs;
-    width = width + rhs;
-    height = height + rhs;
-    area = area + rhs;
-    centerX = centerX + rhs;
-    centerY = centerY + rhs;
-    toCenterX = toCenterX + rhs;
-    toCenterY = toCenterY + rhs;
-    return *this;
-  }
-
-  visionObj visionObj::operator-(double rhs) {
-    x = x - rhs;
-    y = y - rhs;
-    width = width - rhs;
-    height = height - rhs;
-    area = area + rhs;
-    centerX = centerX - rhs;
-    centerY = centerY - rhs;
-    toCenterX = toCenterX - rhs;
-    toCenterY = toCenterY - rhs;
-    return *this;
-  }
-
-  visionObj visionObj::operator*(double rhs) {
-    x = x * rhs;
-    y = y * rhs;
-    width = width * rhs;
-    height = height * rhs;
-    area = area * rhs;
-    centerX = centerX * rhs;
-    centerY = centerY * rhs;
-    toCenterX = toCenterX * rhs;
-    toCenterY = toCenterY * rhs;
-    return *this;
-  }
-
-  visionObj visionObj::operator/(double rhs) {
-    x = x / rhs;
-    y = y / rhs;
-    width = width / rhs;
-    height = height / rhs;
-    area = area / rhs;
-    centerX = centerX / rhs;
-    centerY = centerY / rhs;
-    toCenterX = toCenterX / rhs;
-    toCenterY = toCenterY / rhs;
-    return *this;
-  }
 
   double visionObj::getAttr(objAttr attr) const {
     switch (attr) {

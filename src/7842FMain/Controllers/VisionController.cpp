@@ -63,7 +63,7 @@ void VisionController::run() {
       target = target.removeWithout(objAttr::sig, 1);
     }
 
-    target.shrinkTo(3).sortBy(objAttr::middleY);
+    target.shrinkTo(3).sortBy(objAttr::toCenterY);
 
     drawer.drawAll();
 

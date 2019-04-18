@@ -31,15 +31,15 @@ namespace lib7842
     double toCenterX = 0;
     double toCenterY = 0;
 
-    visionObj operator+(visionObj);
-    visionObj operator-(visionObj);
-    visionObj operator*(visionObj);
-    visionObj operator/(visionObj);
+    const visionObj& operator+(const visionObj&);
+    const visionObj& operator-(const visionObj&);
+    const visionObj& operator*(const visionObj&);
+    const visionObj& operator/(const visionObj&);
 
-    visionObj operator+(double);
-    visionObj operator-(double);
-    visionObj operator*(double);
-    visionObj operator/(double);
+    const visionObj& operator+(const double&);
+    const visionObj& operator-(const double&);
+    const visionObj& operator*(const double&);
+    const visionObj& operator/(const double&);
 
     double getAttr(objAttr) const;
     void print();
