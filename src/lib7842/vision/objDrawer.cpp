@@ -142,7 +142,7 @@ namespace lib7842
 
   void ObjDrawer::draw(ObjContainer& oContainer) {
 
-    auto it = std::find(layers.begin(), layers.end(), [&](auto&& layer){ return layer.oContainer == &oContainer;});
+    auto it = std::find_if(layers.begin(), layers.end(), [&](const ObjRenderer& layer){ return layer.oContainer == &oContainer; });
     if(it != layers.end()) {
       it->draw();
     } else {

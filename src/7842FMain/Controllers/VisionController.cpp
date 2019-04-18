@@ -57,7 +57,7 @@ void VisionController::run()
     //reader.removeWith(objAttr::area, 0, 400).removeWith(objAttr::y, 0, 50);
     reader.sortBy(objAttr::area);
     target = reader;
-    drawer.draw();
+    drawer.draw(reader);
 
     pros::delay(50);
   }
