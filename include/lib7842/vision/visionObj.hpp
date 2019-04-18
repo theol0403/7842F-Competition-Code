@@ -48,6 +48,7 @@ namespace lib7842
     const visionObj& operator/(const double&);
 
     double getAttr(objAttr) const;
+    void setAttr(objAttr, double);
     void print();
 
     visionObj() = default;

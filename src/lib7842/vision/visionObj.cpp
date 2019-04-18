@@ -69,6 +69,25 @@ namespace lib7842
     return 0;
   }
 
+  void visionObj::setAttr(objAttr attr, double val) {
+    switch (attr) {
+      case objAttr::sig: sig = val; break;
+      case objAttr::x: x = val; break;
+      case objAttr::y: y = val; break;
+      case objAttr::width: width = val; break;
+      case objAttr::height: height = val; break;
+      case objAttr::area: area = val; break;
+      case objAttr::avgDim: avgDim = val; break;
+      case objAttr::centerX: centerX = val; break;
+      case objAttr::centerY: centerY = val; break;
+      case objAttr::fromMidX: fromMidX = val; break;
+      case objAttr::fromMidY: fromMidY = val; break;
+      case objAttr::absFromMidX: absFromMidX = val; break;
+      case objAttr::absFromMidY: absFromMidY = val; break;
+    }
+    std::cerr << "GetAttr: Invalid Attr" << std::endl;
+  }
+
 
   void visionObj::print() {
     std::cout << "Sig: " << sig << " | ";

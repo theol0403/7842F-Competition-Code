@@ -131,12 +131,10 @@ namespace lib7842
     resize(0);
   }
 
-
   void ObjContainer::print() {
     std::cout << "Count:" << objects.size() << std::endl;
     for(auto&& obj : objects) obj.print();
   }
-
 
   void ObjContainer::checkErrSig() {
     for(auto&& obj : objects) { assert(obj.sig != VISION_OBJECT_ERR_SIG); }
