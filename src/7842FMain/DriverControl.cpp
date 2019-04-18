@@ -147,7 +147,10 @@ void driverControl()
 	// 	shootMacro = ShootController::shootMacros::off;
 	// 	lastShootMacro = ShootController::shootMacros::off;
 	// } else
-	if(pDigitalPressed(R1)) {
+
+	if(pDigital(R1) && pDigital(R2)) {
+		robot.shooter->doMacro(ShootController::shootMacros::shoot);
+	} else if(pDigitalPressed(R1)) {
 		if(shootMacro == ShootController::shootMacros::off) {
 			robot.shooter->doMacro(ShootController::shootMacros::shoot);
 		} else {
