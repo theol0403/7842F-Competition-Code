@@ -32,6 +32,7 @@ void AutonFar_CapNear(void* input)
   robot.arm->setState(ArmController::down);
 
   chassis.turnToPoint(sideFlagShoot); // turn to flag
+  robot.intake->setState(IntakeController::intakeBall);
 
   robot.shooter->setDistanceToFlag(distanceToPoint(sideFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);

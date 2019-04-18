@@ -37,6 +37,8 @@ void AutonFar_CapMiddle(void* input)
     chassis.turnToPoint(middleFlagShoot); // turn to flag
   }
 
+  robot.intake->setState(IntakeController::intakeBall);
+
   robot.shooter->setDistanceToFlag(9_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);

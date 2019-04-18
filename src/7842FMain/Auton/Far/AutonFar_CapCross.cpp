@@ -37,6 +37,8 @@ void AutonFar_CapCross(void* input)
     chassis.turnToPoint({10.9_ft, 11_ft}); // turn to flag
   }
 
+  robot.intake->setState(IntakeController::intakeBall);
+
   robot.shooter->setDistanceToFlag(9.5_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);
