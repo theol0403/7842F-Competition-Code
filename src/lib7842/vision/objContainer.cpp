@@ -74,7 +74,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjContainer &ObjContainer::trim(int size) {
+  ObjContainer &ObjContainer::shrinkTo(int size) {
     if(size < objects.size()) resize(size);
     return *this;
   }
