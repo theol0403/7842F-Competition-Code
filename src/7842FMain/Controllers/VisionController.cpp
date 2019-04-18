@@ -55,7 +55,7 @@ void VisionController::run() {
       target = target.removeWithout(objAttr::sig, 1);
     }
 
-    target.shrinkTo(3).snapToGridY(8).sortBy(objAttr::absFromMidY);
+    //target.shrinkTo(3).snapToGridY(8).sortBy(objAttr::absFromMidY);
     target.shrinkTo(1);
 
     drawer.drawAll();
