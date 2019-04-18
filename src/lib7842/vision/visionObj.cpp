@@ -16,14 +16,6 @@ namespace lib7842
     y = y op rhs.y;  \
     width = width op rhs.width;  \
     height = height op rhs.height; \
-    area = area op rhs.area; \
-    avgDim = avgDim op rhs.avgDim; \
-    centerX = centerX op rhs.centerX;  \
-    centerY = centerY op rhs.centerY;  \
-    fromMidX = fromMidX op rhs.fromMidX;  \
-    fromMidY = fromMidY op rhs.fromMidY;  \
-    absFromMidX = absFromMidX op rhs.absFromMidX;  \
-    absFromMidY = absFromMidY op rhs.absFromMidY;  \
     return *this; \
   }
 
@@ -33,14 +25,6 @@ namespace lib7842
     y = y op rhs; \
     width = width op rhs; \
     height = height op rhs; \
-    area = area op rhs; \
-    avgDim = avgDim op rhs; \
-    centerX = centerX op rhs; \
-    centerY = centerY op rhs; \
-    fromMidX = fromMidX op rhs; \
-    fromMidY = fromMidY op rhs; \
-    absFromMidX = absFromMidX op rhs; \
-    absFromMidY = absFromMidY op rhs; \
     return *this; \
   }
 
@@ -56,16 +40,17 @@ namespace lib7842
       case objAttr::y: return y; break;
       case objAttr::width: return width; break;
       case objAttr::height: return height; break;
-      case objAttr::area: return area; break;
-      case objAttr::avgDim: return avgDim; break;
-      case objAttr::centerX: return centerX; break;
-      case objAttr::centerY: return centerY; break;
-      case objAttr::fromMidX: return fromMidX; break;
-      case objAttr::fromMidY: return fromMidY; break;
-      case objAttr::absFromMidX: return absFromMidX; break;
-      case objAttr::absFromMidY: return absFromMidY; break;
+      
+      case objAttr::area: return width * height; break;
+      case objAttr::avgDim: return (width + height)/2.0; break;
+      case objAttr::centerX: return x + width/2.0; break;
+      case objAttr::centerY: return y + height/2.0; break;
+      case objAttr::fromMidX: return getAttr(objAttr::centerX) - VISION_FOV_WIDTH/2.0; break;
+      case objAttr::fromMidY: return getAttr(objAttr::centerY) - VISION_FOV_HEIGHT/2.0; break;
+      case objAttr::absFromMidX: return std::abs(getAttr(objAttr::fromMidX)); break;
+      case objAttr::absFromMidY: return std::abs(getAttr(objAttr::fromMidY)); break;
+      default: std::cerr << "getAttr: Invalid Attr" << std::endl;
     }
-    std::cerr << "GetAttr: Invalid Attr" << std::endl;
     return 0;
   }
 
@@ -76,16 +61,8 @@ namespace lib7842
       case objAttr::y: y = val; break;
       case objAttr::width: width = val; break;
       case objAttr::height: height = val; break;
-      case objAttr::area: area = val; break;
-      case objAttr::avgDim: avgDim = val; break;
-      case objAttr::centerX: centerX = val; break;
-      case objAttr::centerY: centerY = val; break;
-      case objAttr::fromMidX: fromMidX = val; break;
-      case objAttr::fromMidY: fromMidY = val; break;
-      case objAttr::absFromMidX: absFromMidX = val; break;
-      case objAttr::absFromMidY: absFromMidY = val; break;
+      default: std::cerr << "setAttr: Invalid Attr" << std::endl;
     }
-    std::cerr << "GetAttr: Invalid Attr" << std::endl;
   }
 
 
@@ -94,15 +71,7 @@ namespace lib7842
     std::cout << "Width: " << width << " | ";
     std::cout << "Height: " << height << " | ";
     std::cout << "X: " << x << " | ";
-    std::cout << "Y: " << y << " | ";
-    std::cout << "Area: " << area << " | ";
-    std::cout << "AvgDim: " << avgDim << " | ";
-    std::cout << "CenterX: " << centerX << " | ";
-    std::cout << "CenterY: " << centerY << " | ";
-    std::cout << "FromMidX: " << fromMidX << " | ";
-    std::cout << "FromMidY: " << fromMidY << " | ";
-    std::cout << "AbsFromMidX: " << absFromMidX << " | ";
-    std::cout << "AbsFromMidY: " << absFromMidY << std::endl;
+    std::cout << "Y: " << y << std::endl;
   }
 
 
@@ -112,18 +81,8 @@ namespace lib7842
     y = obj.top_coord;
     width = obj.width;
     height = obj.height;
-    area = obj.width * obj.height;
-    avgDim = (obj.width + obj.height)/2;
-    centerX = x + width/2.0;
-    centerY = y + height/2.0;
-    fromMidX = centerX - VISION_FOV_WIDTH/2.0;
-    fromMidY = centerY - VISION_FOV_WIDTH/2.0;
-    absFromMidX = std::abs(fromMidX);
-    absFromMidY = std::abs(fromMidY);
 
     assert(sig != VISION_OBJECT_ERR_SIG);
-    assert((int)centerX == (int)x + ((int)width/2));
-    assert((int)centerY == (int)y + ((int)height/2));
   }
 
 }
