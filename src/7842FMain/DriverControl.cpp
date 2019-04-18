@@ -130,25 +130,24 @@ void driverControl()
 		shootMacro = ShootController::shootMacros::shootTop;
 	} else if(pDigital(L2)) {
 		shootMacro = ShootController::shootMacros::shootMiddle;
-	} else if(pDigital(Y) && pDigital(X)) {
-		shootMacro = ShootController::shootMacros::shootBothPlatform;
-	} else if(pDigital(Y)) {
-		shootMacro = ShootController::shootMacros::shootTopPlatform;
-	} else if(pDigital(X)) {
-		shootMacro = ShootController::shootMacros::shootMiddlePlatform;
-	} else if(pDigital(A)) {
+	}
+	// else if(pDigital(Y) && pDigital(X)) {
+	// 	shootMacro = ShootController::shootMacros::shootBothPlatform;
+	// } else if(pDigital(Y)) {
+	// 	shootMacro = ShootController::shootMacros::shootTopPlatform;
+	// } else if(pDigital(X)) {
+	// 	shootMacro = ShootController::shootMacros::shootMiddlePlatform; }
+	else if(pDigital(X)) {
 		shootMacro = ShootController::shootMacros::shootOut;
 	}
 
 	//cycle, then wait for button released, then go back to action
-	// if(pDigitalPressed(Y)) {
-	// 	robot.shooter->doMacro(ShootController::shootMacros::cycle);
-	// 	//cause it to go until pressed unless trigger pressed
-	// 	shootMacro = ShootController::shootMacros::off;
-	// 	lastShootMacro = ShootController::shootMacros::off;
-	// } else
-
-	if(pDigital(R1) && pDigital(R2)) {
+	if(pDigitalPressed(Y)) {
+		robot.shooter->doMacro(ShootController::shootMacros::cycle);
+		//cause it to go until pressed unless trigger pressed
+		shootMacro = ShootController::shootMacros::off;
+		lastShootMacro = ShootController::shootMacros::off;
+	} else if(pDigital(R1) && pDigital(R2)) {
 		robot.shooter->doMacro(ShootController::shootMacros::shoot);
 	} else if(pDigitalPressed(R1)) {
 		if(shootMacro == ShootController::shootMacros::off) {
@@ -198,14 +197,14 @@ void driverControl()
 		case ShootController::shootMacros::shootBoth : flagString = "both"; break;
 		case ShootController::shootMacros::shootTop : flagString = "top"; break;
 		case ShootController::shootMacros::shootMiddle : flagString = "middle"; break;
-		case ShootController::shootMacros::shootBothPlatform : flagString = "bothPlat"; break;
-		case ShootController::shootMacros::shootTopPlatform : flagString = "topPlat"; break;
-		case ShootController::shootMacros::shootMiddlePlatform : flagString = "middlePlat"; break;
+		case ShootController::shootMacros::shootBothPlatform : flagString = "bothP"; break;
+		case ShootController::shootMacros::shootTopPlatform : flagString = "topP"; break;
+		case ShootController::shootMacros::shootMiddlePlatform : flagString = "middleP"; break;
 		case ShootController::shootMacros::shootOut : flagString = "out"; break;
 		default: flagString = "none"; break;
 	}
 	std::stringstream distStr;
 	distStr << robot.shooter->distanceToFlag.convert(foot);
-	robot.printer->print(2, distStr.str() + "\' to " + flagString, pros::E_CONTROLLER_MASTER);
+	robot.printer->print(2, distStr.str() + "\' " + flagString, pros::E_CONTROLLER_MASTER);
 
 }
