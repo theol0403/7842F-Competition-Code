@@ -45,7 +45,7 @@ namespace lib7842
   }
 
 
-  ObjRenderer &ObjRenderer::withStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
+  ObjRenderer &ObjRenderer::setStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
     objStyle.body.main_color = main;
     objStyle.body.grad_color = main;
     objStyle.body.border.color = border;
@@ -54,7 +54,7 @@ namespace lib7842
     return *this;
   }
 
-  ObjRenderer &ObjRenderer::withStyle(int sig, lv_color_t main, lv_color_t border, lv_opa_t opa) {
+  ObjRenderer &ObjRenderer::setStyle(int sig, lv_color_t main, lv_color_t border, lv_opa_t opa) {
     lv_style_t style;
     lv_style_copy(&style, &objStyle);
     style.body.main_color = main;
@@ -126,7 +126,7 @@ namespace lib7842
     lv_obj_del(dContainer);
   }
 
-  ObjDrawer &ObjDrawer::withContainerStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
+  ObjDrawer &ObjDrawer::setStyle(lv_color_t main, lv_color_t border, lv_opa_t opa) {
     cStyle.body.main_color = main;
     cStyle.body.grad_color = main;
     cStyle.body.border.color = border;
@@ -135,18 +135,33 @@ namespace lib7842
     return *this;
   }
 
-  ObjRenderer &ObjDrawer::withLayer(ObjContainer& oContainer) {
+  ObjRenderer &ObjDrawer::makeLayer(ObjContainer& oContainer) {
     layers.push_back(ObjRenderer(dContainer, &oContainer));
     return layers.back();
   }
 
-  void ObjDrawer::draw(ObjContainer& oContainer) {
-
+  void ObjDrawer::draw(ObjContainer& oContainer, bool useLabel) {
     auto it = std::find_if(layers.begin(), layers.end(), [&](const ObjRenderer& layer){ return layer.oContainer == &oContainer; });
     if(it != layers.end()) {
       it->draw();
     } else {
       std::cerr << "ObjDrawer::draw: no container found" << std::endl;
+    }
+
+    if(useLabel) {
+      if(layers.size() > 0) {
+        lv_label_set_text(infoLabel, ("Count: " + std::to_string(it->oContainer->getCount())).c_str());
+        lv_obj_align(infoLabel, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+      } else {
+        lv_label_set_text(infoLabel, "No Layer");
+        lv_obj_align(infoLabel, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+      }
+    }
+  }
+
+  void ObjDrawer::drawAll() {
+    for(auto&& layer : layers) {
+      layer.draw();
     }
 
     if(layers.size() > 0) {

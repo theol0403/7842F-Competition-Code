@@ -33,7 +33,7 @@ namespace lib7842
     ObjContainer copy();
 
     ObjContainer &resize(int);
-    ObjContainer &trim(int);
+    ObjContainer &shrinkTo(int);
     ObjContainer &remove(int);
     ObjContainer &remove(int, int);
 
