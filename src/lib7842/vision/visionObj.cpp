@@ -19,8 +19,8 @@ namespace lib7842
     area = area op rhs.area; \
     centerX = centerX op rhs.centerX;  \
     centerY = centerY op rhs.centerY;  \
-    toCenterX = toCenterX op rhs.toCenterX;  \
-    toCenterY = toCenterY op rhs.toCenterY;  \
+    fromMidX = fromMidX op rhs.fromMidX;  \
+    fromMidY = fromMidY op rhs.fromMidY;  \
     return *this; \
   }
 
@@ -33,8 +33,8 @@ namespace lib7842
     area = area op rhs; \
     centerX = centerX op rhs; \
     centerY = centerY op rhs; \
-    toCenterX = toCenterX op rhs; \
-    toCenterY = toCenterY op rhs; \
+    fromMidX = fromMidX op rhs; \
+    fromMidY = fromMidY op rhs; \
     return *this; \
   }
 
@@ -53,8 +53,8 @@ namespace lib7842
       case objAttr::area: return area; break;
       case objAttr::centerX: return centerX; break;
       case objAttr::centerY: return centerY; break;
-      case objAttr::toCenterX: return toCenterX; break;
-      case objAttr::toCenterY: return toCenterY; break;
+      case objAttr::fromMidX: return fromMidX; break;
+      case objAttr::fromMidY: return fromMidY; break;
     }
     std::cerr << "GetAttr: Invalid Attr" << std::endl;
     return 0;
@@ -70,8 +70,8 @@ namespace lib7842
     std::cout << "Area: " << area << " | ";
     std::cout << "CenterX: " << centerX << " | ";
     std::cout << "CenterY: " << centerY << " | ";
-    std::cout << "ToCenterX: " << toCenterX << " | ";
-    std::cout << "ToCenterY: " << toCenterY << std::endl;
+    std::cout << "ToCenterX: " << fromMidX << " | ";
+    std::cout << "ToCenterY: " << fromMidY << std::endl;
   }
 
 
@@ -84,8 +84,8 @@ namespace lib7842
     area = obj.width * obj.height;
     centerX = obj.x_middle_coord;
     centerY = obj.y_middle_coord;
-    toCenterX = centerX - VISION_FOV_WIDTH/2.0;
-    toCenterY = centerY - VISION_FOV_WIDTH/2.0;
+    fromMidX = centerX - VISION_FOV_WIDTH/2.0;
+    fromMidY = centerY - VISION_FOV_WIDTH/2.0;
 
     //std::cout << "centerX: " << centerX << " | width: " << width << std::endl;
     assert(sig != VISION_OBJECT_ERR_SIG);

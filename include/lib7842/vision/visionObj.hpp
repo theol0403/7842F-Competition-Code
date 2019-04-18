@@ -14,8 +14,10 @@ namespace lib7842
     area,
     centerX,
     centerY,
-    toCenterX,
-    toCenterY
+    fromMidX,
+    fromMidY,
+    fromMidXabs,
+    fromMidYabs
   };
 
   struct visionObj
@@ -28,8 +30,8 @@ namespace lib7842
     double area = 0;
     double centerX = 0;
     double centerY = 0;
-    double toCenterX = 0;
-    double toCenterY = 0;
+    double fromMidX = 0;
+    double fromMidY = 0;
 
     const visionObj& operator+(const visionObj&);
     const visionObj& operator-(const visionObj&);
