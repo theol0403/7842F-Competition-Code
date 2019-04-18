@@ -40,7 +40,7 @@ namespace lib7842
       case objAttr::y: return y; break;
       case objAttr::width: return width; break;
       case objAttr::height: return height; break;
-      
+
       case objAttr::area: return width * height; break;
       case objAttr::avgDim: return (width + height)/2.0; break;
       case objAttr::centerX: return x + width/2.0; break;
@@ -63,6 +63,23 @@ namespace lib7842
       case objAttr::height: height = val; break;
       default: std::cerr << "setAttr: Invalid Attr" << std::endl;
     }
+  }
+
+
+  void visionObj::snapTo(objAttr attr, double increment) {
+    x = std::round(x / increment) * increment;
+  }
+
+  void visionObj::snapToGrid(objAttr attr, int grid, double max) {
+    snapTo(attr, max / grid);
+  }
+
+  void visionObj::snapToGridX(int grid) {
+    snapToGrid(objAttr::x, grid, VISION_FOV_WIDTH);
+  }
+
+  void visionObj::snapToGridY(int grid) {
+    snapToGrid(objAttr::y, grid, VISION_FOV_HEIGHT);
   }
 
 

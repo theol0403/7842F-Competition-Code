@@ -45,6 +45,11 @@ namespace lib7842
 
     ObjContainer &sortBy(objAttr, bool = true);
 
+    ObjContainer &snapTo(objAttr, double);
+    ObjContainer &snapToGrid(objAttr, int, double);
+    ObjContainer &snapToGridX(int);
+    ObjContainer &snapToGridY(int);
+
     void reset();
     void print();
     int getCount();

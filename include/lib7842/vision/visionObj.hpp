@@ -47,6 +47,12 @@ namespace lib7842
 
     double getAttr(objAttr) const;
     void setAttr(objAttr, double);
+
+    void snapTo(objAttr, double);
+    void snapToGrid(objAttr, int, double);
+    void snapToGridX(int);
+    void snapToGridY(int);
+
     void print();
 
     visionObj() = default;

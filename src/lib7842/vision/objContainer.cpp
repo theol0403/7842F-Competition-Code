@@ -127,6 +127,27 @@ namespace lib7842
   }
 
 
+  ObjContainer &ObjContainer::snapTo(objAttr attr, double increment) {
+    for(auto&& obj : objects) obj.snapTo(attr, increment);
+    return *this;
+  }
+
+  ObjContainer &ObjContainer::snapToGrid(objAttr attr, int grid, double max) {
+    for(auto&& obj : objects) obj.snapToGrid(attr, grid, max);
+    return *this;
+  }
+
+  ObjContainer &ObjContainer::snapToGridX(int grid) {
+    for(auto&& obj : objects) obj.snapToGridX(grid);
+    return *this;
+  }
+
+  ObjContainer &ObjContainer::snapToGridY(int grid) {
+    for(auto&& obj : objects) obj.snapToGridY(grid);
+    return *this;
+  }
+
+
   void ObjContainer::reset() {
     resize(0);
   }
@@ -137,7 +158,7 @@ namespace lib7842
   }
 
   void ObjContainer::checkErrSig() {
-    for(auto&& obj : objects) { assert(obj.sig != VISION_OBJECT_ERR_SIG); }
+    for(auto&& obj : objects) { assert(obj.getAttr(objAttr::sig) != VISION_OBJECT_ERR_SIG); }
   }
 
   int ObjContainer::getCount() {
