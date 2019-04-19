@@ -5,7 +5,7 @@ namespace lib7842
 {
 
   VisionReader::VisionReader(pros::Vision* ivision) :
-  vision(ivision), maxCount(20) {
+  vision(ivision), maxCount(40) {
     temp.resize(maxCount);
   }
 

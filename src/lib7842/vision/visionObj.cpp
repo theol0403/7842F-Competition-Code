@@ -91,7 +91,7 @@ namespace lib7842
     std::cout << "Width:" << width << " | ";
     std::cout << "Height:" << height << " | ";
     std::cout << "X:" << x << " | ";
-    std::cout << "Y: " << y << std::endl;
+    std::cout << "Y:" << y << std::endl;
   }
 
 
@@ -106,10 +106,12 @@ namespace lib7842
       isCode = true;
     }
 
-    for(uint16_t id = obj.signature; id >> 3;) {
-      id = id >> 3;
-      sig = id;
-    }
+    // for(uint16_t id = obj.signature; id >> 3;) {
+    //   std::cout << "Id: " << id << " to: ";
+    //   id = id >> 3;
+    //   std::cout << id << std::endl;
+    //   sig = id;
+    // }
 
     assert(sig != VISION_OBJECT_ERR_SIG);
   }
