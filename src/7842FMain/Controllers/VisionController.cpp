@@ -11,21 +11,7 @@ sensor(isensor), reader(sensor), drawer(iparent),
 pid(ipid),
 task(taskFnc, this)
 {
-  //set up vision
-  sensor->set_wifi_mode(0);
-  sensor->set_exposure(30);
-  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3189, -2595, -2892, 11723, 13047, 12384, 10.100, 0); sensor->set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 8785, 9309, 9048, -585, -187, -386, 8.600, 0); sensor->set_signature(2, &SIG_2);
-
   drawer.setStyle(lv_obj_get_style(iparent)->body.main_color, LV_COLOR_WHITE);
-
-  drawer.makeLayer(reader)
-  .setStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
-  .setStyle(2, LV_COLOR_RED, LV_COLOR_WHITE);
-
-  drawer.makeLayer(target)
-  .setStyle(1, LV_COLOR_BLACK, LV_COLOR_BLUE)
-  .setStyle(2, LV_COLOR_BLACK, LV_COLOR_RED);
 }
 
 double VisionController::allign() {
@@ -39,28 +25,50 @@ double VisionController::allign() {
 
 void VisionController::run() {
 
+  //set up vision
+  sensor->set_wifi_mode(0);
+  sensor->set_exposure(150);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -2917, -2057, -2487, 8309, 9529, 8919, 8.100, 1); sensor->set_signature(1, &SIG_1);
+  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 10539, 11527, 11033, -993, -159, -576, 9.000, 1); sensor->set_signature(2, &SIG_2);
+  pros::vision_signature_s_t SIG_3 = pros::Vision::signature_from_utility(3, -2229, -1529, -1879, -4743, -3911, -4327, 4.600, 1); sensor->set_signature(3, &SIG_3);
+  VisionReader::colorCode BLUEFLAG = reader.createCode(1, 3);
+  VisionReader::colorCode REDFLAG = reader.createCode(2, 3);
+
+  drawer.makeLayer(reader)
+  .setStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
+  .setStyle(2, LV_COLOR_RED, LV_COLOR_WHITE)
+  .setStyle(3, LV_COLOR_GREEN, LV_COLOR_WHITE);
+
+  // drawer.makeLayer(target)
+  // .setStyle(1, LV_COLOR_BLACK, LV_COLOR_BLUE)
+  // .setStyle(2, LV_COLOR_BLACK, LV_COLOR_RED)
+  // .setStyle(3, LV_COLOR_BLACK, LV_COLOR_GREEN);
+
+
   while(true)
   {
     //reading and simple filtering
     reader.reset();
     reader.getAll();
-    reader.removeWith(objAttr::area, 0, 200);
-    reader.sortBy(objAttr::area);
-    target = reader;
 
-    //target finding
-    if(display.selector->getSelectedSide() == lib7842::autonSides::red) {
-      target = target.removeWithout(objAttr::sig, 2);
-    } else {
-      target = target.removeWithout(objAttr::sig, 1);
-    }
-
-    //target.shrinkTo(3).sortBy(objAttr::absFromMidY);
-    target.shrinkTo(1);
+    // reader.removeWith(objAttr::area, 0, 200);
+    // reader.sortBy(objAttr::area);
+    // target = reader;
+    //
+    // //target finding
+    // if(display.selector->getSelectedSide() == lib7842::autonSides::red) {
+    //   target = target.removeWithout(objAttr::sig, 2);
+    // } else {
+    //   target = target.removeWithout(objAttr::sig, 1);
+    // }
+    //
+    // //target.shrinkTo(3).sortBy(objAttr::absFromMidY);
+    // target.shrinkTo(1);
 
     drawer.drawAll();
+    reader.print();
 
-    pros::delay(10);
+    pros::delay(100);
   }
 }
 

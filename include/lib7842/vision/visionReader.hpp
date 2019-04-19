@@ -15,13 +15,20 @@ namespace lib7842
 
   public:
 
+    struct colorCode {
+      pros::vision_color_code_t code = 0;
+      int sig = 0;
+    };
+
     VisionReader(pros::Vision*);
 
     VisionReader &getAll();
     VisionReader &getSig(int);
     VisionReader &getSig(std::initializer_list<int>);
-    VisionReader &getCode(pros::vision_color_code_t);
-    VisionReader &getCode(std::initializer_list<pros::vision_color_code_t>);
+    VisionReader &getCode(colorCode);
+    VisionReader &getCode(std::initializer_list<colorCode>);
+
+    colorCode createCode(int, int);
 
   };
 }
