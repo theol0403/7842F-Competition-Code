@@ -69,7 +69,7 @@ namespace lib7842
 
 
   void visionObj::snapTo(objAttr attr, double increment) {
-    x = std::round(x / increment) * increment;
+    setAttr(attr, std::round(getAttr(attr) / increment) * increment);
   }
 
   void visionObj::snapToGrid(objAttr attr, int grid, double max) {
