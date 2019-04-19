@@ -29,7 +29,7 @@ void VisionController::run() {
   sensor->set_wifi_mode(0);
   sensor->set_exposure(40);
   pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3247, -3003, -3124, 13677, 14209, 13944, 11.000, 0); sensor->set_signature(1, &SIG_1);
-pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 7733, 8299, 8016, 205, 825, 516, 10.500, 0); sensor->set_signature(2, &SIG_2);
+  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 7733, 8299, 8016, 205, 825, 516, 10.500, 0); sensor->set_signature(2, &SIG_2);
 
   drawer.makeLayer(reader)
   .setStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)
@@ -48,18 +48,17 @@ pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 7733,
     reader.reset();
     reader.getAll();
 
-    reader.removeWith(objAttr::area, 0, 200);
-    reader.sortBy(objAttr::area);
+    reader.removeWith(objAttr::area, 0, 200).sortBy(objAttr::area);
     target = reader;
 
     // target finding
     if(display.selector->getSelectedSide() == lib7842::autonSides::red) {
-      target = target.removeWithout(objAttr::sig, 2);
-    } else {
       target = target.removeWithout(objAttr::sig, 1);
+    } else {
+      target = target.removeWithout(objAttr::sig, 2);
     }
 
-    target.snapTo(objAttr::height, 15).removeWith(objAttr::height, 0, 15).shrinkTo(3);
+    target.shrinkTo(3);
     target.snapToGridY(8).sortBy(objAttr::absFromMidY, false);
     target.shrinkTo(1);
 
