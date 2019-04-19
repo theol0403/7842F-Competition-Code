@@ -11,6 +11,7 @@ namespace lib7842
     y,
     width,
     height,
+    isCode,
 
     area,
     avgDim,
@@ -32,6 +33,7 @@ namespace lib7842
     double y = 0;
     double width = 0;
     double height = 0;
+    bool isCode = false;
 
   public:
 

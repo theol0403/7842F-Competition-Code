@@ -40,6 +40,7 @@ namespace lib7842
       case objAttr::y: return y; break;
       case objAttr::width: return width; break;
       case objAttr::height: return height; break;
+      case objAttr::isCode: return isCode; break;
 
       case objAttr::area: return width * height; break;
       case objAttr::avgDim: return (width + height)/2.0; break;
@@ -61,6 +62,7 @@ namespace lib7842
       case objAttr::y: y = val; break;
       case objAttr::width: width = val; break;
       case objAttr::height: height = val; break;
+      case objAttr::isCode: isCode = val; break;
       default: std::cerr << "setAttr: Invalid Attr" << std::endl;
     }
   }
@@ -84,10 +86,11 @@ namespace lib7842
 
 
   void visionObj::print() {
-    std::cout << "Sig: " << sig << " | ";
-    std::cout << "Width: " << width << " | ";
-    std::cout << "Height: " << height << " | ";
-    std::cout << "X: " << x << " | ";
+    std::cout << "Sig:" << sig << " | ";
+    std::cout << "IsCode:" << isCode << " | ";
+    std::cout << "Width:" << width << " | ";
+    std::cout << "Height:" << height << " | ";
+    std::cout << "X:" << x << " | ";
     std::cout << "Y: " << y << std::endl;
   }
 
@@ -98,6 +101,15 @@ namespace lib7842
     y = obj.top_coord;
     width = obj.width;
     height = obj.height;
+
+    if(obj.type == pros::E_VISION_OBJECT_COLOR_CODE) {
+      isCode = true;
+    }
+
+    for(uint16_t id = obj.signature; id >> 3;) {
+      id = id >> 3;
+      sig = id;
+    }
 
     assert(sig != VISION_OBJECT_ERR_SIG);
   }
