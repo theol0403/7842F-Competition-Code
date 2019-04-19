@@ -144,7 +144,6 @@ void driverControl()
 	if(pDigitalPressed(Y)) {
 		robot.shooter->doMacro(ShootController::shootMacros::cycle);
 		//cause it to go until pressed unless trigger pressed
-		shootMacro = ShootController::shootMacros::off;
 		lastShootMacro = ShootController::shootMacros::off;
 	} else if(pDigital(R1) && pDigital(R2)) {
 		robot.shooter->doMacro(ShootController::shootMacros::shoot);

@@ -27,9 +27,9 @@ void VisionController::run() {
 
   //set up vision
   sensor->set_wifi_mode(0);
-  sensor->set_exposure(150);
-  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3023, -2495, -2759, 5611, 8133, 6872, 7.200, 0); sensor->set_signature(1, &SIG_1);
-  pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 10527, 11881, 11204, -2511, -1869, -2190, 6.100, 0); sensor->set_signature(2, &SIG_2); 
+  sensor->set_exposure(40);
+  pros::vision_signature_s_t SIG_1 = pros::Vision::signature_from_utility(1, -3247, -3003, -3124, 13677, 14209, 13944, 11.000, 0); sensor->set_signature(1, &SIG_1);
+pros::vision_signature_s_t SIG_2 = pros::Vision::signature_from_utility(2, 7733, 8299, 8016, 205, 825, 516, 10.500, 0); sensor->set_signature(2, &SIG_2);
 
   drawer.makeLayer(reader)
   .setStyle(1, LV_COLOR_BLUE, LV_COLOR_WHITE)

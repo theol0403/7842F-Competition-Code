@@ -330,7 +330,7 @@ void ShootController::run()
       break;
 
       case angleOut:
-      angleTo(38);
+      angleTo(40);
       break;
 
       case angleTarget:
