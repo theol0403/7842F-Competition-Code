@@ -32,7 +32,7 @@ double VisionController::allign() {
 
   lib7842::visionObj targetObj = target.get(0);
   double error = targetObj.getAttr(objAttr::sig) == VISION_OBJECT_ERR_SIG ? 0 : targetObj.getAttr(objAttr::fromMidX);
-  return pid->step(error);
+  return pid->step(-error);
 
 }
 
@@ -55,7 +55,7 @@ void VisionController::run() {
       target = target.removeWithout(objAttr::sig, 1);
     }
 
-    //target.shrinkTo(3).snapToGridY(8).sortBy(objAttr::absFromMidY);
+    //target.shrinkTo(3).sortBy(objAttr::absFromMidY);
     target.shrinkTo(1);
 
     drawer.drawAll();

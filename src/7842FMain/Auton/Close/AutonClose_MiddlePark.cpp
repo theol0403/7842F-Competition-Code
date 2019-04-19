@@ -16,9 +16,10 @@ void AutonClose_MiddlePark(void* input)
   //flip cap
   chassis.driveDistance(1_ft, makeSettle(5_in));
   robot.intake->setState(IntakeController::outIntake);
-  chassis.turnToPoint(closeFlatCap, rightPivot);
+  chassis.turnToPoint(closeFlatCap);
   chassis.driveDistance(1_ft, makeSettle(4_in));
   robot.intake->setState(IntakeController::intakeBall);
+  chassis.driveToPoint({3_ft, 7_ft}, 2, makeSettle(6_in)); // Move to shooting position
 
   //drive to platform
   chassis.driveToPoint({0.8_ft, 7_ft}, 1, makeSettle(4_in));

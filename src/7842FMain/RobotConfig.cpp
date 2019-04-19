@@ -114,7 +114,7 @@ void initializeDevices()
 
 	robot.arm = new ArmController(new okapi::Motor(mArm), new IterativePosPIDController(0.01, 0, 0, 0, TimeUtilFactory::create()));
 
-	//robot.vision = new VisionController(new pros::Vision(mVision), display.main->newTab("Vision"), new IterativePosPIDController(0.001, 0.00, 0.0004, 0, TimeUtilFactory::create()));
+	robot.vision = new VisionController(new pros::Vision(mVision), display.main->newTab("Vision"), new IterativePosPIDController(0.01, 0.00, 0.0004, 0, TimeUtilFactory::create()));
 
 	display.flywheel = new FlywheelTuner(display.main->newTab("Fly"));
 	(*display.flywheel)

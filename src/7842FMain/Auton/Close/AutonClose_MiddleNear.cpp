@@ -14,11 +14,13 @@ void AutonClose_MiddleNear(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
   //flip cap
-  chassis.driveDistance(1_ft, makeSettle(5_in));
+  chassis.driveDistance(1.2_ft, makeSettle(5_in));
   robot.intake->setState(IntakeController::outIntake);
-  chassis.turnToPoint(closeFlatCap, rightPivot);
+  chassis.turnToPoint(closeFlatCap);
   chassis.driveDistance(1_ft, makeSettle(4_in));
   robot.intake->setState(IntakeController::intakeBall);
+  chassis.driveToPoint({3_ft, 7_ft}, 2, makeSettle(6_in)); // Move to shooting position
+
 
   chassis.driveToPoint({0.9_ft, 9_ft}, 2); // Move to shooting position
   chassis.turnToAngle(0_deg);

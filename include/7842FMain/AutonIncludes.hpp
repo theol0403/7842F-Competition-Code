@@ -16,7 +16,7 @@ void AutonNothing(void*); //Nothing happens
 void AutonTest(void*); //Tests
 
 void AutonClose_NearPark(void*);
-void AutonClose_NearMiddle(void*);
+void AutonClose_NearMiddle(void*); //good
 void AutonClose_NearCross(void*);
 void AutonClose_MiddlePark(void*);
 void AutonClose_MiddleNear(void*);
