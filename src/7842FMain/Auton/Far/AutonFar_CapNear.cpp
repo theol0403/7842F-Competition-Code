@@ -7,6 +7,10 @@ void AutonFar_CapNear(void* input)
 
   firstCapMovement(chassis, 3_ft);
 
+  if(chassis.side == autonSides::red) {
+    robot.tracker->getTheta() += 2_deg;
+  }
+
   //back up and unlock arm
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3_ft, 3_ft}, 1, makeSettle(2_in));
