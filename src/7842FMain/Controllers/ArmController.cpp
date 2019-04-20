@@ -60,6 +60,11 @@ void ArmController::run()
       arm->move(pid->step(getArmAngle()) * 127);
       break;
 
+      case descore:
+      pid->setTarget(1105);
+      arm->move(pid->step(getArmAngle()) * 127);
+      break;
+
       case up:
       arm->move(127);
       break;

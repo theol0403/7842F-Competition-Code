@@ -14,6 +14,7 @@ public:
     down,
     carry,
     balance,
+    descore,
     up,
     upSlow
   };

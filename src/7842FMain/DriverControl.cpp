@@ -45,7 +45,9 @@ void driverControl()
 	/**
 	* Arm Control
 	*/
-	if(mDigital(DOWN)) {
+	if(mDigital(LEFT)) {
+		armState = ArmController::descore;
+	} else if(mDigital(DOWN)) {
 		armState = ArmController::carry;
 	} else if(mDigital(L1) && mDigital(L2)) {
 		armState = ArmController::upSlow;
@@ -54,7 +56,7 @@ void driverControl()
 	} else if(mDigital(L2)) {
 		armState = ArmController::down;
 	} else {
-		if(armState != ArmController::carry) {
+		if(armState != ArmController::carry && armState != ArmController::descore) {
 			armState = ArmController::hold;
 		}
 	}
