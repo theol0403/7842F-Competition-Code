@@ -25,13 +25,14 @@ void AutonFar_CapMiddle(void* input)
   chassis.turnToPoint(farPost, capTurn);
 
   robot.arm->setState(ArmController::up);
-  chassis.driveForTime(500, 0.5);
+  chassis.driveForTime(500, 0.6);
   robot.arm->setState(ArmController::off);
 
-  chassis.driveToPoint({2_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
+  chassis.driveToPoint({1_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint(middleFlagPost); // turn to flag
+  QPoint middleFlagShoot {6.5_ft, 11_ft};
+  chassis.turnToPoint(middleFlagShoot); // turn to flag
 
   robot.intake->setState(IntakeController::intakeBall);
 

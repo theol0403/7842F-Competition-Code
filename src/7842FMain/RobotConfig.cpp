@@ -70,7 +70,7 @@ void initializeBase()
 		new IterativePosPIDController(0.004, 0.0002, 0.00018, 0, TimeUtilFactory::withSettledUtilParams(20, 5, 50_ms)), //Distance PID - To mm
 		new IterativePosPIDController(0.007, 0, 0, 0, TimeUtilFactory::withSettledUtilParams(50, 10, 100_ms)), //Angle PID - To Degree
 		new IterativePosPIDController(0.017, 0.00, 0.0005, 0, TimeUtilFactory::withSettledUtilParams(2, 2, 100_ms)), //Turn PID - To Degree
-		0.05
+		0.04
 	);
 	#endif
 

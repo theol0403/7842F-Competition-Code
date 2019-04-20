@@ -25,16 +25,16 @@ void AutonFar_CapNear(void* input)
   chassis.turnToPoint(farPost, capTurn);
 
   robot.arm->setState(ArmController::up);
-  chassis.driveForTime(500, 0.5);
+  chassis.driveForTime(500, 0.6);
   robot.arm->setState(ArmController::off);
 
-  chassis.driveToPoint({1_ft, 3_ft}); // Move to shooting position
+  chassis.driveToPoint({0.5_ft, 3_ft}); // Move to shooting position
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint(sideFlagPost); // turn to flag
+  chassis.turnToPoint({2.5_ft, 11_ft}); // turn to flag
   robot.intake->setState(IntakeController::intakeBall);
 
-  robot.shooter->setDistanceToFlag(distanceToPoint(sideFlagShoot));
+  robot.shooter->setDistanceToFlag(9_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
 
