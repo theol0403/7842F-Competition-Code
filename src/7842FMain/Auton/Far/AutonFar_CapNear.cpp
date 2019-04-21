@@ -35,7 +35,7 @@ void AutonFar_CapNear(void* input)
   chassis.driveToPoint({0.5_ft, 3_ft}); // Move to shooting position
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint({2.5_ft, 11_ft}); // turn to flag
+  chassis.turnToPoint({2_ft, 11_ft}); // turn to flag
   robot.intake->setState(IntakeController::intakeBall);
 
   robot.shooter->setDistanceToFlag(9_ft);

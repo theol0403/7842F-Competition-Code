@@ -12,8 +12,6 @@ void AutonFar_CapCross(void* input)
   chassis.driveToPoint({3_ft, 3_ft}, 1, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  robot.intake->setState(IntakeController::off);
-
   //get cap
   chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg);
   chassis.driveDistance(-2_ft, makeSettle(2_in));
@@ -21,7 +19,7 @@ void AutonFar_CapCross(void* input)
   pros::delay(300);
 
   //drive to post
-  chassis.driveToPoint({2.5_ft, 1.3_ft}, 2, makeSettle(3_in));
+  chassis.driveToPoint({2.5_ft, 1.35_ft}, 2, makeSettle(3_in));
   chassis.turnToPoint(farPost, capTurn);
 
   robot.arm->setState(ArmController::up);
@@ -31,11 +29,11 @@ void AutonFar_CapCross(void* input)
   chassis.driveDistance(-1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint({11_ft, 11_ft}); // turn to flag
+  chassis.turnToPoint({10.3_ft, 11_ft}); // turn to flag
 
   robot.intake->setState(IntakeController::intakeBall);
 
-  robot.shooter->setDistanceToFlag(9.5_ft);
+  robot.shooter->setDistanceToFlag(10_ft);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
