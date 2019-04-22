@@ -3,7 +3,7 @@
 void firstCapMovement(SideController& chassis, QLength y) {
   chassis.setState({startX, y, 90_deg}); // Robot is facing cap
 
-  QPoint drivePoint {3.8_ft, y};
+  QPoint drivePoint {3.9_ft, y};
 
   //this will make the robot intake when it is a distance from the cap
   AsyncAction intake = chassis.makeAsyncAction()
