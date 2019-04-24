@@ -12,6 +12,7 @@ void firstCapMovement(SideController& chassis, QLength y) {
 
   // Move to ball under cap while intaking
   chassis.driveToPoint(drivePoint, 1, driveSettle, {intake});
+  pros::delay(100);
 }
 
 
