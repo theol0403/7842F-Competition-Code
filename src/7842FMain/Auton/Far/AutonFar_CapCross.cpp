@@ -30,7 +30,7 @@ void AutonFar_CapCross(void* input)
   chassis.driveDistance(-1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  chassis.turnToPoint({10.9_ft, 11.2_ft}); // turn to flag
+  chassis.turnToPoint({10.7_ft, 11_ft}); // turn to flag
 
   robot.intake->setState(IntakeController::intakeBall);
 
