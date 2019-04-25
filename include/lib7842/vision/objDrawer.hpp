@@ -29,8 +29,8 @@ namespace lib7842
     void formatObj(lv_obj_t*);
     void format();
 
-    ObjRenderer &withStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
-    ObjRenderer &withStyle(int, lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
+    ObjRenderer &setStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
+    ObjRenderer &setStyle(int, lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
 
     void draw();
     void clear();
@@ -55,10 +55,11 @@ namespace lib7842
     ObjDrawer(lv_obj_t*);
     ~ObjDrawer();
 
-    ObjDrawer &withStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
-    ObjRenderer &withLayer(ObjContainer&);
+    ObjDrawer &setStyle(lv_color_t, lv_color_t = LV_COLOR_WHITE, lv_opa_t = LV_OPA_100);
+    ObjRenderer &makeLayer(ObjContainer&);
 
-    void draw();
+    void draw(ObjContainer&, bool = false);
+    void drawAll();
 
   };
 

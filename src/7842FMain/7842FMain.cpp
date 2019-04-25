@@ -1,10 +1,10 @@
 
-
-#include "lib7842/auton/autonSelector.hpp"
 #include "RobotConfig.hpp"
 
-#include "7842FMain/Auton/AutonIncludes.hpp"
+#include "7842FMain/AutonIncludes.hpp"
 #include "DriverControl.hpp"
+
+static bool isCompetition = false; //will be toggled when autonomous is run
 
 /***
 *     _____      _ _   _       _ _
@@ -24,17 +24,18 @@ void initialize()
 
   display.main = new MainDisplay(lv_scr_act(), LV_COLOR_HEX(0xFF7F00));
   LV_IMG_DECLARE(img_navigators);
-  display.main->splashScreen(&img_navigators, 2000);
+  display.main->splashScreen(&img_navigators, 1800);
 
   display.selector = new lib7842::AutonSelector(display.main->newTab("Auton"), {
-    {"T", AutonTest}, {"C", AutonClose}, {"Ex", AutonCloseExperimental},
-    {"Mc", AutonMiddleFromClose}, {"Mf", AutonMiddleFromFar},
-    {"F", AutonFar}, {"Pf", AutonPlatformFar}
+    {"N", AutonNothing},
+    {"c.NrPk", AutonClose_NearPark}, {"c.NrMd", AutonClose_NearMiddle}, {"c.NrCr", AutonClose_NearCross}, {"c.MdPk", AutonClose_MiddlePark}, {"c.MdNr", AutonClose_MiddleNear},
+    {"f.NrPk", AutonFar_NearPark}, {"f.MdPk", AutonFar_MiddlePark}, {"f.CrPk", AutonFar_CrossPark},
+    {"f.CapNr", AutonFar_CapNear}, {"f.CapMd", AutonFar_CapMiddle}, {"f.CapCr", AutonFar_CapCross},
   });
 
   pros::delay(500); //Give the legacy ports time to start up
 
-  initializeBase(); //test
+  initializeBase();
   initializeDevices();
   std::cout << "initialized heap: " << xPortGetFreeHeapSize() << std::endl;
 
@@ -56,7 +57,9 @@ void initialize()
 * This task will exit when the robot is enabled and autonomous or opcontrol
 * starts.
 */
-void competition_initialize() {}
+void competition_initialize() {
+  isCompetition = true;
+}
 
 /***
 *    ______ _           _     _          _
@@ -72,12 +75,12 @@ void competition_initialize() {}
 void disabled()
 {
   #ifndef TEST_ROBOT
-  robot.shooter->doJob(ShootController::off);
-  robot.flywheel->disable();
-  robot.flywheel->resetSlew();
-  //robot.arm->setState(ArmController::off);
+  subsystem(shooter)->doJob(ShootController::off);
+  subsystem(flywheel)->disable();
+  subsystem(flywheel)->resetSlew();
+  subsystem(arm)->setState(ArmController::off);
   #endif
-  robot.model->stop();
+  subsystem(chassis)->stop();
 }
 
 /***
@@ -101,15 +104,20 @@ void disabled()
 */
 void opcontrol()
 {
-  robot.model->stop();
+  subsystem(chassis)->stop();
 
   #ifndef TEST_ROBOT //This resets all the subsystems
-  robot.shooter->clearQueue();
-  robot.flywheel->resetSlew();
-  robot.flywheel->enable();
-  robot.intake->setState(IntakeController::off);
-  //robot.arm->setState(ArmController::off);
+  subsystem(shooter)->clearQueue();
+  subsystem(flywheel)->resetSlew();
+  subsystem(flywheel)->enable();
+  subsystem(intake)->setState(IntakeController::off);
+  subsystem(arm)->setState(ArmController::off);
   #endif
+
+  //if it is compeition, automatically start the flywheel
+  if(isCompetition) {
+    subsystem(flywheel)->setRpm(globalFlywheelRPM);
+  }
 
   robot.printer->rumble(".");
 
@@ -118,32 +126,38 @@ void opcontrol()
 
   while(true) {
 
-    double rightY = j_Analog(rightY);
-    double leftX = j_Analog(leftX);
-    robot.model->arcade(rightY, ipow(std::abs(leftX), 3) * sgn(leftX), 0);
+    if(mDigital(A)) {
+      robot.printer->rumble("-");
+      autonomous();
+    }
 
     #ifndef TEST_ROBOT
     driverControl();
     #endif
 
+    std::string str;
     QTime remaining = 1.75_min - opTimer.getDtFromMark();
     if(remaining < 0_ms) {
-      robot.printer->print(0, std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "   " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(opTimer.getDtFromMark().convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     } else if(remaining > 1_min) {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(remaining.convert(minute))) + ":" + std::to_string((int)((remaining - 1_min).convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     } else {
-      robot.printer->print(0, std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%");
+      str = std::to_string((int)(remaining.convert(second))) + "  " + std::to_string((int)(pros::c::battery_get_capacity())) + "%";
     }
 
-    // if(true) {
-    //   if(remaining == 60_s) {
-    //     j_Main.rumble(".");
-    //   } else if(remaining == 30_s) {
-    //     j_Main.rumble(".-");
+    robot.printer->print(0, str + "  M", pros::E_CONTROLLER_MASTER);
+    robot.printer->print(0, str + "  P", pros::E_CONTROLLER_PARTNER);
+
+    robot.printer->copy(1, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+    robot.printer->copy(2, pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_PARTNER);
+
+    // if(true) { //isCompetition
+    //   if(remaining == 30_s) {
+    //     robot.printer->rumble("-");
     //   } else if(remaining == 15_s) {
-    //     j_Main.rumble("..-");
+    //     robot.printer->rumble("--");
     //   } else if(remaining == 10_s) {
-    //     j_Main.rumble("....");
+    //     robot.printer->rumble("....");
     //   }
     // }
 
@@ -174,15 +188,16 @@ void opcontrol()
 void autonomous()
 {
   #ifndef TEST_ROBOT
-  robot.shooter->clearQueue();
-  robot.flywheel->resetSlew();
-  robot.flywheel->enable();
-  robot.flywheel->setRpm(globalFlywheelRPM);
-  //robot.arm->setState(ArmController::unfold);
+  subsystem(shooter)->clearQueue();
+  subsystem(flywheel)->resetSlew();
+  subsystem(flywheel)->enable();
+  subsystem(flywheel)->setRpm(globalFlywheelRPM);
   #endif
 
-  //Create a new chassis that mirrors side and send it to the autonomous code
+  isCompetition = true;
 
+  //Create a new chassis that mirrors side and send it to the autonomous code
+  //create timer
   AutonPasser passer = std::make_tuple(
     SideController(robot.chassis, display.selector->getSelectedSide()),
     Timer()
@@ -190,7 +205,6 @@ void autonomous()
 
   display.selector->getSelectedAuton().autonFunc(&passer);
 
-  std::cout << "Exit Auton" << std::endl;
-
-  robot.flywheel->setRpm(0);
+  subsystem(flywheel)->setRpm(0);
+  subsystem(chassis)->stop();
 }

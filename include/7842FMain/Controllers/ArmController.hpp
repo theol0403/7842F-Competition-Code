@@ -9,8 +9,14 @@ public:
   enum armStates
   {
     off, //motors off
-    forward,
-    back
+    hold,
+    holdAtPos,
+    down,
+    carry,
+    balance,
+    descore,
+    up,
+    upSlow
   };
 
   Motor* arm = nullptr;

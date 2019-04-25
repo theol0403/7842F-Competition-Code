@@ -11,37 +11,55 @@ namespace lib7842
     y,
     width,
     height,
+    isCode,
+
     area,
+    avgDim,
     centerX,
-    centerY
+    centerY,
+    fromMidX,
+    fromMidY,
+    absFromMidX,
+    absFromMidY
   };
 
   struct visionObj
   {
+
+  private:
+
     int sig = VISION_OBJECT_ERR_SIG;
     double x = 0;
     double y = 0;
     double width = 0;
     double height = 0;
-    double area = 0;
-    double centerX = 0;
-    double centerY = 0;
+    bool isCode = false;
 
-    visionObj operator+(visionObj);
-    visionObj operator-(visionObj);
-    visionObj operator*(visionObj);
-    visionObj operator/(visionObj);
+  public:
 
-    visionObj operator+(double);
-    visionObj operator-(double);
-    visionObj operator*(double);
-    visionObj operator/(double);
+    const visionObj& operator+(const visionObj&);
+    const visionObj& operator-(const visionObj&);
+    const visionObj& operator*(const visionObj&);
+    const visionObj& operator/(const visionObj&);
+
+    const visionObj& operator+(const double&);
+    const visionObj& operator-(const double&);
+    const visionObj& operator*(const double&);
+    const visionObj& operator/(const double&);
 
     double getAttr(objAttr) const;
+    void setAttr(objAttr, double);
+
+    void snapTo(objAttr, double);
+    void snapToGrid(objAttr, int, double);
+    void snapToGridX(int);
+    void snapToGridY(int);
+
     void print();
 
     visionObj() = default;
     visionObj(pros::vision_object);
+
   };
 
 }

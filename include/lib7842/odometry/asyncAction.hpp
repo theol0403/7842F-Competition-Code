@@ -2,7 +2,6 @@
 #include "main.h"
 #include "odomMath.hpp"
 #include "tracker.hpp"
-#include "controller.hpp"
 
 namespace lib7842
 {
@@ -10,25 +9,23 @@ namespace lib7842
   class AsyncAction;
 
   using AsyncActionRef = std::reference_wrapper<AsyncAction>;
+  using AsyncActionList = std::vector<AsyncActionRef>;
 
   typedef std::function<bool(OdomController*)> triggerFunction;
   typedef std::function<void()> actionFunction;
 
-  enum class exclusionTypes
-  {
+  enum class exclusionTypes {
     onlyBefore,
     onlyAfter
   };
 
-  enum class triggerTypes
-  {
+  enum class triggerTypes {
     trigger,
     onlyBefore,
     onlyAfter
   };
 
-  enum class actionTypes
-  {
+  enum class actionTypes {
     onceBefore,
     onceAfter,
     onceUnlessTriggered,
@@ -52,6 +49,7 @@ namespace lib7842
     std::vector<actionGroup> m_actions;
 
     bool m_triggered = false;
+    autonSides m_side = autonSides::red;
 
   public:
 
@@ -62,10 +60,12 @@ namespace lib7842
     AsyncAction &withAction(actionFunction, actionTypes = actionTypes::onceAfter);
 
     AsyncAction &withTrigger(triggerFunction, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QLength, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QLength, QAngle, triggerTypes = triggerTypes::trigger);
-    AsyncAction &withTrigger(qPoint, QAngle, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QLength, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QLength, QAngle, triggerTypes = triggerTypes::trigger);
+    AsyncAction &withTrigger(QPoint, QAngle, triggerTypes = triggerTypes::trigger);
     AsyncAction &withTrigger(QAngle, QAngle, triggerTypes = triggerTypes::trigger);
+
+    AsyncAction &withSide(autonSides);
 
     #define makeTrigger(x) [&](OdomController* that){x}
     #define makeAction(x) [&](){x}

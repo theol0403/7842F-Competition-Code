@@ -21,8 +21,11 @@ public:
     waitForRetract, //wait until hood back to 0 pos
     angleTop, //drop hood to top angle
     angleMiddle, //drop hood to middle angle
+    angleTopPlatform, //angle top from platform
+    angleMiddlePlatform, //angle middle from platform
+    angleOut, //drop hood to out (ground flag) angle
     angleTarget, //drop hood to target angle
-    angleOut, //drop hood to out angle
+    waitForDoubleShot, //if distance is large enough, wait before second shot
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
@@ -38,10 +41,14 @@ public:
     shootTop,
     shootMiddle,
     shootBoth,
-    shootTarget,
+    shootTopPlatform,
+    shootMiddlePlatform,
+    shootBothPlatform,
     shootOut,
+    shootTarget,
     shoot,
-    angle
+    angle,
+    cycle
   };
 
   IntakeController*& intake;
@@ -55,14 +62,14 @@ public:
   std::map<float, double> topAngles = {};
   std::map<float, double> middleAngles = {};
 
-  const shootStates defaultState = standby;
+  const shootStates defaultState = off;
 
   std::vector<shootStates> stateQueue = {defaultState};
   shootStates currentJob = defaultState;
   shootMacros currentMacro = shootMacros::off;
   double targetAngle = 0;
   QLength distanceToFlag = 0_in;
-  bool macroCompleted = false;
+  bool macroCompleted = true;;
 
   ShootController(IntakeController*&, FlywheelController*&, pros::ADIPotentiometer*, double, IterativePosPIDController*);
 
@@ -91,6 +98,7 @@ public:
   void setDistanceToFlag(QLength);
 
   double computeHoodPower(double);
+  void angleTo(double);
 
   void run();
   static void taskFnc(void*);

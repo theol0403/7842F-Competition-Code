@@ -33,7 +33,7 @@ namespace lib7842
     ObjContainer copy();
 
     ObjContainer &resize(int);
-    ObjContainer &trim(int);
+    ObjContainer &shrinkTo(int);
     ObjContainer &remove(int);
     ObjContainer &remove(int, int);
 
@@ -44,6 +44,11 @@ namespace lib7842
     ObjContainer &removeWithout(objAttr, double, double);
 
     ObjContainer &sortBy(objAttr, bool = true);
+
+    ObjContainer &snapTo(objAttr, double);
+    ObjContainer &snapToGrid(objAttr, int, double);
+    ObjContainer &snapToGridX(int);
+    ObjContainer &snapToGridY(int);
 
     void reset();
     void print();

@@ -3,7 +3,6 @@
 #include "lib7842/odometry/odomMath.hpp"
 #include "lib7842/odometry/controller.hpp"
 #include "lib7842/odometry/asyncAction.hpp"
-#include "lib7842/auton/autonSelector.hpp"
 
 
 namespace lib7842
@@ -19,11 +18,13 @@ namespace lib7842
 
     SideController(OdomController*, autonSides);
 
-    void setState(qPoint);
+    AsyncAction makeAsyncAction();
+
+    void setState(QPoint);
     void setX(QLength);
 
-    QAngle computeAngleToPoint(qPoint);
-    QLength computeDistanceToPoint(qPoint);
+    QAngle angleToPoint(QPoint);
+    QLength distanceToPoint(QPoint);
 
     settleFunc_t makeSettle(QAngle);
     settleFunc_t makeSettle(QLength);
@@ -34,12 +35,12 @@ namespace lib7842
     void rightPivot(OdomController*, double);
 
     angleCalc_t angleCalc(QAngle);
-    angleCalc_t angleCalc(qPoint);
+    angleCalc_t angleCalc(QPoint);
 
     void turn(angleCalc_t, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
     void turnToAngle(QAngle, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
     void turnAngle(QAngle, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
-    void turnToPoint(qPoint, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
+    void turnToPoint(QPoint, turnFunc_t = OdomController::pointTurn, settleFunc_t = OdomController::turnSettle, AsyncActionList = {});
 
     void driveDistanceAtAngle(QLength, angleCalc_t, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
     void driveDistance(QLength, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
@@ -47,29 +48,32 @@ namespace lib7842
     void driveForTimeAtAngle(int, double, angleCalc_t, double = 1, AsyncActionList = {});
     void allignToAngle(QAngle, double, double);
 
-    void driveToPoint(qPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
-    void driveToPoint2(qPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPoint(QPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPoint2(QPoint, double = 1, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
     void drivePath(Path, double = 1, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
     void drivePath2(Path, double = 1, settleFunc_t = OdomController::driveSettle, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
-    void driveToPointSimple(qPoint, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
+    void driveToPointSimple(QPoint, settleFunc_t = OdomController::driveSettle, AsyncActionList = {});
 
 
-    #ifdef CONTROLLER_NAME_FOR_SHORTCUTS
-    #define computeAngleToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeAngleToPoint
-    #define computeDistanceToPoint CONTROLLER_NAME_FOR_SHORTCUTS computeDistanceToPoint
+    #ifdef INSERT_CONTROLLER_NAME
+    #define angleToPoint INSERT_CONTROLLER_NAME angleToPoint
+    #define distanceToPoint INSERT_CONTROLLER_NAME distanceToPoint
 
-    #define makeSettle CONTROLLER_NAME_FOR_SHORTCUTS makeSettle
+    #define makeSettle INSERT_CONTROLLER_NAME makeSettle
     #define turnSettle OdomController::turnSettle
     #define driveSettle OdomController::driveSettle
 
-    #define makeArc CONTROLLER_NAME_FOR_SHORTCUTS makeArc
+    #define makeArc INSERT_CONTROLLER_NAME makeArc
     #define pointTurn OdomController::pointTurn
-    #define leftPivot CONTROLLER_NAME_FOR_SHORTCUTS leftPivot
-    #define rightPivot CONTROLLER_NAME_FOR_SHORTCUTS rightPivot
+    #define leftPivot OdomController::leftPivot
+    #define rightPivot OdomController::rightPivot
+    #define capTurn OdomController::capTurn
 
-    #define angleCalc CONTROLLER_NAME_FOR_SHORTCUTS angleCalc
+    #define angleCalc INSERT_CONTROLLER_NAME angleCalc
+
+    //#define makeAsyncAction INSERT_CONTROLLER_NAME makeAsyncAction
     #endif
 
 

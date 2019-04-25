@@ -21,5 +21,7 @@ namespace lib7842
     VisionReader &getSig(int);
     VisionReader &getSig(std::initializer_list<int>);
 
+    uint16_t createCode(int, int);
+
   };
 }
