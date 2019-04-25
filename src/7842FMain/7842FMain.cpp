@@ -126,10 +126,10 @@ void opcontrol()
 
   while(true) {
 
-    if(mDigital(A)) {
-      robot.printer->rumble("-");
-      autonomous();
-    }
+    // if(mDigital(A)) {
+    //   robot.printer->rumble("-");
+    //   autonomous();
+    // }
 
     #ifndef TEST_ROBOT
     driverControl();
@@ -192,6 +192,7 @@ void autonomous()
   subsystem(flywheel)->resetSlew();
   subsystem(flywheel)->enable();
   subsystem(flywheel)->setRpm(globalFlywheelRPM);
+  subsystem(arm)->calibrate();
   #endif
 
   isCompetition = true;

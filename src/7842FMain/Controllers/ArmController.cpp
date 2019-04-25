@@ -4,6 +4,10 @@ ArmController::ArmController(Motor* iarm, IterativePosPIDController* ipid) :
 arm(iarm), pid(ipid),
 task(taskFnc, this)
 {
+  calibrate();
+}
+
+void ArmController::calibrate() {
   arm->setBrakeMode(AbstractMotor::brakeMode::coast);
   arm->setEncoderUnits(AbstractMotor::encoderUnits::degrees);
   startAngle = arm->getPosition();

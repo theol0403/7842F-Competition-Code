@@ -29,6 +29,7 @@ public:
 
   ArmController(Motor*, IterativePosPIDController*);
 
+  void calibrate();
   void setState(armStates);
   armStates getState();
   double getArmAngle();

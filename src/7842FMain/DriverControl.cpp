@@ -21,7 +21,7 @@ void driverControl()
 	// if(mDigital(UP)) {
 	// 	robot.model->arcade(rightY, (ipow(std::abs(leftX), 2) * sgn(leftX)) + robot.vision->allign(), 0);
 	// } else {
-		robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
+	robot.model->arcade(rightY, ipow(std::abs(leftX), 2) * sgn(leftX), 0);
 	// }
 
 	/**
