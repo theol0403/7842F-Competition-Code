@@ -14,7 +14,7 @@ void AutonFar_CapMiddle(void* input)
 
   //get cap
   chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg);
-  chassis.driveDistance(-2.2_ft, makeSettle(2_in));
+  chassis.driveDistance(-2.1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::carry);
   pros::delay(300);
 
@@ -30,7 +30,7 @@ void AutonFar_CapMiddle(void* input)
   chassis.driveToPoint({1_ft, 3_ft}, 1, makeSettle(3_in)); // Move to shooting position
   robot.arm->setState(ArmController::down);
 
-  QPoint middleFlagShoot {7_ft, 11_ft};
+  QPoint middleFlagShoot {6_ft, 11_ft};
   chassis.turnToPoint(middleFlagShoot); // turn to flag
 
   robot.intake->setState(IntakeController::intakeBall);
