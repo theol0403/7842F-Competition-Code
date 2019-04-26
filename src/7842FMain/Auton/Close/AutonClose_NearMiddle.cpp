@@ -26,6 +26,7 @@ void AutonClose_NearMiddle(void* input)
   // chassis.turnToPoint(middleFlagShoot); // turn to flag
 
   //robot.shooter->setDistanceToFlag(0_ft);
+  pros::delay(500);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
 
 }

@@ -19,4 +19,4 @@ QPoint farFlagPost {10_ft, 11_ft}; //The flag post
 QPoint closeFlatCap {3_ft, 9_ft}; //The close cap with the balls on it
 QPoint farFlatCap {4.8_ft, 1_ft}; //The far cap with the balls on it
 
-QPoint farPost {2.452_ft, 0_ft}; //the post at the end of the court
+QPoint farPost {2.46_ft, 0_ft}; //the post at the end of the court

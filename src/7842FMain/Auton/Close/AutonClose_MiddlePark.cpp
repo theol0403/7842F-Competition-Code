@@ -32,8 +32,8 @@ void AutonClose_MiddlePark(void* input)
   chassis.driveDistance(0_in);
 
   //shoot middle flags from platform
-  chassis.turnAngle(90_deg);
-  waitForLastMinute(timer);
-  robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothPlatform);
+  // chassis.turnAngle(90_deg);
+  // waitForLastMinute(timer);
+  // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothPlatform);
 
 }
