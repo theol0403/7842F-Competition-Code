@@ -14,7 +14,7 @@ void AutonFar_CapCross(void* input)
 
   //get cap
   chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg);
-  chassis.driveDistance(-2_ft, makeSettle(2_in));
+  chassis.driveDistance(-2.2_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::carry);
   pros::delay(300);
 
