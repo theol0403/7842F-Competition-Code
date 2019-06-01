@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -126,22 +126,6 @@ typedef enum {
 #define DIGITAL_A E_CONTROLLER_DIGITAL_A
 #endif
 #endif
-
-/******************************************************************************/
-/**                              Date and Time                               **/
-/******************************************************************************/
-typedef struct {
-	uint16_t year; // Year - 1980
-	uint8_t day;
-	uint8_t month; // 1 = January
-} date_s_t;
-
-typedef struct {
-	uint8_t hour;
-	uint8_t min;
-	uint8_t sec;
-	uint8_t sec_hund; // hundredths of a second
-} time_s_t;
 
 #ifdef __cplusplus
 namespace c {
@@ -438,20 +422,6 @@ double battery_get_temperature(void);
  * \return The current capacity of the battery
  */
 double battery_get_capacity(void);
-
-/**
- * Gets the current date, as reported by VEXos.
- *
- * \return A data_s_t containing the Year, Month, and Day of the date.
- */
-date_s_t get_date(void);
-
-/**
- * Gets the current time, as reported by VEXos.
- *
- * \return A time_s_t containing the Hour, Minute, Second, and Hundredth of Second.
- */
-time_s_t get_time(void);
 
 #ifdef __cplusplus
 }

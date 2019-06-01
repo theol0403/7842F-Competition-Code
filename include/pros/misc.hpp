@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -315,20 +315,6 @@ std::uint8_t is_autonomous(void);
 std::uint8_t is_connected(void);
 std::uint8_t is_disabled(void);
 }  // namespace competition
-
-/**
- * Gets the current date, as reported by VEXos.
- *
- * \return A data_s_t containing the Year, Month, and Day of the date.
- */
-date_s_t get_date(void);
-
-/**
- * Gets the current time, as reported by VEXos.
- *
- * \return A time_s_t containing the Hour, Minute, Second, and Hundredth of Second.
- */
-time_s_t get_time(void);
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_
