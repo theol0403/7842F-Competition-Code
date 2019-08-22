@@ -10,8 +10,7 @@ class ShootController
 
 public:
 
-  enum shootStates
-  {
+  enum shootStates {
     off, //control to flywheel and intake
     standby, //back position, control to flywheel
     angling, //indefinite angling
@@ -29,14 +28,13 @@ public:
     waitForBall, //wait for ball to be in indexer
     waitForFlywheel, //wait until flywheel is ready
     enableShoot, //shoot indexer
-    waitForShoot,
+    waitForShoot, //delays until shot detected
     reportDone, //lets autonomous know
     loopJob, //reloads current job
     loopMacro //reloads current macro
   };
 
-  enum class shootMacros
-  {
+  enum class shootMacros {
     off,
     shootTop,
     shootMiddle,
