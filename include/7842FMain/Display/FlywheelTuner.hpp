@@ -2,16 +2,10 @@
 #include "main.h"
 #include <map>
 
-class FlywheelTuner
-{
+class FlywheelTuner {
 
 public:
-
-  enum class btnType {
-    add,
-    multiply,
-    increment
-  };
+  enum class btnType { add, multiply, increment };
 
   struct button_t {
     double* variable = nullptr;
@@ -36,8 +30,8 @@ public:
   FlywheelTuner(lv_obj_t*, lv_color_t);
   ~FlywheelTuner();
 
-  FlywheelTuner &withButton(std::string, double*, btnType = btnType::add, double = 1);
-  FlywheelTuner &withGauge(std::string, std::vector<double*>, int, int);
+  FlywheelTuner& withButton(std::string, double*, btnType = btnType::add, double = 1);
+  FlywheelTuner& withGauge(std::string, std::vector<double*>, int, int);
   void build();
 
   void calcLabels();
@@ -45,5 +39,4 @@ public:
   static lv_res_t btnAction(lv_obj_t*, const char*);
 
   static void taskFnc(void*);
-
 };

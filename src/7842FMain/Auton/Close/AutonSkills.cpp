@@ -1,17 +1,16 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonSkills(void* input)
-{
+void AutonSkills(void* input) {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-  auto &[chassis, timer] = *passer;
+  auto& [chassis, timer] = *passer;
 
   chassis.setState({startX, 7_ft, 90_deg}); // Robot is facing cap
   robot.intake->setState(IntakeController::intakeBall);
 
-  //this will make the robot intake when it is a distance from the cap
+  // this will make the robot intake when it is a distance from the cap
   AsyncAction intake = AsyncAction()
-  .withTrigger(makeTrigger(return distanceToPoint({4_ft, 7_ft}) < 2_ft;))
-  .withMakeAction(robot.intake->setState(IntakeController::outIntake););
+                         .withTrigger(makeTrigger(return distanceToPoint({4_ft, 7_ft}) < 2_ft;))
+                         .withMakeAction(robot.intake->setState(IntakeController::outIntake););
 
   // Move to ball under cap while intaking
   chassis.driveToPoint({3.9_ft, 7_ft}, 1, driveSettle, {intake});
@@ -52,5 +51,4 @@ void AutonSkills(void* input)
 
   chassis.driveForTime(3000, -1);
   chassis.driveDistance(-0.1_ft);
-
 }

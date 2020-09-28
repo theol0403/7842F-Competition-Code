@@ -1,11 +1,9 @@
 #pragma once
 #include "main.h"
 
-class DriverDisplay
-{
+class DriverDisplay {
 
 public:
-
   lv_obj_t* container = nullptr;
   lv_style_t style;
 
@@ -14,5 +12,4 @@ public:
   ~DriverDisplay();
 
   void setColor(lv_color_t);
-
 };

@@ -10,13 +10,13 @@
 using AutonPasser = std::tuple<SideController, Timer>;
 
 /**
-* Functions
-*/
-void AutonNothing(void*); //Nothing happens
-void AutonTest(void*); //Tests
+ * Functions
+ */
+void AutonNothing(void*); // Nothing happens
+void AutonTest(void*); // Tests
 
 void AutonClose_NearPark(void*);
-void AutonClose_NearMiddle(void*); //good
+void AutonClose_NearMiddle(void*); // good
 void AutonClose_NearCross(void*);
 void AutonClose_MiddlePark(void*);
 void AutonClose_MiddleNear(void*);
@@ -32,8 +32,8 @@ void AutonFar_CapCross(void*);
 void AutonSkills(void*);
 
 /**
-* Points
-*/
+ * Points
+ */
 extern QLength startX;
 
 extern QPoint sideFlagShoot;
@@ -50,10 +50,9 @@ extern QPoint farFlatCap;
 
 extern QPoint farPost;
 
-
 /**
-* Actions
-*/
+ * Actions
+ */
 void firstCapMovement(SideController& chassis, QLength y);
 void waitForLastMinute(Timer& timer);
 void closeShootFlagsPush(SideController& chassis);

@@ -1,41 +1,34 @@
 #pragma once
 #include "main.h"
 
+namespace lib7842 {
+class PID {
+private:
+  okapi::Timer m_timer;
 
-namespace lib7842
-{
-  class PID
-  {
-  private:
+  double m_Kp = 0;
+  double m_Kd = 0;
 
-    okapi::Timer m_timer;
+  okapi::EmaFilter m_dEma;
 
-    double m_Kp = 0;
-    double m_Kd = 0;
+  double m_Error = 0;
+  double m_lastError = 0;
+  double m_lastTime = 0;
+  double m_derivative = 0;
 
-    okapi::EmaFilter m_dEma;
+  SettledUtil m_settledUtil;
+  bool m_isSettled = false;
 
-    double m_Error = 0;
-    double m_lastError = 0;
-    double m_lastTime = 0;
-    double m_derivative = 0;
+public:
+  PID(double, double, double, double, double, QTime);
 
-    SettledUtil m_settledUtil;
-    bool m_isSettled = false;
+  double calculateErr(double);
+  double calculate(double, double);
 
+  double getError();
 
-  public:
+  void reset();
 
-    PID(double, double, double, double, double, QTime);
-
-    double calculateErr(double);
-    double calculate(double, double);
-
-    double getError();
-
-    void reset();
-
-    bool isSettled();
-
-  };
-}
+  bool isSettled();
+};
+} // namespace lib7842

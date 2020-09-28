@@ -1,16 +1,13 @@
 #pragma once
-#include "main.h"
-#include "lib7842/vision/visionObj.hpp"
 #include "lib7842/vision/objContainer.hpp"
-#include "lib7842/vision/visionReader.hpp"
 #include "lib7842/vision/objDrawer.hpp"
+#include "lib7842/vision/visionObj.hpp"
+#include "lib7842/vision/visionReader.hpp"
+#include "main.h"
 
-
-class VisionController
-{
+class VisionController {
 
 public:
-
   pros::Vision* sensor = nullptr;
   lib7842::VisionReader reader;
   lib7842::ObjDrawer drawer;
@@ -25,5 +22,4 @@ public:
 
   void run();
   static void taskFnc(void*);
-
 };

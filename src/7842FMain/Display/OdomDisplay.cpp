@@ -1,10 +1,10 @@
 #include "OdomDisplay.hpp"
 
-OdomDisplay::OdomDisplay(lv_obj_t* parent, lib7842::OdomTracker* tracker) : OdomDisplay(parent, lv_obj_get_style(parent)->body.main_color, tracker) {}
+OdomDisplay::OdomDisplay(lv_obj_t* parent, lib7842::OdomTracker* tracker) :
+  OdomDisplay(parent, lv_obj_get_style(parent)->body.main_color, tracker) {}
 
 OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t mainColor, lib7842::OdomTracker* itracker) :
-container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
-{
+  container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this) {
   lv_obj_set_size(container, lv_obj_get_width(parent), lv_obj_get_height(parent));
   lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
 
@@ -17,8 +17,8 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   lv_obj_set_style(container, cStyle);
 
   /**
-  * Field
-  */
+   * Field
+   */
   {
     field = lv_obj_create(container, NULL);
     fieldDim = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
@@ -48,18 +48,14 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     blue->body.grad_color = LV_COLOR_HEX(0x0077C9);
 
     std::vector<std::vector<lv_style_t*>> data = {
-      {grey, grey, grey, grey, grey, grey},
-      {grey, grey, grey, grey, grey, grey},
-      {red , grey, grey, grey, grey, blue},
-      {grey, grey, grey, grey, grey, grey},
-      {red , grey, grey, grey, grey, blue},
-      {grey, grey, grey, grey, grey, grey}
-    };
+      {grey, grey, grey, grey, grey, grey}, {grey, grey, grey, grey, grey, grey},
+      {red, grey, grey, grey, grey, blue},  {grey, grey, grey, grey, grey, grey},
+      {red, grey, grey, grey, grey, blue},  {grey, grey, grey, grey, grey, grey}};
 
     double tileDim = fieldDim / data.size();
 
-    for(double y = 0; y < 6; y++) {
-      for(double x = 0; x < 6; x++) {
+    for (double y = 0; y < 6; y++) {
+      for (double x = 0; x < 6; x++) {
         lv_obj_t* tileObj = lv_btn_create(field, NULL);
         lv_obj_set_pos(tileObj, x * tileDim, y * tileDim);
         lv_obj_set_size(tileObj, tileDim, tileDim);
@@ -74,12 +70,14 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   }
 
   /**
-  * Reset Button
-  */
+   * Reset Button
+   */
   {
     lv_obj_t* btn = lv_btn_create(container, NULL);
     lv_obj_set_size(btn, 100, 40);
-    lv_obj_align(btn, NULL, LV_ALIGN_IN_TOP_MID, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
+    lv_obj_align(btn, NULL, LV_ALIGN_IN_TOP_MID,
+                 -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldDim) / 2,
+                 0);
     lv_obj_set_free_ptr(btn, this);
     lv_btn_set_action(btn, LV_BTN_ACTION_PR, resetAction);
 
@@ -103,8 +101,8 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     lv_btn_set_style(btn, LV_BTN_STYLE_PR, btnm_pr);
 
     /**
-    * Reset Button Label
-    */
+     * Reset Button Label
+     */
     lv_obj_t* label = lv_label_create(btn, NULL);
     lv_style_t* style = new lv_style_t;
     lv_style_copy(style, &lv_style_plain);
@@ -114,10 +112,9 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
     lv_label_set_text(label, "Reset");
   }
 
-
   /**
-  * Chassis Tuner Button
-  */
+   * Chassis Tuner Button
+   */
   // {
   //   std::vector<const char*>* btnLabels = new std::vector<const char*>;
   //   *btnLabels = {"Width+", "Mult+", "\n", "Width-", "Mult-", ""};
@@ -125,19 +122,13 @@ container(lv_obj_create(parent, NULL)), tracker(itracker), task(taskFnc, this)
   //   lv_obj_t* btnm = lv_btnm_create(container, NULL);
   //   lv_btnm_set_map(btnm, btnLabels->data());
   //
-  //   lv_obj_set_size(btnm, lv_obj_get_width(container) - fieldDim, lv_obj_get_height(container) / 3);
-  //   lv_obj_align(btnm, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
-  //   lv_btnm_set_action(btnm, btnmAction);
-  //   lv_obj_set_free_ptr(btnm, this);
+  //   lv_obj_set_size(btnm, lv_obj_get_width(container) - fieldDim, lv_obj_get_height(container) /
+  //   3); lv_obj_align(btnm, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0); lv_btnm_set_action(btnm,
+  //   btnmAction); lv_obj_set_free_ptr(btnm, this);
   // }
-
-
 }
 
-OdomDisplay::~OdomDisplay() {
-  lv_obj_del(container);
-}
-
+OdomDisplay::~OdomDisplay() { lv_obj_del(container); }
 
 lv_res_t OdomDisplay::tileAction(lv_obj_t* tileObj) {
   OdomDisplay* that = static_cast<OdomDisplay*>(lv_obj_get_free_ptr(tileObj));
@@ -147,7 +138,6 @@ lv_res_t OdomDisplay::tileAction(lv_obj_t* tileObj) {
   that->tracker->setState({x * tile + 0.5_tl, 1_crt - y * tile - 0.5_tl, 0_deg});
   return LV_RES_OK;
 }
-
 
 lv_res_t OdomDisplay::resetAction(lv_obj_t* btn) {
   OdomDisplay* that = static_cast<OdomDisplay*>(lv_obj_get_free_ptr(btn));
@@ -198,15 +188,16 @@ void OdomDisplay::run() {
   textStyle.text.opa = LV_OPA_100;
   lv_obj_set_style(label, &textStyle);
 
-  while(true) {
+  while (true) {
 
     double x = tracker->getX().convert(court);
     double y = (1_crt - tracker->getY()).convert(court);
     double theta = tracker->getTheta().convert(radian);
 
-    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led)/2, (y * fieldDim) - lv_obj_get_height(led)/2 - 1);
+    lv_obj_set_pos(led, (x * fieldDim) - lv_obj_get_width(led) / 2,
+                   (y * fieldDim) - lv_obj_get_height(led) / 2 - 1);
 
-    points[0] = {(int16_t)((x * fieldDim)), (int16_t)((y * fieldDim) - (lineWidth/2))};
+    points[0] = {(int16_t)((x * fieldDim)), (int16_t)((y * fieldDim) - (lineWidth / 2))};
     double newY = arrowHeight * cos(theta);
     double newX = arrowHeight * sin(theta);
     points[1] = {(int16_t)(newX + points[0].x), (int16_t)(-newY + points[0].y)};
@@ -214,23 +205,21 @@ void OdomDisplay::run() {
     lv_line_set_points(arrow, points.data(), points.size());
     lv_obj_invalidate(arrow);
 
-    std::string text =
-    "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
-    "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
-    "Theta: " + std::to_string(tracker->getTheta().convert(degree)) + "\n" +
-    "Left: " + std::to_string(tracker->model->getSensorVals()[0]) + "\n" +
-    "Right: " + std::to_string(tracker->model->getSensorVals()[1]);
+    std::string text = "X: " + std::to_string(tracker->getX().convert(foot)) + "\n" +
+                       "Y: " + std::to_string(tracker->getY().convert(foot)) + "\n" +
+                       "Theta: " + std::to_string(tracker->getTheta().convert(degree)) + "\n" +
+                       "Left: " + std::to_string(tracker->model->getSensorVals()[0]) + "\n" +
+                       "Right: " + std::to_string(tracker->model->getSensorVals()[1]);
     lv_label_set_text(label, text.c_str());
-    lv_obj_align(label, container, LV_ALIGN_CENTER, -lv_obj_get_width(container)/2 + (lv_obj_get_width(container) - fieldDim)/2, 0);
+    lv_obj_align(label, container, LV_ALIGN_CENTER,
+                 -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldDim) / 2,
+                 0);
 
     pros::delay(50);
   }
-
 }
 
-
-void OdomDisplay::taskFnc(void* input)
-{
+void OdomDisplay::taskFnc(void* input) {
   pros::delay(500);
   OdomDisplay* that = static_cast<OdomDisplay*>(input);
   that->run();

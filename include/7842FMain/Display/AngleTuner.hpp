@@ -1,12 +1,10 @@
 #pragma once
-#include "main.h"
 #include "../Controllers/ShootController.hpp"
+#include "main.h"
 
-class AngleTuner
-{
+class AngleTuner {
 
 public:
-
   lv_obj_t* container = nullptr;
   ShootController*& angler;
   pros::Task task;
@@ -30,5 +28,4 @@ public:
   void calcDial();
 
   static void taskFnc(void*);
-
 };

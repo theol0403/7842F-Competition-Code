@@ -1,5 +1,5 @@
 #pragma once
-#include "main.h"
 #include "7842FMain/RobotConfig.hpp"
+#include "main.h"
 
 void driverControl();

@@ -1,9 +1,8 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFar_MiddlePark(void* input)
-{
+void AutonFar_MiddlePark(void* input) {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-  auto &[chassis, timer] = *passer;
+  auto& [chassis, timer] = *passer;
 
   firstCapMovement(chassis, 3_ft);
 
@@ -15,5 +14,4 @@ void AutonFar_MiddlePark(void* input)
 
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
-
 }

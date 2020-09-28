@@ -1,27 +1,28 @@
 #include "AngleTuner.hpp"
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
-AngleTuner::AngleTuner(lv_obj_t* parent, ShootController*& iangler) : AngleTuner(parent, lv_obj_get_style(parent)->body.main_color, iangler) {}
+AngleTuner::AngleTuner(lv_obj_t* parent, ShootController*& iangler) :
+  AngleTuner(parent, lv_obj_get_style(parent)->body.main_color, iangler) {}
 
 AngleTuner::AngleTuner(lv_obj_t* parent, lv_color_t mainColor, ShootController*& iangler) :
-container(parent), angler(iangler), task(taskFnc, this)
-{
+  container(parent), angler(iangler), task(taskFnc, this) {
 
-  int angleContainerWidth = lv_obj_get_width(container)/4.0;
+  int angleContainerWidth = lv_obj_get_width(container) / 4.0;
   int angleContainerHeight = lv_obj_get_height(container);
 
   int actionContainerWidth = lv_obj_get_width(container) - angleContainerWidth;
-  int actionContainerHeight = lv_obj_get_height(container)/4.0;
+  int actionContainerHeight = lv_obj_get_height(container) / 4.0;
 
   int dialContainerWidth = (lv_obj_get_width(container) - angleContainerWidth) / 3;
   int dialContainerHeight = lv_obj_get_height(container) - actionContainerHeight;
 
-  std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_BLACK, LV_COLOR_BLUE}; //Hood, Top, Mid
+  std::vector<lv_color_t> lineColors = {LV_COLOR_WHITE, LV_COLOR_BLACK,
+                                        LV_COLOR_BLUE}; // Hood, Top, Mid
 
   /**
-  * ButtonMatrix Styles
-  */
+   * ButtonMatrix Styles
+   */
   lv_style_t* btnm_bg = new lv_style_t;
   lv_style_copy(btnm_bg, &lv_style_plain);
   btnm_bg->body.main_color = mainColor;
@@ -57,8 +58,8 @@ container(parent), angler(iangler), task(taskFnc, this)
   btnm_ina->text.color = LV_COLOR_WHITE;
 
   /**
-  * Label Style
-  */
+   * Label Style
+   */
   lv_style_t* style_label = new lv_style_t;
   lv_style_copy(style_label, &lv_style_plain);
   style_label->text.font = &lv_font_dejavu_20;
@@ -66,8 +67,8 @@ container(parent), angler(iangler), task(taskFnc, this)
   style_label->text.color = LV_COLOR_WHITE;
 
   /**
-  * Container Master Style
-  */
+   * Container Master Style
+   */
   lv_style_t* masterStyle = new lv_style_t;
   lv_style_copy(masterStyle, &lv_style_plain);
   masterStyle->body.main_color = mainColor;
@@ -77,8 +78,8 @@ container(parent), angler(iangler), task(taskFnc, this)
   masterStyle->body.radius = 0;
 
   /**
-  * Angle Buttons
-  */
+   * Angle Buttons
+   */
   {
     lv_obj_t* angleContainer = lv_obj_create(container, NULL);
     lv_obj_set_size(angleContainer, angleContainerWidth, angleContainerHeight);
@@ -86,7 +87,8 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_obj_set_style(angleContainer, masterStyle);
 
     std::vector<const char*>* btnLabels = new std::vector<const char*>;
-    *btnLabels = {"Dist+", "\n", "Dist-", "\n", "Top+", "\n", "Top-", "\n", "Mid+", "\n", "Mid-", ""};
+    *btnLabels = {"Dist+", "\n", "Dist-", "\n", "Top+", "\n",
+                  "Top-",  "\n", "Mid+",  "\n", "Mid-", ""};
 
     lv_obj_t* btnm = lv_btnm_create(angleContainer, NULL);
     lv_btnm_set_map(btnm, btnLabels->data());
@@ -96,14 +98,14 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_PR, btnm_pr);
     lv_btnm_set_style(btnm, LV_BTNM_STYLE_BTN_INA, btnm_ina);
 
-    lv_obj_set_size(btnm, angleContainerWidth/3*2, angleContainerHeight);
+    lv_obj_set_size(btnm, angleContainerWidth / 3 * 2, angleContainerHeight);
     lv_btnm_set_action(btnm, angleBtnAction);
     lv_obj_set_free_ptr(btnm, this);
 
     /**
-    * Angle Labels
-    */
-    for(int i = 0; i < angleLabels.size(); i++) {
+     * Angle Labels
+     */
+    for (int i = 0; i < angleLabels.size(); i++) {
       lv_obj_t*& label = angleLabels.at(i);
       label = lv_label_create(angleContainer, NULL);
       lv_style_t* style = new lv_style_t;
@@ -115,10 +117,9 @@ container(parent), angler(iangler), task(taskFnc, this)
     calcAngleLabels();
   }
 
-
   /**
-  * Action Buttons
-  */
+   * Action Buttons
+   */
   {
     lv_obj_t* actionContainer = lv_obj_create(container, NULL);
     lv_obj_set_size(actionContainer, actionContainerWidth, actionContainerHeight);
@@ -141,10 +142,9 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_obj_set_free_ptr(btnm, this);
   }
 
-
   /**
-  * Angle Dial
-  */
+   * Angle Dial
+   */
   {
     lv_obj_t* dialContainer = lv_obj_create(container, NULL);
     lv_obj_set_size(dialContainer, dialContainerWidth, dialContainerHeight);
@@ -166,8 +166,8 @@ container(parent), angler(iangler), task(taskFnc, this)
     lv_obj_align(led, NULL, LV_ALIGN_CENTER, 0, 0);
 
     /**
-    * Angle Dial Line
-    */
+     * Angle Dial Line
+     */
     const int lineWidth = 1;
     lv_style_t lineStyle;
     lv_style_copy(&lineStyle, &lv_style_plain);
@@ -175,8 +175,8 @@ container(parent), angler(iangler), task(taskFnc, this)
     lineStyle.line.opa = LV_OPA_100;
     lineStyle.line.color = LV_COLOR_WHITE;
 
-    for(int i = dialLines.size()-1; i >= 0; i--) { //reversed so the first line goes on top
-      auto &[points, line] = dialLines[i];
+    for (int i = dialLines.size() - 1; i >= 0; i--) { // reversed so the first line goes on top
+      auto& [points, line] = dialLines[i];
       points[0] = {0, 0};
       points[1] = {0, 0};
       line = lv_line_create(dialContainer, NULL);
@@ -188,36 +188,30 @@ container(parent), angler(iangler), task(taskFnc, this)
       lv_line_set_points(line, points.data(), points.size());
       lv_obj_align(line, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
-      points[0] = {(int16_t)(dialContainerWidth/2.0), (int16_t)(dialContainerHeight/2.0)};
+      points[0] = {(int16_t)(dialContainerWidth / 2.0), (int16_t)(dialContainerHeight / 2.0)};
     }
 
-
     /**
-    * Angle Dial Label
-    */
+     * Angle Dial Label
+     */
     dialLabel = lv_label_create(dialContainer, NULL);
     lv_style_t* textStyle = new lv_style_t;
     lv_style_copy(textStyle, &lv_style_plain);
     textStyle->text.color = LV_COLOR_WHITE;
     textStyle->text.opa = LV_OPA_100;
     lv_obj_set_style(dialLabel, textStyle);
-
   }
-
-
-
-
 }
 
-AngleTuner::~AngleTuner() {
-  lv_obj_del(container);
-}
+AngleTuner::~AngleTuner() { lv_obj_del(container); }
 
 void AngleTuner::allignLabel(lv_obj_t* label, std::string text, double* offset) {
   int height = lv_obj_get_height(lv_obj_get_parent(label)) - 15;
   lv_label_set_text(label, text.c_str());
-  *offset += height/3.0;
-  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT, lv_obj_get_width(lv_obj_get_parent(label))/3.0*2.0, *offset - lv_obj_get_height(label) + height/6.0);
+  *offset += height / 3.0;
+  lv_obj_align(label, NULL, LV_ALIGN_OUT_TOP_LEFT,
+               lv_obj_get_width(lv_obj_get_parent(label)) / 3.0 * 2.0,
+               *offset - lv_obj_get_height(label) + height / 6.0);
 }
 
 void AngleTuner::calcAngleLabels() {
@@ -239,8 +233,7 @@ void AngleTuner::calcAngleLabels() {
   }
 }
 
-
-lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
+lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char* itxt) {
   AngleTuner* that = static_cast<AngleTuner*>(lv_obj_get_free_ptr(btnm));
   std::string label = itxt;
 
@@ -248,12 +241,14 @@ lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
   bool sign = label.at(labelPos) == '+' ? true : false;
   label.erase(labelPos, std::string::npos);
 
-  if(label == "Dist") {
+  if (label == "Dist") {
     that->angler->distanceToFlag += 0.5_ft * boolToSign(sign);
-  } else if(label == "Top") {
-    that->angler->topAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
-  } else if(label == "Mid") {
-    that->angler->middleAngles.at(that->angler->distanceToFlag.convert(foot)) += 0.5 * boolToSign(sign);
+  } else if (label == "Top") {
+    that->angler->topAngles.at(that->angler->distanceToFlag.convert(foot)) +=
+      0.5 * boolToSign(sign);
+  } else if (label == "Mid") {
+    that->angler->middleAngles.at(that->angler->distanceToFlag.convert(foot)) +=
+      0.5 * boolToSign(sign);
   } else {
     std::cerr << "No Button Found" << std::endl;
   }
@@ -261,27 +256,25 @@ lv_res_t AngleTuner::angleBtnAction(lv_obj_t* btnm, const char *itxt) {
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
 
-
-lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char *itxt) {
+lv_res_t AngleTuner::actionBtnAction(lv_obj_t* btnm, const char* itxt) {
   AngleTuner* that = static_cast<AngleTuner*>(lv_obj_get_free_ptr(btnm));
   std::string label = itxt;
 
-  if(label == "Top") {
+  if (label == "Top") {
     that->angler->doJobLoop(ShootController::angleTop);
-  } else if(label == "Mid") {
+  } else if (label == "Mid") {
     that->angler->doJobLoop(ShootController::angleMiddle);
-  } else if(label == "Cycle") {
+  } else if (label == "Cycle") {
     that->angler->doJob(ShootController::cycle);
-  } else if(label == "Shoot") {
+  } else if (label == "Shoot") {
     that->angler->doJob(ShootController::enableShoot);
   } else {
     std::cerr << "No Button Found" << std::endl;
   }
-  //std::cout << label << std::endl;
+  // std::cout << label << std::endl;
 
   return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
-
 
 void AngleTuner::calcDial() {
   const int lineLength = 60;
@@ -289,7 +282,7 @@ void AngleTuner::calcDial() {
 
   {
     double theta = (backAngle + (angler->getHoodAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines.at(0);
+    auto& [points, line] = dialLines.at(0);
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
     points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
@@ -299,7 +292,7 @@ void AngleTuner::calcDial() {
 
   {
     double theta = (backAngle + (angler->getTopFlagAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines.at(1);
+    auto& [points, line] = dialLines.at(1);
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
     points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
@@ -309,7 +302,7 @@ void AngleTuner::calcDial() {
 
   {
     double theta = (backAngle + (angler->getMiddleFlagAngle() * degree)).convert(radian);
-    auto &[points, line] = dialLines[2];
+    auto& [points, line] = dialLines[2];
     double x = lineLength * sin(theta);
     double y = -lineLength * cos(theta);
     points[1] = {(int16_t)(points[0].x + x), (int16_t)(points[0].y + y)};
@@ -317,18 +310,17 @@ void AngleTuner::calcDial() {
     lv_obj_invalidate(line);
   }
 
-
   std::stringstream str;
   str << "Angle:\n" << std::fixed << std::setprecision(3) << angler->getHoodAngle();
   lv_label_set_text(dialLabel, str.str().c_str());
-  lv_obj_align(dialLabel, NULL, LV_ALIGN_CENTER, 0, lv_obj_get_height(lv_obj_get_parent(dialLabel))/3.0);
+  lv_obj_align(dialLabel, NULL, LV_ALIGN_CENTER, 0,
+               lv_obj_get_height(lv_obj_get_parent(dialLabel)) / 3.0);
 }
-
 
 void AngleTuner::taskFnc(void* input) {
   pros::delay(500);
   AngleTuner* that = static_cast<AngleTuner*>(input);
-  while(true) {
+  while (true) {
     that->calcAngleLabels();
     that->calcDial();
 

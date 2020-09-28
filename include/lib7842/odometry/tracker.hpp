@@ -2,76 +2,66 @@
 #include "main.h"
 #include "odomMath.hpp"
 
-namespace lib7842
-{
+namespace lib7842 {
 
-  class OdomTracker
-  {
+class OdomTracker {
 
-  private:
+private:
+  QLength m_lastLeft {0_in};
+  QLength m_lastRight {0_in};
 
-    QLength m_lastLeft {0_in};
-    QLength m_lastRight {0_in};
+public:
+  using trackerFunc_t = std::function<void(OdomTracker*)>;
 
-  public:
+  std::shared_ptr<okapi::SkidSteerModel> model;
+  const QLength m_chassisWidth;
+  const QLength m_wheelDiam;
+  const double m_degToInch;
+  trackerFunc_t m_trackerFunc;
 
-    using trackerFunc_t = std::function<void(OdomTracker*)>;
+  okapi::VelMath m_leftVelMath;
+  okapi::VelMath m_rightVelMath;
+  pros::Task m_task;
 
-    std::shared_ptr<okapi::SkidSteerModel> model;
-    const QLength m_chassisWidth;
-    const QLength m_wheelDiam;
-    const double m_degToInch;
-    trackerFunc_t m_trackerFunc;
+  QPoint state {0_in, 0_in, 0_rad};
 
-    okapi::VelMath m_leftVelMath;
-    okapi::VelMath m_rightVelMath;
-    pros::Task m_task;
+  OdomTracker(std::shared_ptr<okapi::SkidSteerModel>, QLength, QLength, double, trackerFunc_t);
 
-    QPoint state {0_in, 0_in, 0_rad};
+  void debug();
 
-    OdomTracker (
-      std::shared_ptr<okapi::SkidSteerModel>,
-      QLength, QLength, double,
-      trackerFunc_t
-    );
+  void setState(QPoint);
+  QPoint& getState();
 
-    void debug();
+  void setX(QLength);
+  void setY(QLength);
+  void setTheta(QAngle);
 
-    void setState(QPoint);
-    QPoint& getState();
+  QLength& getX();
+  QLength& getY();
+  QAngle& getTheta();
 
-    void setX(QLength);
-    void setY(QLength);
-    void setTheta(QAngle);
+  void resetState();
+  void resetSensors();
+  void reset();
 
-    QLength& getX();
-    QLength& getY();
-    QAngle& getTheta();
+  double getLeftVelocity();
+  double getRightVelocity();
+  double getAvgVelocity();
+  double getAbsLeftVelocity();
+  double getAbsRightVelocity();
+  double getAbsAvgVelocity();
 
-    void resetState();
-    void resetSensors();
-    void reset();
+  void run();
+  static void taskFnc(void*);
 
-    double getLeftVelocity();
-    double getRightVelocity();
-    double getAvgVelocity();
-    double getAbsLeftVelocity();
-    double getAbsRightVelocity();
-    double getAbsAvgVelocity();
+  static void aTracking(OdomTracker*);
+  static void mTracking(OdomTracker*);
+  static void mdTracking(OdomTracker*);
 
-    void run();
-    static void taskFnc(void*);
+private:
+  void m_aTracking();
+  void m_mTracking();
+  void m_mdTracking();
+};
 
-    static void aTracking(OdomTracker*);
-    static void mTracking(OdomTracker*);
-    static void mdTracking(OdomTracker*);
-
-  private:
-
-    void m_aTracking();
-    void m_mTracking();
-    void m_mdTracking();
-
-  };
-
-}
+} // namespace lib7842

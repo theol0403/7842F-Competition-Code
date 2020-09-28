@@ -1,24 +1,23 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFar_CapMiddle(void* input)
-{
+void AutonFar_CapMiddle(void* input) {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-  auto &[chassis, timer] = *passer;
+  auto& [chassis, timer] = *passer;
 
   firstCapMovement(chassis, 2.9_ft);
 
-  //back up and unlock arm
+  // back up and unlock arm
   robot.arm->setState(ArmController::balance);
   chassis.driveToPoint({3_ft, 2_ft}, 3, makeSettle(2_in));
   robot.arm->setState(ArmController::down);
 
-  //get cap
+  // get cap
   chassis.turnAngle(mirrorSide(angleToPoint(farFlatCap), chassis.side) + 180_deg);
   chassis.driveDistance(-2.1_ft, makeSettle(2_in));
   robot.arm->setState(ArmController::carry);
   pros::delay(300);
 
-  //drive to post
+  // drive to post
   chassis.driveToPoint({2.57_ft, 1.45_ft}, 2, makeSettle(3_in));
   chassis.turnToPoint(farPost, capTurn);
 
@@ -39,7 +38,4 @@ void AutonFar_CapMiddle(void* input)
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootTop);
   pros::delay(1000);
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootMiddle);
-
-
-
 }

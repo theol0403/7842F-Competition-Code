@@ -1,15 +1,12 @@
 #pragma once
 #include "main.h"
 
-class IntakeController
-{
+class IntakeController {
 
 public:
-
-  enum intakeStates
-  {
+  enum intakeStates {
     off,
-    intakeBall, //runs intake and indexer until ball then indexer stops
+    intakeBall, // runs intake and indexer until ball then indexer stops
     outIntake,
     outSlow,
     shoot
@@ -36,5 +33,4 @@ public:
 
   void run();
   static void taskFnc(void*);
-
 };

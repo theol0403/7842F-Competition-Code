@@ -1,9 +1,8 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonFar_CrossPark(void* input)
-{
+void AutonFar_CrossPark(void* input) {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-  auto &[chassis, timer] = *passer;
+  auto& [chassis, timer] = *passer;
 
   firstCapMovement(chassis, 3_ft);
 
@@ -22,6 +21,4 @@ void AutonFar_CrossPark(void* input)
   chassis.driveForTime(2000, -1);
   chassis.driveDistance(0_in);
   robot.arm->setState(ArmController::off);
-
-
 }

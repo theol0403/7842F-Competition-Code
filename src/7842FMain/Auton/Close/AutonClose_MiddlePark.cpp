@@ -1,9 +1,8 @@
 #include "7842FMain/AutonIncludes.hpp"
 
-void AutonClose_MiddlePark(void* input)
-{
+void AutonClose_MiddlePark(void* input) {
   AutonPasser* passer = static_cast<AutonPasser*>(input);
-  auto &[chassis, timer] = *passer;
+  auto& [chassis, timer] = *passer;
 
   firstCapMovement(chassis, 7_ft);
 
@@ -13,7 +12,7 @@ void AutonClose_MiddlePark(void* input)
   robot.shooter->setDistanceToFlag(distanceToPoint(middleFlagShoot));
   robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBoth);
 
-  //flip cap
+  // flip cap
   chassis.driveDistance(1_ft, makeSettle(5_in));
   robot.intake->setState(IntakeController::outIntake);
   chassis.turnToPoint(closeFlatCap);
@@ -21,19 +20,18 @@ void AutonClose_MiddlePark(void* input)
   robot.intake->setState(IntakeController::intakeBall);
   chassis.driveToPoint({3_ft, 7_ft}, 2, makeSettle(6_in)); // Move to shooting position
 
-  //drive to platform
+  // drive to platform
   chassis.driveToPoint({0.8_ft, 7_ft}, 1, makeSettle(4_in));
   chassis.driveToPoint({0.8_ft, 5_ft}, 2, makeSettle(2_in));
   chassis.turnToAngle(-90_deg);
 
-  //drive up
+  // drive up
   robot.arm->setState(ArmController::balance);
   chassis.driveForTime(2000, -1);
   chassis.driveDistance(0_in);
 
-  //shoot middle flags from platform
+  // shoot middle flags from platform
   // chassis.turnAngle(90_deg);
   // waitForLastMinute(timer);
   // robot.shooter->doMacroBlocking(ShootController::shootMacros::shootBothPlatform);
-
 }

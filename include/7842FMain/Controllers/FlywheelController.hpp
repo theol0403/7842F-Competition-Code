@@ -1,13 +1,11 @@
 #pragma once
-#include "main.h"
-#include "lib7842/pid/pidVelSystem.hpp"
 #include "IntakeController.hpp"
+#include "lib7842/pid/pidVelSystem.hpp"
+#include "main.h"
 
-class FlywheelController
-{
+class FlywheelController {
 
 public:
-
   IntakeController*& intake;
   Motor* flywheel = nullptr;
   ADIEncoder* sensor = nullptr;
@@ -29,7 +27,8 @@ public:
   double currentAccel = 0;
   bool isShot = false;
 
-  FlywheelController(IntakeController*&, Motor*, ADIEncoder*, VelMath*, lib7842::emaFilter*, lib7842::velPID*, double);
+  FlywheelController(IntakeController*&, Motor*, ADIEncoder*, VelMath*, lib7842::emaFilter*,
+                     lib7842::velPID*, double);
 
   void setRpm(double);
   double getTargetRpm();
@@ -39,5 +38,4 @@ public:
 
   void run();
   static void taskFnc(void*);
-
 };

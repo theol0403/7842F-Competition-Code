@@ -1,14 +1,11 @@
 #pragma once
 #include "main.h"
 
-class ArmController
-{
+class ArmController {
 
 public:
-
-  enum armStates
-  {
-    off, //motors off
+  enum armStates {
+    off, // motors off
     hold,
     holdAtPos,
     down,
@@ -36,5 +33,4 @@ public:
 
   void run();
   static void taskFnc(void*);
-
 };

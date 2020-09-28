@@ -5,23 +5,21 @@ void firstCapMovement(SideController& chassis, QLength y) {
 
   QPoint drivePoint {3.8_ft, y};
 
-  //this will make the robot intake when it is a distance from the cap
+  // this will make the robot intake when it is a distance from the cap
   AsyncAction intake = chassis.makeAsyncAction()
-  .withTrigger(drivePoint, 2_ft)
-  .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
+                         .withTrigger(drivePoint, 2_ft)
+                         .withMakeAction(robot.intake->setState(IntakeController::intakeBall););
 
   // Move to ball under cap while intaking
   chassis.driveToPoint(drivePoint, 1, driveSettle, {intake});
   pros::delay(200);
 }
 
-
 void waitForLastMinute(Timer& timer) {
-  QTime shootTime {13_s}; //Time to wait before last-minute shooting
-  while(timer.getDtFromStart() < shootTime) pros::delay(20);
+  QTime shootTime {13_s}; // Time to wait before last-minute shooting
+  while (timer.getDtFromStart() < shootTime)
+    pros::delay(20);
 }
-
-
 
 void closeShootFlagsPush(SideController& chassis) {
   chassis.driveToPoint({0.9_ft, 7_ft}, 2); // Move to shooting position

@@ -1,8 +1,7 @@
 #include "MainDisplay.hpp"
 
 MainDisplay::MainDisplay(lv_obj_t* parent, lv_color_t imainColor) :
-tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
-{
+  tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor) {
   lv_style_t* style_bg = new lv_style_t;
   lv_style_copy(style_bg, &lv_style_plain);
   style_bg->body.main_color = mainColor;
@@ -70,13 +69,9 @@ tabview(lv_tabview_create(parent, NULL)), mainColor(imainColor)
   pageStyle.body.border.width = 3;
   pageStyle.body.border.opa = LV_OPA_100;
   pageStyle.body.radius = 0;
-
 }
 
-MainDisplay::~MainDisplay() {
-  lv_obj_del(tabview);
-}
-
+MainDisplay::~MainDisplay() { lv_obj_del(tabview); }
 
 lv_obj_t* MainDisplay::newTab(std::string name) {
   lv_obj_t* page = lv_tabview_add_tab(tabview, name.c_str());
@@ -86,18 +81,14 @@ lv_obj_t* MainDisplay::newTab(std::string name) {
   return page;
 }
 
-lv_obj_t* MainDisplay::getParent() {
-  return lv_obj_get_parent(tabview);
-}
-
-
+lv_obj_t* MainDisplay::getParent() { return lv_obj_get_parent(tabview); }
 
 void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
 
-  //the task needs to know information
+  // the task needs to know information
   using Passer = std::tuple<MainDisplay*, const lv_img_t*, int>;
 
-  void (*func)(void*) = [](void* input){
+  void (*func)(void*) = [](void* input) {
     auto [display, imgPtr, time] = *static_cast<Passer*>(input);
 
     lv_obj_t* parent = lv_scr_act();
@@ -124,17 +115,23 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
     lv_img_set_style(img, &iStyle);
 
     lv_anim_t iAnim;
-    iAnim.var = img; iAnim.start = 0; iAnim.end = 255;
-    iAnim.fp = [](void* iimg, int32_t val)
-    {
+    iAnim.var = img;
+    iAnim.start = 0;
+    iAnim.end = 255;
+    iAnim.fp = [](void* iimg, int32_t val) {
       lv_obj_t* img = static_cast<lv_obj_t*>(iimg);
       lv_style_t* iStyle = lv_img_get_style(img);
       iStyle->image.opa = val;
       lv_img_set_style(img, iStyle);
     };
     iAnim.path = lv_anim_path_linear;
-    iAnim.time = time/3;
-    iAnim.end_cb = NULL; iAnim.act_time = 0; iAnim.playback = 1; iAnim.playback_pause = time/3; iAnim.repeat = 0; iAnim.repeat_pause = 0;
+    iAnim.time = time / 3;
+    iAnim.end_cb = NULL;
+    iAnim.act_time = 0;
+    iAnim.playback = 1;
+    iAnim.playback_pause = time / 3;
+    iAnim.repeat = 0;
+    iAnim.repeat_pause = 0;
     lv_anim_create(&iAnim);
 
     pros::delay(time + 20);
@@ -147,6 +144,6 @@ void MainDisplay::splashScreen(const lv_img_t* imgPtr, int time) {
   };
 
   Passer* passer = new Passer(this, imgPtr, time);
-  pros::c::task_create(func, passer, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "SpashScreen");
-
+  pros::c::task_create(func, passer, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
+                       "SpashScreen");
 }

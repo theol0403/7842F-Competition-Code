@@ -1,11 +1,9 @@
 #pragma once
 #include "main.h"
 
-class Graph
-{
+class Graph {
 
 public:
-
   lv_obj_t* graph = nullptr;
   int refresh = 100;
   std::tuple<int, int, int> lineData = {};
@@ -17,16 +15,15 @@ public:
   Graph(lv_obj_t*, lv_color_t);
   ~Graph();
 
-  Graph &withRange(int, int);
-  Graph &withRes(int);
-  Graph &withLines(int, int);
-  Graph &withRefresh(int);
+  Graph& withRange(int, int);
+  Graph& withRes(int);
+  Graph& withLines(int, int);
+  Graph& withRefresh(int);
 
-  Graph &withSeries(std::string, double*, lv_color_t, double = 1);
+  Graph& withSeries(std::string, double*, lv_color_t, double = 1);
 
   void build();
 
   void run();
   static void taskFnc(void*);
-
 };

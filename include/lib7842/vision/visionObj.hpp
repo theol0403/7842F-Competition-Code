@@ -1,65 +1,59 @@
 #pragma once
 #include "main.h"
 
-namespace lib7842
-{
+namespace lib7842 {
 
-  enum class objAttr
-  {
-    sig,
-    x,
-    y,
-    width,
-    height,
-    isCode,
+enum class objAttr {
+  sig,
+  x,
+  y,
+  width,
+  height,
+  isCode,
 
-    area,
-    avgDim,
-    centerX,
-    centerY,
-    fromMidX,
-    fromMidY,
-    absFromMidX,
-    absFromMidY
-  };
+  area,
+  avgDim,
+  centerX,
+  centerY,
+  fromMidX,
+  fromMidY,
+  absFromMidX,
+  absFromMidY
+};
 
-  struct visionObj
-  {
+struct visionObj {
 
-  private:
+private:
+  int sig = VISION_OBJECT_ERR_SIG;
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  bool isCode = false;
 
-    int sig = VISION_OBJECT_ERR_SIG;
-    double x = 0;
-    double y = 0;
-    double width = 0;
-    double height = 0;
-    bool isCode = false;
+public:
+  const visionObj& operator+(const visionObj&);
+  const visionObj& operator-(const visionObj&);
+  const visionObj& operator*(const visionObj&);
+  const visionObj& operator/(const visionObj&);
 
-  public:
+  const visionObj& operator+(const double&);
+  const visionObj& operator-(const double&);
+  const visionObj& operator*(const double&);
+  const visionObj& operator/(const double&);
 
-    const visionObj& operator+(const visionObj&);
-    const visionObj& operator-(const visionObj&);
-    const visionObj& operator*(const visionObj&);
-    const visionObj& operator/(const visionObj&);
+  double getAttr(objAttr) const;
+  void setAttr(objAttr, double);
 
-    const visionObj& operator+(const double&);
-    const visionObj& operator-(const double&);
-    const visionObj& operator*(const double&);
-    const visionObj& operator/(const double&);
+  void snapTo(objAttr, double);
+  void snapToGrid(objAttr, int, double);
+  void snapToGridX(int);
+  void snapToGridY(int);
 
-    double getAttr(objAttr) const;
-    void setAttr(objAttr, double);
+  void print();
 
-    void snapTo(objAttr, double);
-    void snapToGrid(objAttr, int, double);
-    void snapToGridX(int);
-    void snapToGridY(int);
+  visionObj() = default;
+  visionObj(pros::vision_object);
+};
 
-    void print();
-
-    visionObj() = default;
-    visionObj(pros::vision_object);
-
-  };
-
-}
+} // namespace lib7842
